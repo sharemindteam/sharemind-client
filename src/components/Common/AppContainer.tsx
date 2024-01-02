@@ -17,4 +17,5 @@ const StyledApp = styled.div`
     width: 37.5rem;
   }
   background-color: white;
+  overflow-y: scroll;
 `;
