@@ -5,12 +5,13 @@ import { ReactComponent as LogoText } from 'assets/icons/logo-text.svg';
 import { ReactComponent as Search } from 'assets/icons/search.svg';
 interface HeaderProps {
   isBuyer: boolean;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
-export const Header = ({ isBuyer }: HeaderProps) => {
+export const Header = ({ isBuyer, onClick }: HeaderProps) => {
   if (isBuyer === true) {
     return (
       <Wrapper>
-        <Logo>
+        <Logo onClick={onClick}>
           <LogoBuyer />
           <StyledLogoText />
         </Logo>

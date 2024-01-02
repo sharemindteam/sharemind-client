@@ -2,7 +2,7 @@ import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-export const BuyerHome = () => {
+export const BuyerConsult = () => {
   const navigate = useNavigate();
   return (
     <Wrapper>
@@ -12,7 +12,7 @@ export const BuyerHome = () => {
           navigate('/buyer');
         }}
       />
-      <TabA1 isBuyer={true} initState={1} />
+      <TabA1 isBuyer={true} initState={2} />
     </Wrapper>
   );
 };
