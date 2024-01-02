@@ -1,6 +1,7 @@
 import { BuyerHome } from 'pages/Buyer/BuyerHome';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
+
 const Router = () => {
   const navigate = useNavigate();
   return (
