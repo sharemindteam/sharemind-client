@@ -35,7 +35,11 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
             color={Black}
             onClick={() => {
               setTabState(1);
-              navigate('/');
+              if (isBuyer) {
+                navigate('/buyer');
+              } else {
+                navigate('/seller');
+              }
             }}
           >
             홈
@@ -53,7 +57,11 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
             color={Black}
             onClick={() => {
               setTabState(2);
-              navigate('/consult');
+              if (isBuyer) {
+                navigate('/buyer/consult');
+              } else {
+                navigate('/seller/consult');
+              }
             }}
           >
             상담
@@ -71,7 +79,11 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
             color={Black}
             onClick={() => {
               setTabState(3);
-              navigate('/mypage');
+              if (isBuyer) {
+                navigate('/buyer/mypage');
+              } else {
+                navigate('/seller/mypage');
+              }
             }}
           >
             내 정보
