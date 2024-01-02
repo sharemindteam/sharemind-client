@@ -1,66 +1,89 @@
 import styled from 'styled-components';
 //<Heading color={Red}> 이런식으로 사용
 //semi-bold : 600 regular : 400
-export const Heading = styled.div`
+interface FontProps {
+  color?: string;
+  padding?: string;
+  margin?: string;
+}
+export const Heading = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 2rem;
   font-weight: 600;
   line-height: 100%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
-export const Subtitle = styled.div`
+export const Subtitle = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.8rem;
   font-weight: 600;
   line-height: 135%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
-export const Body1 = styled.div`
+export const Body1 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 150%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
-export const Body2 = styled.div`
+export const Body2 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 150%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
-export const Body3 = styled.div`
+export const Body3 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 155%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
-export const Button1 = styled.div`
+export const Button1 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 125%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
-export const Button2 = styled.div`
+export const Button2 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 125%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
-export const Caption1 = styled.div`
+export const Caption1 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.2rem;
   font-weight: 600;
   line-height: 140%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
-export const Caption2 = styled.div`
+export const Caption2 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 140%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
 `;
