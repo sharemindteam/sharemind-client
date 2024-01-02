@@ -1,1 +1,1 @@
-export const HeaderHeight = "6rem";
+//constant 저장

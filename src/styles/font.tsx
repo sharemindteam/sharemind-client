@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 //<Heading color={Red}> 이런식으로 사용
+//semi-bold : 600 regular : 400
 export const Heading = styled.div`
   color: ${(props) => props.color || '#000000'};
   font-size: 2rem;

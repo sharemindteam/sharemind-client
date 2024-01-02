@@ -27,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-box-pack: center;
     justify-content: center;
     margin: 0px;
-    background-color: #24a78b;
+    background-color: #ffffff;
   }
   input {
    border: none;
