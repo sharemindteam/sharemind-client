@@ -35,6 +35,9 @@ const Wrapper = styled.div`
   height: 6rem;
   display: flex;
   justify-content: space-between;
+  background-color: white;
+  position: sticky;
+  top: 0;
 `;
 const Logo = styled.div`
   margin-left: 2rem;

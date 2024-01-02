@@ -1,6 +1,5 @@
 import { useViewResize } from 'hooks/useViewResize';
 import styled from 'styled-components';
-
 interface AppContainerProps {
   children: React.ReactNode;
 }

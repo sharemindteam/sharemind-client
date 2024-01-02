@@ -98,8 +98,11 @@ const Wrapper = styled.div`
   height: 4.4rem;
   display: flex;
   justify-content: center;
-  gap: 4.5rem;
+  gap: 12%;
   border-bottom: 1px solid #f6f6fa;
+  position: sticky;
+  top: 6rem;
+  background-color: white;
 `;
 const TabButton = styled.div`
   display: flex;
