@@ -17,13 +17,13 @@ export const SellerHome = () => {
           navigate('/seller');
         }}
       />
+      <TabA1 isBuyer={false} initState={1} />
       <main
         style={{
           paddingBottom: '1.86rem',
           borderBottom: `1px solid ${Grey6} `,
         }}
       >
-        <TabA1 isBuyer={false} initState={1} />
         <OnGoingConsultSection />
         <IncomeManagementSection />
         <ConsultReviewSection />
