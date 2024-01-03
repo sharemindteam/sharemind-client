@@ -1,7 +1,7 @@
 import { BuyerConsult } from 'pages/Buyer/BuyerConsult';
 import { BuyerHome } from 'pages/Buyer/BuyerHome';
+import { SellerHome } from 'pages/Seller/SellerHome';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-
 
 const Router = () => {
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const Router = () => {
       />
       <Route path="/buyer" element={<BuyerHome />} />
       <Route path="/buyer/consult" element={<BuyerConsult />} />
+      <Route path="/seller" element={<SellerHome />} />
     </Routes>
   );
 };
