@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { IncomeManagementSection } from 'components/Seller/IncomeManagementSection';
 import OnGoingConsultSection from 'components/Common/OnGoingConsultSection';
 import { ConsultReviewSection } from 'components/Seller/ConsultReviewsSection';
+import HomeAboutFooterSection from 'components/Common/HomeAboutSection';
 export const SellerHome = () => {
   const navigate = useNavigate();
   return (
@@ -20,6 +21,7 @@ export const SellerHome = () => {
         <OnGoingConsultSection />
         <IncomeManagementSection />
         <ConsultReviewSection />
+        <HomeAboutFooterSection isBuyer={false} />
       </section>
     </>
   );
