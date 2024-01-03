@@ -1,5 +1,5 @@
 import { AboutUs } from 'components/Buyer/BuyerHome/AboutUs';
-import { CartegorySearch } from 'components/Buyer/BuyerHome/CartegorySearch';
+import { CartegorySearch } from 'components/Buyer/Common/CartegorySearch';
 import { ConsultInProgress } from 'components/Buyer/BuyerHome/ConsultInProgress';
 import { ConsultInReady } from 'components/Buyer/BuyerHome/ConsultInReady';
 import { Header } from 'components/Common/Header';
