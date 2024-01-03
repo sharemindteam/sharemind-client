@@ -17,8 +17,8 @@ interface CharacterProps {
 }
 export const Characters = ({
   number,
-  width = '',
-  height = '',
+  width = '100%',
+  height = '100%',
 }: CharacterProps) => {
   if (number === 1) {
     return <Char1Icon width={width} height={height} />;

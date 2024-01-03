@@ -1,4 +1,5 @@
-import { CartegorySearch } from 'components/Buyer/CartegorySearch';
+import { CartegorySearch } from 'components/Buyer/BuyerHome/CartegorySearch';
+import { ConsultInProgress } from 'components/Buyer/BuyerHome/ConsultInProgress';
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
@@ -16,11 +17,7 @@ export const BuyerHome = () => {
       <TabA1 isBuyer={true} initState={1} />
       <ContentWrapper>
         <CartegorySearch />
-        <CartegorySearch />
-        <CartegorySearch />
-        <CartegorySearch />
-        <CartegorySearch />
-        <CartegorySearch />
+        <ConsultInProgress />
       </ContentWrapper>
     </Wrapper>
   );

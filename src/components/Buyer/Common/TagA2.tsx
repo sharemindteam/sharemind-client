@@ -1,0 +1,51 @@
+import styled from 'styled-components';
+import { Green, Grey4, LightGreen, White } from 'styles/color';
+import { Caption2 } from 'styles/font';
+interface TagA2Props {
+  tagType: BuyerConsultState;
+}
+const borderColor = {
+  '답변 대기': Green,
+  '답변 도착': Green,
+  '상담 대기': Green,
+  '상담 중': Green,
+  '상담 종료': Grey4,
+};
+const bgColor = {
+  '답변 대기': LightGreen,
+  '답변 도착': Green,
+  '상담 대기': LightGreen,
+  '상담 중': Green,
+  '상담 종료': Grey4,
+};
+const fontColor = {
+  '답변 대기': Green,
+  '답변 도착': White,
+  '상담 대기': Green,
+  '상담 중': White,
+  '상담 종료': White,
+};
+export const TagA2 = ({ tagType }: TagA2Props) => {
+  const consultTagBd = borderColor[tagType];
+  const consultTagBg = bgColor[tagType];
+  const consultTagFont = fontColor[tagType];
+  return (
+    <Wrapper border={consultTagBd} background={consultTagBg} type={tagType}>
+      <Caption2 color={consultTagFont}>{tagType}</Caption2>
+    </Wrapper>
+  );
+};
+const Wrapper = styled.div<{
+  border: string;
+  background: string;
+  type: BuyerConsultState;
+}>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${(props) => (props.type !== '상담 중' ? '5.7rem' : '4.7rem')};
+  height: 2.5rem;
+  border-radius: 0.8rem;
+  border: 1px solid ${(props) => props.border};
+  background-color: ${(props) => props.background};
+`;
