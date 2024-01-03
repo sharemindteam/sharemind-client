@@ -10,7 +10,7 @@ import { Button } from './Button';
 interface HomeAboutFooterSectionProps {
   isBuyer: boolean;
 }
-export const HomeAboutFooterSection = ({ isBuyer }: HomeAboutSectionProps) => {
+export const HomeAboutFooterSection = ({ isBuyer }: HomeAboutFooterSectionProps) => {
   return (
     <>
       <AboutSection isBuyer={isBuyer}>
