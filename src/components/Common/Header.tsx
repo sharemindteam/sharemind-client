@@ -38,6 +38,7 @@ const Wrapper = styled.div`
   background-color: white;
   position: sticky;
   top: 0;
+  z-index: 1000;
 `;
 const Logo = styled.div`
   margin-left: 2rem;

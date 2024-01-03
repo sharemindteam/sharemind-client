@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Caption2 } from 'styles/font';
-interface TagA2Props {
+interface TagA2ConsultProps {
   tagType: BuyerConsultState;
 }
 const borderColor = {
@@ -25,7 +25,7 @@ const fontColor = {
   '상담 중': White,
   '상담 종료': White,
 };
-export const TagA2 = ({ tagType }: TagA2Props) => {
+export const TagA2Consult = ({ tagType }: TagA2ConsultProps) => {
   const consultTagBd = borderColor[tagType];
   const consultTagBg = bgColor[tagType];
   const consultTagFont = fontColor[tagType];

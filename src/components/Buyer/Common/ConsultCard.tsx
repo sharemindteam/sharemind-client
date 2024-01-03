@@ -1,8 +1,9 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Black, Grey1, Grey2, Grey6 } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
-import { TagA2 } from '../Common/TagA2';
+
 import { Characters } from 'utils/Characters';
+import { TagA2Consult } from './TagA2Consult';
 
 interface ConsultCardProps {
   name: string;
@@ -21,7 +22,7 @@ export const ConsultCard = ({
       <ConsultContent>
         <ConsultStateBox>
           <div className="col1">
-            <TagA2 tagType={consultState} />
+            <TagA2Consult tagType={consultState} />
             <Characters number={9} width="5.4rem" height="5.1rem" />
           </div>
           <div className="col2">
@@ -42,6 +43,7 @@ const Wrapper = styled.div`
   height: 11.5rem;
   background-color: ${Grey6};
   border-radius: 1.2rem;
+  cursor: pointer;
 `;
 const ConsultContent = styled.div`
   padding: 1.6rem;

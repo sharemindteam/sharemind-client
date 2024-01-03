@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { Green, Grey6 } from 'styles/color';
+import { Green } from 'styles/color';
 import { Body1, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
-
 import { ConsultCard } from '../Common/ConsultCard';
 export const ConsultInProgress = () => {
   //얘네 props로 넘겨준다, 나중에 api
@@ -38,8 +37,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-
-  border-bottom: 1px solid ${Grey6};
+  margin-bottom: 1.2rem;
   .nav-consult {
     width: 100%;
     height: 4.4rem;

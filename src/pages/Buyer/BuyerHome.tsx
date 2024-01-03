@@ -1,5 +1,7 @@
+import { AboutUs } from 'components/Buyer/BuyerHome/AboutUs';
 import { CartegorySearch } from 'components/Buyer/BuyerHome/CartegorySearch';
 import { ConsultInProgress } from 'components/Buyer/BuyerHome/ConsultInProgress';
+import { ConsultInReady } from 'components/Buyer/BuyerHome/ConsultInReady';
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +20,8 @@ export const BuyerHome = () => {
       <ContentWrapper>
         <CartegorySearch />
         <ConsultInProgress />
+        <ConsultInReady />
+        <AboutUs />
       </ContentWrapper>
     </Wrapper>
   );

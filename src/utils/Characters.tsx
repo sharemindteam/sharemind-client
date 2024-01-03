@@ -14,79 +14,237 @@ interface CharacterProps {
   number: number;
   width?: string;
   height?: string;
+  padding?: string;
+  margin?: string;
 }
 export const Characters = ({
   number,
   width = '100%',
   height = '100%',
+  padding = '0',
+  margin = '0',
 }: CharacterProps) => {
   if (number === 1) {
-    return <Char1Icon width={width} height={height} />;
+    return (
+      <Char1Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 2) {
-    return <Char2Icon width={width} height={height} />;
+    return (
+      <Char2Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 3) {
-    return <Char3Icon width={width} height={height} />;
+    return (
+      <Char3Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 4) {
-    return <Char4Icon width={width} height={height} />;
+    return (
+      <Char4Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 5) {
-    return <Char5Icon width={width} height={height} />;
+    return (
+      <Char5Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 6) {
-    return <Char6Icon width={width} height={height} />;
+    return (
+      <Char6Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 7) {
-    return <Char7Icon width={width} height={height} />;
+    return (
+      <Char7Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 8) {
-    return <Char8Icon width={width} height={height} />;
+    return (
+      <Char8Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 9) {
-    return <Char9Icon width={width} height={height} />;
+    return (
+      <Char9Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 10) {
-    return <Char10Icon width={width} height={height} />;
+    return (
+      <Char10Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else if (number === 11) {
-    return <Char11Icon width={width} height={height} />;
+    return (
+      <Char11Icon
+        width={width}
+        height={height}
+        padding={padding}
+        margin={margin}
+      />
+    );
   } else {
     return null;
   }
 };
-const Char1Icon = styled(Char1)<{ width: string; height: string }>`
+const Char1Icon = styled(Char1)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char2Icon = styled(Char2)<{ width: string; height: string }>`
+const Char2Icon = styled(Char2)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char3Icon = styled(Char3)<{ width: string; height: string }>`
+const Char3Icon = styled(Char3)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char4Icon = styled(Char4)<{ width: string; height: string }>`
+const Char4Icon = styled(Char4)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char5Icon = styled(Char5)<{ width: string; height: string }>`
+const Char5Icon = styled(Char5)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char6Icon = styled(Char6)<{ width: string; height: string }>`
+const Char6Icon = styled(Char6)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char7Icon = styled(Char7)<{ width: string; height: string }>`
+const Char7Icon = styled(Char7)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char8Icon = styled(Char8)<{ width: string; height: string }>`
+const Char8Icon = styled(Char8)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char9Icon = styled(Char9)<{ width: string; height: string }>`
+const Char9Icon = styled(Char9)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char10Icon = styled(Char10)<{ width: string; height: string }>`
+const Char10Icon = styled(Char10)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
-const Char11Icon = styled(Char11)<{ width: string; height: string }>`
+const Char11Icon = styled(Char11)<{
+  width: string;
+  height: string;
+  padding: string;
+  margin: string;
+}>`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  padding: ${(props) => props.padding};
+  margin: ${(props) => props.margin};
 `;
