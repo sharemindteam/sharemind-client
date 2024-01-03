@@ -5,24 +5,32 @@ import styled from 'styled-components';
 import { IncomeManagementSection } from 'components/Seller/IncomeManagementSection';
 import OnGoingConsultSection from 'components/Common/OnGoingConsultSection';
 import { ConsultReviewSection } from 'components/Seller/ConsultReviewsSection';
-import HomeAboutFooterSection from 'components/Common/HomeAboutSection';
+import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
+import { Grey6 } from 'styles/color';
 export const SellerHome = () => {
   const navigate = useNavigate();
   return (
     <>
-      <section className="main-seller">
-        <Header
-          isBuyer={false}
-          onClick={() => {
-            navigate('/seller');
-          }}
-        />
+      <Header
+        isBuyer={false}
+        onClick={() => {
+          navigate('/seller');
+        }}
+      />
+      <main
+        style={{
+          paddingBottom: '1.86rem',
+          borderBottom: `1px solid ${Grey6} `,
+        }}
+      >
         <TabA1 isBuyer={false} initState={1} />
         <OnGoingConsultSection />
         <IncomeManagementSection />
         <ConsultReviewSection />
+      </main>
+      <footer>
         <HomeAboutFooterSection isBuyer={false} />
-      </section>
+      </footer>
     </>
   );
 };
