@@ -1,4 +1,3 @@
-import { AboutUs } from 'components/Buyer/BuyerHome/AboutUs';
 import { CartegorySearch } from 'components/Buyer/Common/CartegorySearch';
 import { ConsultInProgress } from 'components/Buyer/BuyerHome/ConsultInProgress';
 import { ConsultInReady } from 'components/Buyer/BuyerHome/ConsultInReady';
@@ -6,6 +5,7 @@ import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
 export const BuyerHome = () => {
   const navigate = useNavigate();
   return (
@@ -17,16 +17,14 @@ export const BuyerHome = () => {
         }}
       />
       <TabA1 isBuyer={true} initState={1} />
-      <ContentWrapper>
-        <CartegorySearch />
-        <ConsultInProgress />
-        <ConsultInReady />
-        <AboutUs />
-      </ContentWrapper>
+
+      <CartegorySearch />
+      <ConsultInProgress />
+      <ConsultInReady />
+      <HomeAboutFooterSection isBuyer={true} />
     </Wrapper>
   );
 };
 const Wrapper = styled.div`
   width: 100%;
 `;
-const ContentWrapper = styled.div``;

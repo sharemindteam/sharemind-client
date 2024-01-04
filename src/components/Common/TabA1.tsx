@@ -103,7 +103,7 @@ const Wrapper = styled.div`
   position: sticky;
   top: 6rem;
   background-color: white;
-  z-index: 1000;
+  z-index: 999;
 `;
 const TabButton = styled.div`
   display: flex;
