@@ -1,17 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Char1 } from 'assets/characters/char_공감.svg';
-import { ReactComponent as Char2 } from 'assets/characters/char_조언.svg';
-import { ReactComponent as Char3 } from 'assets/characters/char_팩폭.svg';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import { Grey2, Grey3, Grey6, Red, White } from 'styles/color';
+import { Characters } from 'utils/Characters';
+import { TagA2Consult } from 'components/Common/TagA2Consult';
 interface OngoingCounsultBoxProps {
-  consultStatus: string;
+  consultStatus: ConsultState;
   counselorName: string;
   beforeMinutes: string;
   content: string;
   newMessageCounts: string;
-  counselorprofileStatus: Number;
+  counselorprofileStatus: number;
 }
 function OngoingCounsultBox({
   consultStatus,
@@ -24,17 +23,13 @@ function OngoingCounsultBox({
   return (
     <OngoingCounsultBoxWrapper>
       <div className="flex-1">
-        <ConsultStatus>
-          <Caption2 color={White}>{consultStatus}</Caption2>
-        </ConsultStatus>
+        <TagA2Consult tagType={consultStatus} isBuyer={false} />
         {/* 상담사 프로필 상태에 따른 캐릭터 이미지 */}
-        {counselorprofileStatus === 1 ? (
-          <Char1 />
-        ) : counselorprofileStatus === 2 ? (
-          <Char2 />
-        ) : (
-          <Char3 />
-        )}
+        <Characters
+          number={counselorprofileStatus}
+          width="5.4rem"
+          height="5.1rem"
+        />
       </div>
       <div className="flex-2">
         <div className="flex-2-1">
@@ -77,15 +72,6 @@ const OngoingCounsultBoxWrapper = styled.div`
     gap: 0.8rem;
     align-items: center;
   }
-`;
-
-const ConsultStatus = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 0.4rem 0.6rem;
-  border-radius: 0.8rem;
-  background-color: ${Red};
-  color: ${White};
 `;
 
 const Name = styled(Body1)``;
