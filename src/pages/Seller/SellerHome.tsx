@@ -37,6 +37,7 @@ export const SellerHome = () => {
 
 export const ContentTag = styled.div`
   display: flex;
+  cursor: pointer;
   gap: 0.8rem;
   margin: 2.2rem 3.2rem 2.2rem 2rem;
   align-items: center;

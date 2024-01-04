@@ -1,6 +1,5 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Profile } from 'components/Common/Profile';
 export const SellerMypage = () => {
