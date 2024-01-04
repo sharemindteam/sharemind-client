@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ReactComponent as UnderLineBuyer } from 'assets/icons/underline-buyer.svg';
 import { ReactComponent as UnderLineSeller } from 'assets/icons/underline-seller.svg';
 import { Subtitle } from 'styles/font';
-import { Black, Green, Red } from 'styles/color';
+import { Black, Green, Red, Grey6 } from 'styles/color';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface TabA1Props {
@@ -99,7 +99,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   gap: 12%;
-  border-bottom: 1px solid #f6f6fa;
+  border-bottom: 1px solid ${Grey6};
   position: sticky;
   top: 6rem;
   background-color: white;

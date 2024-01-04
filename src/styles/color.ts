@@ -2,7 +2,7 @@
 export const Black = '#000000';
 export const White = '#ffffff';
 //signature
-export const Green = '#00a399';
+export const Green = '#12c0b5';
 export const LightGreen = '#dff9f8';
 export const Red = '#fa4d81';
 export const LightRed = '#fff1f5';
