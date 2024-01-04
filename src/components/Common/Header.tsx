@@ -13,7 +13,7 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
       <Wrapper>
         <Logo onClick={onClick}>
           <LogoBuyer />
-          <StyledLogoText />
+          <StyledLogoText width="98.202px" height="16.364px" />
         </Logo>
         <StyledSearch />
       </Wrapper>
@@ -23,7 +23,7 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
       <Wrapper>
         <Logo>
           <LogoSeller />
-          <StyledLogoText />
+          <StyledLogoText width="98.202px" height="16.364px" />
         </Logo>
         <StyledSearch />
       </Wrapper>
@@ -38,6 +38,7 @@ const Wrapper = styled.div`
   background-color: white;
   position: sticky;
   top: 0;
+  z-index: 999;
 `;
 const Logo = styled.div`
   margin-left: 2rem;
