@@ -22,5 +22,4 @@ const ExpBox = styled.div`
   background-color: rgba(242, 241, 248, 0.8);
   border-radius: 1.2rem;
   margin-top: 1.2rem;
-  margin-bottom: 5.2rem;
 `;
