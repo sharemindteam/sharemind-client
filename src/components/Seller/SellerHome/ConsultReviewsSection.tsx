@@ -4,7 +4,7 @@ import { Black, Grey6 } from 'styles/color';
 import { Body1, Body2, Body3, Heading } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { ReactComponent as ReviewHeart } from 'assets/icons/review-heart.svg';
-// 섹션 안에서 axios 요청 
+// 섹션 안에서 axios 요청
 export const ConsultReviewSection = () => {
   return (
     <>

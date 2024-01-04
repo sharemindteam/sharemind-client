@@ -2,9 +2,9 @@ import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IncomeManagementSection } from 'components/Seller/IncomeManagementSection';
+import { IncomeManagementSection } from 'components/Seller/SellerHome/IncomeManagementSection';
 import OnGoingConsultSection from 'components/Common/OnGoingConsultSection';
-import { ConsultReviewSection } from 'components/Seller/ConsultReviewsSection';
+import { ConsultReviewSection } from 'components/Seller/SellerHome/ConsultReviewsSection';
 import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
 import { Grey6 } from 'styles/color';
 export const SellerHome = () => {
