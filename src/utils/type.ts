@@ -1,8 +1,10 @@
 //type
 //tagA2 상담 상태 type
-type BuyerConsultState =
+type ConsultState =
   | '답변 대기'
+  | '질문 대기'
   | '답변 도착'
+  | '질문 도착'
   | '상담 대기'
   | '상담 중'
   | '상담 종료';

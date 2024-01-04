@@ -3,11 +3,11 @@ import { Black, Grey1, Grey2, Grey6 } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 
 import { Characters } from 'utils/Characters';
-import { TagA2Consult } from './TagA2Consult';
+import { TagA2Consult } from '../../Common/TagA2Consult';
 
 interface ConsultCardProps {
   name: string;
-  consultState: BuyerConsultState;
+  consultState: ConsultState;
   time: string;
   content: string;
 }
@@ -22,7 +22,7 @@ export const ConsultCard = ({
       <ConsultContent>
         <ConsultStateBox>
           <div className="col1">
-            <TagA2Consult tagType={consultState} />
+            <TagA2Consult tagType={consultState} isBuyer={false} />
             <Characters number={9} width="5.4rem" height="5.1rem" />
           </div>
           <div className="col2">

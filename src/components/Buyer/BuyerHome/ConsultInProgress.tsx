@@ -6,7 +6,7 @@ import { ConsultCard } from '../Common/ConsultCard';
 export const ConsultInProgress = () => {
   //얘네 props로 넘겨준다, 나중에 api
   const CounselorName = '연애상담마스터';
-  const ConsultState: BuyerConsultState = '답변 도착';
+  const ConsultState: ConsultState = '답변 도착';
   const Time = '8분전';
   //일정 크기 넘어가면 ...처리
   const ContentText =
