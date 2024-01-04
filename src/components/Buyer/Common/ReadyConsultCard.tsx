@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
-import { TagA2Cartegory } from './TagA2Cartegory';
+import { TagA2Cartegory } from '../../Common/TagA2Cartegory';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
@@ -9,36 +9,41 @@ import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { ReactComponent as DownIcon } from 'assets/icons/icon-down-toggle.svg';
 import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 interface ReadyConsultCardProps {
   index: number;
+  counselorId: number;
   tagList: CartegoryStateArray;
-  title: string;
-  name: string;
+  introduction: string;
+  nickname: string;
   level: number;
   bookmarkStates: boolean[];
   setBookmarkStates: React.Dispatch<React.SetStateAction<boolean[]>>;
-  rate: number;
+  rating: number;
   reviewNumber: number;
   iconNumber: number;
   consultType: number;
   letterPrice: number;
   chattingPrice: number;
 }
+//일단 toggle파트 제외하고 클릭 시 상담프로필로 navigate하게 구현
 export const ReadyConsultCard = ({
   index,
+  counselorId,
   tagList,
-  title,
-  name,
+  introduction,
+  nickname,
   level,
   bookmarkStates,
   setBookmarkStates,
-  rate,
+  rating,
   reviewNumber,
   iconNumber,
   consultType,
   letterPrice,
   chattingPrice,
 }: ReadyConsultCardProps) => {
+  const navigate = useNavigate();
   //toggle
   const [toggle, setToggle] = useState<boolean>(false);
   const handleBookmark = () => {
@@ -46,19 +51,28 @@ export const ReadyConsultCard = ({
     newStates[index] = !newStates[index];
     setBookmarkStates(newStates);
   };
+
   const consultTypeList = ['', '편지', '채팅', '편지, 채팅'];
   let availableConsult: string = consultTypeList[consultType];
   return (
     <Wrapper>
-      <UpperWrapper>
+      <UpperWrapper
+        onClick={() => {
+          navigate('/buyer/profile/' + counselorId);
+        }}
+      >
         <TagWrapper>
           {tagList.map((value) => {
             return <TagA2Cartegory tagType={value} bgColorType={1} />;
           })}
         </TagWrapper>
-        <Body1 margin={'0.8rem 1.6rem 0 1.6rem'}>{title}</Body1>
+        <Body1 margin={'0.8rem 1.6rem 0 1.6rem'}>{introduction}</Body1>
       </UpperWrapper>
-      <LowerWrapper>
+      <LowerWrapper
+        onClick={() => {
+          navigate('/buyer/profile/' + counselorId);
+        }}
+      >
         <Characters
           number={iconNumber}
           width="6.5rem"
@@ -67,18 +81,28 @@ export const ReadyConsultCard = ({
         />
         <div className="col2">
           <div className="row1">
-            <Body1>{name}</Body1>
+            <Body1>{nickname}</Body1>
             <Caption2 color={Grey1}>{'Lv. ' + level}</Caption2>
           </div>
           <div className="row2">
             <HeartIcon />
-            <Body3 color={Grey2}>{rate + ' (' + reviewNumber + ')'}</Body3>
+            <Body3 color={Grey2}>{rating + ' (' + reviewNumber + ')'}</Body3>
           </div>
         </div>
         {bookmarkStates[index] ? (
-          <BookMarkIcon onClick={handleBookmark} />
+          <BookMarkIcon
+            onClick={(e: React.MouseEvent<HTMLElement>) => {
+              e.stopPropagation();
+              handleBookmark();
+            }}
+          />
         ) : (
-          <NoneBookMarkIcon onClick={handleBookmark} />
+          <NoneBookMarkIcon
+            onClick={(e: React.MouseEvent<HTMLElement>) => {
+              e.stopPropagation();
+              handleBookmark();
+            }}
+          />
         )}
       </LowerWrapper>
       {toggle ? (
@@ -124,6 +148,7 @@ const Wrapper = styled.div`
 const UpperWrapper = styled.div`
   height: 10rem;
   border-bottom: 1px solid ${White};
+  cursor: pointer;
 `;
 const TagWrapper = styled.div`
   display: flex;
@@ -136,6 +161,7 @@ const LowerWrapper = styled.div`
   display: flex;
   gap: 0.8rem;
   position: relative;
+  cursor: pointer;
   .row1 {
     display: flex;
     align-items: center;
@@ -152,12 +178,13 @@ const BookMarkIcon = styled(BookMark)`
   position: absolute;
   right: 1.6rem;
   top: 1.2rem;
-  cursor: pi;
+  cursor: pointer;
 `;
 const NoneBookMarkIcon = styled(NoneBookMark)`
   position: absolute;
   right: 1.6rem;
   top: 1.2rem;
+  cursor: pointer;
 `;
 const ToggleWrapper = styled.div`
   height: 11rem;
