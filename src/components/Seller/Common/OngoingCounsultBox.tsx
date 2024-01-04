@@ -1,7 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Body1, Body3, Caption2 } from 'styles/font';
-import { Grey2, Grey3, Grey6, Red, White } from 'styles/color';
+import {
+  Black,
+  Grey1,
+  Grey2,
+  Grey3,
+  Grey4,
+  Grey6,
+  Red,
+  White,
+} from 'styles/color';
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from 'components/Common/TagA2Consult';
 import { Button } from 'components/Common/Button';
@@ -26,20 +35,30 @@ function OngoingCounsultBox({
       <div className="flex-1">
         <TagA2Consult tagType={consultStatus} isBuyer={false} />
         <div className="flex-1-1">
-          <Name>{counselorName}</Name>
+          <Name color={consultStatus === '상담 종료' ? Grey3 : Black}>
+            {counselorName}
+          </Name>
           <Circle />
-          <MinutesBefore color={Grey2}>{beforeMinutes}</MinutesBefore>
+          <MinutesBefore color={consultStatus === '상담 종료' ? Grey4 : Grey2}>
+            {beforeMinutes}
+          </MinutesBefore>
         </div>
 
         {/* 상담사 프로필 상태에 따른 캐릭터 이미지 */}
       </div>
       <div className="flex-2">
-        <Characters
-          number={counselorprofileStatus}
-          width="5.4rem"
-          height="5.1rem"
-        />
-        <Content>{content.substr(0, 50) + '...'}</Content>
+        <div
+          style={{ opacity: `${consultStatus === '상담 종료' ? '0.5' : '1'}` }}
+        >
+          <Characters
+            number={counselorprofileStatus}
+            width="5.4rem"
+            height="5.1rem"
+          />
+        </div>
+        <Content color={consultStatus === '상담 종료' ? Grey3 : Grey1}>
+          {content.substr(0, 50) + '...'}
+        </Content>
       </div>
       {consultStatus === '상담 종료' ? (
         <Button
