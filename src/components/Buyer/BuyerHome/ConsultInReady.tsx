@@ -4,13 +4,8 @@ import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
 export const ConsultInReady = () => {
-  //태그 리스트, title, name, level, 찜하기 여부,평점, 리뷰개수, 캐릭터 아이콘 정보 dummy data
-  //   const tagList: CartegoryStateArray = [
-  //     '이별/재회',
-  //     '썸/연애시작',
-  //     '남자심리',
-  //     '공감',
-  //   ];
+  //consult type은 1이면 편지,2 면 채팅 3이면 둘다
+  //일단 상담시간부분은 확실하지 않으니 추후 구현
   const dummy = [
     {
       tagList: ['이별/재회', '썸/연애시작', '남자심리', '공감'],
@@ -21,6 +16,9 @@ export const ConsultInReady = () => {
       rate: 4.5,
       reviewNumber: 132,
       iconNumber: 10,
+      consultType: 3,
+      letterPrice: 5000,
+      chattingPrice: 8000,
     },
     {
       tagList: ['이별/재회', '권태기', '남자심리', '조언'],
@@ -31,6 +29,9 @@ export const ConsultInReady = () => {
       rate: 5.0,
       reviewNumber: 275,
       iconNumber: 10,
+      consultType: 1,
+      letterPrice: 5000,
+      chattingPrice: 9000,
     },
     {
       tagList: ['썸/연애시작', '연애갈등', '팩폭'],
@@ -42,6 +43,9 @@ export const ConsultInReady = () => {
       rate: 3.0,
       reviewNumber: 112,
       iconNumber: 10,
+      consultType: 2,
+      letterPrice: 4000,
+      chattingPrice: 6000,
     },
   ];
   //찜하기 array로 state 선언
@@ -72,6 +76,9 @@ export const ConsultInReady = () => {
             rate={value.rate}
             reviewNumber={value.reviewNumber}
             iconNumber={value.iconNumber}
+            consultType={value.consultType}
+            letterPrice={value.letterPrice}
+            chattingPrice={value.chattingPrice}
           />
         );
       })}

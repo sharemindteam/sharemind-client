@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey6, White } from 'styles/color';
+import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
 import { TagA2Cartegory } from './TagA2Cartegory';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
@@ -7,6 +7,8 @@ import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
 import { ReactComponent as NoneBookMark } from 'assets/icons/icon-save1.svg';
 import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { ReactComponent as DownIcon } from 'assets/icons/icon-down-toggle.svg';
+import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
+import { useState } from 'react';
 interface ReadyConsultCardProps {
   index: number;
   tagList: CartegoryStateArray;
@@ -18,6 +20,9 @@ interface ReadyConsultCardProps {
   rate: number;
   reviewNumber: number;
   iconNumber: number;
+  consultType: number;
+  letterPrice: number;
+  chattingPrice: number;
 }
 export const ReadyConsultCard = ({
   index,
@@ -30,12 +35,19 @@ export const ReadyConsultCard = ({
   rate,
   reviewNumber,
   iconNumber,
+  consultType,
+  letterPrice,
+  chattingPrice,
 }: ReadyConsultCardProps) => {
+  //toggle
+  const [toggle, setToggle] = useState<boolean>(false);
   const handleBookmark = () => {
     const newStates = [...bookmarkStates];
     newStates[index] = !newStates[index];
     setBookmarkStates(newStates);
   };
+  const consultTypeList = ['', '편지', '채팅', '편지, 채팅'];
+  let availableConsult: string = consultTypeList[consultType];
   return (
     <Wrapper>
       <UpperWrapper>
@@ -69,8 +81,35 @@ export const ReadyConsultCard = ({
           <NoneBookMarkIcon onClick={handleBookmark} />
         )}
       </LowerWrapper>
-      <ToggleBar>
-        <DownIcon />
+      {toggle ? (
+        <ToggleWrapper>
+          <div className="row1">
+            <Body3 color={Grey3}>상담 방식</Body3>
+            <Body3 color={Grey1}>{availableConsult}</Body3>
+          </div>
+          <div className="row2">
+            <Body3 color={Grey3}>상담가능 시간</Body3>
+            <Body3 color={Grey1}>
+              월-금 21:00-24:00
+              <br />
+              토-일 09:00-22:00
+            </Body3>
+          </div>
+          <div className="row3">
+            <Body3 color={Grey3}>상담료</Body3>
+            <Body3 color={Grey1}>
+              편지 1건 {letterPrice}원<br />
+              실시간 30분당 {chattingPrice}
+            </Body3>
+          </div>
+        </ToggleWrapper>
+      ) : null}
+      <ToggleBar
+        onClick={() => {
+          setToggle(!toggle);
+        }}
+      >
+        {toggle ? <UpIcon /> : <DownIcon />}
       </ToggleBar>
     </Wrapper>
   );
@@ -113,11 +152,28 @@ const BookMarkIcon = styled(BookMark)`
   position: absolute;
   right: 1.6rem;
   top: 1.2rem;
+  cursor: pi;
 `;
 const NoneBookMarkIcon = styled(NoneBookMark)`
   position: absolute;
   right: 1.6rem;
   top: 1.2rem;
+`;
+const ToggleWrapper = styled.div`
+  height: 11rem;
+  padding: 1rem 2rem;
+  .row1 {
+    display: flex;
+    gap: 6.1rem;
+  }
+  .row2 {
+    display: flex;
+    gap: 3.6rem;
+  }
+  .row3 {
+    display: flex;
+    gap: 7.6rem;
+  }
 `;
 const ToggleBar = styled.div`
   height: 2.1rem;
