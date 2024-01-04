@@ -1,4 +1,4 @@
-import { Black, Green, Grey3, Grey5, Grey6, LightRed, Red } from 'styles/color';
+import { Black, Grey3, Grey5, Grey6, LightRed, Red } from 'styles/color';
 import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow.svg';
 import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { Button2 } from 'styles/font';
