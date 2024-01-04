@@ -4,6 +4,7 @@ import { Body1, Body3, Caption2 } from 'styles/font';
 import { Grey2, Grey3, Grey6, Red, White } from 'styles/color';
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from 'components/Common/TagA2Consult';
+import { Button } from 'components/Common/Button';
 interface OngoingCounsultBoxProps {
   consultStatus: ConsultState;
   counselorName: string;
@@ -24,23 +25,34 @@ function OngoingCounsultBox({
     <OngoingCounsultBoxWrapper>
       <div className="flex-1">
         <TagA2Consult tagType={consultStatus} isBuyer={false} />
+        <div className="flex-1-1">
+          <Name>{counselorName}</Name>
+          <Circle />
+          <MinutesBefore color={Grey2}>{beforeMinutes}</MinutesBefore>
+        </div>
+
         {/* 상담사 프로필 상태에 따른 캐릭터 이미지 */}
+      </div>
+      <div className="flex-2">
         <Characters
           number={counselorprofileStatus}
           width="5.4rem"
           height="5.1rem"
         />
+        <Content>{content.substr(0, 50) + '...'}</Content>
       </div>
-      <div className="flex-2">
-        <div className="flex-2-1">
-          <Name>{counselorName}</Name>
-          <Circle />
-          <MinutesBefore color={Grey2}>{beforeMinutes}</MinutesBefore>
-        </div>
-        <div>
-          <Content>{content.substr(0, 50) + '...'}</Content>
-        </div>
-      </div>
+      {consultStatus === '상담 종료' ? (
+        <Button
+          text="리뷰 확인하기"
+          color={Red}
+          width="100%"
+          height="4.2rem"
+          backgroundColor={White}
+          buttonTextType={2}
+        />
+      ) : (
+        ''
+      )}
       {newMessageCounts === 0 ? (
         ''
       ) : (
@@ -52,29 +64,27 @@ function OngoingCounsultBox({
   );
 }
 const OngoingCounsultBoxWrapper = styled.div`
-  padding: 1.4rem 4.1rem 1.4rem 1.6rem;
+  padding: 1.4rem 1.6rem 1.4rem 1.6rem;
   display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   position: relative;
-  gap: 1.2rem;
-  border-radius: 4px;
+  border-radius: 0.4rem;
   background-color: ${Grey6};
   margin: 0 2rem;
   .flex-1 {
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 1.4rem;
-    width: 5.8rem;
+  }
+  .flex-1-1 {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
   }
   .flex-2 {
     display: flex;
-    flex-direction: column;
     gap: 1.2rem;
-  }
-  .flex-2-1 {
-    display: flex;
-    gap: 0.8rem;
-    align-items: center;
   }
 `;
 
@@ -90,6 +100,8 @@ const MinutesBefore = styled(Caption2)``;
 
 const Content = styled(Body3)`
   text-overflow: ellipsis;
+  width: calc(100% - 9rem);
+  margin-right: 2.3rem;
 `;
 
 const NewMessageCounts = styled.div`

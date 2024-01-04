@@ -70,7 +70,7 @@ export const SellerConsultSection = () => {
           counselorprofileStatus={3}
         />
         <OngoingCounsultBox
-          consultStatus="상담 중"
+          consultStatus="상담 종료"
           counselorName="연애상담마스터"
           beforeMinutes="8분 전"
           content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
