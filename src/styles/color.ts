@@ -3,9 +3,9 @@ export const Black = '#000000';
 export const White = '#ffffff';
 //signature
 export const Green = '#12c0b5';
-export const LightGreen = '#dff9f8';
-export const Red = '#fa4d81';
-export const LightRed = '#fff1f5';
+export const LightGreen = '#ecfaf9';
+export const Red = '#ff8cBd';
+export const LightRed = '#fff6fa';
 //gray scale
 export const Grey1 = '#33333a';
 export const Grey2 = '#55555c';
