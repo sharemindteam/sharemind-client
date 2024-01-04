@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Black, Red } from 'styles/color';
 import { Body1, Heading } from 'styles/font';
-import OngoingCounsultBox from './OngoingCounsultBox';
+import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 function OnGoingConsultSection() {
   return (
