@@ -9,7 +9,7 @@ interface OngoingCounsultBoxProps {
   counselorName: string;
   beforeMinutes: string;
   content: string;
-  newMessageCounts: string;
+  newMessageCounts: number;
   counselorprofileStatus: number;
 }
 function OngoingCounsultBox({
@@ -18,7 +18,7 @@ function OngoingCounsultBox({
   beforeMinutes,
   counselorprofileStatus,
   content,
-  newMessageCounts,
+  newMessageCounts = 0,
 }: OngoingCounsultBoxProps) {
   return (
     <OngoingCounsultBoxWrapper>
@@ -41,9 +41,13 @@ function OngoingCounsultBox({
           <Content>{content.substr(0, 50) + '...'}</Content>
         </div>
       </div>
-      <NewMessageCounts>
-        <Caption2 color={White}>{newMessageCounts}</Caption2>
-      </NewMessageCounts>
+      {newMessageCounts === 0 ? (
+        ''
+      ) : (
+        <NewMessageCounts>
+          <Caption2 color={White}>{newMessageCounts}</Caption2>
+        </NewMessageCounts>
+      )}
     </OngoingCounsultBoxWrapper>
   );
 }
