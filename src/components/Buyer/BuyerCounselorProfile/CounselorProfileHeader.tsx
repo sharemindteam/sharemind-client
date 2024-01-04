@@ -19,14 +19,14 @@ export const CounselorProfileHeader = () => {
 const Wrapper = styled.div`
   height: 5.2rem;
   background-color: ${White};
-  position: sticky;
-  top: 0;
-  z-index: 999;
   position: relative;
   border-bottom: 1px solid ${Grey6};
   display: flex;
   justify-content: center;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 `;
 const ArrowIcon = styled(Arrow)`
   position: absolute;

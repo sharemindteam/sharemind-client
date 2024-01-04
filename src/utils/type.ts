@@ -24,3 +24,10 @@ type CartegoryState =
 //tagA2 카테고리 array type
 
 type CartegoryStateArray = CartegoryState[];
+
+type Review = {
+  name: string;
+  rating: number;
+  comment: string;
+  time: string;
+};

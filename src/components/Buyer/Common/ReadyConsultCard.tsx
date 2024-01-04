@@ -10,6 +10,7 @@ import { ReactComponent as DownIcon } from 'assets/icons/icon-down-toggle.svg';
 import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { consultTypeList } from 'utils/constant';
 interface ReadyConsultCardProps {
   index: number;
   counselorId: number;
@@ -52,7 +53,6 @@ export const ReadyConsultCard = ({
     setBookmarkStates(newStates);
   };
 
-  const consultTypeList = ['', '편지', '채팅', '편지, 채팅'];
   let availableConsult: string = consultTypeList[consultType];
   return (
     <Wrapper>
