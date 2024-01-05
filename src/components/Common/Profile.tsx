@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ReactComponent as Char1 } from 'assets/characters/char1.svg';
 import { Button } from './Button';
 import { Black, Green, Grey6, Red, White } from 'styles/color';
 import { Button2, Caption2, Subtitle } from 'styles/font';

@@ -1,4 +1,3 @@
-import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
 import { Grey3, White } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
@@ -7,9 +6,28 @@ import { Characters } from 'utils/Characters';
 interface ViewProfileMainSectionProps {
   profileIdentifier: number;
   name: string;
+  category: string;
+  chatStyle: string;
+  type: string;
+  chatTime: string;
+  letterFee: number;
+  chatFee: number;
+  oneLiner: string;
+  experience: string;
 }
 
-export const ViewProfileMainSection = () => {
+export const ViewProfileMainSection = ({
+  profileIdentifier,
+  name,
+  category,
+  chatStyle,
+  type,
+  chatTime,
+  letterFee,
+  chatFee,
+  oneLiner,
+  experience,
+}: ViewProfileMainSectionProps) => {
   return (
     <ViewProfileMainSectionWrapper>
       <FirstWhiteBox>
@@ -18,62 +36,50 @@ export const ViewProfileMainSection = () => {
           <Caption2 color={Grey3} style={{ marginBottom: '1rem' }}>
             설정한 상담 스타일에 따라 프로필 캐릭터가 자동으로 부여됩니다.
           </Caption2>
-          <Characters number={1} width="7.6rem" />
+          <Characters number={profileIdentifier} width="7.6rem" />
         </div>
       </FirstWhiteBox>
       <WhiteBox>
         <div className="nickname">
           <ProfileInformTag>닉네임</ProfileInformTag>
-          <ProfileInform>연애상담마스터</ProfileInform>
+          <ProfileInform>{name}</ProfileInform>
         </div>
         <div className="category">
           <ProfileInformTag>상담 카테고리</ProfileInformTag>
-          <ProfileInform>이별/재회, 권태기, 남자심리</ProfileInform>
+          <ProfileInform>{category}</ProfileInform>
         </div>
         <div className="style">
           <ProfileInformTag>상담 스타일</ProfileInformTag>
-          <ProfileInform>조언</ProfileInform>
+          <ProfileInform>{chatStyle}</ProfileInform>
         </div>
       </WhiteBox>
       <WhiteBox>
         <div className="type">
           <ProfileInformTag>상담 방식</ProfileInformTag>
-          <ProfileInform>편지, 채팅</ProfileInform>
+          <ProfileInform>{type}</ProfileInform>
         </div>
         <div className="chat-time">
           {' '}
           <ProfileInformTag>채팅 상담시간</ProfileInformTag>
-          <ProfileInform>1시간</ProfileInform>
+          <ProfileInform>{chatTime}</ProfileInform>
         </div>
         <div className="consult-fee">
           {' '}
           <ProfileInformTag>상담료 (1건 기준)</ProfileInformTag>
           <div className="flex-end">
-            <ProfileInform>편지 5,000원</ProfileInform>
-            <ProfileInform>채팅 10,000원</ProfileInform>
+            <ProfileInform>편지 {letterFee.toLocaleString()}원</ProfileInform>
+            <ProfileInform>채팅 {chatFee.toLocaleString()}원</ProfileInform>
           </div>
         </div>
       </WhiteBox>{' '}
       <LastWhiteBox>
         <div className="one-liner">
           <ProfileInformTag>한줄소개</ProfileInformTag>
-          <Body1>
-            재회를 밥먹듯이 하고나서 안정적인 연애를 유지하고 있어요
-          </Body1>
+          <Body1>{oneLiner}</Body1>
         </div>
         <div className="experience">
           <ProfileInformTag>경험 소개</ProfileInformTag>
-          <Body1>
-            안녕하세요. 한 남자와 재회를 밥먹듯이 하고 안정적으로 연애를 유지
-            중인 여성입니다. 그 사람과 연애를 하면서 저는 스스로도 많은 내적
-            성장을 겪었고 가치관이 180도 변하게 되었습니다. 주변 친구들에게 연애
-            상담을 하는 것은 많은 부작용을 가져옵니다. 내 남자친구는 친구들에게
-            이미지가 바닥이 되어 있고, 잦은 이별 상담에 주변 사람들이 떠나가기
-            시작합니다. 하지만 이 고통을 누군가에게라도 말하지 않으면 풀리지
-            않을 것만 같습니다. 저는 상담자분이 장기적으로 행복해질 수 있는
-            방법을 제시할 것이고 그것이 당장은 괴로움을 증가시킬 수 있는 원인이
-            될 수도 있을 것입니다.
-          </Body1>
+          <Body1>{experience}</Body1>
         </div>
       </LastWhiteBox>
     </ViewProfileMainSectionWrapper>
