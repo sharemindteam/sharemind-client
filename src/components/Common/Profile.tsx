@@ -8,13 +8,22 @@ import { ReactComponent as ReciptIcon } from 'assets/icons/recipt.svg';
 import { ReactComponent as ReviewIcon } from 'assets/icons/review.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/save.svg';
 import { useNavigate } from 'react-router-dom';
+import { Characters } from 'utils/Characters';
 interface ProfileProps {
   isBuyer: boolean;
   isVerified?: undefined | boolean;
-  profileIdentifier: Number;
+  profileIdentifier: number;
+  name: string;
+  levelStatus: number;
 }
 //일단 프로필 이미지는 한개만 불러왔음!
-export const Profile = ({ isBuyer, isVerified = false }: ProfileProps) => {
+export const Profile = ({
+  isBuyer,
+  isVerified = false,
+  profileIdentifier,
+  name,
+  levelStatus,
+}: ProfileProps) => {
   const navigate = useNavigate();
   return (
     <>
@@ -27,15 +36,16 @@ export const Profile = ({ isBuyer, isVerified = false }: ProfileProps) => {
           }
         }}
       >
-        <Char1 />
+        <Characters number={profileIdentifier} width="7.6rem" />
+
         {isBuyer ? (
-          <Name>김고민</Name>
+          <Name>{name}</Name>
         ) : (
           <ProfileInfo>
             <Level>
-              <Caption2 color={White}>Lv 1</Caption2>
+              <Caption2 color={White}>Lv {levelStatus}</Caption2>
             </Level>
-            <Name>연애상담마스터</Name>
+            <Name>{name}</Name>
           </ProfileInfo>
         )}
         <Button

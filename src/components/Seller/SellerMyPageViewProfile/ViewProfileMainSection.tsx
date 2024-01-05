@@ -4,6 +4,11 @@ import { Grey3, White } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 
+interface ViewProfileMainSectionProps {
+  profileIdentifier: number;
+  name: string;
+}
+
 export const ViewProfileMainSection = () => {
   return (
     <ViewProfileMainSectionWrapper>
