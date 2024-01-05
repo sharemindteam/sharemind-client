@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState } from 'recoil';
 import { isModalOpenState } from 'utils/atom';
+//백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerCategoryResult = () => {
   //0 : 최신순 1:인기순 2: 별점순
   // 바뀔 때마다 useEffect로 request
@@ -18,7 +19,6 @@ export const BuyerCategoryResult = () => {
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isModalOpenState);
-  const navigate = useNavigate();
   if (id !== undefined) {
     const categoryId = parseInt(id, 10);
     return (

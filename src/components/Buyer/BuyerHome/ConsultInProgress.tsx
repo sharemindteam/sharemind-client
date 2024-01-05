@@ -3,6 +3,7 @@ import { Green } from 'styles/color';
 import { Body1, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ConsultCard } from '../Common/ConsultCard';
+import { useNavigate } from 'react-router-dom';
 export const ConsultInProgress = () => {
   //얘네 props로 넘겨준다, 나중에 api
   const CounselorName = '연애상담마스터';
@@ -11,10 +12,15 @@ export const ConsultInProgress = () => {
   //일정 크기 넘어가면 ...처리
   const ContentText =
     '연애상담마스터님께 고민 내용을 남겨 주세요. 연애상담마스터님이 24시간 어쩌구 블라블라 주저리 주저리주저리 주저리주저리 주저리주저리 주저리주저리 주저리주저리 ';
-
+  const navigate = useNavigate();
   return (
     <Wrapper>
-      <div className="nav-consult">
+      <div
+        className="nav-consult"
+        onClick={() => {
+          navigate('/buyer/consult');
+        }}
+      >
         <NavConsult>
           <Subtitle>진행 중인 상담</Subtitle>
           {/* 나중에 api */}

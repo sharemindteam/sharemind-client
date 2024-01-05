@@ -60,6 +60,7 @@ const ConsultStateBox = styled.div`
   .name-row {
     display: flex;
     align-items: center;
+    margin-top: 0.2rem;
     gap: 0.8rem;
   }
   .col2 {
