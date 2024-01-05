@@ -1,4 +1,5 @@
 import { BuyerConsult } from 'pages/Buyer/BuyerConsult';
+import { BuyerCounselorProfile } from 'pages/Buyer/BuyerCounselorProfile';
 import { BuyerHome } from 'pages/Buyer/BuyerHome';
 import { BuyerMypage } from 'pages/Buyer/BuyerMypage';
 import { SellerCaculateManagement } from 'pages/Seller/SellerCalculateManagement';
@@ -29,11 +30,19 @@ const Router = () => {
             >
               BuyerConsult
             </button>
+            <button
+              onClick={() => {
+                navigate('/buyer/profile/0');
+              }}
+            >
+              BuyerConsult
+            </button>
           </>
         }
       />
       <Route path="/buyer" element={<BuyerHome />} />
       <Route path="/buyer/consult" element={<BuyerConsult />} />
+      <Route path="/buyer/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/seller" element={<SellerHome />} />
       <Route path="/seller/consult" element={<SellerConsult />}></Route>
       <Route path="/seller/mypage" element={<SellerMypage />}></Route>

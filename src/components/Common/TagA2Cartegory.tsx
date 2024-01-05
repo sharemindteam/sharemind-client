@@ -25,14 +25,17 @@ export const TagA2Cartegory = ({
     //bg색상 존재하는 경우
     if (bgColorType === 2) {
       bgColor = Green;
+      fontColor = White;
     }
   } else {
     // red인 경우
     fontColor = Red;
     if (bgColorType === 2) {
       bgColor = Red;
+      fontColor = White;
     }
   }
+
   return (
     <Wrapper background={bgColor}>
       <Caption2 color={fontColor}>{tagType}</Caption2>

@@ -3,48 +3,12 @@ import { Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
+import { counselorDummyData as dummy } from 'utils/counselorDummy';
 export const ConsultInReady = () => {
-  //태그 리스트, title, name, level, 찜하기 여부,평점, 리뷰개수, 캐릭터 아이콘 정보 dummy data
-  //   const tagList: CartegoryStateArray = [
-  //     '이별/재회',
-  //     '썸/연애시작',
-  //     '남자심리',
-  //     '공감',
-  //   ];
-  const dummy = [
-    {
-      tagList: ['이별/재회', '썸/연애시작', '남자심리', '공감'],
-      title: '재회를 밥먹듯이 하고나서 안정적인 연애를 유지하고 있어요',
-      name: '연애상담마스터',
-      level: 1,
-      isBookmarked: true,
-      rate: 4.5,
-      reviewNumber: 132,
-      iconNumber: 10,
-    },
-    {
-      tagList: ['이별/재회', '권태기', '남자심리', '조언'],
-      title: '아이셋 싱글맘, 제 경험을 바탕으로 이혼 과정 상담을 해 드립니다',
-      name: '싱글맘',
-      level: 2,
-      isBookmarked: false,
-      rate: 5.0,
-      reviewNumber: 275,
-      iconNumber: 10,
-    },
-    {
-      tagList: ['썸/연애시작', '연애갈등', '팩폭'],
-      title:
-        '사내연애에서 환승이별까지, 비밀연애를 하며 감수해야 할 상황들과 위험신호를 알려드립니다',
-      name: '고민들어드림',
-      level: 4,
-      isBookmarked: false,
-      rate: 3.0,
-      reviewNumber: 112,
-      iconNumber: 10,
-    },
-  ];
-  //찜하기 array로 state 선언
+  //consult type은 1이면 편지,2 면 채팅 3이면 둘다
+  //일단 상담시간부분은 확실하지 않으니 추후 구현
+  //dummy data naming이 erd와 맞음
+  //찜하기 array로 state 선언, 받아온 개수만큼 찜하기 array 할당
   const initialBookmarkStates = dummy.map((data) => data.isBookmarked || false);
   const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
     initialBookmarkStates,
@@ -63,15 +27,19 @@ export const ConsultInReady = () => {
         return (
           <ReadyConsultCard
             index={index}
+            counselorId={value.counselorId}
             tagList={tagListCast}
-            title={value.title}
-            name={value.name}
+            introduction={value.introduction}
+            nickname={value.nickname}
             level={value.level}
             bookmarkStates={bookmarkStates}
             setBookmarkStates={setBookmarkStates}
-            rate={value.rate}
+            rating={value.rating}
             reviewNumber={value.reviewNumber}
             iconNumber={value.iconNumber}
+            consultType={value.consultType}
+            letterPrice={value.letterPrice}
+            chattingPrice={value.chattingPrice}
           />
         );
       })}
