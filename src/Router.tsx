@@ -39,6 +39,13 @@ const Router = () => {
             >
               BuyerConsult
             </button>
+            <button
+              onClick={() => {
+                navigate('/seller');
+              }}
+            >
+              seller
+            </button>
           </>
         }
       />
@@ -47,7 +54,7 @@ const Router = () => {
       <Route path="/buyer/profile/:id" element={<BuyerCounselorProfile />} />
       {/* 판매자 : 홈 */}
       <Route path="/seller" element={<SellerHome />} />
-     {/* 판매자 : 상담 */} 
+      {/* 판매자 : 상담 */}
       <Route path="/seller/consult" element={<SellerConsult />} />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/seller/mypage" element={<SellerMypage />} />

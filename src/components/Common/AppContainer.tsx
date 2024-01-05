@@ -9,8 +9,7 @@ interface AppContainerProps {
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
   const { pathname } = useLocation();
-  if (pathname === '/seller/mypage' || '/buyer/mypage') {
-  }
+  console.log(pathname);
   return <StyledApp currentPath={pathname}>{children}</StyledApp>;
 };
 const StyledApp = styled.div<{ currentPath: string }>`
@@ -22,7 +21,9 @@ const StyledApp = styled.div<{ currentPath: string }>`
     width: 37.5rem;
   }
   background-color: ${(props) =>
-    props.currentPath === ('/seller/mypage' || '/buyer/mypage')
+    props.currentPath === '/seller/mypage' ||
+    '/buyer/mypage' ||
+    '/seller/mypage/viewProfile'
       ? Grey6
       : White};
   overflow-y: scroll;
