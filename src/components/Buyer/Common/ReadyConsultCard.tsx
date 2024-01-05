@@ -11,6 +11,8 @@ import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { consultTypeList } from 'utils/constant';
+import { useRecoilValue } from 'recoil';
+import { isModalOpenState } from 'utils/atom';
 interface ReadyConsultCardProps {
   index: number;
   counselorId: number;
@@ -47,18 +49,23 @@ export const ReadyConsultCard = ({
   const navigate = useNavigate();
   //toggle
   const [toggle, setToggle] = useState<boolean>(false);
+  //찜하기 업데이트
   const handleBookmark = () => {
     const newStates = [...bookmarkStates];
     newStates[index] = !newStates[index];
     setBookmarkStates(newStates);
   };
-
+  //가능한 상담방식
   let availableConsult: string = consultTypeList[consultType];
+  //상담사 list에서 modal이 켜져있다면 onClick 발생 X
+  const isModalOpen = useRecoilValue(isModalOpenState);
   return (
     <Wrapper>
       <UpperWrapper
         onClick={() => {
-          navigate('/buyer/profile/' + counselorId);
+          if (isModalOpen === false) {
+            navigate('/buyer/profile/' + counselorId);
+          }
         }}
       >
         <TagWrapper>
@@ -70,7 +77,9 @@ export const ReadyConsultCard = ({
       </UpperWrapper>
       <LowerWrapper
         onClick={() => {
-          navigate('/buyer/profile/' + counselorId);
+          if (isModalOpen === false) {
+            navigate('/buyer/profile/' + counselorId);
+          }
         }}
       >
         <Characters
@@ -92,15 +101,19 @@ export const ReadyConsultCard = ({
         {bookmarkStates[index] ? (
           <BookMarkIcon
             onClick={(e: React.MouseEvent<HTMLElement>) => {
-              e.stopPropagation();
-              handleBookmark();
+              if (isModalOpen === false) {
+                e.stopPropagation();
+                handleBookmark();
+              }
             }}
           />
         ) : (
           <NoneBookMarkIcon
             onClick={(e: React.MouseEvent<HTMLElement>) => {
-              e.stopPropagation();
-              handleBookmark();
+              if (isModalOpen === false) {
+                e.stopPropagation();
+                handleBookmark();
+              }
             }}
           />
         )}
@@ -130,7 +143,9 @@ export const ReadyConsultCard = ({
       ) : null}
       <ToggleBar
         onClick={() => {
-          setToggle(!toggle);
+          if (isModalOpen === false) {
+            setToggle(!toggle);
+          }
         }}
       >
         {toggle ? <UpIcon /> : <DownIcon />}

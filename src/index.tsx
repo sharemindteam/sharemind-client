@@ -3,15 +3,18 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from 'styles/GlobalStyle';
 import { AppContainer } from 'components/Common/AppContainer';
+import { RecoilRoot } from 'recoil';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
   <BrowserRouter>
-    <GlobalStyle />
-    <AppContainer>
-      <App />
-    </AppContainer>
+    <RecoilRoot>
+      <GlobalStyle />
+      <AppContainer>
+        <App />
+      </AppContainer>
+    </RecoilRoot>
   </BrowserRouter>,
 );
