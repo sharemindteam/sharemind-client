@@ -16,6 +16,7 @@ interface InputProps {
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   type?: string;
   padding?: string;
+  margin?: string;
   name?: string;
   isError?: boolean;
 }
@@ -34,6 +35,7 @@ const Input = ({
   onFocus,
   type = 'text',
   padding = '',
+  margin = '',
   name,
   isError = false,
 }: InputProps) => {
@@ -53,6 +55,7 @@ const Input = ({
       onFocus={onFocus}
       type={type}
       padding={padding}
+      margin={margin}
       name={name}
       isError={isError}
     />
@@ -68,6 +71,7 @@ const StyledInput = styled.input<{
   placeHolderColor: string;
   fontWeight: string;
   padding: string;
+  margin: string;
   isError: boolean;
 }>`
   border-radius: 10px;
@@ -83,6 +87,7 @@ const StyledInput = styled.input<{
   color: ${({ fontColor }) => fontColor};
   text-indent: 15px;
   padding: ${({ padding }) => padding};
+  margin: ${({ margin }) => margin};
 
   &:focus {
     outline: none;
