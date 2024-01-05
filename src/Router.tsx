@@ -1,7 +1,6 @@
 import { BuyerConsult } from 'pages/Buyer/BuyerConsult';
 import { BuyerCounselorProfile } from 'pages/Buyer/BuyerCounselorProfile';
 import { BuyerHome } from 'pages/Buyer/BuyerHome';
-import { BuyerMypage } from 'pages/Buyer/BuyerMypage';
 import { SellerCaculateManagement } from 'pages/Seller/SellerCalculateManagement';
 import { SellerConsult } from 'pages/Seller/SellerConsult';
 import { SellerHome } from 'pages/Seller/SellerHome';

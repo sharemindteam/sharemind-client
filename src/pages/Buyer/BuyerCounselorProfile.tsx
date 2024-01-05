@@ -7,7 +7,7 @@ import {
   CounselorProfileNav,
   CounselorReview,
 } from 'components/Buyer/BuyerCounselorProfile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { counselorDummyData as dummy } from 'utils/counselorDummy';
@@ -22,8 +22,8 @@ export const BuyerCounselorProfile = () => {
       .tagList as CartegoryStateArray;
     return (
       <Wrapper>
+        <CounselorProfileHeader />
         <Body>
-          <CounselorProfileHeader />
           <CounselorProfileCard
             nickname={dummy[counselorId].nickname}
             level={dummy[counselorId].level}
@@ -60,8 +60,9 @@ export const BuyerCounselorProfile = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 `;
 
 const Body = styled.div`
-  min-height: calc(var(--vh, 1vh) * 100 - 10.4rem);
+  min-height: calc(var(--vh, 1vh) * 100 - 12.5rem);
 `;
