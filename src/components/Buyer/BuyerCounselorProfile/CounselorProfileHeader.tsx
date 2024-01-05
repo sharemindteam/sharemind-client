@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { Grey1, Grey6, White } from 'styles/color';
 import { Heading } from 'styles/font';
-import { ReactComponent as Arrow } from 'assets/icons/icon-arrow-back.svg';
+import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { useNavigate } from 'react-router-dom';
 export const CounselorProfileHeader = () => {
   const navigate = useNavigate();
   return (
     <Wrapper>
-      <ArrowIcon
+      <BackIcon
         onClick={() => {
           navigate(-1);
         }}
@@ -28,9 +28,9 @@ const Wrapper = styled.div`
   top: 0;
   z-index: 999;
 `;
-const ArrowIcon = styled(Arrow)`
+const BackIcon = styled(Back)`
   position: absolute;
-  top: 1.4rem;
-  left: 2.2rem;
+  top: 1.2rem;
+  left: 2rem;
   cursor: pointer;
 `;
