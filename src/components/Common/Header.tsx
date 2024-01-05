@@ -3,11 +3,14 @@ import { ReactComponent as LogoBuyer } from 'assets/icons/logo-buyer.svg';
 import { ReactComponent as LogoSeller } from 'assets/icons/logo-seller.svg';
 import { ReactComponent as LogoText } from 'assets/icons/logo-text.svg';
 import { ReactComponent as Search } from 'assets/icons/search.svg';
+import { useNavigate } from 'react-router-dom';
 interface HeaderProps {
   isBuyer: boolean;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 export const Header = ({ isBuyer, onClick }: HeaderProps) => {
+  const navigate = useNavigate();
+
   if (isBuyer === true) {
     return (
       <Wrapper>
@@ -15,7 +18,15 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
           <LogoBuyer />
           <StyledLogoText width="98.202px" height="16.364px" />
         </Logo>
-        <StyledSearch />
+        <StyledSearch
+          onClick={() => {
+            if (isBuyer) {
+              navigate('/buyer/search');
+            } else {
+              navigate('/seller/search');
+            }
+          }}
+        />
       </Wrapper>
     );
   } else {

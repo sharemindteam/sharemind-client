@@ -1,6 +1,7 @@
 import { BuyerConsult } from 'pages/Buyer/BuyerConsult';
 import { BuyerCounselorProfile } from 'pages/Buyer/BuyerCounselorProfile';
 import { BuyerHome } from 'pages/Buyer/BuyerHome';
+import { BuyerSearch } from 'pages/Buyer/BuyerSearch';
 import { SellerCaculateManagement } from 'pages/Seller/SellerCalculateManagement';
 import { SellerConsult } from 'pages/Seller/SellerConsult';
 import { SellerHome } from 'pages/Seller/SellerHome';
@@ -36,12 +37,20 @@ const Router = () => {
             >
               BuyerConsult
             </button>
+            <button
+              onClick={() => {
+                navigate('/buyer/search');
+              }}
+            >
+              BuyerSearch
+            </button>
           </>
         }
       />
       <Route path="/buyer" element={<BuyerHome />} />
       <Route path="/buyer/consult" element={<BuyerConsult />} />
       <Route path="/buyer/profile/:id" element={<BuyerCounselorProfile />} />
+      <Route path="/buyer/search" element={<BuyerSearch />} />
       <Route path="/seller" element={<SellerHome />} />
       <Route path="/seller/consult" element={<SellerConsult />}></Route>
       <Route path="/seller/mypage" element={<SellerMypage />}></Route>
