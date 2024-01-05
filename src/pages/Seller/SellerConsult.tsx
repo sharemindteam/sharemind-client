@@ -1,8 +1,8 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
+import { SellerConsultSection } from 'components/Seller/SellerConsult/SellerConsultSection';
 import { useNavigate } from 'react-router-dom';
-import { Profile } from 'components/Common/Profile';
-export const SellerMypage = () => {
+export const SellerConsult = () => {
   const navigate = useNavigate();
   return (
     <>
@@ -12,8 +12,8 @@ export const SellerMypage = () => {
           navigate('/seller');
         }}
       />
-      <TabA1 isBuyer={false} initState={3} />
-      <Profile isBuyer={false} isVerified={true} profileIdentifier={1} />
+      <TabA1 isBuyer={false} initState={2} />
+      <SellerConsultSection />
     </>
   );
 };

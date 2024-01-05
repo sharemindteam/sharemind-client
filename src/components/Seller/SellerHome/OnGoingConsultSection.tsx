@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Black, Red } from 'styles/color';
 import { Body1, Heading } from 'styles/font';
-import OngoingCounsultBox from './OngoingCounsultBox';
+import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 function OnGoingConsultSection() {
   return (
@@ -21,7 +21,7 @@ function OnGoingConsultSection() {
           counselorName="연애상담마스터"
           beforeMinutes="8분 전"
           content="연애상담마스터님께 고민 내용을 남겨주세요. 연애상담마스터님이 24시간"
-          newMessageCounts="1"
+          newMessageCounts={1}
           counselorprofileStatus={1}
         />{' '}
         <OngoingCounsultBox
@@ -29,7 +29,7 @@ function OnGoingConsultSection() {
           counselorName="연애상담마스터"
           beforeMinutes="8분 전"
           content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
-          newMessageCounts="1"
+          newMessageCounts={1}
           counselorprofileStatus={2}
         />{' '}
         <OngoingCounsultBox
@@ -37,7 +37,7 @@ function OnGoingConsultSection() {
           counselorName="연애상담마스터"
           beforeMinutes="8분 전"
           content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
-          newMessageCounts="1"
+          newMessageCounts={1}
           counselorprofileStatus={3}
         />
       </OngoingCounsultBoxList>
