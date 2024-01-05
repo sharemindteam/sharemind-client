@@ -1,17 +1,52 @@
 import Input from 'components/Common/Input';
 import styled from 'styled-components';
-import { Grey1, Grey3, Grey4, Grey6, White } from 'styles/color';
+import {
+  ErrorColor,
+  Grey1,
+  Grey3,
+  Grey4,
+  Grey6,
+  SafeColor,
+  White,
+} from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check.svg';
+import { useInput } from 'hooks/useInput';
+import { useState } from 'react';
+import { isIncludeSpecialLetter } from 'utils/isIncludeSpecialLetter';
 export const ModifyProfileMainSection = () => {
+  const nickname = useInput('');
+  const letterPrice = useInput('');
+  const chatPrice = useInput('');
+  const oneLiner = useInput('');
+  const experience = useInput('');
+
   return (
     <ModifyProfileMainSectionWrapper>
       <ModifyProfileBox>
         <div className="nickname">
           <ProfileInformTag>닉네임</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <Input
+            width="100%"
+            height="4.8rem"
+            isError={nickname.isError}
+            value={nickname.value}
+            onChange={(e) => {
+              nickname.handleCheckSpecialLetter(e.target.value);
+              nickname.onChange(e);
+            }}
+            maxLength={10}
+          />
           <ConditionMessage>
-            <Caption2 color={Grey4}>
+            <Caption2
+              color={
+                nickname.isError
+                  ? ErrorColor
+                  : nickname.isValid
+                  ? SafeColor
+                  : Grey4
+              }
+            >
               최대 10자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
             <CheckIcon />
@@ -40,20 +75,56 @@ export const ModifyProfileMainSection = () => {
           <ProfileInformTag>상담 가격</ProfileInformTag>
           <div className="letter-price">
             <PriceInformTag>편지</PriceInformTag>
-            <Input width="calc(100% - 5.4rem)" height="4.8rem" />
+            <Input
+              width="calc(100% - 5.4rem)"
+              height="4.8rem"
+              fontSize="1.6rem"
+              fontWeight="400"
+              placeholder="1회당 최소 5,000원~최대 50,000원"
+              value={letterPrice.value}
+              onChange={(e) => {
+                letterPrice.handleCheckSpecialLetter(e.target.value);
+                letterPrice.onChange(e);
+              }}
+            />
           </div>
           <div className="chat-price">
             <PriceInformTag>채팅</PriceInformTag>
-            <Input width="calc(100% - 5.4rem)" height="4.8rem" />
+            <Input
+              width="calc(100% - 5.4rem)"
+              height="4.8rem"
+              fontSize="1.6rem"
+              fontWeight="400"
+              placeholder="30분당 최소 5,000원~최대 50,000원"
+              value={chatPrice.value}
+              onChange={chatPrice.onChange}
+            />
           </div>
         </div>
       </ModifyProfileBox>
       <ModifyProfileBox>
         <div className="one-liner">
           <ProfileInformTag>한줄 소개</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <Input
+            width="100%"
+            height="4.8rem"
+            maxLength={50}
+            value={oneLiner.value}
+            onChange={(e) => {
+              oneLiner.handleCheckSpecialLetter(e.target.value);
+              oneLiner.onChange(e);
+            }}
+          />
           <ConditionMessage>
-            <Caption2 color={Grey4}>
+            <Caption2
+              color={
+                oneLiner.isError
+                  ? ErrorColor
+                  : oneLiner.isValid
+                  ? SafeColor
+                  : Grey4
+              }
+            >
               최대 50자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
             <CheckIcon />
@@ -61,9 +132,23 @@ export const ModifyProfileMainSection = () => {
         </div>
         <div className="experience">
           <ProfileInformTag>경험 소개</ProfileInformTag>
-          <ExperienceTextArea />
+          <ExperienceTextArea
+            value={experience.value}
+            onChange={(e) => {
+              experience.handleCheckSpecialLetter(e.target.value);
+              experience.onChange(e);
+            }}
+          />
           <ConditionMessage>
-            <Caption2 color={Grey4}>
+            <Caption2
+              color={
+                experience.isError
+                  ? ErrorColor
+                  : experience.isValid
+                  ? SafeColor
+                  : Grey4
+              }
+            >
               최대 20,000자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
             <CheckIcon />
