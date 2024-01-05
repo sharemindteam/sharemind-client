@@ -7,6 +7,7 @@ import { ReactComponent as InfoIcon } from 'assets/icons/info.svg';
 import { ReactComponent as ReciptIcon } from 'assets/icons/recipt.svg';
 import { ReactComponent as ReviewIcon } from 'assets/icons/review.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/save.svg';
+import { useNavigate } from 'react-router-dom';
 interface ProfileProps {
   isBuyer: boolean;
   isVerified?: undefined | boolean;
@@ -14,9 +15,18 @@ interface ProfileProps {
 }
 //일단 프로필 이미지는 한개만 불러왔음!
 export const Profile = ({ isBuyer, isVerified = false }: ProfileProps) => {
+  const navigate = useNavigate();
   return (
     <>
-      <ProfileBox>
+      <ProfileBox
+        onClick={(event) => {
+          if (isBuyer) {
+            navigate('/buyer/mypage/viewProfile');
+          } else {
+            navigate('/seller/mypage/viewProfile');
+          }
+        }}
+      >
         <Char1 />
         {isBuyer ? (
           <Name>김고민</Name>
@@ -29,6 +39,14 @@ export const Profile = ({ isBuyer, isVerified = false }: ProfileProps) => {
           </ProfileInfo>
         )}
         <Button
+          onClick={(event) => {
+            if (isBuyer) {
+              navigate('/seller/mypage');
+            } else {
+              navigate('/buyer/mypage');
+            }
+            event?.stopPropagation();
+          }}
           text={isBuyer ? '판매자로 전환' : '구매자로 전환'}
           width="10.1rem"
           height="4.2rem"
@@ -103,6 +121,7 @@ export const Profile = ({ isBuyer, isVerified = false }: ProfileProps) => {
 const ProfileBox = styled.div`
   display: flex;
   height: 10.4rem;
+  cursor: pointer;
   align-items: center;
   padding: 1rem 2rem;
   background-color: ${White};
