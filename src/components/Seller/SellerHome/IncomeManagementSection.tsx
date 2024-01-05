@@ -4,11 +4,17 @@ import styled from 'styled-components';
 import { Black, Grey5, Grey6, Red } from 'styles/color';
 import { Body1, Heading } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
-// 섹션 안에서 axios 요청 
+import { useNavigate } from 'react-router-dom';
+// 섹션 안에서 axios 요청
 export const IncomeManagementSection = () => {
+  const navigate = useNavigate();
   return (
     <>
-      <ContentTag>
+      <ContentTag
+        onClick={() => {
+          navigate('/seller/calculatemanagement');
+        }}
+      >
         <Heading color={Black} margin="0px auto 0px 0px">
           수익 관리
         </Heading>

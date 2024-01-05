@@ -105,10 +105,12 @@ const ProfileBox = styled.div`
   height: 10.4rem;
   align-items: center;
   padding: 1rem 2rem;
+  background-color: ${White};
   gap: 0.9rem;
 `;
 const SelectInfoList = styled.div`
   display: flex;
+  background-color: ${White};
   justify-content: center;
   gap: 7.2rem;
 `;
@@ -145,8 +147,7 @@ const VerifyButtonWrapper = styled.div`
 const VerifyButton = styled(Button)``;
 
 const ServiceList = styled.div`
-  background-color: ${Grey6};
-  padding-top: 1.2rem;
+  margin-top: 1.2rem;
 `;
 const ServiceItem = styled.div`
   display: flex;
