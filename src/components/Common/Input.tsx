@@ -79,7 +79,6 @@ const StyledInput = styled.input<{
   color: ${({ fontColor }) => fontColor};
   text-indent: 15px;
   padding: ${({ padding }) => padding};
-
   &:focus {
     outline: none;
   }
