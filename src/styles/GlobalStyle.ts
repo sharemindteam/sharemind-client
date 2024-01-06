@@ -30,6 +30,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     background-color: #24a78b;
     -ms-overflow-style: none;
+    -webkit-tap-highlight-color : rgba(0,0,0,0);
   }
   ::-webkit-scrollbar {
     display: none;

@@ -7,7 +7,8 @@ type ConsultState =
   | '질문 도착'
   | '상담 대기'
   | '상담 중'
-  | '상담 종료';
+  | '상담 종료'
+  | '상담 취소';
 //tagA2 카테고리 type
 type CartegoryState =
   | '연애갈등'

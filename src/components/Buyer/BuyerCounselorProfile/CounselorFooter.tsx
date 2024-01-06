@@ -34,18 +34,18 @@ export const CounselorFooter = ({ isBookmarked }: CounselorFooterProps) => {
 };
 const Wrapper = styled.div`
   height: 5.2rem;
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 33.5rem;
+  }
   display: flex;
   justify-content: center;
   gap: 2.4rem;
   background-color: ${White};
   padding: 0.8rem 2rem 1.2rem 2rem;
   position: fixed;
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
   bottom: 0;
   z-index: 999;
 `;
