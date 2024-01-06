@@ -31,7 +31,7 @@ import { categoryInputMaker } from 'utils/categoryInputmaker';
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
   selectStyle: string;
-  selectType: number[];
+  selectType: string[];
 }
 export const ModifyProfileMainSection = ({
   selectCategory,
@@ -59,6 +59,12 @@ export const ModifyProfileMainSection = ({
   useEffect(() => {
     category.setViewValue(categoryInputMaker(selectCategory));
   }, [selectCategory]);
+  useEffect(() => {
+    style.setViewValue(selectStyle);
+  }, [selectStyle]);
+  useEffect(() => {
+    type.setViewValue(selectType.join(', '));
+  }, [selectType]);
   useEffect(() => {
     nickname.setValue(profileDummyData.nickName);
     // 후에 서버에 POST요청할때 serverValue를 보내줘야함. enum List 형식으로

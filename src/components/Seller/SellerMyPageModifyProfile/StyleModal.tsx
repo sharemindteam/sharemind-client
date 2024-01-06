@@ -32,7 +32,52 @@ export const StyleModal = ({
         <CompleteButton onClick={handleCompleteStyle}>완료</CompleteButton>
       </div>
       <div className="row2">
-        <Caption2 color={Grey3}>최대 2개까지 선택 가능해요.</Caption2>
+        <Caption2 color={Grey3}>하나만 선택해주세요.</Caption2>
+      </div>
+      <div
+        className="row"
+        onClick={() => {
+          setModalStyle('조언');
+        }}
+      >
+        {modalStyle === '조언' ? (
+          <>
+            <Body1 color={Green}>조언</Body1>
+            <CheckIcon />:
+          </>
+        ) : (
+          <Body1 color={Grey1}>조언</Body1>
+        )}
+      </div>
+      <div
+        className="row"
+        onClick={() => {
+          setModalStyle('공감');
+        }}
+      >
+        {modalStyle === '공감' ? (
+          <>
+            <Body1 color={Green}>공감</Body1>
+            <CheckIcon />:
+          </>
+        ) : (
+          <Body1 color={Grey1}>공감</Body1>
+        )}
+      </div>
+      <div
+        className="row"
+        onClick={() => {
+          setModalStyle('팩폭');
+        }}
+      >
+        {modalStyle === '팩폭' ? (
+          <>
+            <Body1 color={Green}>팩폭</Body1>
+            <CheckIcon />:
+          </>
+        ) : (
+          <Body1 color={Grey1}>팩폭</Body1>
+        )}
       </div>
     </Wrapper>
   );
@@ -67,7 +112,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
     width: 37.5rem;
   }
   position: fixed;
-  height: 48rem;
+  height: 28rem;
   background-color: ${Grey6};
   bottom: 0;
   border-radius: 2rem 2rem 0 0;
