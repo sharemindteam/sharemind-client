@@ -5,6 +5,7 @@ import {
   Grey1,
   Grey3,
   Grey4,
+  Grey5,
   Grey6,
   SafeColor,
   White,
@@ -49,7 +50,13 @@ export const ModifyProfileMainSection = () => {
             >
               최대 10자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
-            <CheckIcon />
+            {nickname.isError ? (
+              ''
+            ) : nickname.isValid ? (
+              <CheckIcon stroke={SafeColor} />
+            ) : (
+              <CheckIcon stroke={Grey5} />
+            )}
           </ConditionMessage>
         </div>
         <div className="category">
@@ -127,7 +134,13 @@ export const ModifyProfileMainSection = () => {
             >
               최대 50자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
-            <CheckIcon />
+            {oneLiner.isError ? (
+              ''
+            ) : oneLiner.isValid ? (
+              <CheckIcon stroke={SafeColor} />
+            ) : (
+              <CheckIcon stroke={Grey5} />
+            )}
           </ConditionMessage>
         </div>
         <div className="experience">
@@ -149,6 +162,13 @@ export const ModifyProfileMainSection = () => {
                   : Grey4
               }
             >
+              {experience.isError ? (
+                ''
+              ) : experience.isValid ? (
+                <CheckIcon stroke={SafeColor} />
+              ) : (
+                <CheckIcon stroke={Grey5} />
+              )}
               최대 20,000자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
             <CheckIcon />
