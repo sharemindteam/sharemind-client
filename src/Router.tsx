@@ -3,6 +3,7 @@ import { BuyerCategoryResult } from 'pages/Buyer/BuyerCategoryResult';
 import { BuyerConsult } from 'pages/Buyer/BuyerConsult';
 import { BuyerCounselorProfile } from 'pages/Buyer/BuyerCounselorProfile';
 import { BuyerHome } from 'pages/Buyer/BuyerHome';
+import { BuyerMypage } from 'pages/Buyer/BuyerMypage';
 import { BuyerSearch } from 'pages/Buyer/BuyerSearch';
 import { BuyerSearchResult } from 'pages/Buyer/BuyerSearchResult';
 import { SellerCaculateManagement } from 'pages/Seller/SellerCalculateManagement';
@@ -30,31 +31,10 @@ const Router = () => {
             </button>
             <button
               onClick={() => {
-                navigate('/buyer/consult');
+                navigate('/seller');
               }}
             >
-              BuyerConsult
-            </button>
-            <button
-              onClick={() => {
-                navigate('/buyer/profile/0');
-              }}
-            >
-              BuyerConsult
-            </button>
-            <button
-              onClick={() => {
-                navigate('/buyer/search');
-              }}
-            >
-              BuyerSearch
-            </button>
-            <button
-              onClick={() => {
-                navigate('/buyer/search/result');
-              }}
-            >
-              BuyerSearchResult
+              SellerHome
             </button>
           </>
         }
@@ -66,6 +46,7 @@ const Router = () => {
       <Route path="/buyer/search/:id" element={<BuyerCategoryResult />} />
       <Route path="/buyer/search/result" element={<BuyerSearchResult />} />
       <Route path="/buyer/counselors" element={<BuyerAvailCounselor />} />
+      <Route path="/buyer/mypage" element={<BuyerMypage />} />
       <Route path="/seller" element={<SellerHome />} />
       {/* 판매자 : 상담 */}
       <Route path="/seller/consult" element={<SellerConsult />} />
