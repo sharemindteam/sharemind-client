@@ -4,8 +4,23 @@ import { ReactComponent as Search } from 'assets/icons/search.svg';
 import { useNavigate } from 'react-router-dom';
 import { Grey1, Grey4, White } from 'styles/color';
 import Input from 'components/Common/Input';
+import { ChangeEvent, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { searchKeywordState } from 'utils/atom';
 export const SearchHeader = () => {
   const navigate = useNavigate();
+  const setKeyword = useSetRecoilState(searchKeywordState);
+  //input value
+  const [input, setInput] = useState('');
+  //input onchagne
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value);
+  };
+  const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setKeyword(input);
+    navigate('/buyer/search/result');
+  };
   return (
     <Wrapper>
       <BackIcon
@@ -13,8 +28,10 @@ export const SearchHeader = () => {
           navigate(-1);
         }}
       />
-      <InputWrapper>
+      <FormWrapper onSubmit={handleSubmit}>
         <Input
+          value={input}
+          onChange={handleOnChange}
           placeholder="상담사명, 제목, 키워드"
           fontSize="1.6rem"
           fontWeight="400"
@@ -24,8 +41,8 @@ export const SearchHeader = () => {
           width="100%"
           padding="0 3.2rem 0 0"
         />
-        <SearchIcon />
-      </InputWrapper>
+        <SearchIcon onClick={handleSubmit} />
+      </FormWrapper>
     </Wrapper>
   );
 };
@@ -40,11 +57,11 @@ const Wrapper = styled.div`
 `;
 const BackIcon = styled(Back)`
   position: absolute;
-  top: 1.2rem;
+  top: 1.4rem;
   left: 2rem;
   cursor: pointer;
 `;
-const InputWrapper = styled.div`
+const FormWrapper = styled.form`
   position: relative;
   width: 79%;
 `;
@@ -52,4 +69,5 @@ const SearchIcon = styled(Search)`
   position: absolute;
   right: -2.7rem;
   top: 0.8rem;
+  cursor: pointer;
 `;

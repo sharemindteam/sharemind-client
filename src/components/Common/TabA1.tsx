@@ -24,48 +24,42 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
   }, []);
   return (
     <Wrapper>
-      <TabButton>
+      <TabButton
+        onClick={() => {
+          setTabState(1);
+          if (isBuyer) {
+            navigate('/buyer');
+          } else {
+            navigate('/seller');
+          }
+        }}
+      >
         {tabState === 1 ? (
           <>
             <Subtitle color={color}>홈</Subtitle>
             {isBuyer ? <UnderLineBuyer /> : <UnderLineSeller />}
           </>
         ) : (
-          <Subtitle
-            color={Black}
-            onClick={() => {
-              setTabState(1);
-              if (isBuyer) {
-                navigate('/buyer');
-              } else {
-                navigate('/seller');
-              }
-            }}
-          >
-            홈
-          </Subtitle>
+          <Subtitle color={Black}>홈</Subtitle>
         )}
       </TabButton>
-      <TabButton>
+      <TabButton
+        onClick={() => {
+          setTabState(2);
+          if (isBuyer) {
+            navigate('/buyer/consult');
+          } else {
+            navigate('/seller/consult');
+          }
+        }}
+      >
         {tabState === 2 ? (
           <>
             <Subtitle color={color}>상담</Subtitle>
             {isBuyer ? <UnderLineBuyer /> : <UnderLineSeller />}
           </>
         ) : (
-          <Subtitle
-            color={Black}
-            onClick={() => {
-              setTabState(2);
-              if (isBuyer) {
-                navigate('/buyer/consult');
-              } else {
-                navigate('/seller/consult');
-              }
-            }}
-          >
-            상담
-          </Subtitle>
+          <Subtitle color={Black}>상담</Subtitle>
         )}
       </TabButton>
       <TabButton>
