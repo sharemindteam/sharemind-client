@@ -4,6 +4,11 @@ export const isSortModalOpenState = atom({
   key: 'isSortModalOpenState',
   default: false,
 });
+//상담페이지  최근순 읽지 않은순 modal open toggle
+export const isConsultModalOpenState = atom({
+  key: 'isConsultModalOpenState',
+  default: false,
+});
 //true가 될 시 scroll lock, 모달창에 사용
 export const scrollLockState = atom({
   key: 'scrollLockState',
