@@ -155,15 +155,14 @@ export const ReadyConsultCard = ({
 };
 const Wrapper = styled.div`
   width: 89%;
-  border-top-left-radius: 0.8rem;
-  border-top-right-radius: 0.8rem;
+  border-radius: 0.8rem;
   margin-bottom: 0.9rem;
+  background-color: ${Grey6};
 `;
 const UpperWrapper = styled.div`
   height: 10rem;
   border-bottom: 1px solid ${White};
   cursor: pointer;
-  background-color: ${Grey6};
 `;
 const TagWrapper = styled.div`
   display: flex;
@@ -177,7 +176,6 @@ const LowerWrapper = styled.div`
   gap: 0.8rem;
   position: relative;
   cursor: pointer;
-  background-color: ${Grey6};
   .row1 {
     display: flex;
     align-items: center;
@@ -205,7 +203,6 @@ const NoneBookMarkIcon = styled(NoneBookMark)`
 const ToggleWrapper = styled.div`
   height: 11rem;
   padding: 1rem 2rem;
-  background-color: ${Grey6};
   .row1 {
     display: flex;
     gap: 6.1rem;
