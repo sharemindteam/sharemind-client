@@ -20,6 +20,12 @@ import { profileDummyData } from 'utils/profileDummy';
 import { useCustomSelect } from 'hooks/useCustomSelect';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  isCategoryModalOpenState,
+  isStyleModalOpenState,
+  isTypeOpenModalState,
+} from 'utils/atom';
 export const ModifyProfileMainSection = () => {
   const navigate = useNavigate();
   const nickname = useInput('');
@@ -34,6 +40,11 @@ export const ModifyProfileMainSection = () => {
   const chatPrice = useInput('');
   const oneLiner = useInput('');
   const experience = useInput('');
+
+  const setIsCategoryModalOpen = useSetRecoilState(isCategoryModalOpenState);
+  const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
+  const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
+
   useEffect(() => {
     nickname.setValue(profileDummyData.nickName);
     // 후에 서버에 POST요청할때 serverValue를 보내줘야함. enum List 형식으로
@@ -85,13 +96,19 @@ export const ModifyProfileMainSection = () => {
         </div>
         <div className="category">
           <ProfileInformTag>상담 카테고리</ProfileInformTag>
-          <Input
-            width="100%"
-            height="4.8rem"
-            value={category.viewValue}
-            readOnly={true}
-            isCursorPointer={true}
-          />
+          <div
+            onClick={() => {
+              setIsCategoryModalOpen(true);
+            }}
+          >
+            <Input
+              width="100%"
+              height="4.8rem"
+              value={category.viewValue}
+              readOnly={true}
+              isCursorPointer={true}
+            />
+          </div>
         </div>
         <div className="style">
           <ProfileInformTag>상담 스타일</ProfileInformTag>

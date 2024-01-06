@@ -77,7 +77,7 @@ const slideIn = keyframes`
   from{
     transform : translateY(100%);
   }
-  to{
+  to{ 
     transform : translateY(0%);
   }
 `;
