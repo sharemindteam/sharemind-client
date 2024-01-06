@@ -13,7 +13,13 @@ export const SellerMypage = () => {
         }}
       />
       <TabA1 isBuyer={false} initState={3} />
-      <Profile isBuyer={false} isVerified={true} profileIdentifier={1} />
+      <Profile
+        name="김고민"
+        levelStatus={1}
+        isBuyer={false}
+        isVerified={true}
+        profileIdentifier={1}
+      />
     </>
   );
 };

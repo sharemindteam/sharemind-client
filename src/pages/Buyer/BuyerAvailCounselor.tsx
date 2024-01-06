@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Grey1, Grey3, Grey6, White } from 'styles/color';
 import { Button2, Heading } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
@@ -8,8 +8,8 @@ import { SearchResults } from 'components/Buyer/Common/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
 import { useState } from 'react';
 import { sortList } from 'utils/constant';
-import { useRecoilState } from 'recoil';
-import { isModalOpenState } from 'utils/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerAvailCounselor = () => {
   //0 : 최신순 1:인기순 2: 별점순
@@ -17,44 +17,49 @@ export const BuyerAvailCounselor = () => {
   const [sortType, setSortType] = useState<number>(0);
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] =
-    useRecoilState<boolean>(isModalOpenState);
+    useRecoilState<boolean>(isSortModalOpenState);
+  //scorll 막기
+  const setScrollLock = useSetRecoilState(scrollLockState);
   const navigate = useNavigate();
   return (
     <Wrapper>
-      <div
-        onClick={() => {
-          if (isModalOpen === true) {
-            setIsModalOpen(false);
-          }
-        }}
-      >
-        <HeaderWrapper>
-          <BackIcon
+      <HeaderWrapper>
+        <BackIcon
+          onClick={() => {
+            navigate(-1);
+          }}
+        />
+        <Heading color={Grey1}>들을 준비가 된 상담사들</Heading>
+      </HeaderWrapper>
+      <div className="select">
+        <div
+          className="select-wrapper"
+          onClick={() => {
+            setIsModalOpen(true);
+            setScrollLock(true);
+          }}
+        >
+          <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+          <Down />
+        </div>
+      </div>
+      <SearchResults />
+
+      {isModalOpen ? (
+        <>
+          <BackDrop
             onClick={() => {
-              navigate(-1);
+              setIsModalOpen(false);
+              setScrollLock(false);
             }}
           />
-          <Heading color={Grey1}>들을 준비가 된 상담사들</Heading>
-        </HeaderWrapper>
-        <div className="select">
-          <div
-            className="select-wrapper"
-            onClick={() => {
-              setIsModalOpen(!isModalOpen);
-            }}
-          >
-            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-            <Down />
-          </div>
-        </div>
-        <SearchResults />
-      </div>
-      {isModalOpen ? (
-        <SortModal sortType={sortType} setSortType={setSortType} />
+          <SortModal sortType={sortType} setSortType={setSortType} />
+        </>
       ) : null}
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   .select {
     display: flex;
@@ -86,4 +91,18 @@ const BackIcon = styled(Back)`
   top: 1.2rem;
   left: 2rem;
   cursor: pointer;
+`;
+const BackDrop = styled.div`
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
+  position: fixed;
+  top: 0;
+  z-index: 2001;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
 `;

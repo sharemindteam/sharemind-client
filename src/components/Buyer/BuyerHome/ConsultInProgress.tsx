@@ -12,7 +12,7 @@ export const ConsultInProgress = () => {
   //일정 크기 넘어가면 ...처리
   const ContentText =
     '연애상담마스터님께 고민 내용을 남겨 주세요. 연애상담마스터님이 24시간 어쩌구 블라블라 주저리 주저리주저리 주저리주저리 주저리주저리 주저리주저리 주저리주저리 ';
-  const unreadNumber = 1;
+  const unreadNumber = 0;
   const navigate = useNavigate();
   return (
     <Wrapper>

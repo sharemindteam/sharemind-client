@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ReactComponent as Char1 } from 'assets/characters/char1.svg';
 import { Button } from './Button';
 import { Black, Green, Grey6, Red, White } from 'styles/color';
 import { Button2, Caption2, Subtitle } from 'styles/font';
@@ -7,28 +6,56 @@ import { ReactComponent as InfoIcon } from 'assets/icons/info.svg';
 import { ReactComponent as ReciptIcon } from 'assets/icons/recipt.svg';
 import { ReactComponent as ReviewIcon } from 'assets/icons/review.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/save.svg';
+import { useNavigate } from 'react-router-dom';
+import { Characters } from 'utils/Characters';
 interface ProfileProps {
   isBuyer: boolean;
   isVerified?: undefined | boolean;
-  profileIdentifier: Number;
+  profileIdentifier: number;
+  name: string;
+  levelStatus: number;
 }
 //일단 프로필 이미지는 한개만 불러왔음!
-export const Profile = ({ isBuyer, isVerified = false }: ProfileProps) => {
+export const Profile = ({
+  isBuyer,
+  isVerified = false,
+  profileIdentifier,
+  name,
+  levelStatus,
+}: ProfileProps) => {
+  const navigate = useNavigate();
   return (
     <>
-      <ProfileBox>
-        <Char1 />
+      <ProfileBox
+        onClick={(event) => {
+          if (isBuyer) {
+            navigate('/buyer/mypage/viewProfile');
+          } else {
+            navigate('/seller/mypage/viewProfile');
+          }
+        }}
+      >
+        <Characters number={profileIdentifier} width="7.6rem" />
+
         {isBuyer ? (
-          <Name>김고민</Name>
+          <Name>{name}</Name>
         ) : (
           <ProfileInfo>
             <Level>
-              <Caption2 color={White}>Lv 1</Caption2>
+              <Caption2 color={White}>Lv {levelStatus}</Caption2>
             </Level>
-            <Name>연애상담마스터</Name>
+            <Name>{name}</Name>
           </ProfileInfo>
         )}
         <Button
+          onClick={(event) => {
+            if (isBuyer) {
+              navigate('/seller/mypage');
+            } else {
+              navigate('/buyer/mypage');
+            }
+            event?.stopPropagation();
+          }}
           text={isBuyer ? '판매자로 전환' : '구매자로 전환'}
           width="10.1rem"
           height="4.2rem"
@@ -103,6 +130,7 @@ export const Profile = ({ isBuyer, isVerified = false }: ProfileProps) => {
 const ProfileBox = styled.div`
   display: flex;
   height: 10.4rem;
+  cursor: pointer;
   align-items: center;
   padding: 1rem 2rem;
   background-color: ${White};

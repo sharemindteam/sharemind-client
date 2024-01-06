@@ -1,17 +1,17 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
-import { isModalOpenState } from 'utils/atom';
+import { isSortModalOpenState } from 'utils/atom';
 interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
 }
 export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
   //modal 여부
-  const isModalOpen = useRecoilValue(isModalOpenState);
+  const isModalOpen = useRecoilValue(isSortModalOpenState);
   //여기서 unmount 시 sortType 바꾸고 새로 request
   //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
   const [modalSortType, setModalSortType] = useState<number>(sortType);
@@ -92,12 +92,20 @@ const slideOut = keyframes`
   }
 `;
 const Wrapper = styled.div<{ visible: boolean }>`
-  position: sticky;
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
+  position: fixed;
   height: 22.7rem;
+
   background-color: ${Grey6};
   bottom: 0;
   border-radius: 2rem 2rem 0 0;
   box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2002;
   animation: ${({ visible }) => (visible ? slideIn : slideOut)} 0.3s ease-in-out;
 
   .bar-wrapper {

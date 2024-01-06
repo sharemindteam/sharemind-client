@@ -19,6 +19,7 @@ interface InputProps {
   margin?: string;
   name?: string;
   isError?: boolean;
+  maxLength?: number;
 }
 const Input = ({
   width = 'auto',
@@ -38,6 +39,7 @@ const Input = ({
   margin = '',
   name,
   isError = false,
+  maxLength,
 }: InputProps) => {
   return (
     <StyledInput
@@ -58,6 +60,7 @@ const Input = ({
       margin={margin}
       name={name}
       isError={isError}
+      maxLength={maxLength}
     />
   );
 };
@@ -88,7 +91,6 @@ const StyledInput = styled.input<{
   text-indent: 15px;
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
-
   &:focus {
     outline: none;
   }

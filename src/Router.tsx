@@ -7,6 +7,8 @@ import { BuyerSearch } from 'pages/Buyer/BuyerSearch';
 import { SellerCaculateManagement } from 'pages/Seller/SellerCalculateManagement';
 import { SellerConsult } from 'pages/Seller/SellerConsult';
 import { SellerHome } from 'pages/Seller/SellerHome';
+import { SellerMypageModifyProfile } from 'pages/Seller/SellerMyPageModifyProfile';
+import { SellerMypageViewProfile } from 'pages/Seller/SellerMyPageViewProfile';
 import { SellerMypage } from 'pages/Seller/SellerMypage';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
@@ -56,8 +58,19 @@ const Router = () => {
       <Route path="/buyer/search/:id" element={<BuyerCategoryResult />} />
       <Route path="/buyer/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/seller" element={<SellerHome />} />
-      <Route path="/seller/consult" element={<SellerConsult />}></Route>
-      <Route path="/seller/mypage" element={<SellerMypage />}></Route>
+      {/* 판매자 : 상담 */}
+      <Route path="/seller/consult" element={<SellerConsult />} />
+      {/* 판매자 : 프로필 정보 */}
+      <Route path="/seller/mypage" element={<SellerMypage />} />
+      <Route
+        path="/seller/mypage/viewProfile"
+        element={<SellerMypageViewProfile />}
+      />
+      <Route
+        path="/seller/mypage/modifyProfile"
+        element={<SellerMypageModifyProfile />}
+      />
+      {/* 판매자 : 수익 관리 */}
       <Route
         path="/seller/calculatemanagement"
         element={<SellerCaculateManagement />}

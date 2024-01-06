@@ -1,6 +1,7 @@
 import { useViewResize } from 'hooks/useViewResize';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
 import { scrollLockState } from 'utils/atom';
@@ -11,16 +12,26 @@ interface AppContainerProps {
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
-  const { pathname } = useLocation();
-  if (pathname === '/seller/mypage' || '/buyer/mypage') {
-  }
+  var { pathname } = useLocation();
+  const [isGray, setIsGray] = useState(false);
+  useEffect(() => {
+    if (
+      pathname ===
+      ('/seller/mypage/viewProfile' ||
+        '/seller/mypage' ||
+        '/buyer/mypage' ||
+        '/seller/mypage/modifyProfile')
+    ) {
+      setIsGray(true);
+    }
+  }, [pathname]);
   return (
-    <StyledApp currentPath={pathname} scrollLock={scrollLock}>
+    <StyledApp isGray={isGray} scrollLock={scrollLock}>
       {children}
     </StyledApp>
   );
 };
-const StyledApp = styled.div<{ currentPath: string; scrollLock: boolean }>`
+const StyledApp = styled.div<{ isGray: boolean; scrollLock: boolean }>`
   height: calc(var(--vh, 1vh) * 100);
   @media (max-width: 767px) {
     width: 100vw;
@@ -28,9 +39,6 @@ const StyledApp = styled.div<{ currentPath: string; scrollLock: boolean }>`
   @media (min-width: 768px) {
     width: 37.5rem;
   }
-  background-color: ${(props) =>
-    props.currentPath === ('/seller/mypage' || '/buyer/mypage')
-      ? Grey6
-      : White};
+  background-color: ${(props) => (props.isGray ? Grey6 : White)};
   overflow-y: ${(props) => (props.scrollLock ? 'hidden' : 'scroll')};
 `;
