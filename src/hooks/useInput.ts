@@ -15,11 +15,11 @@ type UseInputResult = {
   isError: boolean;
   setIsError: Dispatch<SetStateAction<boolean>>;
   handleCheckSpecialLetter: any;
+  setValue: Dispatch<SetStateAction<string>>;
 };
 //input만 사용할 시 해당 커스텀훅 사용
 export const useInput = (initialValue: string) => {
   const [value, setValue] = useState<string>(initialValue);
-  //error 메세지
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -48,5 +48,6 @@ export const useInput = (initialValue: string) => {
     isError,
     setIsError,
     handleCheckSpecialLetter,
+    setValue,
   } as UseInputResult;
 };

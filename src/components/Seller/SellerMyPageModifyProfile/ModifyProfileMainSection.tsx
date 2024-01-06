@@ -13,8 +13,9 @@ import {
 import { Body1, Caption2 } from 'styles/font';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check.svg';
 import { useInput } from 'hooks/useInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isIncludeSpecialLetter } from 'utils/isIncludeSpecialLetter';
+import { profileDummyData } from 'utils/profileDummy';
 export const ModifyProfileMainSection = () => {
   const nickname = useInput('');
   const letterPrice = useInput('');
@@ -22,6 +23,13 @@ export const ModifyProfileMainSection = () => {
   const oneLiner = useInput('');
   const experience = useInput('');
 
+  useEffect(() => {
+    nickname.setValue(profileDummyData.nickName);
+    letterPrice.setValue(profileDummyData.letterPrice);
+    chatPrice.setValue(profileDummyData.chatPrice);
+    oneLiner.setValue(profileDummyData.oneLiner);
+    experience.setValue(profileDummyData.experience);
+  }, []);
   return (
     <ModifyProfileMainSectionWrapper>
       <ModifyProfileBox>

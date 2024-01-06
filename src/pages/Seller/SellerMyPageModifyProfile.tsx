@@ -3,6 +3,7 @@ import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyPr
 import { SaveButton } from 'components/Seller/SellerMyPageModifyProfile/SaveButton';
 
 export const SellerMypageModifyProfile = () => {
+  
   return (
     <>
       <ModifyProfileHeader />

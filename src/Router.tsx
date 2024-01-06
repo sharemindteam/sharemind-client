@@ -63,7 +63,6 @@ const Router = () => {
       {/* 판매자 : 편지 */}
       <Route path="/seller/letter/:consultid" />
 
-
       <Route path="/seller/consult" element={<SellerConsult />} />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/seller/mypage" element={<SellerMypage />} />

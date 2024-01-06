@@ -4,6 +4,11 @@ export const isSortModalOpenState = atom({
   key: 'isSortModalOpenState',
   default: false,
 });
+//퍈매 정보 수정 페이지 상담 카테고리 선택 모달
+export const isCategoryModalOpenState = atom({
+  key: 'categoryModalOpenState',
+  default: false,
+});
 //true가 될 시 scroll lock, 모달창에 사용
 export const scrollLockState = atom({
   key: 'scrollLockState',
