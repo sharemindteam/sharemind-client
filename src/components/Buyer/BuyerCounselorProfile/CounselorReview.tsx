@@ -33,6 +33,7 @@ export const CounselorReview = ({ reviewList }: CounselorReviewProps) => {
 };
 const Wrapper = styled.div`
   padding: 1.2rem 2rem 2rem 2rem;
+  margin-bottom: 5.2rem;
 `;
 const ReviewCard = styled.div`
   padding: 1.6rem;
