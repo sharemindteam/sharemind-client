@@ -1,5 +1,5 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
-import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
@@ -17,9 +17,7 @@ export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
   const [modalSortType, setModalSortType] = useState<number>(sortType);
   useEffect(() => {
     return () => {
-      if (modalSortType !== undefined) {
-        setSortType(modalSortType);
-      }
+      setSortType(modalSortType);
     };
   });
   return (

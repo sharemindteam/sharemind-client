@@ -49,6 +49,7 @@ export const BuyerAvailCounselor = () => {
         <>
           <BackDrop
             onClick={() => {
+              //여기서 api 호출
               setIsModalOpen(false);
               setScrollLock(false);
             }}
