@@ -81,12 +81,14 @@ export const BuyerConsult = () => {
               onClick={() => {
                 setIsChecked(false);
               }}
+              style={{ cursor: 'pointer' }}
             />
           ) : (
             <NonCheckIcon
               onClick={() => {
                 setIsChecked(true);
               }}
+              style={{ cursor: 'pointer' }}
             />
           )}
           <Body3 color={Grey3}>완료된 상담 제외</Body3>
@@ -136,11 +138,11 @@ const Wrapper = styled.div`
     height: 3.6rem;
     align-items: center;
     justify-content: space-between;
-    cursor: pointer;
   }
   .select-wrapper {
     display: flex;
     gap: 0.4rem;
+    cursor: pointer;
   }
   .select-button {
     display: flex;

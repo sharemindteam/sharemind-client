@@ -68,11 +68,11 @@ const Wrapper = styled.div`
     padding: 0.4rem 2rem;
     align-items: center;
     justify-content: flex-end;
-    cursor: pointer;
   }
   .select-wrapper {
     display: flex;
     gap: 0.4rem;
+    cursor: pointer;
   }
 `;
 const HeaderWrapper = styled.div`

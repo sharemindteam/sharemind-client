@@ -65,11 +65,11 @@ const Wrapper = styled.div`
     align-items: center;
     gap: 0.4rem;
     justify-content: flex-end;
-    cursor: pointer;
   }
   .select-wrapper {
     display: flex;
     gap: 0.4rem;
+    cursor: pointer;
   }
 `;
 const BackDrop = styled.div`
