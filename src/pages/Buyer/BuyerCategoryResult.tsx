@@ -1,15 +1,15 @@
 import { CategoryResultHeader } from 'components/Buyer/BuyerCategoryResult/CategoryResultHeader';
 import { SearchResults } from 'components/Buyer/Common/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { Button2 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { useState } from 'react';
 import { sortList } from 'utils/constant';
-import { useRecoilState } from 'recoil';
-import { isSortModalOpenState } from 'utils/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerCategoryResult = () => {
   //0 : 최신순 1:인기순 2: 별점순
@@ -19,6 +19,8 @@ export const BuyerCategoryResult = () => {
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isSortModalOpenState);
+  //scorll 막기
+  const setScrollLock = useSetRecoilState(scrollLockState);
   if (id !== undefined) {
     const categoryId = parseInt(id, 10);
     return (
@@ -45,7 +47,15 @@ export const BuyerCategoryResult = () => {
           <SearchResults />
         </div>
         {isModalOpen ? (
-          <SortModal sortType={sortType} setSortType={setSortType} />
+          <>
+            <BackDrop
+              onClick={() => {
+                setIsModalOpen(false);
+                setScrollLock(false);
+              }}
+            />
+            <SortModal sortType={sortType} setSortType={setSortType} />
+          </>
         ) : null}
       </Wrapper>
     );
@@ -67,4 +77,18 @@ const Wrapper = styled.div`
     display: flex;
     gap: 0.4rem;
   }
+`;
+const BackDrop = styled.div`
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
+  position: fixed;
+  top: 0;
+  z-index: 2001;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
 `;

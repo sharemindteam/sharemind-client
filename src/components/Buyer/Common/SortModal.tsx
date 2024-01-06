@@ -100,7 +100,6 @@ const Wrapper = styled.div<{ visible: boolean }>`
   }
   position: fixed;
   height: 22.7rem;
-
   background-color: ${Grey6};
   bottom: 0;
   border-radius: 2rem 2rem 0 0;

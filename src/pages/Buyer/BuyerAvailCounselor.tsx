@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Grey1, Grey3, Grey6, White } from 'styles/color';
 import { Button2, Heading } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
