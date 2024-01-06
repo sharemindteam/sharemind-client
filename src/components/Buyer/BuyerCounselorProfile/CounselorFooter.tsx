@@ -39,7 +39,13 @@ const Wrapper = styled.div`
   gap: 2.4rem;
   background-color: ${White};
   padding: 0.8rem 2rem 1.2rem 2rem;
-  position: sticky;
+  position: fixed;
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
   bottom: 0;
   z-index: 999;
 `;

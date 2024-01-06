@@ -3,7 +3,11 @@ import { Grey1, Grey6, White } from 'styles/color';
 import { Heading } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { useNavigate } from 'react-router-dom';
-export const CounselorProfileHeader = () => {
+import { categories } from 'utils/constant';
+interface ResultHeaderProps {
+  categoryType: number;
+}
+export const CategoryResultHeader = ({ categoryType }: ResultHeaderProps) => {
   const navigate = useNavigate();
   return (
     <Wrapper>
@@ -12,7 +16,7 @@ export const CounselorProfileHeader = () => {
           navigate(-1);
         }}
       />
-      <Heading color={Grey1}>상담사 프로필</Heading>
+      <Heading color={Grey1}>{categories[categoryType - 1]}</Heading>
     </Wrapper>
   );
 };

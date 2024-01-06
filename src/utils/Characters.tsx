@@ -16,6 +16,7 @@ interface CharacterProps {
   height?: string;
   padding?: string;
   margin?: string;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 export const Characters = ({
   number,
@@ -23,6 +24,7 @@ export const Characters = ({
   height = '100%',
   padding = '0',
   margin = '0',
+  onClick,
 }: CharacterProps) => {
   if (number === 1) {
     return (
@@ -31,6 +33,7 @@ export const Characters = ({
         height={height}
         padding={padding}
         margin={margin}
+        onClick={onClick}
       />
     );
   } else if (number === 2) {
@@ -40,6 +43,7 @@ export const Characters = ({
         height={height}
         padding={padding}
         margin={margin}
+        onClick={onClick}
       />
     );
   } else if (number === 3) {
@@ -49,6 +53,7 @@ export const Characters = ({
         height={height}
         padding={padding}
         margin={margin}
+        onClick={onClick}
       />
     );
   } else if (number === 4) {
@@ -58,6 +63,7 @@ export const Characters = ({
         height={height}
         padding={padding}
         margin={margin}
+        onClick={onClick}
       />
     );
   } else if (number === 5) {
@@ -67,6 +73,7 @@ export const Characters = ({
         height={height}
         padding={padding}
         margin={margin}
+        onClick={onClick}
       />
     );
   } else if (number === 6) {
@@ -76,6 +83,7 @@ export const Characters = ({
         height={height}
         padding={padding}
         margin={margin}
+        onClick={onClick}
       />
     );
   } else if (number === 7) {
@@ -85,6 +93,7 @@ export const Characters = ({
         height={height}
         padding={padding}
         margin={margin}
+        onClick={onClick}
       />
     );
   } else if (number === 8) {
@@ -94,6 +103,7 @@ export const Characters = ({
         height={height}
         padding={padding}
         margin={margin}
+        onClick={onClick}
       />
     );
   } else if (number === 9) {
