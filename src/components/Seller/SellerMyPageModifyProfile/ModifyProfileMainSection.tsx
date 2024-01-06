@@ -26,9 +26,21 @@ import {
   isStyleModalOpenState,
   isTypeOpenModalState,
 } from 'utils/atom';
-export const ModifyProfileMainSection = () => {
+import { categoryInputMaker } from 'utils/categoryInputmaker';
+
+interface ModifyProfileMainSectionProps {
+  selectCategory: number[];
+  selectStyle: string;
+  selectType: number[];
+}
+export const ModifyProfileMainSection = ({
+  selectCategory,
+  selectStyle,
+  selectType,
+}: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
   const nickname = useInput('');
+
   const category = useCustomSelect();
   const style = useCustomSelect();
   const type = useCustomSelect();
@@ -44,7 +56,9 @@ export const ModifyProfileMainSection = () => {
   const setIsCategoryModalOpen = useSetRecoilState(isCategoryModalOpenState);
   const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
   const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
-
+  useEffect(() => {
+    category.setViewValue(categoryInputMaker(selectCategory));
+  }, [selectCategory]);
   useEffect(() => {
     nickname.setValue(profileDummyData.nickName);
     // 후에 서버에 POST요청할때 serverValue를 보내줘야함. enum List 형식으로
@@ -112,25 +126,37 @@ export const ModifyProfileMainSection = () => {
         </div>
         <div className="style">
           <ProfileInformTag>상담 스타일</ProfileInformTag>
-          <Input
-            width="100%"
-            height="4.8rem"
-            value={style.viewValue}
-            readOnly={true}
-            isCursorPointer={true}
-          />
+          <div
+            onClick={() => {
+              setIsStyleModalOpen(true);
+            }}
+          >
+            <Input
+              width="100%"
+              height="4.8rem"
+              value={style.viewValue}
+              readOnly={true}
+              isCursorPointer={true}
+            />
+          </div>
         </div>
       </ModifyProfileBox>
       <ModifyProfileBox>
         <div className="type">
           <ProfileInformTag>상담 방식</ProfileInformTag>
-          <Input
-            width="100%"
-            height="4.8rem"
-            value={type.viewValue}
-            readOnly={true}
-            isCursorPointer={true}
-          />
+          <div
+            onClick={() => {
+              setIsTypeModalOpen(true);
+            }}
+          >
+            <Input
+              width="100%"
+              height="4.8rem"
+              value={type.viewValue}
+              readOnly={true}
+              isCursorPointer={true}
+            />
+          </div>
         </div>
         <div className="available-time">
           <ProfileInformTag>상담 가능시간</ProfileInformTag>

@@ -13,12 +13,12 @@ import {
 } from 'utils/atom';
 
 export const SellerMypageModifyProfile = () => {
-  // 상담 카테고리 enum List
-  const [selectCategory, setSelectCategory] = useState([]);
-  // 상담 스타일 enum List
-  const [selectStyle, setSelectStyle] = useState([]);
+  // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
+  const [selectCategory, setSelectCategory] = useState<number[]>([]);
+  // 상담 스타일 string
+  const [selectStyle, setSelectStyle] = useState<string>('');
   // 상담 방식 enum List
-  const [selectType, setSelectType] = useState([]);
+  const [selectType, setSelectType] = useState<string[]>([]);
 
   // 모달 띄워주는 여부
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState<boolean>(
@@ -32,7 +32,11 @@ export const SellerMypageModifyProfile = () => {
   return (
     <>
       <ModifyProfileHeader />
-      <ModifyProfileMainSection />
+      <ModifyProfileMainSection
+        selectCategory={selectCategory}
+        selectStyle={selectStyle}
+        selectType={selectType}
+      />
       {/* 모달 여부 True면.. */}
       {isCategoryModalOpen || isStyleModalOpen || isTypeModalOpen ? (
         <BackDrop />
@@ -43,8 +47,12 @@ export const SellerMypageModifyProfile = () => {
           setSelectCategory={setSelectCategory}
         />
       ) : null}
-      {isStyleModalOpen ? <StyleModal /> : null}
-      {isTypeModalOpen ? <TypeModal /> : null}
+      {isStyleModalOpen ? (
+        <StyleModal selectStyle={selectStyle} setSelectStyle={setSelectStyle} />
+      ) : null}
+      {isTypeModalOpen ? (
+        <TypeModal selectType={selectType} setSelectType={setSelectType} />
+      ) : null}
     </>
   );
 };

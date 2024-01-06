@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey3, Grey4, Grey6 } from 'styles/color';
 import { Body1, Button2, Caption2 } from 'styles/font';
@@ -16,22 +16,29 @@ export const CategoryModal = ({
   setSelectCategory,
   selectCategory,
 }: CategoryModalProps) => {
-  const isCategoryModalOpen = useRecoilValue(isCategoryModalOpenState);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
+    isCategoryModalOpenState,
+  );
   const [modalCategory, setModalCategory] = useState(selectCategory);
   const handleCategoryList = (category: number) => {
-    // 선택
+    // 카테고리 선택
     if (!modalCategory.includes(category)) {
       if (modalCategory.length === 3) {
         return;
       }
       setModalCategory([...modalCategory, category]);
     }
-    // 선택해제
+    // 카테고리 선택해제
     else {
       const updatedCategory = modalCategory.filter((item) => item !== category);
       setModalCategory(updatedCategory);
     }
   };
+  const handleCompleteCategory = () => {
+    setSelectCategory(modalCategory);
+    setIsCategoryModalOpen(false);
+  };
+
   return (
     <Wrapper visible={isCategoryModalOpen}>
       <div className="bar-wrapper">
@@ -39,7 +46,7 @@ export const CategoryModal = ({
       </div>
       <div className="row1">
         <Body1>상담 카테고리</Body1>
-        <Button2 color={Green}>완료</Button2>
+        <CompleteButton onClick={handleCompleteCategory}>완료</CompleteButton>
       </div>
       <div className="row2">
         <Caption2 color={Grey3}>최대 3개까지 선택 가능해요</Caption2>
@@ -183,6 +190,12 @@ const slideOut = keyframes`
     transform : translateY(100%);
   }
 `;
+
+const CompleteButton = styled(Button2)`
+  color: ${Green};
+  cursor: pointer;
+`;
+
 const Wrapper = styled.div<{ visible: boolean }>`
   @media (max-width: 767px) {
     width: 100vw;
