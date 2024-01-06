@@ -2,9 +2,9 @@ export const profileDummyData = {
   nickName: '연애상담마스터',
   category: '이별/재회, 권태기, 남자심리',
   style: '조언',
-  type: '',
+  type: '편지, 채팅',
   time: '',
-  letterPrice: '10000원',
+  letterPrice: '10000',
   chatPrice: '40000',
   oneLiner: '재회를 밥먹듯이 하고나서 안정적인 연애를 유지하고 있어요',
   experience:

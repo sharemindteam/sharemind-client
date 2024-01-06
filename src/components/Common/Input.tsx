@@ -20,6 +20,8 @@ interface InputProps {
   name?: string;
   isError?: boolean;
   maxLength?: number;
+  readOnly?: boolean;
+  isCursorPointer?: boolean;
 }
 const Input = ({
   width = 'auto',
@@ -40,6 +42,8 @@ const Input = ({
   name,
   isError = false,
   maxLength,
+  readOnly = false,
+  isCursorPointer = false,
 }: InputProps) => {
   return (
     <StyledInput
@@ -61,6 +65,8 @@ const Input = ({
       name={name}
       isError={isError}
       maxLength={maxLength}
+      readOnly={readOnly}
+      isCursorPointer={isCursorPointer}
     />
   );
 };
@@ -76,13 +82,14 @@ const StyledInput = styled.input<{
   padding: string;
   margin: string;
   isError: boolean;
+  isCursorPointer: boolean;
 }>`
   border-radius: 10px;
   border: ${(props) => (props.isError ? '1px solid #ff002e' : '')};
   width: ${({ width }) => width};
   height: ${({ height }) => height};
   background-color: ${({ backgroundColor }) => backgroundColor};
-  cursor: text;
+  cursor: ${({ isCursorPointer }) => (isCursorPointer ? 'pointer' : 'text')};
   font-family: 'Pretendard';
   font-size: ${({ fontSize }) => fontSize};
   font-weight: ${({ fontWeight }) => fontWeight};

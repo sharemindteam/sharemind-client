@@ -16,15 +16,23 @@ import { useInput } from 'hooks/useInput';
 import { useEffect, useState } from 'react';
 import { isIncludeSpecialLetter } from 'utils/isIncludeSpecialLetter';
 import { profileDummyData } from 'utils/profileDummy';
+import { useCustomSelect } from 'hooks/useCustomSelect';
 export const ModifyProfileMainSection = () => {
   const nickname = useInput('');
+  const category = useCustomSelect();
+  const style = useCustomSelect();
+  const type = useCustomSelect();
   const letterPrice = useInput('');
   const chatPrice = useInput('');
   const oneLiner = useInput('');
   const experience = useInput('');
-
   useEffect(() => {
     nickname.setValue(profileDummyData.nickName);
+    // 후에 서버에 POST요청할때 serverValue를 보내줘야함. enum List 형식으로
+    category.setViewValue(profileDummyData.category);
+    style.setViewValue(profileDummyData.style);
+    type.setViewValue(profileDummyData.type);
+
     letterPrice.setValue(profileDummyData.letterPrice);
     chatPrice.setValue(profileDummyData.chatPrice);
     oneLiner.setValue(profileDummyData.oneLiner);
@@ -69,17 +77,35 @@ export const ModifyProfileMainSection = () => {
         </div>
         <div className="category">
           <ProfileInformTag>상담 카테고리</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <Input
+            width="100%"
+            height="4.8rem"
+            value={category.viewValue}
+            readOnly={true}
+            isCursorPointer={true}
+          />
         </div>
         <div className="style">
           <ProfileInformTag>상담 스타일</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <Input
+            width="100%"
+            height="4.8rem"
+            value={style.viewValue}
+            readOnly={true}
+            isCursorPointer={true}
+          />
         </div>
       </ModifyProfileBox>
       <ModifyProfileBox>
         <div className="type">
           <ProfileInformTag>상담 방식</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <Input
+            width="100%"
+            height="4.8rem"
+            value={type.viewValue}
+            readOnly={true}
+            isCursorPointer={true}
+          />
         </div>
         <div className="available-time">
           <ProfileInformTag>상담 가능시간</ProfileInformTag>
