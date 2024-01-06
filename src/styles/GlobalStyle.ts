@@ -26,7 +26,8 @@ export const GlobalStyle = createGlobalStyle`
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
-    margin: 0px;
+    margin: 0;
+    padding: 0;
     background-color: #24a78b;
     -ms-overflow-style: none;
   }

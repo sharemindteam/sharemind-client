@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Black, Grey6 } from 'styles/color';
+import { Black, Grey4, Grey6 } from 'styles/color';
 
 interface InputProps {
   width?: string;
@@ -8,6 +8,7 @@ interface InputProps {
   fontSize?: string;
   fontWeight?: string;
   fontColor?: string;
+  placeHolderColor?: string;
   value?: string;
   placeholder?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -15,6 +16,7 @@ interface InputProps {
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   type?: string;
   padding?: string;
+  margin?: string;
   name?: string;
   isError?: boolean;
   maxLength?: number;
@@ -26,6 +28,7 @@ const Input = ({
   fontSize = '1.6rem',
   fontWeight = '600',
   fontColor = Black,
+  placeHolderColor = Grey4,
   value,
   placeholder,
   onChange,
@@ -33,6 +36,7 @@ const Input = ({
   onFocus,
   type = 'text',
   padding = '',
+  margin = '',
   name,
   isError = false,
   maxLength,
@@ -45,6 +49,7 @@ const Input = ({
       fontSize={fontSize}
       fontWeight={fontWeight}
       fontColor={fontColor}
+      placeHolderColor={placeHolderColor}
       value={value}
       placeholder={placeholder}
       onChange={onChange}
@@ -52,6 +57,7 @@ const Input = ({
       onFocus={onFocus}
       type={type}
       padding={padding}
+      margin={margin}
       name={name}
       isError={isError}
       maxLength={maxLength}
@@ -65,8 +71,10 @@ const StyledInput = styled.input<{
   backgroundColor: string;
   fontColor: string;
   fontSize: string;
+  placeHolderColor: string;
   fontWeight: string;
   padding: string;
+  margin: string;
   isError: boolean;
 }>`
   border-radius: 10px;
@@ -82,6 +90,7 @@ const StyledInput = styled.input<{
   color: ${({ fontColor }) => fontColor};
   text-indent: 15px;
   padding: ${({ padding }) => padding};
+  margin: ${({ margin }) => margin};
   &:focus {
     outline: none;
   }
@@ -89,6 +98,7 @@ const StyledInput = styled.input<{
   &::placeholder {
     font-size: ${({ fontSize }) => fontSize};
     font-weight: ${({ fontWeight }) => fontWeight};
+    color: ${({ placeHolderColor }) => placeHolderColor};
   }
 `;
 

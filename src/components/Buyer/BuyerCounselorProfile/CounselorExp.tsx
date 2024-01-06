@@ -16,6 +16,7 @@ export const CounselorExp = ({ experience }: CounselorExpProps) => {
 };
 const Wrapper = styled.div`
   padding: 1.2rem 2rem 3rem 2rem;
+  margin-bottom: 5.2rem;
 `;
 const ExpBox = styled.div`
   padding: 1.6rem;
