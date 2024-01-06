@@ -129,6 +129,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
+    border-bottom: 1px solid ${Grey6};
   }
   .select {
     display: flex;
