@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { consultTypeList } from 'utils/constant';
 import { useRecoilValue } from 'recoil';
-import { isModalOpenState } from 'utils/atom';
+// import { isSortModalOpenState } from 'utils/atom';
 interface ReadyConsultCardProps {
   index: number;
   counselorId: number;
@@ -58,14 +58,14 @@ export const ReadyConsultCard = ({
   //가능한 상담방식
   let availableConsult: string = consultTypeList[consultType];
   //상담사 list에서 modal이 켜져있다면 onClick 발생 X
-  const isModalOpen = useRecoilValue(isModalOpenState);
+  // const isModalOpen = useRecoilValue(isModalOpenState);
   return (
     <Wrapper>
       <UpperWrapper
         onClick={() => {
-          if (isModalOpen === false) {
-            navigate('/buyer/profile/' + counselorId);
-          }
+          // if (isModalOpen === false) {
+          navigate('/buyer/profile/' + counselorId);
+          // }
         }}
       >
         <TagWrapper>
@@ -77,9 +77,9 @@ export const ReadyConsultCard = ({
       </UpperWrapper>
       <LowerWrapper
         onClick={() => {
-          if (isModalOpen === false) {
-            navigate('/buyer/profile/' + counselorId);
-          }
+          // if (isModalOpen === false) {
+          navigate('/buyer/profile/' + counselorId);
+          // }
         }}
       >
         <Characters
@@ -101,19 +101,19 @@ export const ReadyConsultCard = ({
         {bookmarkStates[index] ? (
           <BookMarkIcon
             onClick={(e: React.MouseEvent<HTMLElement>) => {
-              if (isModalOpen === false) {
-                e.stopPropagation();
-                handleBookmark();
-              }
+              // if (isModalOpen === false) {
+              e.stopPropagation();
+              handleBookmark();
+              // }
             }}
           />
         ) : (
           <NoneBookMarkIcon
             onClick={(e: React.MouseEvent<HTMLElement>) => {
-              if (isModalOpen === false) {
-                e.stopPropagation();
-                handleBookmark();
-              }
+              // if (isModalOpen === false) {
+              e.stopPropagation();
+              handleBookmark();
+              // }
             }}
           />
         )}
@@ -143,9 +143,9 @@ export const ReadyConsultCard = ({
       ) : null}
       <ToggleBar
         onClick={() => {
-          if (isModalOpen === false) {
-            setToggle(!toggle);
-          }
+          // if (isModalOpen === false) {
+          setToggle(!toggle);
+          // }
         }}
       >
         {toggle ? <UpIcon /> : <DownIcon />}
@@ -155,7 +155,6 @@ export const ReadyConsultCard = ({
 };
 const Wrapper = styled.div`
   width: 89%;
-  background-color: ${Grey6};
   border-top-left-radius: 0.8rem;
   border-top-right-radius: 0.8rem;
   margin-bottom: 0.9rem;
@@ -164,6 +163,7 @@ const UpperWrapper = styled.div`
   height: 10rem;
   border-bottom: 1px solid ${White};
   cursor: pointer;
+  background-color: ${Grey6};
 `;
 const TagWrapper = styled.div`
   display: flex;
@@ -177,6 +177,7 @@ const LowerWrapper = styled.div`
   gap: 0.8rem;
   position: relative;
   cursor: pointer;
+  background-color: ${Grey6};
   .row1 {
     display: flex;
     align-items: center;
@@ -204,6 +205,7 @@ const NoneBookMarkIcon = styled(NoneBookMark)`
 const ToggleWrapper = styled.div`
   height: 11rem;
   padding: 1rem 2rem;
+  background-color: ${Grey6};
   .row1 {
     display: flex;
     gap: 6.1rem;
