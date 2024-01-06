@@ -4,15 +4,15 @@ import { useRecoilValue } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
-import { isSortModalOpenState } from 'utils/atom';
+import { isConsultModalOpenState } from 'utils/atom';
 interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
 }
-//최근순 인기순 별점순 모달
-export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
+//최근순 읽지않은순 modal
+export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
   //modal 여부
-  const isModalOpen = useRecoilValue(isSortModalOpenState);
+  const isModalOpen = useRecoilValue(isConsultModalOpenState);
   //여기서 unmount 시 sortType 바꾸고 새로 request
   //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
   const [modalSortType, setModalSortType] = useState<number>(sortType);
@@ -49,26 +49,11 @@ export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
       >
         {modalSortType === 1 ? (
           <>
-            <Body1 color={Green}>인기순</Body1>
+            <Body1 color={Green}>읽지않은순</Body1>
             <CheckIcon />
           </>
         ) : (
-          <Body1 color={Grey1}>인기순</Body1>
-        )}
-      </div>
-      <div
-        className="row"
-        onClick={() => {
-          setModalSortType(2);
-        }}
-      >
-        {modalSortType === 2 ? (
-          <>
-            <Body1 color={Green}>별점순</Body1>
-            <CheckIcon />
-          </>
-        ) : (
-          <Body1 color={Grey1}>별점순</Body1>
+          <Body1 color={Grey1}>읽지않은순</Body1>
         )}
       </div>
     </Wrapper>
@@ -98,7 +83,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
     width: 37.5rem;
   }
   position: fixed;
-  height: 22.7rem;
+  height: 18.3rem;
   background-color: ${Grey6};
   bottom: 0;
   border-radius: 2rem 2rem 0 0;
