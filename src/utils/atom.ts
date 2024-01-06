@@ -15,3 +15,8 @@ export const sortTypeState = atom({
   key: 'sortTypeState',
   default: false,
 });
+//셰어 side searchKeywordState
+export const searchKeywordState = atom({
+  key: 'searchKeywordState',
+  default: '',
+});
