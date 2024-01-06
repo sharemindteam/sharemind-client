@@ -25,31 +25,25 @@ export const BuyerCategoryResult = () => {
     const categoryId = parseInt(id, 10);
     return (
       <Wrapper>
-        <div
-          onClick={() => {
-            if (isModalOpen === true) {
-              setIsModalOpen(false);
-            }
-          }}
-        >
-          <CategoryResultHeader categoryType={categoryId} />
-          <div className="select">
-            <div
-              className="select-wrapper"
-              onClick={() => {
-                setIsModalOpen(!isModalOpen);
-              }}
-            >
-              <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-              <Down />
-            </div>
+        <CategoryResultHeader categoryType={categoryId} />
+        <div className="select">
+          <div
+            className="select-wrapper"
+            onClick={() => {
+              setIsModalOpen(true);
+              setScrollLock(true);
+            }}
+          >
+            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+            <Down />
           </div>
-          <SearchResults />
         </div>
+        <SearchResults />
         {isModalOpen ? (
           <>
             <BackDrop
               onClick={() => {
+                //여기서 api
                 setIsModalOpen(false);
                 setScrollLock(false);
               }}
