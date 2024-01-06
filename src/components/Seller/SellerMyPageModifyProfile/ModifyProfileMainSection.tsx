@@ -5,22 +5,78 @@ import {
   Grey1,
   Grey3,
   Grey4,
+  Grey5,
   Grey6,
+  Red,
   SafeColor,
   White,
 } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check.svg';
 import { useInput } from 'hooks/useInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isIncludeSpecialLetter } from 'utils/isIncludeSpecialLetter';
-export const ModifyProfileMainSection = () => {
+import { profileDummyData } from 'utils/profileDummy';
+import { useCustomSelect } from 'hooks/useCustomSelect';
+import { Button } from 'components/Common/Button';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  isCategoryModalOpenState,
+  isStyleModalOpenState,
+  isTypeOpenModalState,
+} from 'utils/atom';
+import { categoryInputMaker } from 'utils/categoryInputmaker';
+
+interface ModifyProfileMainSectionProps {
+  selectCategory: number[];
+  selectStyle: string;
+  selectType: string[];
+}
+export const ModifyProfileMainSection = ({
+  selectCategory,
+  selectStyle,
+  selectType,
+}: ModifyProfileMainSectionProps) => {
+  const navigate = useNavigate();
   const nickname = useInput('');
+
+  const category = useCustomSelect();
+  const style = useCustomSelect();
+  const type = useCustomSelect();
+
+  // 시간 설정은 나중에....ㅠㅠ
+  const availableTime = useCustomSelect();
+
   const letterPrice = useInput('');
   const chatPrice = useInput('');
   const oneLiner = useInput('');
   const experience = useInput('');
 
+  const setIsCategoryModalOpen = useSetRecoilState(isCategoryModalOpenState);
+  const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
+  const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
+  useEffect(() => {
+    category.setViewValue(categoryInputMaker(selectCategory));
+  }, [selectCategory]);
+  useEffect(() => {
+    style.setViewValue(selectStyle);
+  }, [selectStyle]);
+  useEffect(() => {
+    type.setViewValue(selectType.join(', '));
+  }, [selectType]);
+  useEffect(() => {
+    nickname.setValue(profileDummyData.nickName);
+    // 후에 서버에 POST요청할때 serverValue를 보내줘야함. enum List 형식으로
+    category.setViewValue(profileDummyData.category);
+    style.setViewValue(profileDummyData.style);
+    type.setViewValue(profileDummyData.type);
+    availableTime.setViewValue(profileDummyData.time);
+    letterPrice.setValue(profileDummyData.letterPrice);
+    chatPrice.setValue(profileDummyData.chatPrice);
+    oneLiner.setValue(profileDummyData.oneLiner);
+    experience.setValue(profileDummyData.experience);
+  }, []);
   return (
     <ModifyProfileMainSectionWrapper>
       <ModifyProfileBox>
@@ -49,26 +105,73 @@ export const ModifyProfileMainSection = () => {
             >
               최대 10자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
-            <CheckIcon />
+            {nickname.isError ? (
+              ''
+            ) : nickname.isValid ? (
+              <CheckIcon stroke={SafeColor} />
+            ) : (
+              <CheckIcon stroke={Grey5} />
+            )}
           </ConditionMessage>
         </div>
         <div className="category">
           <ProfileInformTag>상담 카테고리</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <div
+            onClick={() => {
+              setIsCategoryModalOpen(true);
+            }}
+          >
+            <Input
+              width="100%"
+              height="4.8rem"
+              value={category.viewValue}
+              readOnly={true}
+              isCursorPointer={true}
+            />
+          </div>
         </div>
         <div className="style">
           <ProfileInformTag>상담 스타일</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <div
+            onClick={() => {
+              setIsStyleModalOpen(true);
+            }}
+          >
+            <Input
+              width="100%"
+              height="4.8rem"
+              value={style.viewValue}
+              readOnly={true}
+              isCursorPointer={true}
+            />
+          </div>
         </div>
       </ModifyProfileBox>
       <ModifyProfileBox>
         <div className="type">
           <ProfileInformTag>상담 방식</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <div
+            onClick={() => {
+              setIsTypeModalOpen(true);
+            }}
+          >
+            <Input
+              width="100%"
+              height="4.8rem"
+              value={type.viewValue}
+              readOnly={true}
+              isCursorPointer={true}
+            />
+          </div>
         </div>
         <div className="available-time">
           <ProfileInformTag>상담 가능시간</ProfileInformTag>
-          <Input width="100%" height="4.8rem" />
+          <Input
+            width="100%"
+            height="4.8rem"
+            value={availableTime.viewValue.slice(0, 26) + '...'}
+            readOnly={true}
+          />
         </div>
         <div className="price">
           {' '}
@@ -127,7 +230,13 @@ export const ModifyProfileMainSection = () => {
             >
               최대 50자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
-            <CheckIcon />
+            {oneLiner.isError ? (
+              ''
+            ) : oneLiner.isValid ? (
+              <CheckIcon stroke={SafeColor} />
+            ) : (
+              <CheckIcon stroke={Grey5} />
+            )}
           </ConditionMessage>
         </div>
         <div className="experience">
@@ -149,12 +258,30 @@ export const ModifyProfileMainSection = () => {
                   : Grey4
               }
             >
+              {experience.isError ? (
+                ''
+              ) : experience.isValid ? (
+                <CheckIcon stroke={SafeColor} />
+              ) : (
+                <CheckIcon stroke={Grey5} />
+              )}
               최대 20,000자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
             <CheckIcon />
           </ConditionMessage>
         </div>
       </ModifyProfileBox>
+      <SaveButtonWrapper>
+        <Button
+          onClick={() => {
+            navigate('/seller/mypage/modifyProfile');
+          }}
+          text="저장하기"
+          width="80%"
+          backgroundColor={Red}
+          height="5.2rem"
+        ></Button>
+      </SaveButtonWrapper>
     </ModifyProfileMainSectionWrapper>
   );
 };
@@ -164,6 +291,20 @@ const ModifyProfileMainSectionWrapper = styled.section`
   margin-top: 0.2rem;
   flex-direction: column;
   gap: 1.1rem;
+`;
+const SaveButtonWrapper = styled.button`
+  height: 5.2rem;
+  width: 100%;
+  margin-bottom: 1.6rem;
+  border-radius: 1.2rem;
+  @media (max-width: 767px) {
+    position: fixed;
+    bottom: 1rem;
+  }
+  @media (min-width: 768px) {
+    position: sticky;
+    bottom: 1rem;
+  }
 `;
 
 const ModifyProfileBox = styled.div`

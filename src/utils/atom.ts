@@ -4,6 +4,24 @@ export const isSortModalOpenState = atom({
   key: 'isSortModalOpenState',
   default: false,
 });
+//퍈매 정보 수정 페이지 : 상담 카테고리 선택 모달
+export const isCategoryModalOpenState = atom({
+  key: 'categoryModalOpenState',
+  default: false,
+});
+
+//퍈매 정보 수정 페이지 : 상담 스타일 선택 모달
+export const isStyleModalOpenState = atom({
+  key: 'isStyleModalOpenState',
+  default: false,
+});
+
+//퍈매 정보 수정 페이지 : 상담 스타일 선택 모달
+export const isTypeOpenModalState = atom({
+  key: 'isTypeOpenModalState',
+  default: false,
+});
+
 //상담페이지  최근순 읽지 않은순 modal open toggle
 export const isConsultModalOpenState = atom({
   key: 'isConsultModalOpenState',
