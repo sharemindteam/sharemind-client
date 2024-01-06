@@ -17,6 +17,7 @@ interface InputProps {
   padding?: string;
   name?: string;
   isError?: boolean;
+  maxLength?: number;
 }
 const Input = ({
   width = 'auto',
@@ -34,6 +35,7 @@ const Input = ({
   padding = '',
   name,
   isError = false,
+  maxLength,
 }: InputProps) => {
   return (
     <StyledInput
@@ -52,6 +54,7 @@ const Input = ({
       padding={padding}
       name={name}
       isError={isError}
+      maxLength={maxLength}
     />
   );
 };
@@ -79,7 +82,6 @@ const StyledInput = styled.input<{
   color: ${({ fontColor }) => fontColor};
   text-indent: 15px;
   padding: ${({ padding }) => padding};
-
   &:focus {
     outline: none;
   }
