@@ -1,10 +1,13 @@
-import { TagA2Cartegory } from 'components/Common/TagA2Cartegory';
 import { TagLetterStatus } from 'components/Common/TagLetterStatus';
-import { useState } from 'react';
 import styled from 'styled-components';
-
-export const LetterTagListSection = () => {
-  const [tagStatus, setTagStatus] = useState<number>(0);
+interface LetterTagListSectionProps {
+  tagStatus: number;
+  setTagStatus: React.Dispatch<React.SetStateAction<number>>;
+}
+export const LetterTagListSection = ({
+  tagStatus,
+  setTagStatus,
+}: LetterTagListSectionProps) => {
   return (
     <LetterTagListSectionWrapper>
       <TagLetterStatus
@@ -40,7 +43,7 @@ export const LetterTagListSection = () => {
           setTagStatus(3);
         }}
         // isActive: 태그에 따른 탭 활성화 되었는지, isSelect: 태그에 따른 탭이 선택되었는지
-        isActive={false}
+        isActive={true}
         isSelect={tagStatus === 3 ? true : false}
       />
     </LetterTagListSectionWrapper>

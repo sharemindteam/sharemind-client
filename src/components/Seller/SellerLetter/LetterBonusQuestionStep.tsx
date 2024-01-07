@@ -4,26 +4,26 @@ import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate, useParams } from 'react-router-dom';
-interface LetterQuestionStepProps {
+interface LetterBonusQuestionStepProps {
   isArrive: boolean;
   time: string;
   questionMsg: string;
 }
-export const LetterQuestionStep = ({
+export const LetterBonusQuestionStep = ({
   isArrive,
   time,
   questionMsg,
-}: LetterQuestionStepProps) => {
+}: LetterBonusQuestionStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();
   return (
-    <LetterQuestionWrapper>
+    <LetterBonusQuestionWrapper>
       {isArrive ? (
         <ArriveSection>
           <Time>{time}</Time>
           <TextField>{questionMsg}</TextField>
           <BottomButton
-            text="답안 작성하기"
+            text="추가답안 작성하기"
             onClick={() => {
               navigate(`/seller/writeLetter/${consultid}`);
             }}
@@ -32,14 +32,14 @@ export const LetterQuestionStep = ({
       ) : (
         <NotArriveSection>
           <NotArriveGraphic />
-          <NotArriveMessage>아직 질문이 도착하지 않았어요!</NotArriveMessage>
+          <NotArriveMessage>아직 추가질문이 오지 않았어요!</NotArriveMessage>
         </NotArriveSection>
       )}
-    </LetterQuestionWrapper>
+    </LetterBonusQuestionWrapper>
   );
 };
 
-const LetterQuestionWrapper = styled.section``;
+const LetterBonusQuestionWrapper = styled.section``;
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;

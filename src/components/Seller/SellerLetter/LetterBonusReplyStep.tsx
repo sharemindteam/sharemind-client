@@ -1,45 +1,50 @@
 import styled from 'styled-components';
-import { ReactComponent as NotArrive } from 'assets/icons/graphic-not-arrive.svg';
+import { ReactComponent as NotWrite } from 'assets/icons/graphic-not-write.svg';
 import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate, useParams } from 'react-router-dom';
-interface LetterQuestionStepProps {
+interface LetterBonusReplyStepProps {
   isArrive: boolean;
   time: string;
-  questionMsg: string;
+  deadline: string;
+  replyMsg: string;
 }
-export const LetterQuestionStep = ({
+export const LetterBonusReplyStep = ({
   isArrive,
   time,
-  questionMsg,
-}: LetterQuestionStepProps) => {
+  deadline,
+  replyMsg,
+}: LetterBonusReplyStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();
   return (
-    <LetterQuestionWrapper>
+    <LetterBonusReplyStepWrapper>
       {isArrive ? (
         <ArriveSection>
           <Time>{time}</Time>
-          <TextField>{questionMsg}</TextField>
+          <TextField>{replyMsg}</TextField>
+        </ArriveSection>
+      ) : (
+        <NotWriteSection>
+          <NotWriteGraphic />
+          <NotWriteMessage>아직 질문이 도착하지 않았어요!</NotWriteMessage>
+          <AlertMessage>
+            <span style={{ fontWeight: '600' }}>{deadline}</span> 이전에 <br />{' '}
+            답장을 보내주셔야 해요.
+          </AlertMessage>
           <BottomButton
-            text="답안 작성하기"
+            text="추가답안 작성하기"
             onClick={() => {
               navigate(`/seller/writeLetter/${consultid}`);
             }}
           />
-        </ArriveSection>
-      ) : (
-        <NotArriveSection>
-          <NotArriveGraphic />
-          <NotArriveMessage>아직 질문이 도착하지 않았어요!</NotArriveMessage>
-        </NotArriveSection>
+        </NotWriteSection>
       )}
-    </LetterQuestionWrapper>
+    </LetterBonusReplyStepWrapper>
   );
 };
-
-const LetterQuestionWrapper = styled.section``;
+const LetterBonusReplyStepWrapper = styled.section``;
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,18 +69,25 @@ const TextField = styled.div`
   font-weight: 400;
   line-height: 150%; /* 2.4rem */
 `;
-
-const NotArriveSection = styled.div`
+const NotWriteSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4rem;
 `;
-
-const NotArriveGraphic = styled(NotArrive)`
-  margin-top: 14.8rem;
+const AlertMessage = styled.div`
+  font-family: Pretendard;
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
 `;
-const NotArriveMessage = styled.div`
+const NotWriteGraphic = styled(NotWrite)`
+  margin-top: 16.4rem;
+`;
+const NotWriteMessage = styled.div`
   color: #000;
   text-align: center;
   font-family: Pretendard;
