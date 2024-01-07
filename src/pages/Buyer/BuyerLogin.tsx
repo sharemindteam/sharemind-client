@@ -31,9 +31,7 @@ export const BuyerLogin = () => {
             <LoginInput />
           </div>
           <div className="input-wrapper">
-            <Body1 color={Grey3} style={{ margin: '0.2rem 0' }}>
-              비밀번호
-            </Body1>
+            <Body1 color={Grey3}>비밀번호</Body1>
             <LoginInput type="password" />
           </div>
           <div className="submit-option">
