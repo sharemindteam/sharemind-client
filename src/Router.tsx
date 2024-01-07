@@ -13,7 +13,7 @@ import { SellerLetter } from 'pages/Seller/SellerLetter';
 import { SellerMypageModifyProfile } from 'pages/Seller/SellerMyPageModifyProfile';
 import { SellerMypageViewProfile } from 'pages/Seller/SellerMyPageViewProfile';
 import { SellerMypage } from 'pages/Seller/SellerMypage';
-import { SellerWriteLetter } from 'pages/Seller/SellerWriteLetter';
+import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 const Router = () => {
@@ -58,7 +58,7 @@ const Router = () => {
       {/* 답장쓰기, 추가답장쓰기*/}
       <Route
         path="/seller/writeLetter/:consultid"
-        element={<SellerWriteLetter />}
+        element={<SellerLetterWrite />}
       />
 
       <Route path="/seller/consult" element={<SellerConsult />} />
