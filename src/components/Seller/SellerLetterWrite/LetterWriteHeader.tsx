@@ -1,21 +1,18 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { Heading } from 'styles/font';
-import {
-  ModifyProfileHeader,
-  ModifyProfileHeaderWrapper,
-} from '../SellerMyPageModifyProfile/ModifyProfileHeader';
+import { ModifyProfileHeaderWrapper } from '../SellerMyPageModifyProfile/ModifyProfileHeader';
 
 export const LetterWriteHeader = () => {
   const navigate = useNavigate();
+  const { consultid } = useParams();
   return (
     <LetterWriteHeaderWrapper>
       <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
         <LeftArrowIcon
           onClick={() => {
-            navigate('/seller/mypage/viewProfile');
+            navigate(`/seller/letter/${consultid}`);
           }}
         />
       </div>

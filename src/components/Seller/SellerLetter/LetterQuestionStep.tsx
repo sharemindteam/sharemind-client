@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { ReactComponent as NotArrive } from 'assets/icons/graphic-not-arrive.svg';
 import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
-import { Button } from 'components/Common/Button';
+import { BottomButton } from '../Common/BottomButton';
+import { useNavigate, useParams } from 'react-router-dom';
 interface LetterQuestionStepProps {
   isArrive: boolean;
   time: string;
@@ -13,12 +14,20 @@ export const LetterQuestionStep = ({
   time,
   questionMsg,
 }: LetterQuestionStepProps) => {
+  const { consultid } = useParams();
+  const navigate = useNavigate();
   return (
     <LetterQuestionWrapper>
       {isArrive ? (
         <ArriveSection>
           <Time>{time}</Time>
           <TextField>{questionMsg}</TextField>
+          <BottomButton
+            text="답안 작성하기"
+            onClick={() => {
+              navigate(`/seller/writeLetter/${consultid}`);
+            }}
+          />
         </ArriveSection>
       ) : (
         <NotArriveSection>
@@ -54,15 +63,6 @@ const TextField = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 150%; /* 2.4rem */
-`;
-
-const WriteButton = styled(Button)`
-  display: flex;
-  width: 33.5rem;
-  padding: 1.6rem 3.1rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem;
 `;
 
 const NotArriveSection = styled.div`

@@ -11,7 +11,7 @@ import { ReactComponent as Char10 } from 'assets/characters/char10.svg';
 import { ReactComponent as Char11 } from 'assets/characters/char11.svg';
 import styled from 'styled-components';
 interface CharacterProps {
-  number: number;
+  number: number | undefined;
   width?: string;
   height?: string;
   padding?: string;

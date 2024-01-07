@@ -14,15 +14,18 @@ import {
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from 'components/Common/TagA2Consult';
 import { Button } from 'components/Common/Button';
+import { TagA2Cartegory } from 'components/Common/TagA2Cartegory';
 interface OngoingCounsultBoxProps {
-  consultStatus: ConsultState;
-  counselorName: string;
-  beforeMinutes: string;
-  content: string;
-  newMessageCounts: number;
-  counselorprofileStatus: number;
+  categoryStatus?: CartegoryState;
+  consultStatus?: ConsultState;
+  counselorName: string | undefined;
+  beforeMinutes: string | undefined;
+  content: string | undefined;
+  newMessageCounts: number | undefined;
+  counselorprofileStatus: number | undefined;
 }
 function OngoingCounsultBox({
+  categoryStatus,
   consultStatus,
   counselorName,
   beforeMinutes,
@@ -33,7 +36,10 @@ function OngoingCounsultBox({
   return (
     <OngoingCounsultBoxWrapper>
       <div className="flex-1">
-        <TagA2Consult tagType={consultStatus} isBuyer={false} />
+        {categoryStatus && (
+          <TagA2Cartegory tagType={categoryStatus} bgColorType={2} />
+        )}
+        {consultStatus && <TagA2Consult tagType={consultStatus} />}
         <div className="flex-1-1">
           <Name color={consultStatus === '상담 종료' ? Grey3 : Black}>
             {counselorName}
@@ -57,7 +63,7 @@ function OngoingCounsultBox({
           />
         </div>
         <Content color={consultStatus === '상담 종료' ? Grey3 : Grey1}>
-          {content.substr(0, 50) + '...'}
+          {content?.substr(0, 50) + '...'}
         </Content>
       </div>
       {consultStatus === '상담 종료' ? (
