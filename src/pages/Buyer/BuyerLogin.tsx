@@ -7,6 +7,11 @@ import Input from 'components/Common/Input';
 import { Button } from 'components/Common/Button';
 export const BuyerLogin = () => {
   const navigate = useNavigate();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    //TODO: submit handle
+    //TODO: invalid 입력 예외처리
+  };
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -17,7 +22,7 @@ export const BuyerLogin = () => {
         />
         <Heading color={Grey1}>로그인</Heading>
       </HeaderWrapper>
-      <div className="body-wrapper">
+      <BodyForm onSubmit={handleSubmit}>
         <div className="id-wrapper">
           <Body1 color={Grey3}>아이디(이메일)</Body1>
           <Input margin="0.4rem 0" width="33.5rem" height="4.8rem" />
@@ -34,20 +39,21 @@ export const BuyerLogin = () => {
         <div className="submit-option">
           <Button text="로그인" width="33.5rem" height="5.2rem" />
           <div className="underline-option">
-            <UnderlineText>회원가입</UnderlineText>
+            <UnderlineText
+              onClick={() => {
+                navigate('/signup');
+              }}
+            >
+              회원가입
+            </UnderlineText>
             <UnderlineText>아이디/비밀번호 찾기</UnderlineText>
           </div>
         </div>
-      </div>
+      </BodyForm>
     </Wrapper>
   );
 };
 const Wrapper = styled.div`
-  .body-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
   .id-wrapper {
     display: flex;
     padding: 0.8rem 2rem;
@@ -68,6 +74,11 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
   }
+`;
+const BodyForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const HeaderWrapper = styled.div`
   height: 5.2rem;

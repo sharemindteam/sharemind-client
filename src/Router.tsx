@@ -7,6 +7,7 @@ import { BuyerLogin } from 'pages/Buyer/BuyerLogin';
 import { BuyerMypage } from 'pages/Buyer/BuyerMypage';
 import { BuyerSearch } from 'pages/Buyer/BuyerSearch';
 import { BuyerSearchResult } from 'pages/Buyer/BuyerSearchResult';
+import { BuyerSignup } from 'pages/Buyer/BuyerSignup';
 import { SellerCaculateManagement } from 'pages/Seller/SellerCalculateManagement';
 import { SellerConsult } from 'pages/Seller/SellerConsult';
 import { SellerHome } from 'pages/Seller/SellerHome';
@@ -49,6 +50,7 @@ const Router = () => {
       <Route path="/buyer/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/buyer/mypage" element={<BuyerMypage />} />
       <Route path="/login" element={<BuyerLogin />} />
+      <Route path="/signup" element={<BuyerSignup />} />
       <Route path="/seller" element={<SellerHome />} />
       {/* 판매자 : 상담 */}
 
