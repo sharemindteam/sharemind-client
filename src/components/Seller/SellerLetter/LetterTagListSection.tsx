@@ -50,7 +50,8 @@ export const LetterTagListSection = () => {
 const LetterTagListSectionWrapper = styled.div`
   display: flex;
   height: 5rem;
-  align-items:center;
+  align-items: center;
   margin-left: 2rem;
   gap: 1.2rem;
+  border-bottom: 1px solid var(--Greyscale-Grey-6, #f6f6fa);
 `;

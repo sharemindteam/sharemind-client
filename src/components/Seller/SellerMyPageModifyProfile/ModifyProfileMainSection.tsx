@@ -27,6 +27,7 @@ import {
   isTypeOpenModalState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
+import { BottomButton } from '../Common/BottomButton';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
@@ -272,15 +273,12 @@ export const ModifyProfileMainSection = ({
         </div>
       </ModifyProfileBox>
       <SaveButtonWrapper>
-        <Button
+        <BottomButton
+          text="저장하기"
           onClick={() => {
             navigate('/seller/mypage/modifyProfile');
           }}
-          text="저장하기"
-          width="80%"
-          backgroundColor={Red}
-          height="5.2rem"
-        ></Button>
+        />
       </SaveButtonWrapper>
     </ModifyProfileMainSectionWrapper>
   );

@@ -3,11 +3,15 @@ import styled from 'styled-components';
 import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { Heading } from 'styles/font';
-export const ModifyProfileHeader = () => {
-  const navigate = useNavigate();
+import {
+  ModifyProfileHeader,
+  ModifyProfileHeaderWrapper,
+} from '../SellerMyPageModifyProfile/ModifyProfileHeader';
 
+export const LetterWriteHeader = () => {
+  const navigate = useNavigate();
   return (
-    <ModifyProfileHeaderWrapper>
+    <LetterWriteHeaderWrapper>
       <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
         <LeftArrowIcon
           onClick={() => {
@@ -15,17 +19,9 @@ export const ModifyProfileHeader = () => {
           }}
         />
       </div>
-      <Heading>프로필 수정</Heading>
-    </ModifyProfileHeaderWrapper>
+      <Heading>답장 쓰기</Heading>
+    </LetterWriteHeaderWrapper>
   );
 };
 
-export const ModifyProfileHeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: ${White};
-  justify-content: center;
-  height: 5.2rem;
-  position: sticky;
-  top: 0;
-`;
+const LetterWriteHeaderWrapper = styled(ModifyProfileHeaderWrapper)``;

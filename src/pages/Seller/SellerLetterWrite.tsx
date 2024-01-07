@@ -1,9 +1,9 @@
-import { LetterHeader } from "components/Seller/SellerLetter/LetterHeader";
+import { LetterWriteHeader } from "components/Seller/SellerLetterWrite/LetterWriteHeader";
 
 export const SellerLetterWrite = () => {
   return (
     <>
-      <LetterHeader />
+      <LetterWriteHeader />
     </>
   );
 };
