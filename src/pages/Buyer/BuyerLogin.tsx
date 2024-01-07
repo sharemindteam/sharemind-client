@@ -22,63 +22,63 @@ export const BuyerLogin = () => {
         />
         <Heading color={Grey1}>로그인</Heading>
       </HeaderWrapper>
-      <BodyForm onSubmit={handleSubmit}>
-        <div className="id-wrapper">
-          <Body1 color={Grey3}>아이디(이메일)</Body1>
-          <Input margin="0.4rem 0" width="33.5rem" height="4.8rem" />
-        </div>
-        <div className="pw-wrapper">
-          <Body1 color={Grey3}>비밀번호</Body1>
-          <Input
-            type="password"
-            margin="0.4rem 0"
-            width="33.5rem"
-            height="4.8rem"
-          />
-        </div>
-        <div className="submit-option">
-          <Button text="로그인" width="33.5rem" height="5.2rem" />
-          <div className="underline-option">
-            <UnderlineText
-              onClick={() => {
-                navigate('/signup');
-              }}
-            >
-              회원가입
-            </UnderlineText>
-            <UnderlineText>아이디/비밀번호 찾기</UnderlineText>
+      <form onSubmit={handleSubmit}>
+        <div className="body-wrapper">
+          <div className="input-wrapper">
+            <Body1 color={Grey3} style={{ margin: '0.2rem 0' }}>
+              아이디(이메일)
+            </Body1>
+            <LoginInput />
+          </div>
+          <div className="input-wrapper">
+            <Body1 color={Grey3} style={{ margin: '0.2rem 0' }}>
+              비밀번호
+            </Body1>
+            <LoginInput type="password" />
+          </div>
+          <div className="submit-option">
+            <Button text="로그인" width="33.5rem" height="5.2rem" />
+            <div className="underline-option">
+              <UnderlineText
+                onClick={() => {
+                  navigate('/signup');
+                }}
+              >
+                회원가입
+              </UnderlineText>
+              <UnderlineText>아이디/비밀번호 찾기</UnderlineText>
+            </div>
           </div>
         </div>
-      </BodyForm>
+      </form>
     </Wrapper>
   );
 };
 const Wrapper = styled.div`
-  .id-wrapper {
+  .body-wrapper {
     display: flex;
-    padding: 0.8rem 2rem;
     flex-direction: column;
+    align-items: center;
+    margin-top: 1.2rem;
+    padding: 0.8rem 2rem;
   }
-  .pw-wrapper {
+  .input-wrapper {
     display: flex;
-    padding: 0.8rem 2rem;
     flex-direction: column;
+    padding: 0.8rem 0;
   }
   .submit-option {
     margin-top: 2.8rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1.4rem;
   }
   .underline-option {
     display: flex;
+    width: 100%;
     justify-content: space-between;
   }
-`;
-const BodyForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 const HeaderWrapper = styled.div`
   height: 5.2rem;
@@ -97,6 +97,31 @@ const BackIcon = styled(Back)`
   top: 1.2rem;
   left: 2rem;
   cursor: pointer;
+`;
+
+const LoginInput = styled.input<{
+  type?: string;
+  isError?: boolean;
+}>`
+  border-radius: 1rem;
+  border: ${(props) => (props.isError ? '1px solid #ff002e' : '')};
+  width: 33.5rem;
+  height: 4.8rem;
+  margin: 0.4rem 0;
+  background-color: ${Grey6};
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 150%;
+  font: ${(props) => props.type === 'password' && 'small-caption'};
+  color: ${Grey1};
+  text-indent: 1.5rem;
+  &::placeholder {
+  }
+  &:focus {
+    outline: none;
+  }
+  box-sizing: border-box;
 `;
 const UnderlineText = styled.div`
   color: ${Grey4};
