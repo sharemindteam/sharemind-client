@@ -61,7 +61,14 @@ export const BuyerMypage = () => {
               로그인/회원가입 후 이용해주세요.
             </Body3>
           </div>
-          <Button text="로그인 및 회원가입" width="33.5rem" height="5.2rem" />
+          <Button
+            text="로그인 및 회원가입"
+            width="33.5rem"
+            height="5.2rem"
+            onClick={() => {
+              navigate('/login');
+            }}
+          />
           <div className="find-id">
             <Body2 color={Grey4} style={{ cursor: 'pointer' }}>
               아이디/비밀번호 찾기
