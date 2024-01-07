@@ -113,9 +113,8 @@ const LoginInput = styled.input<{
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 150%;
-  font: ${(props) => props.type === 'password' && 'small-caption'};
   color: ${Grey1};
-  text-indent: 1.5rem;
+  text-indent: 0.5rem;
   &::placeholder {
   }
   &:focus {
