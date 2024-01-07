@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grey3, Grey6 } from 'styles/color';
 import { Button } from 'components/Common/Button';
+import { useNavigate } from 'react-router-dom';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -11,7 +12,11 @@ interface LetterConsultInform {
   newMessageCounts: number | undefined;
   counselorprofileStatus: number | undefined;
 }
-export const LetterWriteMainSection = () => {
+export const LetterWriteMainSection = ({
+  setIsSend,
+}: {
+  setIsSend: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [consultInform, setConsultInform] = useState<LetterConsultInform>({
     categoryStatus: undefined,
     counselorName: undefined,
@@ -31,6 +36,14 @@ export const LetterWriteMainSection = () => {
       newMessageCounts: 0,
     });
   }, []);
+
+  const [replyText, setReplyText] = useState<string>('');
+  //서버와 연결. 임시저장,제출하기
+  const handleSaveReply = () => {};
+  const handlePostReply = () => {
+    setIsSend(true);
+  };
+
   return (
     <LetterWriteMainSectionWrapper>
       <OngoingCounsultBox
@@ -42,10 +55,16 @@ export const LetterWriteMainSection = () => {
         newMessageCounts={consultInform.newMessageCounts}
       />
 
-      <TextArea placeholder="답장 작성 시 서비스 운영정책을 지켜주세요." />
+      <TextArea
+        placeholder="답장 작성 시 서비스 운영정책을 지켜주세요."
+        value={replyText}
+        onChange={(e) => {
+          setReplyText(e.target.value);
+        }}
+      />
       <BottomButtonGroup>
         <SaveButton>임시저장</SaveButton>
-        <PostButton>제출하기</PostButton>
+        <PostButton onClick={handlePostReply}>제출하기</PostButton>
       </BottomButtonGroup>
     </LetterWriteMainSectionWrapper>
   );
