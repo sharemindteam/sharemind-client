@@ -14,7 +14,12 @@ export const TagLetterStatus = ({
   onClick,
 }: TagLetterStatusProps) => {
   return (
-    <Wrapper isSelect={isSelect} isActive={isActive} onClick={onClick}>
+    <Wrapper
+      isSelect={isSelect}
+      isActive={isActive}
+      onClick={onClick}
+      disabled={!isActive}
+    >
       <Caption2 color={isSelect ? White : isActive ? Black : White}>
         {tagType}
       </Caption2>
@@ -22,7 +27,7 @@ export const TagLetterStatus = ({
   );
 };
 
-const Wrapper = styled.div<{
+const Wrapper = styled.button<{
   isActive: boolean | undefined;
   isSelect: boolean | undefined;
 }>`
