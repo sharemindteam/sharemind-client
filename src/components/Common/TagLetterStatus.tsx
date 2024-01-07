@@ -1,28 +1,36 @@
 import styled from 'styled-components';
-import { Green, Grey5, White } from 'styles/color';
+import { Black, Green, Grey5, White } from 'styles/color';
 import { Caption2 } from 'styles/font';
 interface TagLetterStatusProps {
   tagType: LetterState;
-  isActive: boolean;
+  isActive?: boolean;
+  isSelect?: boolean;
+  onClick: any;
 }
 export const TagLetterStatus = ({
   tagType,
+  isSelect,
   isActive,
+  onClick,
 }: TagLetterStatusProps) => {
-  <Wrapper background={isActive ? `${Green}` : `${Grey5}`}>
-    <Caption2>{tagType}</Caption2>
-  </Wrapper>;
+  return (
+    <Wrapper isSelect={isSelect} isActive={isActive} onClick={onClick}>
+      <Caption2 color={isSelect ? White : isActive ? Black : White}>
+        {tagType}
+      </Caption2>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div<{
-  background: string;
+  isActive: boolean | undefined;
+  isSelect: boolean | undefined;
 }>`
   display: flex;
   justify-content: center;
   cursor: pointer;
-  color: ${White};
   align-items: center;
-  padding: 0.4rem 0.8rem;
+  padding: 0.8rem 1.6rem;
   border-radius: 0.8rem;
-  background-color: ${(props) => props.background};
+  background-color: ${(props) => (props.isSelect ? Green : Grey5)};
 `;
