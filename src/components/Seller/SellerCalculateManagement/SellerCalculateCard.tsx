@@ -1,6 +1,6 @@
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Grey3, Grey6, Green, Whit, Greene, White } from 'styles/color';
+import { Grey3, Grey6, Green,  White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 
 interface SellerCalulateCardProps {
