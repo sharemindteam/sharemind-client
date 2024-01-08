@@ -38,9 +38,15 @@ function OngoingCounsultBox({
     <OngoingCounsultBoxWrapper>
       <div className="flex-1">
         {categoryStatus && (
-          <TagA2Cartegory tagType={categoryStatus} bgColorType={2} />
+          <div className="button">
+            <TagA2Cartegory tagType={categoryStatus} bgColorType={2} />
+          </div>
         )}
-        {consultStatus && <TagA2Consult tagType={consultStatus} />}
+        {consultStatus && (
+          <div className="button">
+            <TagA2Consult tagType={consultStatus} />
+          </div>
+        )}
         <div className="flex-1-1">
           <Name color={consultStatus === '상담 종료' ? Grey3 : Black}>
             {counselorName}
@@ -59,6 +65,7 @@ function OngoingCounsultBox({
         >
           <Characters
             number={counselorprofileStatus}
+            padding="0.4rem 0.4rem 0.3rem 0.3rem"
             width="5.4rem"
             height="5.1rem"
           />
@@ -98,6 +105,11 @@ const OngoingCounsultBoxWrapper = styled.div`
   border-radius: 0.4rem;
   background-color: ${Grey6};
   margin: 0 2rem;
+  .button{
+    width: 6.1rem;
+    display:flex;
+    justify-content:center;
+  }
   .flex-1 {
     display: flex;
     align-items: center;

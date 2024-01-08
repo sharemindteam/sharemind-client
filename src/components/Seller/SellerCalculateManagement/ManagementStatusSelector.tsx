@@ -1,6 +1,6 @@
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Black, Grey3, Grey5, Grey6, Red, White } from 'styles/color';
+import { Black, Grey3, Grey5, Grey6, Green, Whit, Greene, White } from 'styles/color';
 import { Button2 } from 'styles/font';
 import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow.svg';
 
@@ -16,7 +16,7 @@ export const ManagementStatusSelector = ({
     <ManagementStatusSelectorWrapper>
       <Button
         text="완료"
-        backgroundColor={manageStatus === '완료' ? Red : Grey5}
+        backgroundColor={manageStatus === '완료' ? Green : Grey5}
         onClick={() => {
           setManageStatus('완료');
         }}
@@ -27,7 +27,7 @@ export const ManagementStatusSelector = ({
       />
       <Button
         text="진행 중"
-        backgroundColor={manageStatus === '진행 중' ? Red : Grey5}
+        backgroundColor={manageStatus === '진행 중' ? Green : Grey5}
         onClick={() => {
           setManageStatus('진행 중');
         }}
@@ -38,7 +38,7 @@ export const ManagementStatusSelector = ({
       />
       <Button
         text="정산 예정"
-        backgroundColor={manageStatus === '정산 예정' ? Red : Grey5}
+        backgroundColor={manageStatus === '정산 예정' ? Green : Grey5}
         onClick={() => {
           setManageStatus('정산 예정');
         }}
