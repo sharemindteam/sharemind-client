@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import {
   Black,
+  Green,
   Grey1,
   Grey2,
   Grey3,
@@ -139,6 +140,6 @@ const NewMessageCounts = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${Red};
+  background-color: ${Green};
 `;
 export default OngoingCounsultBox;

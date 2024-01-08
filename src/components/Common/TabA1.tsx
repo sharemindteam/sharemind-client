@@ -19,7 +19,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
     if (isBuyer === true) {
       setColor(Green);
     } else {
-      setColor(Red);
+      setColor(Green);
     }
   }, []);
   return (
@@ -37,7 +37,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         {tabState === 1 ? (
           <>
             <Subtitle color={color}>홈</Subtitle>
-            {isBuyer ? <UnderLineBuyer /> : <UnderLineSeller />}
+            <UnderLineBuyer />
           </>
         ) : (
           <Subtitle color={Black}>홈</Subtitle>
