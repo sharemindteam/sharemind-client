@@ -24,6 +24,7 @@ interface OngoingCounsultBoxProps {
   content: string | undefined;
   newMessageCounts: number | undefined;
   counselorprofileStatus: number | undefined;
+  onClick?: () => void;
 }
 function OngoingCounsultBox({
   categoryStatus,
@@ -33,9 +34,10 @@ function OngoingCounsultBox({
   counselorprofileStatus,
   content,
   newMessageCounts = 0,
+  onClick,
 }: OngoingCounsultBoxProps) {
   return (
-    <OngoingCounsultBoxWrapper>
+    <OngoingCounsultBoxWrapper onClick={onClick}>
       <div className="flex-1">
         {categoryStatus && (
           <div className="button">

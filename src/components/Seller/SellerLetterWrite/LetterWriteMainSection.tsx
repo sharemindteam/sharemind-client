@@ -11,11 +11,16 @@ interface LetterConsultInform {
   content: string | undefined;
   newMessageCounts: number | undefined;
   counselorprofileStatus: number | undefined;
+  date: string | undefined;
 }
 export const LetterWriteMainSection = ({
   setIsSend,
+  isViewQuestion,
+  setIsViewQuestion,
 }: {
   setIsSend: React.Dispatch<React.SetStateAction<boolean>>;
+  isViewQuestion: boolean;
+  setIsViewQuestion: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [consultInform, setConsultInform] = useState<LetterConsultInform>({
     categoryStatus: undefined,
@@ -24,6 +29,7 @@ export const LetterWriteMainSection = ({
     content: undefined,
     newMessageCounts: undefined,
     counselorprofileStatus: undefined,
+    date: undefined,
   });
 
   useEffect(() => {
@@ -32,11 +38,12 @@ export const LetterWriteMainSection = ({
       counselorName: '슬픈 토끼',
       beforeMinutes: '5분 전',
       counselorprofileStatus: 1,
-      content: '안녕하세요...',
       newMessageCounts: 0,
+      content:
+        'ㅋㅋㅋㅋㅋ 실험입니다 궁금해서 줄넘는지 써보고있어요 하하하 키키키 어떻게되나요',
+      date: '2023년 10월 23일 오후 12시 34분',
     });
   }, []);
-
   const [replyText, setReplyText] = useState<string>('');
   //서버와 연결. 임시저장,제출하기
   const handleSaveReply = () => {};
@@ -46,26 +53,38 @@ export const LetterWriteMainSection = ({
 
   return (
     <LetterWriteMainSectionWrapper>
-      <OngoingCounsultBox
-        counselorName={consultInform.counselorName}
-        categoryStatus={consultInform.categoryStatus}
-        beforeMinutes={consultInform.beforeMinutes}
-        counselorprofileStatus={consultInform.counselorprofileStatus}
-        content={consultInform.content}
-        newMessageCounts={consultInform.newMessageCounts}
-      />
+      {isViewQuestion ? (
+        <>
+          <QuestionDate>{consultInform?.date}</QuestionDate>
+          <UnfoldedTextField>{consultInform?.content}</UnfoldedTextField>
+        </>
+      ) : (
+        <>
+          <OngoingCounsultBox
+            counselorName={consultInform.counselorName}
+            categoryStatus={consultInform.categoryStatus}
+            beforeMinutes={consultInform.beforeMinutes}
+            counselorprofileStatus={consultInform.counselorprofileStatus}
+            content={consultInform.content}
+            newMessageCounts={consultInform.newMessageCounts}
+            onClick={() => {
+              setIsViewQuestion(true);
+            }}
+          />
 
-      <TextArea
-        placeholder="답장 작성 시 서비스 운영정책을 지켜주세요."
-        value={replyText}
-        onChange={(e) => {
-          setReplyText(e.target.value);
-        }}
-      />
-      <BottomButtonGroup>
-        <SaveButton>임시저장</SaveButton>
-        <PostButton onClick={handlePostReply}>제출하기</PostButton>
-      </BottomButtonGroup>
+          <TextArea
+            placeholder="답장 작성 시 서비스 운영정책을 지켜주세요."
+            value={replyText}
+            onChange={(e) => {
+              setReplyText(e.target.value);
+            }}
+          />
+          <BottomButtonGroup>
+            <SaveButton>임시저장</SaveButton>
+            <PostButton onClick={handlePostReply}>제출하기</PostButton>
+          </BottomButtonGroup>
+        </>
+      )}
     </LetterWriteMainSectionWrapper>
   );
 };
@@ -76,6 +95,31 @@ const LetterWriteMainSectionWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 2.4rem */
+`;
+
+const QuestionDate = styled.div`
+  color: var(--Greyscale-Grey-3, #95959b);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 155%; /* 2.17rem */
+`;
+
+const UnfoldedTextField = styled.div`
+  width: calc(100% - 8rem);
+  margin: 0 auto;
+  min-height: 55.6rem;
+  border-radius: 1.2rem;
+  background: var(--Greyscale-Grey-6, #f6f6fa);
+  padding: 1.6rem;
+  color: var(--greyscale-grey-1-text, #33333a);
   font-family: Pretendard;
   font-size: 1.6rem;
   font-style: normal;
