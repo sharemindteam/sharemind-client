@@ -99,7 +99,7 @@ const StyledInput = styled.input<{
   font-weight: ${({ fontWeight }) => fontWeight};
   line-height: 150%;
   color: ${({ fontColor }) => fontColor};
-  text-indent: 0.5rem;
+  text-indent: 1rem;
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
   box-sizing: ${({ isBoxSizing }) =>

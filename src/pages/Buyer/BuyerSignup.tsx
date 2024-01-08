@@ -2,16 +2,7 @@ import styled from 'styled-components';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { ReactComponent as Check } from 'assets/icons/icon-signup-check.svg';
 import { Body1, Button2, Caption1, Caption2, Heading } from 'styles/font';
-import {
-  Green,
-  Grey1,
-  Grey3,
-  Grey4,
-  Grey5,
-  Grey6,
-  Red,
-  White,
-} from 'styles/color';
+import { Green, Grey1, Grey3, Grey4, Grey5, Red, White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import Input from 'components/Common/Input';
 import { useEffect, useState } from 'react';
@@ -23,6 +14,8 @@ export const BuyerSignup = () => {
   const [idValid, setIdValid] = useState<boolean>(false);
   //인증번호 valid 여부
   const [verifyValid, setVerifyValid] = useState<boolean>(false);
+  //최종 다음 valid 여부
+  const [valid, setValid] = useState<boolean>(false);
   //인증 전송됨 여부
   const [isSended, setIsSended] = useState<boolean>(false);
   //id input temp
@@ -32,16 +25,17 @@ export const BuyerSignup = () => {
   //verify button text
   const [verifyText, setVerifyText] = useState<string>('인증 요청');
   useEffect(() => {
+    //TODO:(아이디) 추후 valid 체크 후 true처리
+    //현재는 입력만 들어오면 valid true
     if (input.trim() !== '') {
-      //보낼 수 있게
-      if (isSended === false) {
+      if (idValid === false) {
         setIdValid(true);
       }
     } else {
       setIdValid(false);
     }
+    //TODO:(인증번호) 추후 valid 체크 후 true처리
     if (verifyInput.trim() !== '') {
-      //보낼 수 있게
       if (verifyValid === false) {
         setVerifyValid(true);
       }
@@ -49,11 +43,18 @@ export const BuyerSignup = () => {
       setVerifyValid(false);
     }
   }, [input, verifyInput]);
-
+  // 다음 button valid 체크
+  useEffect(() => {
+    if (idValid && verifyValid) {
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+  }, [idValid, verifyValid]);
   //5분 타이머
-  const [remainingTime, setRemainingTime] = useState<number>(5 * 60); // 초 단위로 5분 설정
-  const [minutes, setMinutes] = useState<number>(5);
-  const [seconds, setSeconds] = useState<number>(6);
+  const [remainingTime, setRemainingTime] = useState<number>(0); // 초 단위로 5분 설정
+  const [minutes, setMinutes] = useState<number>(0);
+  const [seconds, setSeconds] = useState<number>(0);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -101,6 +102,7 @@ export const BuyerSignup = () => {
                   if (idValid === true) {
                     setIsSended(true);
                     setVerifyText('재발송');
+                    setRemainingTime(5 * 60);
                   }
                 }}
               >
@@ -145,7 +147,7 @@ export const BuyerSignup = () => {
           text="다음"
           width="33.5rem"
           height="5.2rem"
-          isActive={verifyValid}
+          isActive={valid}
           onClick={() => {
             navigate('/signup/setting');
           }}
