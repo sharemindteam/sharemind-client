@@ -5,6 +5,7 @@ interface FontProps {
   color?: string;
   padding?: string;
   margin?: string;
+  underline?: boolean;
 }
 export const Heading = styled.div<FontProps>`
   font-family: Pretendard;
@@ -14,6 +15,7 @@ export const Heading = styled.div<FontProps>`
   line-height: 100%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
 export const Subtitle = styled.div<FontProps>`
   font-family: Pretendard;
@@ -23,6 +25,7 @@ export const Subtitle = styled.div<FontProps>`
   line-height: 135%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
 export const Body1 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -32,6 +35,7 @@ export const Body1 = styled.div<FontProps>`
   line-height: 150%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
 export const Body2 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -41,6 +45,7 @@ export const Body2 = styled.div<FontProps>`
   line-height: 150%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
 export const Body3 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -50,6 +55,7 @@ export const Body3 = styled.div<FontProps>`
   line-height: 155%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
 export const Button1 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -59,6 +65,7 @@ export const Button1 = styled.div<FontProps>`
   line-height: 125%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
 export const Button2 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -68,6 +75,7 @@ export const Button2 = styled.div<FontProps>`
   line-height: 125%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
 export const Caption1 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -77,6 +85,7 @@ export const Caption1 = styled.div<FontProps>`
   line-height: 140%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
 export const Caption2 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -86,4 +95,5 @@ export const Caption2 = styled.div<FontProps>`
   line-height: 140%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
 `;

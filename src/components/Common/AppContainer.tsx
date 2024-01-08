@@ -16,11 +16,10 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   const [isGray, setIsGray] = useState(false);
   useEffect(() => {
     if (
-      pathname ===
-      ('/seller/mypage/viewProfile' ||
-        '/seller/mypage' ||
-        '/buyer/mypage' ||
-        '/seller/mypage/modifyProfile')
+      pathname === '/seller/mypage/viewProfile' ||
+      pathname === '/seller/mypage' ||
+      pathname === '/buyer/mypage' ||
+      pathname === '/seller/mypage/modifyProfile'
     ) {
       setIsGray(true);
     } else {

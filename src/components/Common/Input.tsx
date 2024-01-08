@@ -22,6 +22,7 @@ interface InputProps {
   maxLength?: number;
   readOnly?: boolean;
   isCursorPointer?: boolean;
+  isBoxSizing?: boolean;
 }
 const Input = ({
   width = 'auto',
@@ -44,6 +45,7 @@ const Input = ({
   maxLength,
   readOnly = false,
   isCursorPointer = false,
+  isBoxSizing = false,
 }: InputProps) => {
   return (
     <StyledInput
@@ -67,6 +69,7 @@ const Input = ({
       maxLength={maxLength}
       readOnly={readOnly}
       isCursorPointer={isCursorPointer}
+      isBoxSizing={isBoxSizing}
     />
   );
 };
@@ -83,6 +86,7 @@ const StyledInput = styled.input<{
   margin: string;
   isError: boolean;
   isCursorPointer: boolean;
+  isBoxSizing: boolean;
 }>`
   border-radius: 10px;
   border: ${(props) => (props.isError ? '1px solid #ff002e' : '')};
@@ -95,9 +99,11 @@ const StyledInput = styled.input<{
   font-weight: ${({ fontWeight }) => fontWeight};
   line-height: 150%;
   color: ${({ fontColor }) => fontColor};
-  text-indent: 15px;
+  text-indent: 0.5rem;
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
+  box-sizing: ${({ isBoxSizing }) =>
+    isBoxSizing ? 'border-box' : 'content-box'};
   &:focus {
     outline: none;
   }
