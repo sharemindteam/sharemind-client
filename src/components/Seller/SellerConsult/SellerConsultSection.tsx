@@ -1,4 +1,4 @@
-import { Black, Grey3, Grey5, Grey6, LightRed, Red } from 'styles/color';
+import { Black, Green, Grey3, Grey5, Grey6, LightGreen } from 'styles/color';
 import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow.svg';
 import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { Button2 } from 'styles/font';
@@ -46,7 +46,7 @@ export const SellerConsultSection = () => {
               setIsIncludeCompleteConsult(!isInclueCompleteConsult);
             }}
           >
-            <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Red} />
+            <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Green} />
             <Button2 color={Grey3}>완료된 상담 제외</Button2>
           </div>
         </div>
@@ -114,8 +114,8 @@ const ConsultType = styled.div<ConsultTypeProps>`
   font-style: normal;
   font-weight: 400;
   line-height: 110%;
-  background: ${(props) => (props.isActive ? LightRed : Grey6)};
-  color: ${(props) => (props.isActive ? Red : Black)};
+  background: ${(props) => (props.isActive ? LightGreen : Grey6)};
+  color: ${(props) => (props.isActive ? Green : Black)};
 `;
 const SortingType = styled.div`
   display: flex;

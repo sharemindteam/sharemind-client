@@ -70,7 +70,7 @@ function OngoingCounsultBox({
       {consultStatus === '상담 종료' ? (
         <Button
           text="리뷰 확인하기"
-          color={Red}
+          color={Green}
           width="100%"
           height="4.2rem"
           backgroundColor={White}

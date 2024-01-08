@@ -56,7 +56,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         {tabState === 2 ? (
           <>
             <Subtitle color={color}>상담</Subtitle>
-            {isBuyer ? <UnderLineBuyer /> : <UnderLineSeller />}
+            <UnderLineBuyer />
           </>
         ) : (
           <Subtitle color={Black}>상담</Subtitle>
@@ -66,7 +66,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         {tabState === 3 ? (
           <>
             <Subtitle color={color}>내 정보</Subtitle>
-            {isBuyer ? <UnderLineBuyer /> : <UnderLineSeller />}
+            <UnderLineBuyer />
           </>
         ) : (
           <Subtitle

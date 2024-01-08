@@ -1,7 +1,7 @@
 import { ContentTag } from 'pages/Seller/SellerHome';
 import React from 'react';
 import styled from 'styled-components';
-import { Black, Red } from 'styles/color';
+import { Black, Green } from 'styles/color';
 import { Body1, Heading } from 'styles/font';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
@@ -10,7 +10,7 @@ function OnGoingConsultSection() {
     <>
       <ContentTag>
         <Heading color={Black}>진행중인 상담</Heading>
-        <Body1 color={Red} margin="0px auto 0px 0px">
+        <Body1 color={Green} margin="0px auto 0px 0px">
           5
         </Body1>
         <RightArrow />

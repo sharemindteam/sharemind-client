@@ -59,7 +59,7 @@ export const Profile = ({
           text={isBuyer ? '판매자로 전환' : '구매자로 전환'}
           width="10.1rem"
           height="4.2rem"
-          border={'1px solid' + (isBuyer ? Green : Red)}
+          border={'1px solid' + (isBuyer ? Green : Green)}
           buttonTextType={2}
           backgroundColor={White}
           color={Black}
@@ -157,7 +157,7 @@ const ProfileInfo = styled.div`
 `;
 
 const Level = styled.div`
-  background-color: ${Red};
+  background-color: ${Green};
   border-radius: 0.8rem;
   display: flex;
   width: 4.5rem;
