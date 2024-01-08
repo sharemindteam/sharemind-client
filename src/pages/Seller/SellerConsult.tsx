@@ -4,6 +4,8 @@ import { SellerConsultSection } from 'components/Seller/SellerConsult/SellerCons
 import { useNavigate } from 'react-router-dom';
 export const SellerConsult = () => {
   const navigate = useNavigate();
+
+  
   return (
     <>
       <Header

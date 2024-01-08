@@ -23,7 +23,7 @@ export const SellerCaculateManagement = () => {
             ? '정산 중 금액 합계'
             : '예정 금액 합계'}
         </Heading>
-        <Subtitle color={Green}>100,000 원</Subtitle>
+        <Subtitle color={Red}>100,000 원</Subtitle>
       </TotalEarnMoney>
 
       <SellerCalculateCardList>

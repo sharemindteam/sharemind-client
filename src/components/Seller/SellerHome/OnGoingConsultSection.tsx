@@ -26,7 +26,7 @@ function OnGoingConsultSection() {
           consultStatus="상담 중"
           counselorName="연애상담마스터"
           beforeMinutes="8분 전"
-          content="연애상담마스터님께 고민 내용을 남겨주세요. 연애상담마스터님이 24시간"
+          content="연애상담마스터님께 고민 내용을 남겨 주세요. 연애상담마스터님이 24시간 이내 답변을 드릴 거예요."
           newMessageCounts={1}
           counselorprofileStatus={1}
         />{' '}
@@ -34,7 +34,7 @@ function OnGoingConsultSection() {
           consultStatus="질문 대기"
           counselorName="연애상담마스터"
           beforeMinutes="8분 전"
-          content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
+          content="연애상담마스터님께 고민 내용을 남겨 주세요. 연애상담마스터님이 24시간 이내 답변을 드릴 거예요."
           newMessageCounts={0}
           counselorprofileStatus={2}
         />{' '}
@@ -42,7 +42,7 @@ function OnGoingConsultSection() {
           consultStatus="상담 중"
           counselorName="연애상담마스터"
           beforeMinutes="8분 전"
-          content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
+          content="연애상담마스터님께 고민 내용을 남겨 주세요. 연애상담마스터님이 24시간 이내 답변을 드릴 거예요."
           newMessageCounts={1}
           counselorprofileStatus={3}
         />

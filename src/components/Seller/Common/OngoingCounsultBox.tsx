@@ -71,7 +71,7 @@ function OngoingCounsultBox({
           />
         </div>
         <Content color={consultStatus === '상담 종료' ? Grey3 : Grey1}>
-          {content?.substr(0, 50) + '...'}
+          {content}
         </Content>
       </div>
       {consultStatus === '상담 종료' ? (
@@ -105,10 +105,10 @@ const OngoingCounsultBoxWrapper = styled.div`
   border-radius: 0.4rem;
   background-color: ${Grey6};
   margin: 0 2rem;
-  .button{
+  .button {
     width: 6.1rem;
-    display:flex;
-    justify-content:center;
+    display: flex;
+    justify-content: center;
   }
   .flex-1 {
     display: flex;
@@ -139,7 +139,13 @@ const MinutesBefore = styled(Caption2)``;
 const Content = styled(Body3)`
   text-overflow: ellipsis;
   width: calc(100% - 9rem);
-  margin-right: 2.3rem;
+  display: -webkit-box;
+  height: 4.7rem;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  align-self: flex-end;
+  margin-bottom: 0.4rem;
+  -webkit-line-clamp: 2;
 `;
 
 const NewMessageCounts = styled.div`
