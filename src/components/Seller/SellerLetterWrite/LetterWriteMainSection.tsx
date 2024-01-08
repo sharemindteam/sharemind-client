@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import React, { useEffect, useState } from 'react';
-import { Grey3, Grey6 } from 'styles/color';
+import { Green, Grey3, Grey5, Grey6, LightGreen, White } from 'styles/color';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
+import { PostModal } from './PostModal';
+import { SaveModal } from './SaveModal';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -31,7 +33,18 @@ export const LetterWriteMainSection = ({
     counselorprofileStatus: undefined,
     date: undefined,
   });
+  // 임시저장, 전송하기 버튼 활성화여부
+  const [isActiveSaveButton, setIsActiveSaveButton] = useState(false);
+  const [isActivePostButton, setIsActivePostButton] = useState(false);
 
+  // 모달 활성화여부
+  const [isActivePostModal, setIsActivePostModal] = useState(false);
+  const [isActiveSaveModal, setIsActiveSaveModal] = useState(false);
+
+  // 답안 텍스트
+  const [replyText, setReplyText] = useState<string>('');
+
+  // 여기서 API 요청
   useEffect(() => {
     setConsultInform({
       categoryStatus: '연애갈등',
@@ -44,15 +57,33 @@ export const LetterWriteMainSection = ({
       date: '2023년 10월 23일 오후 12시 34분',
     });
   }, []);
-  const [replyText, setReplyText] = useState<string>('');
-  //서버와 연결. 임시저장,제출하기
-  const handleSaveReply = () => {};
+
+  useEffect(() => {
+    setIsActiveSaveModal(true);
+    // 후에 의존성 배열에 서버에서 fetch한값
+  }, [consultInform]);
+
+  const navigate = useNavigate();
+  //후에 서버와 연결. 임시저장,제출하기 여기에 구현
+  const handleSaveReply = () => {
+    navigate('/seller');
+  };
   const handlePostReply = () => {
     setIsSend(true);
   };
 
   return (
     <LetterWriteMainSectionWrapper>
+      {isActivePostModal && (
+        <PostModal setIsActive={setIsActivePostModal} replyText={replyText} />
+      )}
+      {isActiveSaveModal && (
+        <SaveModal
+          setReplyText={setReplyText}
+          setIsActive={setIsActiveSaveButton}
+          lastModifyDate={consultInform?.date}
+        />
+      )}
       {isViewQuestion ? (
         <>
           <QuestionDate>{consultInform?.date}</QuestionDate>
@@ -76,12 +107,33 @@ export const LetterWriteMainSection = ({
             placeholder="답장 작성 시 서비스 운영정책을 지켜주세요."
             value={replyText}
             onChange={(e) => {
+              setIsActivePostButton(true);
+              setIsActiveSaveButton(true);
               setReplyText(e.target.value);
+              if (e.target.value === '') {
+                // 비어 있으면 전송못함
+                setIsActivePostButton(false);
+                setIsActiveSaveButton(false);
+              }
             }}
           />
           <BottomButtonGroup>
-            <SaveButton>임시저장</SaveButton>
-            <PostButton onClick={handlePostReply}>제출하기</PostButton>
+            <SaveButton
+              onClick={handleSaveReply}
+              isActive={isActiveSaveButton}
+              disabled={isActiveSaveButton ? false : true}
+            >
+              임시저장
+            </SaveButton>
+            <PostButton
+              onClick={() => {
+                setIsActivePostModal(true);
+              }}
+              isActive={isActiveSaveButton}
+              disabled={isActivePostButton ? false : true}
+            >
+              제출하기
+            </PostButton>
           </BottomButtonGroup>
         </>
       )}
@@ -99,6 +151,7 @@ const LetterWriteMainSectionWrapper = styled.section`
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 400;
+  position: relative;
   line-height: 150%; /* 2.4rem */
 `;
 
@@ -167,18 +220,16 @@ const BottomButtonGroup = styled.div`
   }
 `;
 
-const SaveButton = styled.button`
+const SaveButton = styled.button<{ isActive: boolean }>`
   display: flex;
   width: 16rem;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
   border-radius: 1.2rem;
-  background: var(--Signature-Light-Green, #ecfaf9);
-  color: var(--Signature-Green, #12c0b5);
+  background: ${(props) => (props.isActive ? LightGreen : Grey5)};
+  color: ${(props) => (props.isActive ? Green : '#fff')};
   text-align: center;
-
-  /* Button 1 */
   font-family: Pretendard;
   font-size: 1.6rem;
   font-style: normal;
@@ -186,15 +237,15 @@ const SaveButton = styled.button`
   line-height: 125%; /* 2rem */
 `;
 
-const PostButton = styled.button`
+const PostButton = styled.button<{ isActive: boolean }>`
   display: flex;
   width: 16rem;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
   border-radius: 1.2rem;
-  background: var(--Signature-Green, #12c0b5);
-  color: #fff;
+  background: ${(props) => (props.isActive ? Green : Grey5)};
+  color: ${(props) => (props.isActive ? White : '#fff')};
   text-align: center;
   /* Button 1 */
   font-family: Pretendard;
