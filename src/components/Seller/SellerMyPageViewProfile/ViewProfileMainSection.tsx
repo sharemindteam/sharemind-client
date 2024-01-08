@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Grey3, White } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
+import { BottomButton } from '../Common/BottomButton';
+import { useNavigate } from 'react-router-dom';
 
 interface ViewProfileMainSectionProps {
   profileIdentifier: number;
@@ -28,6 +30,7 @@ export const ViewProfileMainSection = ({
   oneLiner,
   experience,
 }: ViewProfileMainSectionProps) => {
+  const navigate = useNavigate();
   return (
     <ViewProfileMainSectionWrapper>
       <FirstWhiteBox>
@@ -82,6 +85,12 @@ export const ViewProfileMainSection = ({
           <Body1>{experience}</Body1>
         </div>
       </LastWhiteBox>
+      <BottomButton
+        text="수정하기"
+        onClick={() => {
+          navigate('/seller/mypage/modifyProfile');
+        }}
+      />
     </ViewProfileMainSectionWrapper>
   );
 };

@@ -15,6 +15,7 @@ export const ConsultReviewSection = () => {
         <RightArrow />
       </ContentTag>
       <ConsultReviewList>
+        {/* 1번째 상담 리뷰 */}
         <ConsultReview>
           <div className="flex-1">
             <Body1>김**</Body1>
@@ -31,6 +32,7 @@ export const ConsultReviewSection = () => {
             <Body2>매번 친절한 상담 감사드립니다 ㅎㅎ 다음에 또 올게요</Body2>
           </div>
         </ConsultReview>
+        {/* 2번째 상담 리뷰 */}
         <ConsultReview>
           <div className="flex-1">
             <Body1>김**</Body1>

@@ -1,7 +1,7 @@
 import { ContentTag } from 'pages/Seller/SellerHome';
 import React from 'react';
 import styled from 'styled-components';
-import { Black, Grey5, Grey6, Red } from 'styles/color';
+import { Black, Green, Grey5, Grey6 } from 'styles/color';
 import { Body1, Heading } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,7 @@ export const IncomeManagementSection = () => {
       <IncomeManagementBoxWrapper>
         <RecentThirtyDayRevenue>
           <Body1>최근 30일 판매 수익</Body1>
-          <Body1 color={Red} margin="0 0 0 auto">
+          <Body1 color={Green} margin="0 0 0 auto">
             0,000 원
           </Body1>
         </RecentThirtyDayRevenue>

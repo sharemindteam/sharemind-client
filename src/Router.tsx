@@ -11,9 +11,11 @@ import { BuyerSignup } from 'pages/Buyer/BuyerSignup';
 import { SellerCaculateManagement } from 'pages/Seller/SellerCalculateManagement';
 import { SellerConsult } from 'pages/Seller/SellerConsult';
 import { SellerHome } from 'pages/Seller/SellerHome';
+import { SellerLetter } from 'pages/Seller/SellerLetter';
 import { SellerMypageModifyProfile } from 'pages/Seller/SellerMyPageModifyProfile';
 import { SellerMypageViewProfile } from 'pages/Seller/SellerMyPageViewProfile';
 import { SellerMypage } from 'pages/Seller/SellerMypage';
+import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 const Router = () => {
@@ -55,7 +57,13 @@ const Router = () => {
       {/* 판매자 : 상담 */}
 
       {/* 판매자 : 편지 */}
-      <Route path="/seller/letter/:consultid" />
+      {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}
+      <Route path="/seller/letter/:consultid" element={<SellerLetter />} />
+      {/* 답장쓰기, 추가답장쓰기*/}
+      <Route
+        path="/seller/writeLetter/:consultid"
+        element={<SellerLetterWrite />}
+      />
 
       <Route path="/seller/consult" element={<SellerConsult />} />
       {/* 판매자 : 프로필 정보 */}

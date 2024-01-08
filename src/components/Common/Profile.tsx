@@ -59,7 +59,7 @@ export const Profile = ({
           text={isBuyer ? '판매자로 전환' : '구매자로 전환'}
           width="10.1rem"
           height="4.2rem"
-          border={'1px solid' + (isBuyer ? Green : Red)}
+          border={'1px solid' + (isBuyer ? Green : Green)}
           buttonTextType={2}
           backgroundColor={White}
           color={Black}
@@ -96,9 +96,9 @@ export const Profile = ({
         <VerifyButtonWrapper>
           <VerifyButton
             width="100%"
-            backgroundColor={Red}
+            backgroundColor={Green}
             height="5.2rem"
-            text="판매자 인증하기"
+            text="마인더 인증하기"
           />
         </VerifyButtonWrapper>
       )}
@@ -129,12 +129,13 @@ export const Profile = ({
 
 const ProfileBox = styled.div`
   display: flex;
-  height: 10.4rem;
+  height: 9.8rem;
   cursor: pointer;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0 2rem;
   background-color: ${White};
   gap: 0.9rem;
+  border-bottom: 1px solid ${Grey6};
 `;
 const SelectInfoList = styled.div`
   display: flex;
@@ -152,12 +153,13 @@ const SelectItem = styled.div`
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.4rem;
   margin-right: auto;
 `;
 
 const Level = styled.div`
-  background-color: ${Red};
+  background-color: ${Green};
   border-radius: 0.8rem;
   display: flex;
   width: 4.5rem;
@@ -171,6 +173,7 @@ const Name = styled(Subtitle)`
 `;
 const VerifyButtonWrapper = styled.div`
   padding: 1.2rem 2rem;
+  background-color: ${White};
 `;
 const VerifyButton = styled(Button)``;
 
