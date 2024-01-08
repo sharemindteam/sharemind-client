@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { ManagementStatusSelector } from 'components/Seller/SellerCalculateManagement/ManagementStatusSelector';
 import { Heading, Subtitle } from 'styles/font';
-import { Red } from 'styles/color';
+import { Green, Red } from 'styles/color';
 import { SellerCalulateCard } from 'components/Seller/SellerCalculateManagement/SellerCalculateCard';
 
 export const SellerCaculateManagement = () => {
@@ -23,7 +23,7 @@ export const SellerCaculateManagement = () => {
             ? '정산 중 금액 합계'
             : '예정 금액 합계'}
         </Heading>
-        <Subtitle color={Red}>100,000 원</Subtitle>
+        <Subtitle color={Green}>100,000 원</Subtitle>
       </TotalEarnMoney>
 
       <SellerCalculateCardList>

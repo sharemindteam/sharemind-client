@@ -1,6 +1,6 @@
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Grey3, Grey6, Red, White } from 'styles/color';
+import { Grey3, Grey6, Green, Whit, Greene, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 
 interface SellerCalulateCardProps {
@@ -28,8 +28,8 @@ export const SellerCalulateCard = ({
     <SellerCalulateCardWrapper>
       <CustomerConsultType>
         <Body1>
-          <span style={{ color: `${Red}` }}>{customerName} </span>님과의{' '}
-          <span style={{ color: `${Red}` }}>{consultType}</span> 상담
+          <span style={{ color: `${Green}` }}>{customerName} </span>님과의{' '}
+          <span style={{ color: `${Green}` }}>{consultType}</span> 상담
         </Body1>
       </CustomerConsultType>
       <ConsultEarnInfoItem>
@@ -58,7 +58,7 @@ export const SellerCalulateCard = ({
           buttonTextType={2}
           width="100%"
           height="4.2rem"
-          color={Red}
+          color={Green}
           backgroundColor={White}
         />
       ) : (

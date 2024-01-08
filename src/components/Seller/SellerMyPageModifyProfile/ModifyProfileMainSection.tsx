@@ -27,6 +27,7 @@ import {
   isTypeOpenModalState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
+import { BottomButton } from '../Common/BottomButton';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
@@ -271,17 +272,12 @@ export const ModifyProfileMainSection = ({
           </ConditionMessage>
         </div>
       </ModifyProfileBox>
-      <SaveButtonWrapper>
-        <Button
-          onClick={() => {
-            navigate('/seller/mypage/modifyProfile');
-          }}
-          text="저장하기"
-          width="80%"
-          backgroundColor={Red}
-          height="5.2rem"
-        ></Button>
-      </SaveButtonWrapper>
+      <BottomButton
+        text="저장하기"
+        onClick={() => {
+          navigate('/seller/mypage/modifyProfile');
+        }}
+      />
     </ModifyProfileMainSectionWrapper>
   );
 };
@@ -291,20 +287,6 @@ const ModifyProfileMainSectionWrapper = styled.section`
   margin-top: 0.2rem;
   flex-direction: column;
   gap: 1.1rem;
-`;
-const SaveButtonWrapper = styled.button`
-  height: 5.2rem;
-  width: 100%;
-  margin-bottom: 1.6rem;
-  border-radius: 1.2rem;
-  @media (max-width: 767px) {
-    position: fixed;
-    bottom: 1rem;
-  }
-  @media (min-width: 768px) {
-    position: sticky;
-    bottom: 1rem;
-  }
 `;
 
 const ModifyProfileBox = styled.div`

@@ -15,15 +15,16 @@ export const ModifyProfileHeader = () => {
           }}
         />
       </div>
-      <Heading>프로필 수정</Heading>
+      <Heading>판매정보 수정</Heading>
     </ModifyProfileHeaderWrapper>
   );
 };
 
-const ModifyProfileHeaderWrapper = styled.div`
+export const ModifyProfileHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   background-color: ${White};
+  border-bottom: 1px solid rgba(242, 241, 248, 0.95);
   justify-content: center;
   height: 5.2rem;
   position: sticky;

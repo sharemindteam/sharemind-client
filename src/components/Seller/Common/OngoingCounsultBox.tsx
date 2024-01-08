@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import {
   Black,
+  Green,
   Grey1,
   Grey2,
   Grey3,
@@ -14,15 +15,18 @@ import {
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from 'components/Common/TagA2Consult';
 import { Button } from 'components/Common/Button';
+import { TagA2Cartegory } from 'components/Common/TagA2Cartegory';
 interface OngoingCounsultBoxProps {
-  consultStatus: ConsultState;
-  counselorName: string;
-  beforeMinutes: string;
-  content: string;
-  newMessageCounts: number;
-  counselorprofileStatus: number;
+  categoryStatus?: CartegoryState;
+  consultStatus?: ConsultState;
+  counselorName: string | undefined;
+  beforeMinutes: string | undefined;
+  content: string | undefined;
+  newMessageCounts: number | undefined;
+  counselorprofileStatus: number | undefined;
 }
 function OngoingCounsultBox({
+  categoryStatus,
   consultStatus,
   counselorName,
   beforeMinutes,
@@ -33,7 +37,16 @@ function OngoingCounsultBox({
   return (
     <OngoingCounsultBoxWrapper>
       <div className="flex-1">
-        <TagA2Consult tagType={consultStatus} isBuyer={false} />
+        {categoryStatus && (
+          <div className="button">
+            <TagA2Cartegory tagType={categoryStatus} bgColorType={2} />
+          </div>
+        )}
+        {consultStatus && (
+          <div className="button">
+            <TagA2Consult tagType={consultStatus} />
+          </div>
+        )}
         <div className="flex-1-1">
           <Name color={consultStatus === '상담 종료' ? Grey3 : Black}>
             {counselorName}
@@ -52,18 +65,19 @@ function OngoingCounsultBox({
         >
           <Characters
             number={counselorprofileStatus}
+            padding="0.4rem 0.4rem 0.3rem 0.3rem"
             width="5.4rem"
             height="5.1rem"
           />
         </div>
         <Content color={consultStatus === '상담 종료' ? Grey3 : Grey1}>
-          {content.substr(0, 50) + '...'}
+          {content?.substr(0, 50) + '...'}
         </Content>
       </div>
       {consultStatus === '상담 종료' ? (
         <Button
           text="리뷰 확인하기"
-          color={Red}
+          color={Green}
           width="100%"
           height="4.2rem"
           backgroundColor={White}
@@ -91,6 +105,11 @@ const OngoingCounsultBoxWrapper = styled.div`
   border-radius: 0.4rem;
   background-color: ${Grey6};
   margin: 0 2rem;
+  .button{
+    width: 6.1rem;
+    display:flex;
+    justify-content:center;
+  }
   .flex-1 {
     display: flex;
     align-items: center;
@@ -133,6 +152,6 @@ const NewMessageCounts = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${Red};
+  background-color: ${Green};
 `;
 export default OngoingCounsultBox;

@@ -5,12 +5,14 @@ import { ReactComponent as LogoText } from 'assets/icons/logo-text.svg';
 import { ReactComponent as Char1 } from 'assets/characters/char9.svg';
 import { ReactComponent as Char2 } from 'assets/characters/char2.svg';
 
-import { Green, Grey6, LightGreen, LightRed, Red } from 'styles/color';
+import { Green, Grey6, LightGreen } from 'styles/color';
 import { Button } from './Button';
 interface HomeAboutFooterSectionProps {
   isBuyer: boolean;
 }
-export const HomeAboutFooterSection = ({ isBuyer }: HomeAboutFooterSectionProps) => {
+export const HomeAboutFooterSection = ({
+  isBuyer,
+}: HomeAboutFooterSectionProps) => {
   return (
     <>
       <AboutSection isBuyer={isBuyer}>
@@ -27,7 +29,7 @@ export const HomeAboutFooterSection = ({ isBuyer }: HomeAboutFooterSectionProps)
           width="80%"
           height="5.1rem"
           buttonTextType={1}
-          backgroundColor={isBuyer ? Green : Red}
+          backgroundColor={Green}
           borderRadius="1.2rem"
         ></Button>
       </AboutSection>
@@ -48,7 +50,7 @@ const AboutSection = styled.div<HomeAboutFooterSectionProps>`
   align-items: center;
   margin-top: 1.6rem;
   height: 24.5rem;
-  background-color: ${(props) => (props.isBuyer ? LightGreen : LightRed)};
+  background-color: ${(props) => (props.isBuyer ? LightGreen : LightGreen)};
   .character {
     display: flex;
     margin: 1.3rem 0px 2.1rem;

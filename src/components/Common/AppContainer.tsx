@@ -23,6 +23,8 @@ export const AppContainer = ({ children }: AppContainerProps) => {
         '/seller/mypage/modifyProfile')
     ) {
       setIsGray(true);
+    } else {
+      setIsGray(false);
     }
   }, [pathname]);
   return (
