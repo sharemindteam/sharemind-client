@@ -61,7 +61,7 @@ export const LetterWriteMainSection = ({
   useEffect(() => {
     setIsActiveSaveModal(true);
     // 후에 의존성 배열에 서버에서 fetch한값
-  }, [consultInform]);
+  }, []);
 
   const navigate = useNavigate();
   //후에 서버와 연결. 임시저장,제출하기 여기에 구현
@@ -80,7 +80,7 @@ export const LetterWriteMainSection = ({
       {isActiveSaveModal && (
         <SaveModal
           setReplyText={setReplyText}
-          setIsActive={setIsActiveSaveButton}
+          setIsActive={setIsActiveSaveModal}
           lastModifyDate={consultInform?.date}
         />
       )}
