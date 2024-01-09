@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { ReactComponent as Check } from 'assets/icons/icon-signup-check.svg';
 import { Body1, Button2, Caption1, Caption2, Heading } from 'styles/font';
 import { Green, Grey1, Grey3, Grey4, Grey5, Red, White } from 'styles/color';
