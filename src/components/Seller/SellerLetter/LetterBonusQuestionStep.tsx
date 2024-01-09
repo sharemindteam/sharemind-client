@@ -39,7 +39,9 @@ export const LetterBonusQuestionStep = ({
   );
 };
 
-const LetterBonusQuestionWrapper = styled.section``;
+const LetterBonusQuestionWrapper = styled.section`
+  margin-bottom: 100px;
+`;
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;

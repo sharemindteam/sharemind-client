@@ -8,6 +8,7 @@ export const LetterTagListSection = ({
   tagStatus,
   setTagStatus,
 }: LetterTagListSectionProps) => {
+  
   return (
     <LetterTagListSectionWrapper>
       <TagLetterStatus

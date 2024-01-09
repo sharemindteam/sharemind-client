@@ -39,7 +39,9 @@ export const LetterQuestionStep = ({
   );
 };
 
-const LetterQuestionWrapper = styled.section``;
+const LetterQuestionWrapper = styled.section`
+  margin-bottom: 100px;
+`;
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;

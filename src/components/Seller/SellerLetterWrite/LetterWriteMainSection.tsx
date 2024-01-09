@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import React, { useEffect, useState } from 'react';
 import { Green, Grey3, Grey5, Grey6, LightGreen, White } from 'styles/color';
-import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
-import { PostModal } from './PostModal';
-import { SaveModal } from './SaveModal';
+import { LetterPostModal } from './LetterPostModal';
+import { LetterIsSaveModal } from './LetterIsSaveModal';
+import { LetterSavePostModal } from './LetterSavePostModal';
+import { useSetRecoilState } from 'recoil';
+import { replyState } from 'utils/atom';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -37,12 +39,15 @@ export const LetterWriteMainSection = ({
   const [isActiveSaveButton, setIsActiveSaveButton] = useState(false);
   const [isActivePostButton, setIsActivePostButton] = useState(false);
 
-  // 모달 활성화여부
+  // 임시저장, 편지, 불러오기 모달 활성화여부
   const [isActivePostModal, setIsActivePostModal] = useState(false);
   const [isActiveSaveModal, setIsActiveSaveModal] = useState(false);
+  const [isActiveSavePostModal, setIsActiveSavePostModal] = useState(false);
 
   // 답안 텍스트
   const [replyText, setReplyText] = useState<string>('');
+
+  const setReplyState = useSetRecoilState(replyState);
 
   // 여기서 API 요청
   useEffect(() => {
@@ -56,11 +61,11 @@ export const LetterWriteMainSection = ({
         'ㅋㅋㅋㅋㅋ 실험입니다 궁금해서 줄넘는지 써보고있어요 하하하 키키키 어떻게되나요',
       date: '2023년 10월 23일 오후 12시 34분',
     });
+    setReplyState('추가답장 쓰기');
   }, []);
 
   useEffect(() => {
     setIsActiveSaveModal(true);
-    // 후에 의존성 배열에 서버에서 fetch한값
   }, []);
 
   const navigate = useNavigate();
@@ -75,15 +80,29 @@ export const LetterWriteMainSection = ({
   return (
     <LetterWriteMainSectionWrapper>
       {isActivePostModal && (
-        <PostModal setIsActive={setIsActivePostModal} replyText={replyText} />
+        <LetterPostModal
+          setIsActive={setIsActivePostModal}
+          replyText={replyText}
+          setIsSend={setIsSend}
+        />
       )}
       {isActiveSaveModal && (
-        <SaveModal
+        <LetterIsSaveModal
           setReplyText={setReplyText}
           setIsActive={setIsActiveSaveModal}
           lastModifyDate={consultInform?.date}
         />
       )}
+      {isActiveSavePostModal && (
+        <LetterSavePostModal
+          setIsActive={setIsActiveSavePostModal}
+          replyText={replyText}
+        />
+      )}
+      {isActivePostModal || isActiveSaveModal || isActiveSavePostModal ? (
+        <BackDrop />
+      ) : null}
+
       {isViewQuestion ? (
         <>
           <QuestionDate>{consultInform?.date}</QuestionDate>
@@ -119,7 +138,9 @@ export const LetterWriteMainSection = ({
           />
           <BottomButtonGroup>
             <SaveButton
-              onClick={handleSaveReply}
+              onClick={() => {
+                setIsActiveSavePostModal(true);
+              }}
               isActive={isActiveSaveButton}
               disabled={isActiveSaveButton ? false : true}
             >
@@ -132,7 +153,7 @@ export const LetterWriteMainSection = ({
               isActive={isActiveSaveButton}
               disabled={isActivePostButton ? false : true}
             >
-              제출하기
+              보내기
             </PostButton>
           </BottomButtonGroup>
         </>
@@ -253,4 +274,18 @@ const PostButton = styled.button<{ isActive: boolean }>`
   font-style: normal;
   font-weight: 600;
   line-height: 125%; /* 2rem */
+`;
+const BackDrop = styled.div`
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
+  position: fixed;
+  top: 0;
+  z-index: 2001;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
 `;

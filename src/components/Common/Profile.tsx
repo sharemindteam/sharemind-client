@@ -26,15 +26,7 @@ export const Profile = ({
   const navigate = useNavigate();
   return (
     <>
-      <ProfileBox
-        onClick={(event) => {
-          if (isBuyer) {
-            navigate('/buyer/mypage/viewProfile');
-          } else {
-            navigate('/seller/mypage/viewProfile');
-          }
-        }}
-      >
+      <ProfileBox>
         <Characters number={profileIdentifier} width="7.6rem" />
 
         {isBuyer ? (
@@ -56,7 +48,7 @@ export const Profile = ({
             }
             event?.stopPropagation();
           }}
-          text={isBuyer ? '판매자로 전환' : '구매자로 전환'}
+          text={isBuyer ? '마인로 전환' : '셰어로 전환'}
           width="10.1rem"
           height="4.2rem"
           border={'1px solid' + (isBuyer ? Green : Green)}
@@ -83,11 +75,19 @@ export const Profile = ({
         </SelectInfoList>
       ) : isVerified ? (
         <SelectInfoList>
-          <SelectItem>
+          <SelectItem
+            onClick={() => {
+              navigate('/seller/mypage/viewProfile');
+            }}
+          >
             <InfoIcon />
             <Button2>판매 정보</Button2>
           </SelectItem>
-          <SelectItem>
+          <SelectItem
+            onClick={() => {
+              navigate('/seller/mypage/review');
+            }}
+          >
             <ReviewIcon />
             <Button2>받은 리뷰</Button2>
           </SelectItem>
@@ -130,7 +130,6 @@ export const Profile = ({
 const ProfileBox = styled.div`
   display: flex;
   height: 9.8rem;
-  cursor: pointer;
   align-items: center;
   padding: 0 2rem;
   background-color: ${White};
@@ -145,7 +144,9 @@ const SelectInfoList = styled.div`
 `;
 const SelectItem = styled.div`
   display: flex;
+  cursor: pointer;
   padding: 0.9rem 0 1.5rem;
+  cursor: pointer;
   flex-direction: column;
   align-items: center;
 `;
@@ -186,6 +187,7 @@ const ServiceItem = styled.div`
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
+  cursor: pointer;
   padding: 1.7rem;
   border-bottom: 1px solid ${Grey6};
   align-items: center;
