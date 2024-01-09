@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import React, { useEffect, useState } from 'react';
 import { Green, Grey3, Grey5, Grey6, LightGreen, White } from 'styles/color';
-import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
-import { LetterPostModal, PostModal } from './LetterPostModal';
-import { LetterIsSaveModal, SaveModal } from './LetterIsSaveModal';
+import { LetterPostModal } from './LetterPostModal';
+import { LetterIsSaveModal } from './LetterIsSaveModal';
 import { LetterSavePostModal } from './LetterSavePostModal';
+import { useSetRecoilState } from 'recoil';
+import { replyState } from 'utils/atom';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -46,6 +47,8 @@ export const LetterWriteMainSection = ({
   // 답안 텍스트
   const [replyText, setReplyText] = useState<string>('');
 
+  const setReplyState = useSetRecoilState(replyState);
+
   // 여기서 API 요청
   useEffect(() => {
     setConsultInform({
@@ -58,11 +61,11 @@ export const LetterWriteMainSection = ({
         'ㅋㅋㅋㅋㅋ 실험입니다 궁금해서 줄넘는지 써보고있어요 하하하 키키키 어떻게되나요',
       date: '2023년 10월 23일 오후 12시 34분',
     });
+    setReplyState('추가답장 쓰기');
   }, []);
 
   useEffect(() => {
     setIsActiveSaveModal(true);
-    // 후에 의존성 배열에 서버에서 fetch한값
   }, []);
 
   const navigate = useNavigate();
@@ -95,6 +98,9 @@ export const LetterWriteMainSection = ({
           replyText={replyText}
         />
       )}
+      {isActivePostModal || isActiveSaveModal || isActiveSavePostModal ? (
+        <BackDrop />
+      ) : null}
       {isViewQuestion ? (
         <>
           <QuestionDate>{consultInform?.date}</QuestionDate>
@@ -266,4 +272,18 @@ const PostButton = styled.button<{ isActive: boolean }>`
   font-style: normal;
   font-weight: 600;
   line-height: 125%; /* 2rem */
+`;
+const BackDrop = styled.div`
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
+  position: fixed;
+  top: 0;
+  z-index: 2001;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
 `;

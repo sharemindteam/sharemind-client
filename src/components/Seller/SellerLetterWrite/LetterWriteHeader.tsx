@@ -4,6 +4,8 @@ import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { ReactComponent as XIcon } from 'assets/icons/icon-x.svg';
 import { Heading } from 'styles/font';
 import { ModifyProfileHeaderWrapper } from '../SellerMyPageModifyProfile/ModifyProfileHeader';
+import { useRecoilValue } from 'recoil';
+import { replyState } from 'utils/atom';
 
 export const LetterWriteHeader = ({
   isViewQuestion,
@@ -14,6 +16,8 @@ export const LetterWriteHeader = ({
 }) => {
   const navigate = useNavigate();
   const { consultid } = useParams();
+  // 추가답장여부
+  const replyStatus = useRecoilValue(replyState);
   return (
     <LetterWriteHeaderWrapper>
       <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
@@ -31,7 +35,7 @@ export const LetterWriteHeader = ({
           />
         )}
       </div>
-      <Heading>{isViewQuestion ? '질문 보기' : '답장 쓰기'}</Heading>
+      <Heading>{isViewQuestion ? '질문 보기' : replyStatus}</Heading>
     </LetterWriteHeaderWrapper>
   );
 };

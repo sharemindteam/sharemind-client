@@ -43,3 +43,8 @@ export const searchKeywordState = atom({
   key: 'searchKeywordState',
   default: '',
 });
+
+export const replyState = atom({
+  key: 'replyState',
+  default: '',
+});
