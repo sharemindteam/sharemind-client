@@ -17,7 +17,6 @@ export const SellerConsultSection = () => {
   const [isLetterActive, setIsLetterActive] = useState<boolean>(true);
   const [isInclueCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
   //0 : 최신순 1:읽지 않은 순
   // 바뀔 때마다 useEffect로 request
   const [sortType, setSortType] = useState<number>(0);

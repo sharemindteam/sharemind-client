@@ -1,17 +1,22 @@
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Black, Grey3, Grey5, Grey6, Green, Whit, Greene, White } from 'styles/color';
+import { Black, Grey3, Grey5, Grey6, Green, White } from 'styles/color';
 import { Button2 } from 'styles/font';
 import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow.svg';
+import { useSetRecoilState } from 'recoil';
+import { isConsultModalOpenState } from 'utils/atom';
 
 interface ManagementStatusSelectorProps {
   manageStatus: string;
   setManageStatus: React.Dispatch<React.SetStateAction<string>>;
+  sortType: number;
 }
 export const ManagementStatusSelector = ({
   manageStatus,
   setManageStatus,
+  sortType
 }: ManagementStatusSelectorProps) => {
+  const setIsModalOpen = useSetRecoilState(isConsultModalOpenState);
   return (
     <ManagementStatusSelectorWrapper>
       <Button
@@ -26,12 +31,12 @@ export const ManagementStatusSelector = ({
         height="3.4rem"
       />
       <Button
-        text="진행 중"
-        backgroundColor={manageStatus === '진행 중' ? Green : Grey5}
+        text="정산 중"
+        backgroundColor={manageStatus === '정산 중' ? Green : Grey5}
         onClick={() => {
-          setManageStatus('진행 중');
+          setManageStatus('정산 중');
         }}
-        color={manageStatus === '진행 중' ? White : Black}
+        color={manageStatus === '정산 중' ? White : Black}
         buttonTextType={2}
         width="7.2rem"
         height="3.4rem"
@@ -47,8 +52,14 @@ export const ManagementStatusSelector = ({
         width="7.8rem"
         height="3.4rem"
       />
-      <SortingType>
-        <Button2 color={Grey3}>최근 1개월</Button2>
+      <SortingType
+        onClick={() => {
+          setIsModalOpen(true);
+        }}
+      >
+        <Button2 color={Grey3}>
+          {sortType ===0 ?  "최근 일주일" : sortType===1 ? "최근 1개월" : "전체"}
+          </Button2>
         <DownArrowIcon />
       </SortingType>
     </ManagementStatusSelectorWrapper>
@@ -64,7 +75,7 @@ const ManagementStatusSelectorWrapper = styled.div`
 
 const SortingType = styled.div`
   display: flex;
-  padding: 1rem 0.5rem;
+  margin-left: auto;
   cursor: pointer;
   align-items: center;
   gap: 0.4rem;
