@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { Green, Grey3, Grey5, Grey6, LightGreen, White } from 'styles/color';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
-import { PostModal } from './PostModal';
-import { SaveModal } from './SaveModal';
+import { LetterPostModal, PostModal } from './LetterPostModal';
+import { LetterIsSaveModal, SaveModal } from './LetterIsSaveModal';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -37,9 +37,10 @@ export const LetterWriteMainSection = ({
   const [isActiveSaveButton, setIsActiveSaveButton] = useState(false);
   const [isActivePostButton, setIsActivePostButton] = useState(false);
 
-  // 모달 활성화여부
+  // 임시저장, 편지, 불러오기 모달 활성화여부
   const [isActivePostModal, setIsActivePostModal] = useState(false);
   const [isActiveSaveModal, setIsActiveSaveModal] = useState(false);
+  const [isActiveSavePostModal, setIsActiveSavePostModal] =useState(false);
 
   // 답안 텍스트
   const [replyText, setReplyText] = useState<string>('');
@@ -75,10 +76,13 @@ export const LetterWriteMainSection = ({
   return (
     <LetterWriteMainSectionWrapper>
       {isActivePostModal && (
-        <PostModal setIsActive={setIsActivePostModal} replyText={replyText} />
+        <LetterPostModal
+          setIsActive={setIsActivePostModal}
+          replyText={replyText}
+        />
       )}
       {isActiveSaveModal && (
-        <SaveModal
+        <LetterIsSaveModal
           setReplyText={setReplyText}
           setIsActive={setIsActiveSaveModal}
           lastModifyDate={consultInform?.date}
@@ -132,7 +136,7 @@ export const LetterWriteMainSection = ({
               isActive={isActiveSaveButton}
               disabled={isActivePostButton ? false : true}
             >
-              제출하기
+              보내기
             </PostButton>
           </BottomButtonGroup>
         </>

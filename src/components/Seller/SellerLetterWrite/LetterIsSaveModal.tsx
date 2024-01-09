@@ -1,22 +1,21 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
-interface LetterWritePostModal {
+interface SaveModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-  replyText: string;
+  setReplyText: React.Dispatch<React.SetStateAction<string>>;
+  lastModifyDate: string | undefined;
 }
-export const PostModal = ({ setIsActive, replyText }: LetterWritePostModal) => {
-  const navigate = useNavigate();
-  const handlePostReplyText = () => {
-    //서버로 편지 POST
-    navigate('/seller/consult');
-  };
+export const LetterIsSaveModal = ({
+  setIsActive,
+  setReplyText,
+  lastModifyDate,
+}: SaveModalProps) => {
   return (
-    <PostModalBox>
+    <SaveModalBox>
       <ModalBox>
-        <Body1>편지를 보낼까요?</Body1>
-        <Body3 color={Grey4}>보낸 후엔 수정이 불가능합니다.</Body3>
+        <Body1>임시저장된 글을 불러올까요?</Body1>
+        <Body3 color={Grey4}>마지막 수정 {lastModifyDate ?? ''}</Body3>
         <ButtonWrapper>
           <NoButton
             onClick={() => {
@@ -25,14 +24,21 @@ export const PostModal = ({ setIsActive, replyText }: LetterWritePostModal) => {
           >
             아니오
           </NoButton>
-          <YesButton onClick={handlePostReplyText}>예</YesButton>
+          <YesButton
+            onClick={() => {
+              setIsActive(false);
+              setReplyText('임시저장한 텍스트');
+            }}
+          >
+            예
+          </YesButton>
         </ButtonWrapper>
       </ModalBox>
-    </PostModalBox>
+    </SaveModalBox>
   );
 };
 
-const PostModalBox = styled.div`
+const SaveModalBox = styled.div`
   width: 100%;
   height: 15rem;
   z-index: 9999;
