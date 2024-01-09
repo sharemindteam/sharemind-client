@@ -6,14 +6,22 @@ import { useState } from 'react';
 export const SellerLetterWrite = () => {
   // 답장 제출했을 경우, 즉 편지보냈어요 띄울지여부
   const [isSend, setIsSend] = useState<boolean>(false);
-
+  // 질문보기여부
+  const [isViewQuestion, setIsViewQuestion] = useState<boolean>(false);
   return (
     <>
-      <LetterWriteHeader />
+      <LetterWriteHeader
+        setIsViewQuestion={setIsViewQuestion}
+        isViewQuestion={isViewQuestion}
+      />
       {isSend ? (
         <LetterWriteSuccess />
       ) : (
-        <LetterWriteMainSection setIsSend={setIsSend} />
+        <LetterWriteMainSection
+          setIsViewQuestion={setIsViewQuestion}
+          setIsSend={setIsSend}
+          isViewQuestion={isViewQuestion}
+        />
       )}
     </>
   );
