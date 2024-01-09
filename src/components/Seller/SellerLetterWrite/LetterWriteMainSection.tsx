@@ -6,6 +6,7 @@ import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import { LetterPostModal, PostModal } from './LetterPostModal';
 import { LetterIsSaveModal, SaveModal } from './LetterIsSaveModal';
+import { LetterSavePostModal } from './LetterSavePostModal';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -40,7 +41,7 @@ export const LetterWriteMainSection = ({
   // 임시저장, 편지, 불러오기 모달 활성화여부
   const [isActivePostModal, setIsActivePostModal] = useState(false);
   const [isActiveSaveModal, setIsActiveSaveModal] = useState(false);
-  const [isActiveSavePostModal, setIsActiveSavePostModal] =useState(false);
+  const [isActiveSavePostModal, setIsActiveSavePostModal] = useState(false);
 
   // 답안 텍스트
   const [replyText, setReplyText] = useState<string>('');
@@ -88,6 +89,12 @@ export const LetterWriteMainSection = ({
           lastModifyDate={consultInform?.date}
         />
       )}
+      {isActiveSavePostModal && (
+        <LetterSavePostModal
+          setIsActive={setIsActiveSavePostModal}
+          replyText={replyText}
+        />
+      )}
       {isViewQuestion ? (
         <>
           <QuestionDate>{consultInform?.date}</QuestionDate>
@@ -123,7 +130,9 @@ export const LetterWriteMainSection = ({
           />
           <BottomButtonGroup>
             <SaveButton
-              onClick={handleSaveReply}
+              onClick={() => {
+                setIsActiveSavePostModal(true);
+              }}
               isActive={isActiveSaveButton}
               disabled={isActiveSaveButton ? false : true}
             >

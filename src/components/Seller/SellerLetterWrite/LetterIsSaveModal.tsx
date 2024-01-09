@@ -6,6 +6,7 @@ interface SaveModalProps {
   setReplyText: React.Dispatch<React.SetStateAction<string>>;
   lastModifyDate: string | undefined;
 }
+// 임시저장할지 여부 모달
 export const LetterIsSaveModal = ({
   setIsActive,
   setReplyText,
@@ -22,7 +23,7 @@ export const LetterIsSaveModal = ({
               setIsActive(false);
             }}
           >
-            아니오
+            취소
           </NoButton>
           <YesButton
             onClick={() => {
@@ -30,7 +31,7 @@ export const LetterIsSaveModal = ({
               setReplyText('임시저장한 텍스트');
             }}
           >
-            예
+            불러오기
           </YesButton>
         </ButtonWrapper>
       </ModalBox>
