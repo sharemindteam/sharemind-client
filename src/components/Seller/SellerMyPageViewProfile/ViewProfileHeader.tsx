@@ -28,4 +28,5 @@ const ViewProfileHeaderWrapper = styled.div`
   height: 5.2rem;
   position: sticky;
   top: 0;
+  border-bottom: 1px solid rgba(242, 241, 248, 0.95);
 `;

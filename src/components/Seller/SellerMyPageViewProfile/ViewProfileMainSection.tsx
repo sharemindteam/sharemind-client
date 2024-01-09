@@ -4,6 +4,8 @@ import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate } from 'react-router-dom';
+import { Space } from 'components/Common/Space';
+import Input from 'components/Common/Input';
 
 interface ViewProfileMainSectionProps {
   profileIdentifier: number;
@@ -16,6 +18,9 @@ interface ViewProfileMainSectionProps {
   chatFee: number;
   oneLiner: string;
   experience: string;
+  accountNum: string;
+  bankType: string;
+  bankOwner: string;
 }
 
 export const ViewProfileMainSection = ({
@@ -29,6 +34,9 @@ export const ViewProfileMainSection = ({
   chatFee,
   oneLiner,
   experience,
+  accountNum,
+  bankType,
+  bankOwner,
 }: ViewProfileMainSectionProps) => {
   const navigate = useNavigate();
   return (
@@ -88,27 +96,49 @@ export const ViewProfileMainSection = ({
           <Body1>{experience}</Body1>
         </div>
       </IntroduceWhiteBox>
+      <AccountWhiteBox>
+        <ProfileInformTag>수익 계좌</ProfileInformTag>
+        <div className="account-num">
+          <AccountTag>계좌번호</AccountTag>
+          <Input
+            width="100%"
+            height="4.8rem"
+            isBoxSizing={true}
+            padding="1.2rem"
+            readOnly={true}
+            value={accountNum}
+          />
+        </div>
+        <div className="bank-type">
+          <AccountTag>은행</AccountTag>
+          <Input
+            width="100%"
+            height="4.8rem"
+            isBoxSizing={true}
+            padding="1.2rem"
+            readOnly={true}
+            value={bankType}
+          />
+        </div>
+        <div className="owner-name">
+          <AccountTag>예금주</AccountTag>
+          <Input
+            width="100%"
+            height="4.8rem"
+            isBoxSizing={true}
+            padding="1.2rem"
+            readOnly={true}
+            value={bankOwner}
+          />
+        </div>
+      </AccountWhiteBox>
+      <Space height="9.2rem" />
       <BottomButton
         text="수정하기"
         onClick={() => {
           navigate('/seller/mypage/modifyProfile');
         }}
       />
-      <WhiteBox>
-        <ProfileInformTag>수익 계좌</ProfileInformTag>
-        <div className="account-num">
-          <AccountTag>계좌번호</AccountTag>
-          <AccountForm></AccountForm>
-        </div>
-        <div className="bank-type">
-          <AccountTag>은행</AccountTag>
-          <AccountForm></AccountForm>
-        </div>
-        <div className="owner-name">
-          <AccountTag>예금주</AccountTag>
-          <AccountForm></AccountForm>
-        </div>
-      </WhiteBox>
     </ViewProfileMainSectionWrapper>
   );
 };
@@ -145,6 +175,14 @@ const WhiteBox = styled.div`
     flex-direction: column;
   }
 `;
+
+const AccountWhiteBox = styled(WhiteBox)`
+  gap: 0.6rem;
+  & > div {
+    align-items: center;
+  }
+`;
+
 const FirstWhiteBox = styled(WhiteBox)`
   & > div {
     display: flex;
@@ -163,11 +201,12 @@ const IntroduceWhiteBox = styled(WhiteBox)`
 `;
 
 const AccountTag = styled(Body1)`
-  margin-right: 1.7rem;
-  width: 5.6rem;
+  width: 10rem;
+  margin-bottom: 0.4rem;
 `;
 
 const AccountForm = styled.div`
   border-radius: 1.2rem;
+  margin-left: 1.7rem;
   background: ${Grey6};
 `;
