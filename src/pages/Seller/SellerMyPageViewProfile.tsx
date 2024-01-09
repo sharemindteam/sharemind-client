@@ -1,6 +1,3 @@
-import {
-  ModifyButton,
-} from 'components/Seller/SellerMyPageViewProfile/ModifyButton';
 import { ViewProfileHeader } from 'components/Seller/SellerMyPageViewProfile/ViewProfileHeader';
 import { ViewProfileMainSection } from 'components/Seller/SellerMyPageViewProfile/ViewProfileMainSection';
 

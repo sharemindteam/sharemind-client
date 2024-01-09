@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Grey3, White } from 'styles/color';
+import { Grey3, Grey6, White } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { BottomButton } from '../Common/BottomButton';
@@ -68,14 +68,17 @@ export const ViewProfileMainSection = ({
         </div>
         <div className="consult-fee">
           {' '}
-          <ProfileInformTag>상담료 (1건 기준)</ProfileInformTag>
+          <ProfileInformTag>
+            상담료 <br />
+            (1건 기준)
+          </ProfileInformTag>
           <div className="flex-end">
             <ProfileInform>편지 {letterFee.toLocaleString()}원</ProfileInform>
             <ProfileInform>채팅 {chatFee.toLocaleString()}원</ProfileInform>
           </div>
         </div>
       </WhiteBox>{' '}
-      <LastWhiteBox>
+      <IntroduceWhiteBox>
         <div className="one-liner">
           <ProfileInformTag>한줄소개</ProfileInformTag>
           <Body1>{oneLiner}</Body1>
@@ -84,13 +87,28 @@ export const ViewProfileMainSection = ({
           <ProfileInformTag>경험 소개</ProfileInformTag>
           <Body1>{experience}</Body1>
         </div>
-      </LastWhiteBox>
+      </IntroduceWhiteBox>
       <BottomButton
         text="수정하기"
         onClick={() => {
           navigate('/seller/mypage/modifyProfile');
         }}
       />
+      <WhiteBox>
+        <ProfileInformTag>수익 계좌</ProfileInformTag>
+        <div className="account-num">
+          <AccountTag>계좌번호</AccountTag>
+          <AccountForm></AccountForm>
+        </div>
+        <div className="bank-type">
+          <AccountTag>은행</AccountTag>
+          <AccountForm></AccountForm>
+        </div>
+        <div className="owner-name">
+          <AccountTag>예금주</AccountTag>
+          <AccountForm></AccountForm>
+        </div>
+      </WhiteBox>
     </ViewProfileMainSectionWrapper>
   );
 };
@@ -106,13 +124,12 @@ const ViewProfileMainSectionWrapper = styled.section`
 `;
 
 const ProfileInformTag = styled(Body1)`
-  margin-right: auto;
+  margin-right: 3.3rem;
   color: ${Grey3};
+  width: 8.7rem;
 `;
 
-const ProfileInform = styled(Body1)`
-  margin-left: auto;
-`;
+const ProfileInform = styled(Body1)``;
 
 const WhiteBox = styled.div`
   padding: 1.9rem 2rem;
@@ -126,7 +143,6 @@ const WhiteBox = styled.div`
   .flex-end {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
   }
 `;
 const FirstWhiteBox = styled(WhiteBox)`
@@ -139,9 +155,19 @@ const FirstWhiteBox = styled(WhiteBox)`
   }
 `;
 
-const LastWhiteBox = styled(WhiteBox)`
+const IntroduceWhiteBox = styled(WhiteBox)`
   & > div {
     flex-direction: column;
     gap: 0.4rem;
   }
+`;
+
+const AccountTag = styled(Body1)`
+  margin-right: 1.7rem;
+  width: 5.6rem;
+`;
+
+const AccountForm = styled.div`
+  border-radius: 1.2rem;
+  background: ${Grey6};
 `;
