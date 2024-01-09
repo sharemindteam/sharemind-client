@@ -6,6 +6,9 @@ type UseInputResult = {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
+  onChangePrice: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   message: string;
   setMessage: Dispatch<SetStateAction<string>>;
   isValid: boolean;
@@ -28,8 +31,16 @@ export const useInput = (initialValue: string) => {
     setValue(e.target.value);
   };
 
+  const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPrice = e.target.value
+      .replace(/[^0-9]/g, '')
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    setValue(newPrice);
+  };
+
   const handleCheckSpecialLetter = (str: string) => {
-    if (isIncludeSpecialLetter(str)) {
+    if (isIncludeSpecialLetter(str) || str.length === 0) {
       setIsValid(false);
       setIsError(true);
     } else {
@@ -47,6 +58,7 @@ export const useInput = (initialValue: string) => {
     setIsValid,
     isError,
     setIsError,
+    onChangePrice,
     handleCheckSpecialLetter,
     setValue,
   } as UseInputResult;
