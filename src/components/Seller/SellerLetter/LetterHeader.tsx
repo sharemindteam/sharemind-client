@@ -4,9 +4,12 @@ import { ReactComponent as OptionIcon } from 'assets/icons/icon-option.svg';
 import styled from 'styled-components';
 import { White } from 'styles/color';
 import { Heading } from 'styles/font';
+import { isConsultModalOpenState } from 'utils/atom';
+import { useSetRecoilState } from 'recoil';
 
 export const LetterHeader = ({ name = '김고민' }) => {
   const navigate = useNavigate();
+  const setIsModalOpen = useSetRecoilState(isConsultModalOpenState);
 
   return (
     <LetterHeaderWrapper>
@@ -18,7 +21,7 @@ export const LetterHeader = ({ name = '김고민' }) => {
       <Heading>{name}</Heading>
       <Option
         onClick={() => {
-          navigate('/seller/mypage');
+          setIsModalOpen(true);
         }}
       />
     </LetterHeaderWrapper>

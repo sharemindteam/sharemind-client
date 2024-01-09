@@ -83,6 +83,7 @@ export const LetterWriteMainSection = ({
         <LetterPostModal
           setIsActive={setIsActivePostModal}
           replyText={replyText}
+          setIsSend={setIsSend}
         />
       )}
       {isActiveSaveModal && (
@@ -101,6 +102,7 @@ export const LetterWriteMainSection = ({
       {isActivePostModal || isActiveSaveModal || isActiveSavePostModal ? (
         <BackDrop />
       ) : null}
+
       {isViewQuestion ? (
         <>
           <QuestionDate>{consultInform?.date}</QuestionDate>

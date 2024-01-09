@@ -38,5 +38,5 @@ const SendSuccessMessage = styled.div`
   font-size: 2rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 3rem; /* 150% */
+  line-height: 3rem;
 `;

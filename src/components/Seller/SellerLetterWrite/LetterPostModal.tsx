@@ -5,15 +5,17 @@ import { Body1, Body3 } from 'styles/font';
 interface LetterWritePostModal {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   replyText: string;
+  setIsSend: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const LetterPostModal = ({
   setIsActive,
   replyText,
+  setIsSend,
 }: LetterWritePostModal) => {
-  const navigate = useNavigate();
   const handlePostReplyText = () => {
-    //서버로 편지 POST
-    navigate('/seller/consult');
+    
+    // 서버로 POST 한 후에 편지를 보낼까요? 띄우기
+    setIsSend(true);
   };
   return (
     <PostModalBox>

@@ -44,7 +44,9 @@ export const LetterBonusReplyStep = ({
     </LetterBonusReplyStepWrapper>
   );
 };
-const LetterBonusReplyStepWrapper = styled.section``;
+const LetterBonusReplyStepWrapper = styled.section`
+  margin-bottom: 100px;
+`;
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;
