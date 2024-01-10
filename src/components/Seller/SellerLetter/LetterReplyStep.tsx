@@ -29,11 +29,13 @@ export const LetterReplyStep = ({
       ) : (
         <NotWriteSection>
           <NotWriteGraphic />
-          <NotWriteMessage>아직 질문이 도착하지 않았어요!</NotWriteMessage>
-          <AlertMessage>
-            <span style={{ fontWeight: '600' }}>{deadline}</span> 이전에 <br />{' '}
-            답장을 보내주셔야 해요.
-          </AlertMessage>
+          <div>
+            <NotWriteMessage>아직 답장을 작성하지 않았어요!</NotWriteMessage>
+            <AlertMessage>
+              <span style={{ fontWeight: '600' }}>{deadline}</span> 이전에{' '}
+              <br /> 답장을 보내주셔야 해요.
+            </AlertMessage>
+          </div>
           <BottomButton
             text="답안 작성하기"
             onClick={() => {
@@ -45,7 +47,9 @@ export const LetterReplyStep = ({
     </LetterReplyStepWrapper>
   );
 };
-const LetterReplyStepWrapper = styled.section``;
+const LetterReplyStepWrapper = styled.section`
+  margin-bottom: 100px;
+`;
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;

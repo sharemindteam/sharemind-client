@@ -28,7 +28,7 @@ export const LetterBonusReplyStep = ({
       ) : (
         <NotWriteSection>
           <NotWriteGraphic />
-          <NotWriteMessage>아직 질문이 도착하지 않았어요!</NotWriteMessage>
+          <NotWriteMessage>아직 답장을 작성하지 않았어요!</NotWriteMessage>
           <AlertMessage>
             <span style={{ fontWeight: '600' }}>{deadline}</span> 이전에 <br />{' '}
             답장을 보내주셔야 해요.
@@ -44,7 +44,9 @@ export const LetterBonusReplyStep = ({
     </LetterBonusReplyStepWrapper>
   );
 };
-const LetterBonusReplyStepWrapper = styled.section``;
+const LetterBonusReplyStepWrapper = styled.section`
+  margin-bottom: 100px;
+`;
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -79,7 +81,7 @@ const AlertMessage = styled.div`
   font-family: Pretendard;
   margin-top: 1.2rem;
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1.6rem;h
   font-style: normal;
   font-weight: 400;
   line-height: 150%;

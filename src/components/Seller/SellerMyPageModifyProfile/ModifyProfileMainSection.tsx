@@ -22,12 +22,14 @@ import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
+  isUpdateModalOpenState,
   isCategoryModalOpenState,
   isStyleModalOpenState,
   isTypeOpenModalState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
+import { Space } from 'components/Common/Space';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
@@ -51,12 +53,17 @@ export const ModifyProfileMainSection = ({
 
   const letterPrice = useInput('');
   const chatPrice = useInput('');
+
   const oneLiner = useInput('');
   const experience = useInput('');
+  const accountNum = useInput('');
+  const bankType = useInput('');
+  const bankOwner = useInput('');
 
   const setIsCategoryModalOpen = useSetRecoilState(isCategoryModalOpenState);
   const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
   const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
+  const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
   useEffect(() => {
     category.setViewValue(categoryInputMaker(selectCategory));
   }, [selectCategory]);
@@ -73,10 +80,17 @@ export const ModifyProfileMainSection = ({
     style.setViewValue(profileDummyData.style);
     type.setViewValue(profileDummyData.type);
     availableTime.setViewValue(profileDummyData.time);
-    letterPrice.setValue(profileDummyData.letterPrice);
-    chatPrice.setValue(profileDummyData.chatPrice);
+    letterPrice.setValue(
+      profileDummyData.letterPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+    );
+    chatPrice.setValue(
+      profileDummyData.chatPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+    );
     oneLiner.setValue(profileDummyData.oneLiner);
     experience.setValue(profileDummyData.experience);
+    accountNum.setValue(profileDummyData.accountNum);
+    bankType.setValue(profileDummyData.bankType);
+    bankOwner.setValue(profileDummyData.bankOwner);
   }, []);
   return (
     <ModifyProfileMainSectionWrapper>
@@ -92,6 +106,8 @@ export const ModifyProfileMainSection = ({
               nickname.handleCheckSpecialLetter(e.target.value);
               nickname.onChange(e);
             }}
+            padding="1.2rem 1.6rem"
+            isBoxSizing={true}
             maxLength={10}
           />
           <ConditionMessage>
@@ -104,7 +120,7 @@ export const ModifyProfileMainSection = ({
                   : Grey4
               }
             >
-              최대 10자 / 한글, 영문, 숫자 가능 (특수문자 불가)
+              1-10자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
             {nickname.isError ? (
               ''
@@ -128,6 +144,8 @@ export const ModifyProfileMainSection = ({
               value={category.viewValue}
               readOnly={true}
               isCursorPointer={true}
+              padding="1.2rem 1.6rem"
+              isBoxSizing={true}
             />
           </div>
         </div>
@@ -144,6 +162,8 @@ export const ModifyProfileMainSection = ({
               value={style.viewValue}
               readOnly={true}
               isCursorPointer={true}
+              padding="1.2rem 1.6rem"
+              isBoxSizing={true}
             />
           </div>
         </div>
@@ -162,6 +182,8 @@ export const ModifyProfileMainSection = ({
               value={type.viewValue}
               readOnly={true}
               isCursorPointer={true}
+              padding="1.2rem 1.6rem"
+              isBoxSizing={true}
             />
           </div>
         </div>
@@ -172,37 +194,30 @@ export const ModifyProfileMainSection = ({
             height="4.8rem"
             value={availableTime.viewValue.slice(0, 26) + '...'}
             readOnly={true}
+            padding="1.2rem 1.6rem"
+            isBoxSizing={true}
           />
         </div>
         <div className="price">
-          {' '}
           <ProfileInformTag>상담 가격</ProfileInformTag>
           <div className="letter-price">
             <PriceInformTag>편지</PriceInformTag>
-            <Input
-              width="calc(100% - 5.4rem)"
-              height="4.8rem"
-              fontSize="1.6rem"
-              fontWeight="400"
-              placeholder="1회당 최소 5,000원~최대 50,000원"
+            <PriceInput
               value={letterPrice.value}
-              onChange={(e) => {
-                letterPrice.handleCheckSpecialLetter(e.target.value);
-                letterPrice.onChange(e);
-              }}
+              onChange={letterPrice.onChangePrice}
+              placeholder="1회당 최소 5,000원~최대 50,000원"
             />
+
+            <Body1>원</Body1>
           </div>
           <div className="chat-price">
             <PriceInformTag>채팅</PriceInformTag>
-            <Input
-              width="calc(100% - 5.4rem)"
-              height="4.8rem"
-              fontSize="1.6rem"
-              fontWeight="400"
-              placeholder="30분당 최소 5,000원~최대 50,000원"
+            <PriceInput
               value={chatPrice.value}
-              onChange={chatPrice.onChange}
+              onChange={chatPrice.onChangePrice}
+              placeholder="30분당 최소 5,000원~최대 50,000원"
             />
+            <Body1>원</Body1>
           </div>
         </div>
       </ModifyProfileBox>
@@ -218,6 +233,8 @@ export const ModifyProfileMainSection = ({
               oneLiner.handleCheckSpecialLetter(e.target.value);
               oneLiner.onChange(e);
             }}
+            padding="1.2rem 1.6rem"
+            isBoxSizing={true}
           />
           <ConditionMessage>
             <Caption2
@@ -259,23 +276,65 @@ export const ModifyProfileMainSection = ({
                   : Grey4
               }
             >
-              {experience.isError ? (
-                ''
-              ) : experience.isValid ? (
-                <CheckIcon stroke={SafeColor} />
-              ) : (
-                <CheckIcon stroke={Grey5} />
-              )}
               최대 20,000자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
+            {experience.isError ? (
+              ''
+            ) : experience.isValid ? (
+              <CheckIcon stroke={SafeColor} />
+            ) : (
+              <CheckIcon stroke={Grey5} />
+            )}
+
             <CheckIcon />
           </ConditionMessage>
         </div>
+        <div className="account">
+          <ProfileInformTag>수익 계좌</ProfileInformTag>
+          <div className="account-num">
+            <AccountTag>계좌번호</AccountTag>
+            <Input
+              width="100%"
+              height="4.8rem"
+              maxLength={50}
+              value={accountNum.value}
+              onChange={(e) => {
+                accountNum.handleCheckSpecialLetter(e.target.value);
+                accountNum.onChange(e);
+              }}
+              padding="1.2rem 1.6rem"
+              isBoxSizing={true}
+            />
+          </div>
+          <div className="bank-type">
+            <AccountTag>은행</AccountTag>
+            <BankTypeSelect onClick={() => {}}>
+              <Body1>{bankType.value}</Body1>
+            </BankTypeSelect>
+          </div>
+          <div className="bank-owner">
+            <AccountTag>예금주</AccountTag>
+            <Input
+              width="100%"
+              height="4.8rem"
+              maxLength={50}
+              value={bankOwner.value}
+              onChange={(e) => {
+                bankOwner.handleCheckSpecialLetter(e.target.value);
+                bankOwner.onChange(e);
+              }}
+              padding="1.2rem 1.6rem"
+              isBoxSizing={true}
+            />
+          </div>
+        </div>
+        <Space height="9.2rem" />
       </ModifyProfileBox>
       <BottomButton
         text="저장하기"
         onClick={() => {
-          navigate('/seller/mypage/modifyProfile');
+          setIsUpdateModalOpen(true);
+          // navigate('/seller/mypage/modifyProfile');
         }}
       />
     </ModifyProfileMainSectionWrapper>
@@ -304,6 +363,15 @@ const ModifyProfileBox = styled.div`
     display: flex;
     align-items: center;
   }
+  .account {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .account > div {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const ProfileInformTag = styled(Body1)`
@@ -322,6 +390,28 @@ const PriceInformTag = styled(Body1)`
   margin-right: auto;
 `;
 
+const PriceInput = styled.input`
+  width: calc(100% - 7rem);
+  height: 4.8rem;
+  padding: 1.2rem 1.6rem;
+  box-sizing: border-box;
+  text-align: right;
+  border-radius: 1.2rem;
+  background: ${Grey6};
+  margin-right: 1rem;
+  overflow: hidden;
+  color: ${Grey1};
+  text-overflow: ellipsis;
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  &::placeholder {
+    font-size: 1.2rem;
+  }
+`;
+
 const ExperienceTextArea = styled.textarea`
   height: 44rem;
   border: none;
@@ -338,4 +428,26 @@ const ExperienceTextArea = styled.textarea`
   &:focus {
     outline: none;
   }
+`;
+
+const AccountTag = styled.div`
+  width: 8rem;
+  margin-right: 1.7rem;
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 2.4rem */
+`;
+
+const BankTypeSelect = styled.div`
+  border-radius: 1.2rem;
+  background: ${Grey6};
+  height: 4.8rem;
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  gap: 0.8rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 100%;
 `;
