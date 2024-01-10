@@ -42,7 +42,12 @@ export const BuyerMypage = () => {
               <PayedIcon />
               <Button2>결제 내역</Button2>
             </div>
-            <div className="button">
+            <div
+              className="button"
+              onClick={() => {
+                navigate('/buyer/reviewManage');
+              }}
+            >
               <ReviewIcon />
               <Button2>리뷰 관리</Button2>
             </div>
