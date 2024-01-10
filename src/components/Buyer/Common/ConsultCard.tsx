@@ -24,7 +24,7 @@ export const ConsultCard = ({
       <ConsultContent>
         <ConsultStateBox>
           <div className="col1">
-            <TagA2Consult tagType={consultState} isBuyer={false} />
+            <TagA2Consult tagType={consultState}/>
             <Characters number={9} width="5.4rem" height="5.1rem" />
           </div>
           <div className="col2">

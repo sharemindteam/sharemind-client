@@ -71,7 +71,13 @@ export const BuyerMypage = () => {
               }}
             />
             <div className="find-id">
-              <Body2 color={Grey4} style={{ cursor: 'pointer' }}>
+              <Body2
+                color={Grey4}
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  navigate('/find');
+                }}
+              >
                 아이디/비밀번호 찾기
               </Body2>
             </div>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Black, Grey4, Grey6 } from 'styles/color';
-
+import { TextField } from '@mui/material';
 interface InputProps {
   width?: string;
   height?: string;
@@ -23,9 +23,9 @@ interface InputProps {
   readOnly?: boolean;
   isCursorPointer?: boolean;
   isBoxSizing?: boolean;
-  textIndent?: string;
+  enterkeyhint?: string;
 }
-const Input = ({
+const InputIos = ({
   width = 'auto',
   height = 'auto',
   backgroundColor = Grey6,
@@ -47,10 +47,10 @@ const Input = ({
   readOnly = false,
   isCursorPointer = false,
   isBoxSizing = false,
-  textIndent = '0',
+  enterkeyhint = '',
 }: InputProps) => {
   return (
-    <StyledInput
+    <StyledTextField
       width={width}
       height={height}
       backgroundColor={backgroundColor}
@@ -68,16 +68,13 @@ const Input = ({
       margin={margin}
       name={name}
       isError={isError}
-      maxLength={maxLength}
-      readOnly={readOnly}
       isCursorPointer={isCursorPointer}
       isBoxSizing={isBoxSizing}
-      textIndent={textIndent}
     />
   );
 };
 
-const StyledInput = styled.input<{
+const StyledTextField = styled(TextField)<{
   width: string;
   height: string;
   backgroundColor: string;
@@ -90,7 +87,6 @@ const StyledInput = styled.input<{
   isError: boolean;
   isCursorPointer: boolean;
   isBoxSizing: boolean;
-  textIndent: string;
 }>`
   border-radius: 10px;
   border: ${(props) => (props.isError ? '1px solid #ff002e' : '')};
@@ -103,7 +99,7 @@ const StyledInput = styled.input<{
   font-weight: ${({ fontWeight }) => fontWeight};
   line-height: 150%;
   color: ${({ fontColor }) => fontColor};
-  text-indent: ${({ textIndent }) => textIndent};
+  text-indent: 1rem;
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
   box-sizing: ${({ isBoxSizing }) =>
@@ -119,4 +115,4 @@ const StyledInput = styled.input<{
   }
 `;
 
-export default Input;
+export default InputIos;

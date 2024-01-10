@@ -1,20 +1,19 @@
 import styled from 'styled-components';
-import { Black, Grey4, Grey6 } from 'styles/color';
-
-interface InputProps {
+import { Black, Grey6 } from 'styles/color';
+import { ReactComponent as HideIcon } from 'assets/icons/icon-pw-hide.svg';
+import { ReactComponent as NonHideIcon } from 'assets/icons/icon-pw-non-hide.svg';
+import { useState } from 'react';
+interface PwInputProps {
   width?: string;
   height?: string;
   backgroundColor?: string;
   fontSize?: string;
   fontWeight?: string;
   fontColor?: string;
-  placeHolderColor?: string;
   value?: string;
-  placeholder?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
-  type?: string;
   padding?: string;
   margin?: string;
   name?: string;
@@ -25,55 +24,82 @@ interface InputProps {
   isBoxSizing?: boolean;
   textIndent?: string;
 }
-const Input = ({
+const PwInput = ({
   width = 'auto',
   height = 'auto',
   backgroundColor = Grey6,
   fontSize = '1.6rem',
   fontWeight = '600',
   fontColor = Black,
-  placeHolderColor = Grey4,
   value,
-  placeholder,
   onChange,
   onBlur,
   onFocus,
-  type = 'text',
   padding = '',
   margin = '',
   name,
   isError = false,
   maxLength,
-  readOnly = false,
   isCursorPointer = false,
   isBoxSizing = false,
   textIndent = '0',
-}: InputProps) => {
+}: PwInputProps) => {
+  const [hideToggle, setHideToggle] = useState<boolean>(true);
+  let type: string = 'password';
+  if (hideToggle === true) {
+    type = 'password';
+  } else {
+    type = 'text';
+  }
   return (
-    <StyledInput
-      width={width}
-      height={height}
-      backgroundColor={backgroundColor}
-      fontSize={fontSize}
-      fontWeight={fontWeight}
-      fontColor={fontColor}
-      placeHolderColor={placeHolderColor}
-      value={value}
-      placeholder={placeholder}
-      onChange={onChange}
-      onBlur={onBlur}
-      onFocus={onFocus}
-      type={type}
-      padding={padding}
-      margin={margin}
-      name={name}
-      isError={isError}
-      maxLength={maxLength}
-      readOnly={readOnly}
-      isCursorPointer={isCursorPointer}
-      isBoxSizing={isBoxSizing}
-      textIndent={textIndent}
-    />
+    <div style={{ position: 'relative' }}>
+      <StyledInput
+        type={type}
+        width={width}
+        height={height}
+        backgroundColor={backgroundColor}
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        fontColor={fontColor}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        padding={padding}
+        margin={margin}
+        name={name}
+        isError={isError}
+        maxLength={maxLength}
+        isCursorPointer={isCursorPointer}
+        isBoxSizing={isBoxSizing}
+        textIndent={textIndent}
+      />
+      {hideToggle ? (
+        <HideIcon
+          style={{
+            cursor: 'pointer',
+            position: 'absolute',
+            right: '1.6rem',
+            top: '1rem',
+          }}
+          onClick={() => {
+            setHideToggle(false);
+          }}
+        />
+      ) : (
+        <NonHideIcon
+          style={{
+            cursor: 'pointer',
+            position: 'absolute',
+            right: '1.6rem',
+            top: '1rem',
+          }}
+          onClick={() => {
+            setHideToggle(true);
+          }}
+        />
+      )}
+    </div>
   );
 };
 
@@ -83,7 +109,6 @@ const StyledInput = styled.input<{
   backgroundColor: string;
   fontColor: string;
   fontSize: string;
-  placeHolderColor: string;
   fontWeight: string;
   padding: string;
   margin: string;
@@ -111,12 +136,6 @@ const StyledInput = styled.input<{
   &:focus {
     outline: none;
   }
-
-  &::placeholder {
-    font-size: ${({ fontSize }) => fontSize};
-    font-weight: ${({ fontWeight }) => fontWeight};
-    color: ${({ placeHolderColor }) => placeHolderColor};
-  }
 `;
 
-export default Input;
+export default PwInput;
