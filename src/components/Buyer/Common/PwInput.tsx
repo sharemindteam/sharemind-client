@@ -39,7 +39,7 @@ const PwInput = ({
   margin = '',
   name,
   isError = false,
-  maxLength,
+  maxLength = 19,
   isCursorPointer = false,
   isBoxSizing = false,
   textIndent = '0',

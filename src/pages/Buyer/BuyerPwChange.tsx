@@ -65,11 +65,6 @@ export const BuyerPwChange = () => {
       isInitialRender.current = false;
       return;
     }
-    // if (pw.value.trim() !== '') {
-    //   pw.setIsValid(true);
-    // } else {
-    //   pw.setIsValid(false);
-    // }
     if (passwordTypeValid(newPw.value)) {
       setTypeColor(SafeColor);
       setTypeState('valid');
@@ -179,12 +174,12 @@ export const BuyerPwChange = () => {
           </div>
         </div>
         <Button
-          text="다음"
+          text="완료"
           width="33.5rem"
           height="5.2rem"
           isActive={valid}
           onClick={() => {
-            navigate('/signup/info');
+            navigate('/login');
           }}
         />
       </div>
