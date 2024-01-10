@@ -1,11 +1,14 @@
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
-export const HeaderWrapper = styled.div`
+export const HeaderWrapper = styled.div<{ border?: boolean }>`
   height: 5.2rem;
   background-color: ${White};
   position: relative;
-  border-bottom: 1px solid ${Grey6};
+  ${(props) =>
+    props.border || props.border === undefined
+      ? `border-bottom: 1px solid ${Grey6};`
+      : null}
   display: flex;
   justify-content: center;
   align-items: center;
