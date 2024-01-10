@@ -36,6 +36,7 @@ export const SellerReviewMainSection = () => {
         {cardList?.map((item) => (
           <ReviewCard
             key={item.id}
+            id={item.id}
             name={item.name}
             iconType={1}
             consultType={item.consultType}

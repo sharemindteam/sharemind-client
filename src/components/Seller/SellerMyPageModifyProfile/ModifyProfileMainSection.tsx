@@ -65,7 +65,7 @@ export const ModifyProfileMainSection = ({
   const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
   const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
-  
+
   useEffect(() => {
     category.setViewValue(categoryInputMaker(selectCategory));
   }, [selectCategory]);
@@ -233,7 +233,7 @@ export const ModifyProfileMainSection = ({
             maxLength={50}
             value={oneLiner.value}
             onChange={(e) => {
-              oneLiner.handleCheckSpecialLetter(e.target.value);
+              oneLiner.handleCheckOneLiner(e.target.value);
               oneLiner.onChange(e);
             }}
             padding="1.2rem 1.6rem"
@@ -263,9 +263,10 @@ export const ModifyProfileMainSection = ({
         <div className="experience">
           <ProfileInformTag>경험 소개</ProfileInformTag>
           <ExperienceTextArea
+            maxLength={20000}
             value={experience.value}
             onChange={(e) => {
-              experience.handleCheckSpecialLetter(e.target.value);
+              experience.handleCheckOneLiner(e.target.value);
               experience.onChange(e);
             }}
           />
