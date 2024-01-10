@@ -12,6 +12,6 @@ export const isIncludeSpecialLetter = (str: string) => {
 // True면 삘긴섹
 // 특수문자이면서
 export const isIncludeSpecialLetterOneLiner = (str: string) =>
-  /[^\dㄱ-힣a-zA-Z]/.test(str) && !/[#!&?\-_,.$%^*/'"':+=~|·]/.test(str);
+  !/^[\dㄱ-힣a-zA-Z ]*$/.test(str) && !/[#!&?\-_,.$%^*/'"':+=~|·]/.test(str);
 
-// 특수문자가이다 &&
+// 특수문자이면서 &&
