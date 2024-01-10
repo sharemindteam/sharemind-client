@@ -1,5 +1,4 @@
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import Input from 'components/Common/Input';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
@@ -21,7 +20,7 @@ export const BuyerSignupPw = () => {
   const [typeColor, setTypeColor] = useState<string>(Grey4);
   const [lengthColor, setLengthColor] = useState<string>(Grey4);
   const [correctColor, setCorrectColor] = useState<string>(Grey4);
-  //캡션 아이콘 상태
+  //캡션 아이콘 상태 / common valid invalid
   const [typeState, setTypeState] = useState<string>('');
   const [lengthState, setLengthState] = useState<string>('');
   const [correctState, setCorrectState] = useState<string>('');
@@ -94,16 +93,14 @@ export const BuyerSignupPw = () => {
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               비밀번호
             </Body1>
-            <div className="input-wrapper">
-              <PwInput
-                value={pw.value}
-                onChange={pw.onChange}
-                width="33.5rem"
-                height="4.8rem"
-                isBoxSizing={true}
-                textIndent="1rem"
-              />
-            </div>
+            <PwInput
+              value={pw.value}
+              onChange={pw.onChange}
+              width="33.5rem"
+              height="4.8rem"
+              isBoxSizing={true}
+              textIndent="1rem"
+            />
           </div>
           <div className="caption">
             <Caption2 color={typeColor}>
@@ -161,18 +158,12 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
   }
-  .input-wrapper {
-    position: relative;
-  }
+
   .caption {
     display: flex;
     width: 33.5rem;
     gap: 0.4rem;
     align-items: center;
     margin-bottom: 2.8rem;
-  }
-  .next-button {
-    position: sticky;
-    bottom: 0;
   }
 `;

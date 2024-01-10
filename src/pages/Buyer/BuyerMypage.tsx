@@ -91,7 +91,14 @@ export const BuyerMypage = () => {
         <Body2 color={Grey1}>결제 문의</Body2>
       </div>
       <div className="additional-box">
-        <Body2 color={Grey1}>비밀번호 변경</Body2>
+        <Body2
+          color={Grey1}
+          onClick={() => {
+            navigate('/setting');
+          }}
+        >
+          계정 설정
+        </Body2>
       </div>
       <Button
         text="로그인 전환"

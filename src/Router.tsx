@@ -21,6 +21,8 @@ import { BuyerSignupPw } from 'pages/Buyer/BuyerSignupPw';
 import { BuyerSignupInfo } from 'pages/Buyer/BuyerSignupInfo';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
+import { BuyerAccountSetting } from 'pages/Buyer/BuyerAccountSetting';
+import { BuyerPwChange } from 'pages/Buyer/BuyerPwChange';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -62,6 +64,8 @@ const Router = () => {
       <Route path="/signup/info" element={<BuyerSignupInfo />} />
       <Route path="/signup/nav" element={<BuyerSignupComplete />} />
       <Route path="/find" element={<BuyerFindInfo />} />
+      <Route path="/setting" element={<BuyerAccountSetting />} />
+      <Route path="/pwchange" element={<BuyerPwChange />} />
       <Route path="/seller" element={<SellerHome />} />
       {/* 판매자 : 상담 */}
 

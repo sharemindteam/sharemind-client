@@ -17,7 +17,7 @@ export const BuyerLogin = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate(-1);
+            navigate('/buyer/mypage');
           }}
         />
         <Heading color={Grey1}>로그인</Heading>
