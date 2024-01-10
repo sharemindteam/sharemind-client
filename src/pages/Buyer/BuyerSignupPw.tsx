@@ -82,7 +82,7 @@ export const BuyerSignupPw = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate(-1);
+            navigate('/login');
           }}
         />
         <Heading color={Grey1}>회원가입</Heading>
@@ -133,7 +133,6 @@ export const BuyerSignupPw = () => {
             <SignupValidIcon type={correctState} />
           </div>
         </div>
-        {/* <div className="next-button"> */}
         <Button
           text="다음"
           width="33.5rem"
@@ -143,7 +142,6 @@ export const BuyerSignupPw = () => {
             navigate('/signup/info');
           }}
         />
-        {/* </div> */}
       </div>
     </Wrapper>
   );

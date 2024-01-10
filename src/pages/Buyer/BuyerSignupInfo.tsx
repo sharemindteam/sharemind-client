@@ -2,7 +2,7 @@ import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import Input from 'components/Common/Input';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
+import { ErrorColor, Grey1, Grey3, Grey4 } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'components/Common/Button';
@@ -14,28 +14,39 @@ export const BuyerSignupInfo = () => {
   //pw input temp
   const email = useInput('');
   const phoneNumber = useInput('');
-  //email valid color
-  // const emailValidColor , setEmailValidColor
+  // emali error state
+  //TODO 중복 체크 api로 중복 시 error
+  const [errorState, setErrorState] = useState<boolean>(false);
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
   //valid check
   useEffect(() => {
     //세 case 모두 valid할 시 다음으로 넘어감
-    if (email.typeValid && email.lengthValid && phoneNumber.isValid) {
+    if (email.isValid && phoneNumber.isValid) {
       setValid(true);
     } else {
       setValid(false);
     }
-  }, [email.typeValid, email.lengthValid, phoneNumber.isValid]);
+  }, [email.isValid, phoneNumber.isValid]);
 
   useEffect(() => {
     // 첫 마운트 시에는 error 색상 안되게 처리
     if (isInitialRender.current) {
-      // setTypeColor(Grey4);
-      // setLengthColor(Grey4);
-      // setCorrectColor(Grey4);
       isInitialRender.current = false;
       return;
+    }
+    //TODO:(아이디) 추후 valid 체크 후 true처리
+    //현재는 입력만 들어오면 valid true
+    if (email.value.trim() !== '') {
+      email.setIsValid(true);
+    } else {
+      email.setIsValid(false);
+    }
+    //TODO:(인증번호) 추후 valid 체크 후 true처리
+    if (phoneNumber.value.trim() !== '') {
+      phoneNumber.setIsValid(true);
+    } else {
+      phoneNumber.setIsValid(false);
     }
   }, [email.value, phoneNumber.value]);
   return (
@@ -43,7 +54,7 @@ export const BuyerSignupInfo = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate(-1);
+            navigate('/login');
           }}
         />
         <Heading color={Grey1}>회원가입</Heading>
@@ -56,7 +67,7 @@ export const BuyerSignupInfo = () => {
             </Body1>
             <div className="input-wrapper">
               <Input
-                type="password"
+                isError={errorState}
                 value={email.value}
                 onChange={email.onChange}
                 width="33.5rem"
@@ -66,12 +77,15 @@ export const BuyerSignupInfo = () => {
             </div>
           </div>
           <div className="caption">
-            {/* <Caption2 color={typeColor}> */}
-            <Caption2>
-              아이디 이메일 분실 시 복구 이메일로 아이디가 발송됩니다.
-              <br />
-              로그인에 사용하는 이메일 주소와 다른 이메일 주소를 선택하세요.
-            </Caption2>
+            {errorState ? (
+              <Caption2 color={ErrorColor}>중복된 이메일입니다.</Caption2>
+            ) : (
+              <Caption2 color={Grey4}>
+                아이디 이메일 분실 시 복구 이메일로 아이디가 발송됩니다.
+                <br />
+                로그인에 사용하는 이메일 주소와 다른 이메일 주소를 선택하세요.
+              </Caption2>
+            )}
           </div>
 
           <div className="id-wrapper">
@@ -79,7 +93,6 @@ export const BuyerSignupInfo = () => {
               전화번호
             </Body1>
             <Input
-              type="password"
               value={phoneNumber.value}
               onChange={phoneNumber.onChange}
               width="33.5rem"
@@ -88,17 +101,15 @@ export const BuyerSignupInfo = () => {
             />
           </div>
         </div>
-        {/* <div className="next-button"> */}
         <Button
           text="다음"
           width="33.5rem"
           height="5.2rem"
           isActive={valid}
           onClick={() => {
-            navigate('/signup/setting');
+            navigate('/signup/nav');
           }}
         />
-        {/* </div> */}
       </div>
     </Wrapper>
   );

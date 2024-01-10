@@ -7,6 +7,7 @@ import Input from 'components/Common/Input';
 import { useEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
+//TODO useInput으로 refactor
 export const BuyerSignup = () => {
   const navigate = useNavigate();
   //입력 아이디 valid 여부
@@ -73,7 +74,7 @@ export const BuyerSignup = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate(-1);
+            navigate('/login');
           }}
         />
         <Heading color={Grey1}>회원가입</Heading>
