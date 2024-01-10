@@ -26,6 +26,7 @@ import {
   isCategoryModalOpenState,
   isStyleModalOpenState,
   isTypeOpenModalState,
+  isSuccessUpdateState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
@@ -64,6 +65,7 @@ export const ModifyProfileMainSection = ({
   const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
   const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
+  
   useEffect(() => {
     category.setViewValue(categoryInputMaker(selectCategory));
   }, [selectCategory]);

@@ -17,6 +17,7 @@ import { SellerMypageViewProfile } from 'pages/Seller/SellerMyPageViewProfile';
 import { SellerMypage } from 'pages/Seller/SellerMypage';
 import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import { SellerMyPageReview } from 'pages/Seller/SellerMyPageReview';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -68,10 +69,13 @@ const Router = () => {
       <Route path="/seller/consult" element={<SellerConsult />} />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/seller/mypage" element={<SellerMypage />} />
+
+      <Route path="seller/mypage/review" element={<SellerMyPageReview />} />
       <Route
         path="/seller/mypage/viewProfile"
         element={<SellerMypageViewProfile />}
       />
+
       <Route
         path="/seller/mypage/modifyProfile"
         element={<SellerMypageModifyProfile />}
