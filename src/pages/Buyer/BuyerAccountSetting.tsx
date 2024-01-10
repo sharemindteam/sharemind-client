@@ -1,5 +1,4 @@
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey6 } from 'styles/color';
@@ -7,73 +6,44 @@ import { Body2, Heading } from 'styles/font';
 
 export const BuyerAccountSetting = () => {
   const navigate = useNavigate();
-  const [settingOption, setSettingOption] = useState<string>('select');
 
-  if (settingOption === 'select') {
-    return (
-      <Wrapper>
-        <HeaderWrapper>
-          <BackIcon
-            onClick={() => {
-              navigate(-1);
-            }}
-          />
-          <Heading color={Grey1}>계정 설정</Heading>
-        </HeaderWrapper>
+  return (
+    <Wrapper>
+      <HeaderWrapper>
+        <BackIcon
+          onClick={() => {
+            navigate(-1);
+          }}
+        />
+        <Heading color={Grey1}>계정 설정</Heading>
+      </HeaderWrapper>
 
-        <div
-          className="row"
-          onClick={() => {
-            navigate('/pwchange');
-          }}
-        >
-          <Body2 color={Grey1}>비밀번호 변경</Body2>
-        </div>
-        <div
-          className="row"
-          onClick={() => {
-            setSettingOption('terminate');
-          }}
-        >
-          <Body2 color={Grey1}>회원 탈퇴</Body2>
-        </div>
-        <div
-          className="row"
-          onClick={() => {
-            setSettingOption('logout');
-          }}
-        >
-          <Body2 color={Grey1}>로그아웃</Body2>
-        </div>
-      </Wrapper>
-    );
-  } else if (settingOption === 'terminate') {
-    return (
-      <Wrapper>
-        <HeaderWrapper>
-          <BackIcon
-            onClick={() => {
-              setSettingOption('select');
-            }}
-          />
-          <Heading color={Grey1}>회원 탈퇴</Heading>
-        </HeaderWrapper>
-      </Wrapper>
-    );
-  } else if (settingOption === 'logout') {
-    return (
-      <Wrapper>
-        <HeaderWrapper>
-          <BackIcon
-            onClick={() => {
-              setSettingOption('select');
-            }}
-          />
-          <Heading color={Grey1}>로그아웃</Heading>
-        </HeaderWrapper>
-      </Wrapper>
-    );
-  }
+      <div
+        className="row"
+        onClick={() => {
+          navigate('/setting/changePassword');
+        }}
+      >
+        <Body2 color={Grey1}>비밀번호 변경</Body2>
+      </div>
+      <div
+        className="row"
+        onClick={() => {
+          navigate('/setting/terminate');
+        }}
+      >
+        <Body2 color={Grey1}>회원 탈퇴</Body2>
+      </div>
+      <div
+        className="row"
+        onClick={() => {
+          navigate('/setting/logout');
+        }}
+      >
+        <Body2 color={Grey1}>로그아웃</Body2>
+      </div>
+    </Wrapper>
+  );
 };
 const Wrapper = styled.div`
   .row {
