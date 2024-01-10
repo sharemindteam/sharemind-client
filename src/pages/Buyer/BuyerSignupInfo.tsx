@@ -138,8 +138,4 @@ const Wrapper = styled.div`
     align-items: center;
     margin-bottom: 2.8rem;
   }
-  .next-button {
-    position: sticky;
-    bottom: 0;
-  }
 `;

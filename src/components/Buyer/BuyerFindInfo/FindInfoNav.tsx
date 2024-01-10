@@ -7,10 +7,7 @@ interface CounselorProfileNavProps {
   isId: boolean;
   setIsId: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const CounselorProfileNav = ({
-  isId,
-  setIsId,
-}: CounselorProfileNavProps) => {
+export const FindInfoNav = ({ isId, setIsId }: CounselorProfileNavProps) => {
   const [idColor, setIdColor] = useState<string>(Green);
   const [pwColor, setPwColor] = useState<string>(Grey4);
   return (
