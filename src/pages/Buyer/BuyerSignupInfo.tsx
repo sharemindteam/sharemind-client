@@ -7,62 +7,37 @@ import { Body1, Caption2, Heading } from 'styles/font';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { useInput } from 'hooks/useInput';
-import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
-import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
-export const BuyerSignupPw = () => {
+export const BuyerSignupInfo = () => {
   //첫렌더 시 예외처리
   const isInitialRender = useRef(true);
   const navigate = useNavigate();
   //pw input temp
-  const pw = useInput('');
-  const pwCheck = useInput('');
-  //caption color
-  const [typeColor, setTypeColor] = useState<string>(Grey4);
-  const [lengthColor, setLengthColor] = useState<string>(Grey4);
-  const [correctColor, setCorrectColor] = useState<string>(Grey4);
+  const email = useInput('');
+  const phoneNumber = useInput('');
+  //email valid color
+  // const emailValidColor , setEmailValidColor
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
   //valid check
   useEffect(() => {
     //세 case 모두 valid할 시 다음으로 넘어감
-    if (pw.typeValid && pw.lengthValid && pwCheck.isValid) {
+    if (email.typeValid && email.lengthValid && phoneNumber.isValid) {
       setValid(true);
     } else {
       setValid(false);
     }
-  }, [pw.typeValid, pw.lengthValid, pwCheck.isValid]);
+  }, [email.typeValid, email.lengthValid, phoneNumber.isValid]);
 
   useEffect(() => {
     // 첫 마운트 시에는 error 색상 안되게 처리
     if (isInitialRender.current) {
-      setTypeColor(Grey4);
-      setLengthColor(Grey4);
-      setCorrectColor(Grey4);
+      // setTypeColor(Grey4);
+      // setLengthColor(Grey4);
+      // setCorrectColor(Grey4);
       isInitialRender.current = false;
       return;
     }
-    if (passwordTypeValid(pw.value)) {
-      setTypeColor(SafeColor);
-      pw.setTypeValid(true);
-    } else {
-      setTypeColor(ErrorColor);
-      pw.setTypeValid(false);
-    }
-    if (passwordLengthValid(pw.value)) {
-      setLengthColor(SafeColor);
-      pw.setLengthValid(true);
-    } else {
-      setLengthColor(ErrorColor);
-      pw.setLengthValid(false);
-    }
-    if (pw.value.trim() === pwCheck.value.trim() && pw.value.trim() !== '') {
-      setCorrectColor(SafeColor);
-      pwCheck.setIsValid(true);
-    } else {
-      setCorrectColor(ErrorColor);
-      pwCheck.setIsValid(false);
-    }
-  }, [pw.value, pwCheck.value]);
+  }, [email.value, phoneNumber.value]);
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -77,13 +52,13 @@ export const BuyerSignupPw = () => {
         <div>
           <div className="id-wrapper">
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
-              비밀번호
+              복구 이메일
             </Body1>
             <div className="input-wrapper">
               <Input
                 type="password"
-                value={pw.value}
-                onChange={pw.onChange}
+                value={email.value}
+                onChange={email.onChange}
                 width="33.5rem"
                 height="4.8rem"
                 isBoxSizing={true}
@@ -91,32 +66,26 @@ export const BuyerSignupPw = () => {
             </div>
           </div>
           <div className="caption">
-            <Caption2 color={typeColor}>
-              영문, 숫자, 특수문자 중 2종 이상 조합
+            {/* <Caption2 color={typeColor}> */}
+            <Caption2>
+              아이디 이메일 분실 시 복구 이메일로 아이디가 발송됩니다.
+              <br />
+              로그인에 사용하는 이메일 주소와 다른 이메일 주소를 선택하세요.
             </Caption2>
-            <SignupValidIcon type={'common'} />
-            <Caption2 color={lengthColor} margin="0 0 0 1.6rem">
-              10자 이상
-            </Caption2>
-            <SignupValidIcon type={'common'} />
           </div>
 
           <div className="id-wrapper">
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
-              비밀번호 확인
+              전화번호
             </Body1>
             <Input
               type="password"
-              value={pwCheck.value}
-              onChange={pwCheck.onChange}
+              value={phoneNumber.value}
+              onChange={phoneNumber.onChange}
               width="33.5rem"
               height="4.8rem"
               isBoxSizing={true}
             />
-          </div>
-          <div className="caption">
-            <Caption2 color={correctColor}>비밀번호 일치</Caption2>
-            <SignupValidIcon type={'common'} />
           </div>
         </div>
         {/* <div className="next-button"> */}

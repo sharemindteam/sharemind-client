@@ -18,6 +18,7 @@ import { SellerMypage } from 'pages/Seller/SellerMypage';
 import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { BuyerSignupPw } from 'pages/Buyer/BuyerSignupPw';
+import { BuyerSignupInfo } from 'pages/Buyer/BuyerSignupInfo';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Router = () => {
       <Route path="/login" element={<BuyerLogin />} />
       <Route path="/signup" element={<BuyerSignup />} />
       <Route path="/signup/setting" element={<BuyerSignupPw />} />
-      <Route path="/signup/info" element={<BuyerSignupPw />} />
+      <Route path="/signup/info" element={<BuyerSignupInfo />} />
       <Route path="/seller" element={<SellerHome />} />
       {/* 판매자 : 상담 */}
 

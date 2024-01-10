@@ -20,6 +20,10 @@ export const BuyerSignupPw = () => {
   const [typeColor, setTypeColor] = useState<string>(Grey4);
   const [lengthColor, setLengthColor] = useState<string>(Grey4);
   const [correctColor, setCorrectColor] = useState<string>(Grey4);
+  //캡션 아이콘 상태
+  const [typeState, setTypeState] = useState<string>('');
+  const [lengthState, setLengthState] = useState<string>('');
+  const [correctState, setCorrectState] = useState<string>('');
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
   //valid check
@@ -38,28 +42,38 @@ export const BuyerSignupPw = () => {
       setTypeColor(Grey4);
       setLengthColor(Grey4);
       setCorrectColor(Grey4);
+      //첫 마운트 시 icon 상태도 common
+      setTypeState('common');
+      setLengthState('common');
+      setCorrectState('common');
       isInitialRender.current = false;
       return;
     }
     if (passwordTypeValid(pw.value)) {
       setTypeColor(SafeColor);
+      setTypeState('valid');
       pw.setTypeValid(true);
     } else {
       setTypeColor(ErrorColor);
+      setTypeState('invalid');
       pw.setTypeValid(false);
     }
     if (passwordLengthValid(pw.value)) {
       setLengthColor(SafeColor);
+      setLengthState('valid');
       pw.setLengthValid(true);
     } else {
       setLengthColor(ErrorColor);
+      setLengthState('invalid');
       pw.setLengthValid(false);
     }
     if (pw.value.trim() === pwCheck.value.trim() && pw.value.trim() !== '') {
       setCorrectColor(SafeColor);
+      setCorrectState('valid');
       pwCheck.setIsValid(true);
     } else {
       setCorrectColor(ErrorColor);
+      setCorrectState('invalid');
       pwCheck.setIsValid(false);
     }
   }, [pw.value, pwCheck.value]);
@@ -94,11 +108,11 @@ export const BuyerSignupPw = () => {
             <Caption2 color={typeColor}>
               영문, 숫자, 특수문자 중 2종 이상 조합
             </Caption2>
-            <SignupValidIcon type={'common'} />
+            <SignupValidIcon type={typeState} />
             <Caption2 color={lengthColor} margin="0 0 0 1.6rem">
               10자 이상
             </Caption2>
-            <SignupValidIcon type={'common'} />
+            <SignupValidIcon type={lengthState} />
           </div>
 
           <div className="id-wrapper">
@@ -116,7 +130,7 @@ export const BuyerSignupPw = () => {
           </div>
           <div className="caption">
             <Caption2 color={correctColor}>비밀번호 일치</Caption2>
-            <SignupValidIcon type={'common'} />
+            <SignupValidIcon type={correctState} />
           </div>
         </div>
         {/* <div className="next-button"> */}

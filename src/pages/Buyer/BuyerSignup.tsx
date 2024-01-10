@@ -93,6 +93,7 @@ export const BuyerSignup = () => {
                 width="33.5rem"
                 height="4.8rem"
                 isBoxSizing={true}
+                maxLength={23}
               />
               <VerifyButton
                 isActive={idValid}
