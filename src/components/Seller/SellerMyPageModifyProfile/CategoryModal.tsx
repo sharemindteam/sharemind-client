@@ -24,11 +24,16 @@ export const CategoryModal = ({
     // 카테고리 선택
     if (!modalCategory.includes(category)) {
       if (modalCategory.length === 3) {
+        const updatedCategory = modalCategory.slice(
+          0,
+          modalCategory.length - 1,
+        );
+        setModalCategory([...updatedCategory, category]);
         return;
       }
       setModalCategory([...modalCategory, category]);
     }
-    
+
     // 카테고리 선택해제
     else {
       const updatedCategory = modalCategory.filter((item) => item !== category);
@@ -61,7 +66,7 @@ export const CategoryModal = ({
         {modalCategory.includes(1) ? (
           <>
             <Body1 color={Green}>연애갈등</Body1>
-            <CheckIcon /> 
+            <CheckIcon />
           </>
         ) : (
           <Body1 color={Grey1}>연애갈등</Body1>
