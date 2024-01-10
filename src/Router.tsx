@@ -18,6 +18,10 @@ import { SellerMypage } from 'pages/Seller/SellerMypage';
 import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { SellerMyPageReview } from 'pages/Seller/SellerMyPageReview';
+import { BuyerSignupPw } from 'pages/Buyer/BuyerSignupPw';
+import { BuyerSignupInfo } from 'pages/Buyer/BuyerSignupInfo';
+import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
+import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -52,8 +56,13 @@ const Router = () => {
       <Route path="/buyer/search/result" element={<BuyerSearchResult />} />
       <Route path="/buyer/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/buyer/mypage" element={<BuyerMypage />} />
+      {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}
       <Route path="/login" element={<BuyerLogin />} />
       <Route path="/signup" element={<BuyerSignup />} />
+      <Route path="/signup/setting" element={<BuyerSignupPw />} />
+      <Route path="/signup/info" element={<BuyerSignupInfo />} />
+      <Route path="/signup/nav" element={<BuyerSignupComplete />} />
+      <Route path="/find" element={<BuyerFindInfo />} />
       <Route path="/seller" element={<SellerHome />} />
       {/* 판매자 : 상담 */}
 

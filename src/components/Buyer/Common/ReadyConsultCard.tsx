@@ -11,7 +11,6 @@ import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { consultTypeList } from 'utils/constant';
-import { useRecoilValue } from 'recoil';
 // import { isSortModalOpenState } from 'utils/atom';
 interface ReadyConsultCardProps {
   index: number;

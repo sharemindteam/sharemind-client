@@ -44,7 +44,13 @@ export const BuyerLogin = () => {
               >
                 회원가입
               </UnderlineText>
-              <UnderlineText>아이디/비밀번호 찾기</UnderlineText>
+              <UnderlineText
+                onClick={() => {
+                  navigate('/find');
+                }}
+              >
+                아이디/비밀번호 찾기
+              </UnderlineText>
             </div>
           </div>
         </div>
