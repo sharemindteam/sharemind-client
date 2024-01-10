@@ -3,13 +3,18 @@ import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile
 import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
 import { StyleModal } from 'components/Seller/SellerMyPageModifyProfile/StyleModal';
 import { TypeModal } from 'components/Seller/SellerMyPageModifyProfile/TypeModal';
+import { UpdatePopup } from 'components/Seller/SellerMyPageModifyProfile/UpdatePopup';
+import { UpdateSuccess } from 'components/Seller/SellerMyPageModifyProfile/UpdateSuccess';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import {
+  isBankModalOpenState,
   isCategoryModalOpenState,
   isStyleModalOpenState,
+  isSuccessUpdateState,
   isTypeOpenModalState,
+  isUpdateModalOpenState,
 } from 'utils/atom';
 
 export const SellerMypageModifyProfile = () => {
@@ -29,30 +34,49 @@ export const SellerMypageModifyProfile = () => {
   );
   const [isTypeModalOpen, setIsTypeModalOpen] =
     useRecoilState<boolean>(isTypeOpenModalState);
+
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useRecoilState<boolean>(
+    isUpdateModalOpenState,
+  );
+  const [isBankModalOpen, setIsBankModalOpen] =
+    useRecoilState<boolean>(isBankModalOpenState);
+
+  const [isSucessUpdate, setIsUpdateSuccess] =
+    useRecoilState<boolean>(isSuccessUpdateState);
   return (
     <>
       <ModifyProfileHeader />
-      <ModifyProfileMainSection
-        selectCategory={selectCategory}
-        selectStyle={selectStyle}
-        selectType={selectType}
-      />
+      {isSucessUpdate ? (
+        <UpdateSuccess />
+      ) : (
+        <ModifyProfileMainSection
+          selectCategory={selectCategory}
+          selectStyle={selectStyle}
+          selectType={selectType}
+        />
+      )}
+
       {/* 모달 여부 True면.. */}
-      {isCategoryModalOpen || isStyleModalOpen || isTypeModalOpen ? (
+      {isCategoryModalOpen ||
+      isStyleModalOpen ||
+      isTypeModalOpen ||
+      isBankModalOpen ||
+      isUpdateModalOpen ? (
         <BackDrop />
       ) : null}
-      {isCategoryModalOpen ? (
+      {isCategoryModalOpen && (
         <CategoryModal
           selectCategory={selectCategory}
           setSelectCategory={setSelectCategory}
         />
-      ) : null}
-      {isStyleModalOpen ? (
+      )}
+      {isStyleModalOpen && (
         <StyleModal selectStyle={selectStyle} setSelectStyle={setSelectStyle} />
-      ) : null}
-      {isTypeModalOpen ? (
+      )}
+      {isTypeModalOpen && (
         <TypeModal selectType={selectType} setSelectType={setSelectType} />
-      ) : null}
+      )}
+      {isUpdateModalOpen && <UpdatePopup />}
     </>
   );
 };
