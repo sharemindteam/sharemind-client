@@ -9,6 +9,7 @@ import { Button } from 'components/Common/Button';
 import { useInput } from 'hooks/useInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
+import PwInput from 'components/Buyer/Common/PwInput';
 export const BuyerSignupPw = () => {
   //첫렌더 시 예외처리
   const isInitialRender = useRef(true);
@@ -94,13 +95,13 @@ export const BuyerSignupPw = () => {
               비밀번호
             </Body1>
             <div className="input-wrapper">
-              <Input
-                type="password"
+              <PwInput
                 value={pw.value}
                 onChange={pw.onChange}
                 width="33.5rem"
                 height="4.8rem"
                 isBoxSizing={true}
+                textIndent="1rem"
               />
             </div>
           </div>
@@ -119,13 +120,13 @@ export const BuyerSignupPw = () => {
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               비밀번호 확인
             </Body1>
-            <Input
-              type="password"
+            <PwInput
               value={pwCheck.value}
               onChange={pwCheck.onChange}
               width="33.5rem"
               height="4.8rem"
               isBoxSizing={true}
+              textIndent="1rem"
             />
           </div>
           <div className="caption">
