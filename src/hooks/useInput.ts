@@ -21,7 +21,6 @@ type UseInputResult = {
   setTypeValid: Dispatch<SetStateAction<boolean>>;
   lengthValid: boolean;
   setLengthValid: Dispatch<SetStateAction<boolean>>;
-  handlePasswordValid: () => void;
 };
 //input만 사용할 시 해당 커스텀훅 사용
 export const useInput = (initialValue: string) => {
@@ -47,19 +46,6 @@ export const useInput = (initialValue: string) => {
       setIsError(false);
     }
   };
-
-  const handlePasswordValid = () => {
-    if (passwordTypeValid(value)) {
-      setTypeValid(true);
-    } else {
-      setTypeValid(false);
-    }
-    if (passwordLengthValid(value)) {
-      setLengthValid(true);
-    } else {
-      setLengthValid(false);
-    }
-  };
   return {
     value,
     onChange,
@@ -75,6 +61,5 @@ export const useInput = (initialValue: string) => {
     setTypeValid,
     lengthValid,
     setLengthValid,
-    handlePasswordValid,
   } as UseInputResult;
 };

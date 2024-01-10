@@ -126,7 +126,7 @@ export const BuyerSignupPw = () => {
           height="5.2rem"
           isActive={valid}
           onClick={() => {
-            navigate('/signup/info');
+            navigate('/signup/setting');
           }}
         />
         {/* </div> */}
