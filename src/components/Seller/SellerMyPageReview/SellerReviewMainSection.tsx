@@ -51,8 +51,9 @@ export const SellerReviewMainSection = () => {
 };
 
 const ReviewCardList = styled.div`
-  margin: 1.2rem 2rem;
+  margin-top: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  align-items: center;
 `;
