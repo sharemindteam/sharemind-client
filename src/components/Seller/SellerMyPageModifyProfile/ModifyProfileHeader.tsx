@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { Heading } from 'styles/font';
+import { TabB2 } from 'components/Common/TabB2';
 export const ModifyProfileHeader = () => {
   const navigate = useNavigate();
-
   return (
-    <ModifyProfileHeaderWrapper>
-      <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
+    <TabB2>
+      <div className="left-icon">
         <LeftArrowIcon
           onClick={() => {
             navigate('/seller/mypage/viewProfile');
@@ -16,17 +16,6 @@ export const ModifyProfileHeader = () => {
         />
       </div>
       <Heading>판매정보 수정</Heading>
-    </ModifyProfileHeaderWrapper>
+    </TabB2>
   );
 };
-
-export const ModifyProfileHeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: ${White};
-  border-bottom: 1px solid rgba(242, 241, 248, 0.95);
-  justify-content: center;
-  height: 5.2rem;
-  position: sticky;
-  top: 0;
-`;

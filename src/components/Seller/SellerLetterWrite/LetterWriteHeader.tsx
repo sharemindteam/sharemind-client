@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { ReactComponent as XIcon } from 'assets/icons/icon-x.svg';
 import { Heading } from 'styles/font';
-import { ModifyProfileHeaderWrapper } from '../SellerMyPageModifyProfile/ModifyProfileHeader';
 import { useRecoilValue } from 'recoil';
 import { replyState } from 'utils/atom';
+import { TabB2 } from 'components/Common/TabB2';
 
 export const LetterWriteHeader = ({
   isViewQuestion,
@@ -19,8 +19,8 @@ export const LetterWriteHeader = ({
   // 추가답장여부
   const replyStatus = useRecoilValue(replyState);
   return (
-    <LetterWriteHeaderWrapper>
-      <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
+    <TabB2>
+      <div className="left-icon">
         {isViewQuestion ? (
           <XIcon
             onClick={() => {
@@ -35,9 +35,10 @@ export const LetterWriteHeader = ({
           />
         )}
       </div>
+
       <Heading>{isViewQuestion ? '질문 보기' : replyStatus}</Heading>
-    </LetterWriteHeaderWrapper>
+    </TabB2>
   );
 };
 
-const LetterWriteHeaderWrapper = styled(ModifyProfileHeaderWrapper)``;
+const LetterWriteHeaderWrapper = styled(TabB2)``;
