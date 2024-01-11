@@ -38,7 +38,12 @@ export const BuyerMypage = () => {
             </div>
           </UserCard>
           <div className="mypage-options">
-            <div className="button">
+            <div
+              className="button"
+              onClick={() => {
+                navigate('/buyer/payment');
+              }}
+            >
               <PayedIcon />
               <Button2>결제 내역</Button2>
             </div>
