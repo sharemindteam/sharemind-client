@@ -7,8 +7,13 @@ import { ReactComponent as XIcon } from 'assets/icons/icon-x.svg';
 interface VerifyQuizHeaderProps {
   progress: string;
   verifyStatus: string;
+  setIsStopModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function VerifyQuizHeader({ progress, verifyStatus }: VerifyQuizHeaderProps) {
+function VerifyQuizHeader({
+  progress,
+  verifyStatus,
+  setIsStopModalOpen,
+}: VerifyQuizHeaderProps) {
   const navigate = useNavigate();
   return (
     <>
@@ -16,7 +21,11 @@ function VerifyQuizHeader({ progress, verifyStatus }: VerifyQuizHeaderProps) {
         <div className="left-icon">
           <XIcon
             onClick={() => {
-              navigate('/seller/mypage');
+              if (verifyStatus === '인증 전') {
+                setIsStopModalOpen(true);
+              } else {
+                navigate('/seller/mypage');
+              }
             }}
           />
         </div>

@@ -1,5 +1,6 @@
 import { BackDrop } from 'components/Common/BackDrop';
 import { Space } from 'components/Common/Space';
+import IsStopQuizModal from 'components/Seller/SellerVerifyQuiz/IsStopQuizModal';
 import IsSubmitQuizModal from 'components/Seller/SellerVerifyQuiz/IsSubmitQuizModal';
 import QuestionBox from 'components/Seller/SellerVerifyQuiz/QuestionBox';
 import VerifyFail from 'components/Seller/SellerVerifyQuiz/VerifyFail';
@@ -18,15 +19,14 @@ export const SellerVerifyQuiz = () => {
     0, 0, 0, 0, 0,
   ]);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState<boolean>(false);
+  const [isStopModalOpen, setIsStopModalOpen] = useState<boolean>(false);
   const [verifyStatus, setVerifyStatus] = useState<string>('인증 전');
-  console.log(choiceNumberList);
-  console.log(quizAnswerList);
-  console.log(verifyStatus);
   return (
     <>
       <VerifyQuizHeader
         progress={quizLevel * 20 + '%'}
         verifyStatus={verifyStatus}
+        setIsStopModalOpen={setIsStopModalOpen}
       />
       {verifyStatus === '인증 성공' ? (
         <VerifySuccess />
@@ -71,6 +71,12 @@ export const SellerVerifyQuiz = () => {
             setIsSubmitModalOpen={setIsSubmitModalOpen}
             choiceNumberList={choiceNumberList}
           />
+        </>
+      )}
+      {isStopModalOpen && (
+        <>
+          <BackDrop />
+          <IsStopQuizModal setIsStopModalOpen={setIsStopModalOpen} />
         </>
       )}
     </>
