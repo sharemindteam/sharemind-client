@@ -22,6 +22,11 @@ import { BuyerSignupPw } from 'pages/Buyer/BuyerSignupPw';
 import { BuyerSignupInfo } from 'pages/Buyer/BuyerSignupInfo';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
+import {
+  SellerEducationMaterial,
+  SellerVerifyMaterial,
+} from 'pages/Seller/SellerVerifyMaterial';
+import { SellerVerifyQuiz } from 'pages/Seller/SellerVerifyQuiz';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -79,7 +84,7 @@ const Router = () => {
       {/* 판매자 : 프로필 정보 */}
       <Route path="/seller/mypage" element={<SellerMypage />} />
 
-      <Route path="seller/mypage/review" element={<SellerMyPageReview />} />
+      <Route path="/seller/mypage/review" element={<SellerMyPageReview />} />
       <Route
         path="/seller/mypage/viewProfile"
         element={<SellerMypageViewProfile />}
@@ -93,7 +98,10 @@ const Router = () => {
       <Route
         path="/seller/calculatemanagement"
         element={<SellerCaculateManagement />}
-      ></Route>
+      />
+      {/* 판매자 : 마인더 인증 */}
+      <Route path="/seller/education" element={<SellerVerifyMaterial />} />
+      <Route path="/seller/quiz" element={<SellerVerifyQuiz />} />
     </Routes>
   );
 };
