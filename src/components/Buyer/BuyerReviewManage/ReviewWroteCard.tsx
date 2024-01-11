@@ -6,6 +6,8 @@ import { Characters } from 'utils/Characters';
 import { ReactComponent as Heart } from 'assets/icons/icon-review-empty-heart.svg';
 import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
 import { HeartRate } from 'utils/HeartRate';
+import { useSetRecoilState } from 'recoil';
+import { isModifyReviewState } from 'utils/atom';
 interface ReviewWroteCardProps {
   counselorId: number;
   nickname: string;
@@ -34,6 +36,8 @@ export const ReviewWroteCard = ({
   comment,
 }: ReviewWroteCardProps) => {
   const navigate = useNavigate();
+  // Modal 여부(recoil)
+  const setIsModalOpen = useSetRecoilState<boolean>(isModifyReviewState);
   return (
     <Wrapper>
       <UpperWrapper>
@@ -56,7 +60,11 @@ export const ReviewWroteCard = ({
           </div>
         </div>
 
-        <MoreIcon />
+        <MoreIcon
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        />
       </UpperWrapper>
       <MiddleWrapper>
         <div className="row">

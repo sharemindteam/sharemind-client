@@ -69,6 +69,10 @@ export const ReviewManageCard = ({
           width="90.44%"
           height="4.2rem"
           borderRadius="0.8rem"
+          onClick={() => {
+            //추후 해당하는 consult id에 해당하는 review로 넘어감
+            navigate('/buyer/review/0');
+          }}
         />
       </LowerWrapper>
     </Wrapper>

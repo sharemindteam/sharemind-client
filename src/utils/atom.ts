@@ -28,18 +28,23 @@ export const isBankModalOpenState = atom({
 });
 
 export const isUpdateModalOpenState = atom({
-  key: "isUpdateModalOpenState",
-  default:false,
-})
+  key: 'isUpdateModalOpenState',
+  default: false,
+});
 
 export const isSuccessUpdateState = atom({
-  key: "isSuccessUpdateState",
-  default:false,
-})
+  key: 'isSuccessUpdateState',
+  default: false,
+});
 
 //상담페이지  최근순 읽지 않은순 modal open toggle
 export const isConsultModalOpenState = atom({
   key: 'isConsultModalOpenState',
+  default: false,
+});
+//리뷰 페이지 수정하기 modal open toggle
+export const isModifyReviewState = atom({
+  key: 'isModifyReviewState',
   default: false,
 });
 //true가 될 시 scroll lock, 모달창에 사용
