@@ -22,10 +22,7 @@ import { BuyerSignupPw } from 'pages/Buyer/BuyerSignupPw';
 import { BuyerSignupInfo } from 'pages/Buyer/BuyerSignupInfo';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
-import {
-  SellerEducationMaterial,
-  SellerVerifyMaterial,
-} from 'pages/Seller/SellerVerifyMaterial';
+import { SellerVerifyMaterial } from 'pages/Seller/SellerVerifyMaterial';
 import { SellerVerifyQuiz } from 'pages/Seller/SellerVerifyQuiz';
 
 const Router = () => {
