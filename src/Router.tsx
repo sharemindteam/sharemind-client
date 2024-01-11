@@ -22,6 +22,13 @@ import { BuyerSignupPw } from 'pages/Buyer/BuyerSignupPw';
 import { BuyerSignupInfo } from 'pages/Buyer/BuyerSignupInfo';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
+import { BuyerAccountSetting } from 'pages/Buyer/BuyerAccountSetting';
+import { BuyerPwChange } from 'pages/Buyer/BuyerPwChange';
+import { BuyerLogout } from 'pages/Buyer/BuyerLogout';
+import { BuyerTerminate } from 'pages/Buyer/BuyerTerminate';
+import { BuyerReviewManage } from 'pages/Buyer/BuyerReviewManage';
+import { BuyerWriteReview } from 'pages/Buyer/BuyerWriteReview';
+import { BuyerSavedCounselor } from 'pages/Buyer/BuyerSavedCounselor';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -56,6 +63,9 @@ const Router = () => {
       <Route path="/buyer/search/result" element={<BuyerSearchResult />} />
       <Route path="/buyer/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/buyer/mypage" element={<BuyerMypage />} />
+      <Route path="/buyer/reviewManage" element={<BuyerReviewManage />} />
+      <Route path="/buyer/review/:id" element={<BuyerWriteReview />} />
+      <Route path="/buyer/saved" element={<BuyerSavedCounselor />} />
       {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}
       <Route path="/login" element={<BuyerLogin />} />
       <Route path="/signup" element={<BuyerSignup />} />
@@ -63,6 +73,10 @@ const Router = () => {
       <Route path="/signup/info" element={<BuyerSignupInfo />} />
       <Route path="/signup/nav" element={<BuyerSignupComplete />} />
       <Route path="/find" element={<BuyerFindInfo />} />
+      <Route path="/setting" element={<BuyerAccountSetting />} />
+      <Route path="/setting/changePassword" element={<BuyerPwChange />} />
+      <Route path="/setting/terminate" element={<BuyerTerminate />} />
+      <Route path="/setting/logout" element={<BuyerLogout />} />
       <Route path="/seller" element={<SellerHome />} />
       {/* 판매자 : 상담 */}
 

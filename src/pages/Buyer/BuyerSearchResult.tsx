@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Grey1, Grey3, Grey4, Grey6, White } from 'styles/color';
-import { Button2, Heading } from 'styles/font';
+import { Grey1, Grey3, Grey4, White } from 'styles/color';
+import { Button2 } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { ReactComponent as Search } from 'assets/icons/search.svg';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { SearchResults } from 'components/Buyer/Common/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
