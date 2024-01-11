@@ -22,10 +22,8 @@ import { BuyerSignupPw } from 'pages/Buyer/BuyerSignupPw';
 import { BuyerSignupInfo } from 'pages/Buyer/BuyerSignupInfo';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
-<<<<<<< HEAD
 import { SellerVerifyMaterial } from 'pages/Seller/SellerVerifyMaterial';
 import { SellerVerifyQuiz } from 'pages/Seller/SellerVerifyQuiz';
-=======
 import { BuyerAccountSetting } from 'pages/Buyer/BuyerAccountSetting';
 import { BuyerPwChange } from 'pages/Buyer/BuyerPwChange';
 import { BuyerLogout } from 'pages/Buyer/BuyerLogout';
@@ -33,7 +31,6 @@ import { BuyerTerminate } from 'pages/Buyer/BuyerTerminate';
 import { BuyerReviewManage } from 'pages/Buyer/BuyerReviewManage';
 import { BuyerWriteReview } from 'pages/Buyer/BuyerWriteReview';
 import { BuyerSavedCounselor } from 'pages/Buyer/BuyerSavedCounselor';
->>>>>>> ee05f8ba2d74628b2eec91af001c11dcce2f42b1
 
 const Router = () => {
   const navigate = useNavigate();
