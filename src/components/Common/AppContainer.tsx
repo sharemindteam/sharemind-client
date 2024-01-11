@@ -15,11 +15,13 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   var { pathname } = useLocation();
   const [isGray, setIsGray] = useState(false);
   useEffect(() => {
+    const reviewPageRegex = /^\/buyer\/review\/\d+$/;
     if (
       pathname === '/seller/mypage/viewProfile' ||
       pathname === '/seller/mypage' ||
       pathname === '/buyer/mypage' ||
-      pathname === '/seller/mypage/modifyProfile'
+      pathname === '/seller/mypage/modifyProfile' ||
+      reviewPageRegex.test(pathname)
     ) {
       setIsGray(true);
     } else {

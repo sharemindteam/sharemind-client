@@ -42,11 +42,21 @@ export const BuyerMypage = () => {
               <PayedIcon />
               <Button2>결제 내역</Button2>
             </div>
-            <div className="button">
+            <div
+              className="button"
+              onClick={() => {
+                navigate('/buyer/reviewManage');
+              }}
+            >
               <ReviewIcon />
               <Button2>리뷰 관리</Button2>
             </div>
-            <div className="button">
+            <div
+              className="button"
+              onClick={() => {
+                navigate('/buyer/saved');
+              }}
+            >
               <SavedIcon />
               <Button2>찜 목록</Button2>
             </div>
@@ -91,7 +101,14 @@ export const BuyerMypage = () => {
         <Body2 color={Grey1}>결제 문의</Body2>
       </div>
       <div className="additional-box">
-        <Body2 color={Grey1}>비밀번호 변경</Body2>
+        <Body2
+          color={Grey1}
+          onClick={() => {
+            navigate('/setting');
+          }}
+        >
+          계정 설정
+        </Body2>
       </div>
       <Button
         text="로그인 전환"

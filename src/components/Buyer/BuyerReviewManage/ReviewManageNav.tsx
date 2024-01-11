@@ -3,34 +3,37 @@ import { Green, Grey4, Grey6 } from 'styles/color';
 import { Subtitle } from 'styles/font';
 import { ReactComponent as UnderLine } from 'assets/icons/underline-counselor-info.svg';
 import { useState } from 'react';
-interface FindInfoNavProps {
-  isId: boolean;
-  setIsId: React.Dispatch<React.SetStateAction<boolean>>;
+interface ReviewManageNavProps {
+  isWrite: boolean;
+  setIsWrite: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const FindInfoNav = ({ isId, setIsId }: FindInfoNavProps) => {
-  const [idColor, setIdColor] = useState<string>(Green);
-  const [pwColor, setPwColor] = useState<string>(Grey4);
+export const ReviewManageNav = ({
+  isWrite,
+  setIsWrite,
+}: ReviewManageNavProps) => {
+  const [writeColor, setWriteColor] = useState<string>(Green);
+  const [historyColor, setHistoryColor] = useState<string>(Grey4);
   return (
     <Wrapper>
       <InfoWrapper
         onClick={() => {
-          setIsId(true);
-          setPwColor(Grey4);
-          setIdColor(Green);
+          setIsWrite(true);
+          setHistoryColor(Grey4);
+          setWriteColor(Green);
         }}
       >
-        <Subtitle color={idColor}>아이디</Subtitle>
-        {isId ? <UnderLine /> : null}
+        <Subtitle color={writeColor}>리뷰 작성</Subtitle>
+        {isWrite ? <UnderLine /> : null}
       </InfoWrapper>
       <ReviewWrapper
         onClick={() => {
-          setIsId(false);
-          setIdColor(Grey4);
-          setPwColor(Green);
+          setIsWrite(false);
+          setWriteColor(Grey4);
+          setHistoryColor(Green);
         }}
       >
-        <Subtitle color={pwColor}>비밀번호</Subtitle>
-        {!isId ? <UnderLine /> : null}
+        <Subtitle color={historyColor}>남긴 리뷰</Subtitle>
+        {!isWrite ? <UnderLine /> : null}
       </ReviewWrapper>
     </Wrapper>
   );

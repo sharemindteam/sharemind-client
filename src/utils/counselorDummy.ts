@@ -109,3 +109,84 @@ export const reviewDummy = [
     time: '12월1일',
   },
 ];
+//리뷰 페이지 리뷰 작성 더미
+export const reviewDummyData = [
+  {
+    counselorId: 0,
+    nickname: '연애상담마스터',
+    level: 1,
+    rating_average: 4.5,
+    reviewNumber: 132,
+    iconNumber: 10,
+    consultType: '편지',
+    price: 8000,
+    date: '2023년 10월 27일',
+  },
+  {
+    counselorId: 1,
+    nickname: '싱글맘',
+    level: 2,
+    rating_average: 5.0,
+    reviewNumber: 275,
+    iconNumber: 10,
+    consultType: '편지',
+    price: 8000,
+    date: '2023년 10월 27일',
+  },
+  {
+    counselorId: 2,
+    nickname: '고민들어드림',
+    level: 4,
+    rating_average: 3.0,
+    reviewNumber: 112,
+    iconNumber: 10,
+    consultType: '편지',
+    price: 8000,
+    date: '2023년 10월 27일',
+  },
+];
+//남긴 리뷰 더미
+export const wroteReviewDummyData = [
+  {
+    counselorId: 0,
+    nickname: '연애상담마스터',
+    level: 1,
+    rating_average: 4.5,
+    reviewNumber: 132,
+    iconNumber: 10,
+    consultType: '편지',
+    price: 8000,
+    date: '2023년 10월 27일',
+    rating: 5,
+    comment:
+      '후기가없어서 고민하다가 신청했는데 전혀 후회없었습니다. 저도 여자인데 정말 친한 언니처럼 얘기 들어주시고 조언해주시고 공감해주셔서 마음이 많이 편해졌습니다.',
+  },
+  {
+    counselorId: 1,
+    nickname: '싱글맘',
+    level: 2,
+    rating_average: 5.0,
+    reviewNumber: 275,
+    iconNumber: 10,
+    consultType: '편지',
+    price: 8000,
+    date: '2023년 10월 27일',
+    rating: 4,
+    comment:
+      '후기가없어서 고민하다가 신청했는데 전혀 후회없었습니다. 저도 여자인데 정말 친한 언니처럼 얘기 들어주시고 조언해주시고 공감해주셔서 마음이 많이 편해졌습니다.',
+  },
+  {
+    counselorId: 2,
+    nickname: '고민들어드림',
+    level: 4,
+    rating_average: 3.0,
+    reviewNumber: 112,
+    iconNumber: 10,
+    consultType: '편지',
+    price: 8000,
+    date: '2023년 10월 27일',
+    rating: 3,
+    comment:
+      '후기가없어서 고민하다가 신청했는데 전혀 후회없었습니다. 저도 여자인데 정말 친한 언니처럼 얘기 들어주시고 조언해주시고 공감해주셔서 마음이 많이 편해졌습니다.',
+  },
+];
