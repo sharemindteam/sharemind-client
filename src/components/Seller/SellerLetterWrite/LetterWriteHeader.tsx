@@ -19,7 +19,7 @@ export const LetterWriteHeader = ({
   // 추가답장여부
   const replyStatus = useRecoilValue(replyState);
   return (
-    <LetterWriteHeaderWrapper>
+    <TabB2>
       <div className="left-icon">
         {isViewQuestion ? (
           <XIcon
@@ -37,7 +37,7 @@ export const LetterWriteHeader = ({
       </div>
 
       <Heading>{isViewQuestion ? '질문 보기' : replyStatus}</Heading>
-    </LetterWriteHeaderWrapper>
+    </TabB2>
   );
 };
 

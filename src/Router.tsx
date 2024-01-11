@@ -97,8 +97,8 @@ const Router = () => {
         element={<SellerCaculateManagement />}
       />
       {/* 판매자 : 마인더 인증 */}
-      <Route path="/seller/education" element={<SellerVerifyMaterial />} />
-      <Route path="/seller/quiz" element={<SellerVerifyQuiz />} />
+      <Route path="/seller/education/*" element={<SellerVerifyMaterial />} />
+      <Route path="/seller/quiz/*" element={<SellerVerifyQuiz />} />
     </Routes>
   );
 };

@@ -1,8 +1,8 @@
 import { White } from '../../styles/color';
 import styled from 'styled-components';
-
-// 왼쪽 아이콘 Import 후 <div className="left-icon"></div>
-// 오른쪾 아이코 Import 후 <div className="-icon"></div>
+// TabB2 스타일 틀
+// 왼쪽 아이콘 Import 후 <div className="left-icon"> <아이콘/></div>
+// 오른쪾 아이코 Import 후 <div className="right-icon"><아이콘/></div>
 
 export const TabB2 = styled.div`
   display: flex;
