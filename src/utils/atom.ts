@@ -37,10 +37,10 @@ export const isSuccessUpdateState = atom({
   default: false,
 });
 
-export const isReviewComplaintOpenState = atom ({ 
-  key: "isReviewComplaintOpenState",
-  default:false,
-})
+export const isReviewComplaintOpenState = atom({
+  key: 'isReviewComplaintOpenState',
+  default: false,
+});
 
 //상담페이지  최근순 읽지 않은순 modal open toggle
 export const isConsultModalOpenState = atom({
@@ -57,6 +57,11 @@ export const isTakingQuizModalOpenState = atom({
 //리뷰 페이지 수정하기 modal open toggle
 export const isModifyReviewState = atom({
   key: 'isModifyReviewState',
+  default: false,
+});
+//리뷰 페이지 수정하기 modal open toggle
+export const isPaymentModalOpenState = atom({
+  key: 'isPaymentModalOpenState',
   default: false,
 });
 //true가 될 시 scroll lock, 모달창에 사용

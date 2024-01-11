@@ -66,7 +66,7 @@ export const ReviewManageCard = ({
         </div>
         <Button
           text="리뷰 작성하기"
-          width="90.44%"
+          width="100%"
           height="4.2rem"
           borderRadius="0.8rem"
           onClick={() => {
@@ -105,7 +105,6 @@ const HeartIcon = styled(Heart)`
 `;
 const LowerWrapper = styled.div`
   height: 12rem;
-  width: 100%;
   padding: 1.8rem 1.6rem 1.6rem 1.6rem;
   .row {
     display: flex;

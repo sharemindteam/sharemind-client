@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Red, White } from 'styles/color';
 import { Body1, Body3, Caption2, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
-import { reviewDummyData as dummy } from 'utils/counselorDummy';
+import { reviewDummyData as dummy } from 'utils/buyerDummy';
 import { ReactComponent as Heart } from 'assets/icons/icon-review-empty-heart.svg';
 import { ReactComponent as EmptyRate } from 'assets/icons/icon-write-review-empty-heart.svg';
 import { ReactComponent as Rate } from 'assets/icons/icon-write-review-heart.svg';

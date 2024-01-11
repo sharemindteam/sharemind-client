@@ -11,7 +11,7 @@ import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.svg';
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
-import { consultDummy } from 'utils/counselorDummy';
+import { consultDummy } from 'utils/buyerDummy';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
 export const BuyerConsult = () => {
   const navigate = useNavigate();

@@ -10,8 +10,8 @@ import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 import { isModifyReviewState, scrollLockState } from 'utils/atom';
-import { reviewDummyData as dummy } from 'utils/counselorDummy';
-import { wroteReviewDummyData as wroteDummy } from 'utils/counselorDummy';
+import { reviewDummyData as dummy } from 'utils/buyerDummy';
+import { wroteReviewDummyData as wroteDummy } from 'utils/buyerDummy';
 export const BuyerReviewManage = () => {
   const navigate = useNavigate();
   //리뷰 작성이면 true 남긴 리뷰면 false

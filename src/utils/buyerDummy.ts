@@ -1,6 +1,7 @@
 //상담탭
 export const consultDummy = [
   {
+    counselorId: 0,
     name: '연애상담마스터',
     consultState: '질문 대기',
     time: '8분전',
@@ -9,6 +10,7 @@ export const consultDummy = [
     unread: 0,
   },
   {
+    counselorId: 1,
     name: '연애상담마스터',
     consultState: '답변 도착',
     time: '8분전',
@@ -17,6 +19,7 @@ export const consultDummy = [
     unread: 1,
   },
   {
+    counselorId: 2,
     name: '연애상담마스터',
     consultState: '상담 취소',
     time: '8분전',
@@ -25,6 +28,7 @@ export const consultDummy = [
     unread: 0,
   },
   {
+    counselorId: 3,
     name: '연애상담마스터',
     consultState: '상담 대기',
     time: '8분전',
@@ -188,5 +192,38 @@ export const wroteReviewDummyData = [
     rating: 3,
     comment:
       '후기가없어서 고민하다가 신청했는데 전혀 후회없었습니다. 저도 여자인데 정말 친한 언니처럼 얘기 들어주시고 조언해주시고 공감해주셔서 마음이 많이 편해졌습니다.',
+  },
+];
+//결제 내역 더미
+export const paymentDummy = [
+  {
+    counselorId: 0,
+    nickname: '연애상담마스터',
+    consultType: '편지',
+    consultState: '상담 대기',
+    price: 8000,
+    consultDate: '2023년 10월 27일',
+    payDate: '2023년 10월 26일',
+    payment: '카드 간편결제',
+  },
+  {
+    counselorId: 1,
+    nickname: '싱글맘',
+    consultType: '편지',
+    consultState: '상담 대기',
+    price: 8000,
+    consultDate: '2023년 10월 27일',
+    payDate: '2023년 10월 26일',
+    payment: '카드 간편결제',
+  },
+  {
+    counselorId: 2,
+    nickname: '고민들어드림',
+    consultType: '편지',
+    consultState: '상담 대기',
+    price: 8000,
+    consultDate: '2023년 10월 27일',
+    payDate: '2023년 10월 26일',
+    payment: '카드 간편결제',
   },
 ];
