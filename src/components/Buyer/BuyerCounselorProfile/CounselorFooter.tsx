@@ -27,11 +27,13 @@ export const CounselorFooter = ({ isBookmarked }: CounselorFooterProps) => {
           }}
         />
       )}
-
-      <Button text="상담 신청하기" width="26rem" />
+      <div className="button-wrapper">
+        <Button text="상담 신청하기" width="26rem" height="5.2rem" />
+      </div>
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   height: 5.2rem;
   @media (max-width: 767px) {
@@ -42,12 +44,14 @@ const Wrapper = styled.div`
   }
   display: flex;
   justify-content: center;
-  gap: 2.4rem;
+  gap: 2rem;
   background-color: ${White};
   padding: 0.8rem 2rem 1.2rem 2rem;
   position: fixed;
   bottom: 0;
   z-index: 999;
+  .button-wrapper {
+  }
 `;
 const NoneBookMarkIcon = styled(NoneBookMark)`
   width: 4.2rem;

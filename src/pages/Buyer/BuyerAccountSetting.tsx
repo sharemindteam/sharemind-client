@@ -12,7 +12,7 @@ export const BuyerAccountSetting = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate(-1);
+            navigate('/buyer/mypage');
           }}
         />
         <Heading color={Grey1}>계정 설정</Heading>
