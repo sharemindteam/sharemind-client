@@ -4,7 +4,7 @@ import { Green } from 'styles/color';
 
 interface BottomButtonProps {
   text: string;
-  onClick?: () => void;
+  onClick: () => void;
 }
 export const BottomButton = ({ text, onClick }: BottomButtonProps) => {
   return (
@@ -20,19 +20,17 @@ export const BottomButton = ({ text, onClick }: BottomButtonProps) => {
   );
 };
 
-export const BottomButtonWrapper = styled.button`
+const BottomButtonWrapper = styled.button`
   height: 5.2rem;
+  width: 100%;
   margin-bottom: 1.6rem;
   border-radius: 1.2rem;
   @media (max-width: 767px) {
-    width: 100%;
     position: fixed;
     bottom: 1rem;
   }
   @media (min-width: 768px) {
-    position: fixed;
-    bottom: 1rem;
-    width: 375px;
+    position: sticky;
     bottom: 1rem;
   }
 `;
