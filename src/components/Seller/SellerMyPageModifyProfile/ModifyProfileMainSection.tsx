@@ -26,6 +26,7 @@ import {
   isCategoryModalOpenState,
   isStyleModalOpenState,
   isTypeOpenModalState,
+  isSuccessUpdateState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
@@ -64,18 +65,20 @@ export const ModifyProfileMainSection = ({
   const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
   const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
+
   useEffect(() => {
     category.setViewValue(categoryInputMaker(selectCategory));
   }, [selectCategory]);
+
   useEffect(() => {
     style.setViewValue(selectStyle);
   }, [selectStyle]);
+
   useEffect(() => {
     type.setViewValue(selectType.join(', '));
   }, [selectType]);
   useEffect(() => {
     nickname.setValue(profileDummyData.nickName);
-    // 후에 서버에 POST요청할때 serverValue를 보내줘야함. enum List 형식으로
     category.setViewValue(profileDummyData.category);
     style.setViewValue(profileDummyData.style);
     type.setViewValue(profileDummyData.type);
@@ -230,7 +233,7 @@ export const ModifyProfileMainSection = ({
             maxLength={50}
             value={oneLiner.value}
             onChange={(e) => {
-              oneLiner.handleCheckSpecialLetter(e.target.value);
+              oneLiner.handleCheckOneLiner(e.target.value);
               oneLiner.onChange(e);
             }}
             padding="1.2rem 1.6rem"
@@ -260,9 +263,10 @@ export const ModifyProfileMainSection = ({
         <div className="experience">
           <ProfileInformTag>경험 소개</ProfileInformTag>
           <ExperienceTextArea
+            maxLength={20000}
             value={experience.value}
             onChange={(e) => {
-              experience.handleCheckSpecialLetter(e.target.value);
+              experience.handleCheckOneLiner(e.target.value);
               experience.onChange(e);
             }}
           />

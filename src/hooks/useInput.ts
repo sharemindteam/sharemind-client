@@ -1,5 +1,8 @@
 import { useState, Dispatch, SetStateAction } from 'react';
-import { isIncludeSpecialLetter } from 'utils/isIncludeSpecialLetter';
+import {
+  isIncludeSpecialLetter,
+  isIncludeSpecialLetterOneLiner,
+} from 'utils/isIncludeSpecialLetter';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 
 type UseInputResult = {
@@ -19,6 +22,7 @@ type UseInputResult = {
   isError: boolean;
   setIsError: Dispatch<SetStateAction<boolean>>;
   handleCheckSpecialLetter: any;
+  handleCheckOneLiner: any;
   setValue: Dispatch<SetStateAction<string>>;
   typeValid: boolean;
   setTypeValid: Dispatch<SetStateAction<boolean>>;
@@ -57,6 +61,17 @@ export const useInput = (initialValue: string) => {
       setIsError(false);
     }
   };
+
+  const handleCheckOneLiner = (str: string) => {
+    if (isIncludeSpecialLetterOneLiner(str) || str.length === 0) {
+      setIsValid(false);
+      setIsError(true);
+    } else {
+      setIsValid(true);
+      setIsError(false);
+    }
+  };
+
   return {
     value,
     onChange,
@@ -68,6 +83,7 @@ export const useInput = (initialValue: string) => {
     setIsError,
     onChangePrice,
     handleCheckSpecialLetter,
+    handleCheckOneLiner,
     setValue,
     typeValid,
     setTypeValid,

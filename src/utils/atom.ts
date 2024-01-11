@@ -37,6 +37,11 @@ export const isSuccessUpdateState = atom({
   default: false,
 });
 
+export const isReviewComplaintOpenState = atom ({ 
+  key: "isReviewComplaintOpenState",
+  default:false,
+})
+
 //상담페이지  최근순 읽지 않은순 modal open toggle
 export const isConsultModalOpenState = atom({
   key: 'isConsultModalOpenState',

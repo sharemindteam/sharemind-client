@@ -2,9 +2,12 @@ import styled from 'styled-components';
 import { ReactComponent as UpdateGraphic } from 'assets/icons/graphic-update-success.svg';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { isSuccessUpdateState } from 'utils/atom';
 
 export const UpdateSuccess = () => {
   const navigate = useNavigate();
+  const setIsSuccessUpdateState = useSetRecoilState(isSuccessUpdateState);
   return (
     <>
       <UpdateSuccessSection>
@@ -18,6 +21,7 @@ export const UpdateSuccess = () => {
         <BottomButton
           text="확인"
           onClick={() => {
+            setIsSuccessUpdateState(false);
             navigate(`/seller/mypage`);
           }}
         />

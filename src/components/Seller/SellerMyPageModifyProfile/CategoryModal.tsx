@@ -24,10 +24,16 @@ export const CategoryModal = ({
     // 카테고리 선택
     if (!modalCategory.includes(category)) {
       if (modalCategory.length === 3) {
+        const updatedCategory = modalCategory.slice(
+          0,
+          modalCategory.length - 1,
+        );
+        setModalCategory([...updatedCategory, category]);
         return;
       }
       setModalCategory([...modalCategory, category]);
     }
+
     // 카테고리 선택해제
     else {
       const updatedCategory = modalCategory.filter((item) => item !== category);
