@@ -3,7 +3,6 @@ import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { Body1, Heading } from 'styles/font';
 import { Grey1, Grey3, Grey4, Grey6, White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
-import Input from 'components/Common/Input';
 import { Button } from 'components/Common/Button';
 export const BuyerLogin = () => {
   const navigate = useNavigate();

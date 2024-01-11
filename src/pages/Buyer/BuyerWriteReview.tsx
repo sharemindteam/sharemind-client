@@ -153,7 +153,14 @@ export const BuyerWriteReview = () => {
           <Caption2 color={Red}>{comment.length}</Caption2>
           <Caption2 color={Grey3}>/500</Caption2>
         </div>
-        <Button text="작성 완료하기" width="89.33%" height="5.2rem"></Button>
+        <Button
+          text="작성 완료하기"
+          width="89.33%"
+          height="5.2rem"
+          onClick={() => {
+            navigate('/buyer/reviewManage');
+          }}
+        ></Button>
         <Space height="3.2rem" />
       </div>
     </Wrapper>

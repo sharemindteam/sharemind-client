@@ -1,4 +1,4 @@
-//모든 검색 결과, 추후 props로 결과 종류 넘기고, 그에 따라 get 요청
+//모든 검색 결과, 나중에는 각 검색에 대하여 각각의 검색 컴포넌트 따로 생성
 import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';

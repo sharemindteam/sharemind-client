@@ -51,7 +51,12 @@ export const BuyerMypage = () => {
               <ReviewIcon />
               <Button2>리뷰 관리</Button2>
             </div>
-            <div className="button">
+            <div
+              className="button"
+              onClick={() => {
+                navigate('/buyer/saved');
+              }}
+            >
               <SavedIcon />
               <Button2>찜 목록</Button2>
             </div>
