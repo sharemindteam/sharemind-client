@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import { Grey3, Grey6, White } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
-import { BottomButton } from '../Common/BottomButton';
+import { BottomButton, BottomButtonWrapper } from '../Common/BottomButton';
 import { useNavigate } from 'react-router-dom';
 import { Space } from 'components/Common/Space';
 import Input from 'components/Common/Input';
+import { Button } from 'components/Common/Button';
 
 interface ViewProfileMainSectionProps {
   profileIdentifier: number;
@@ -133,12 +134,16 @@ export const ViewProfileMainSection = ({
         </div>
       </AccountWhiteBox>
       <Space height="9.2rem" />
-      <BottomButton
-        text="수정하기"
-        onClick={() => {
-          navigate('/seller/mypage/modifyProfile');
-        }}
-      />
+      <BottomButtonWrapper style={{ display: 'block' }}>
+        <Button
+          text="수정하기"
+          height="5.2rem"
+          width="calc(100% - 4rem)"
+          onClick={() => {
+            navigate('/seller/mypage/modifyProfile');
+          }}
+        />
+      </BottomButtonWrapper>
     </ViewProfileMainSectionWrapper>
   );
 };
