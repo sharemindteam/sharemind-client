@@ -66,15 +66,17 @@ const Wrapper = styled.div<{ visible: boolean }>`
     margin-left: 2rem;
   }
   position: fixed;
+  z-index: 2002;
+  top: 39%;
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 15rem;
   background-color: ${Grey6};
-  top: 39%;
+
   border-radius: 1.2rem;
   box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 2002;
+
   animation: ${({ visible }) => (visible ? fadeIn : fadeOut)} 0.2s ease-in-out;
   padding: 1.6rem;
   .button-wrapper {

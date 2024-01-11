@@ -30,6 +30,7 @@ import { BuyerReviewManage } from 'pages/Buyer/BuyerReviewManage';
 import { BuyerWriteReview } from 'pages/Buyer/BuyerWriteReview';
 import { BuyerSavedCounselor } from 'pages/Buyer/BuyerSavedCounselor';
 import { BuyerPayment } from 'pages/Buyer/BuyerPayment';
+import { BuyerLetter } from 'pages/Buyer/BuyerLetter';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ const Router = () => {
       <Route path="/buyer/review/:id" element={<BuyerWriteReview />} />
       <Route path="/buyer/saved" element={<BuyerSavedCounselor />} />
       <Route path="/buyer/payment" element={<BuyerPayment />} />
+      <Route path="/buyer/letter/:id" element={<BuyerLetter />} />
       {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}
       <Route path="/login" element={<BuyerLogin />} />
       <Route path="/signup" element={<BuyerSignup />} />

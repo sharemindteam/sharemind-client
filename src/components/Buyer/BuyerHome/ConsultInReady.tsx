@@ -3,7 +3,7 @@ import { Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
-import { counselorDummyData as dummy } from 'utils/counselorDummy';
+import { counselorDummyData as dummy } from 'utils/buyerDummy';
 import { useNavigate } from 'react-router-dom';
 export const ConsultInReady = () => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
-import { counselorDummyData as dummy } from 'utils/counselorDummy';
+import { counselorDummyData as dummy } from 'utils/buyerDummy';
 
 //임의로 ConsultInReady 그대로 사용
 export const SearchResults = () => {

@@ -32,7 +32,11 @@ export const BuyerMypage = () => {
               <Subtitle>김고민고민</Subtitle>
             </div>
             <div className="change-button">
-              <ChangeButton>
+              <ChangeButton
+                onClick={() => {
+                  navigate('/seller/mypage');
+                }}
+              >
                 <Button2 color={Grey1}>마인더로 전환</Button2>
               </ChangeButton>
             </div>

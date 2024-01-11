@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { Green, Grey1, Grey5, White } from 'styles/color';
 import { Button2, Heading } from 'styles/font';
 import { isPaymentModalOpenState, scrollLockState } from 'utils/atom';
-import { paymentDummy as dummy } from 'utils/counselorDummy';
+import { paymentDummy as dummy } from 'utils/buyerDummy';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현
 export const BuyerPayment = () => {
   const navigate = useNavigate();
