@@ -4,8 +4,11 @@ import { Heading } from 'styles/font';
 import { ProgressBar, ProgressCurrentStatus } from '../Common/ProgressStatus';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as XIcon } from 'assets/icons/icon-x.svg';
-
-function VerifyQuizHeader({ progress }: { progress: string }) {
+interface VerifyQuizHeaderProps {
+  progress: string;
+  verifyStatus: string;
+}
+function VerifyQuizHeader({ progress, verifyStatus }: VerifyQuizHeaderProps) {
   const navigate = useNavigate();
   return (
     <>
@@ -19,9 +22,11 @@ function VerifyQuizHeader({ progress }: { progress: string }) {
         </div>
         <Heading>퀴즈</Heading>
       </TabB2>
-      <ProgressBar>
-        <ProgressCurrentStatus width={progress} />
-      </ProgressBar>
+      {verifyStatus === '인증 전' && (
+        <ProgressBar>
+          <ProgressCurrentStatus width={progress} />
+        </ProgressBar>
+      )}
     </>
   );
 }

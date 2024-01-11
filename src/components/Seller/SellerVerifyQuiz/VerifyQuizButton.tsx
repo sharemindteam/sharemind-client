@@ -10,6 +10,7 @@ interface VerifyQuizButtonProps {
   setQuizLevel: React.Dispatch<React.SetStateAction<number>>;
   choiceNumberList: number[];
   setChoiceNumberList: React.Dispatch<React.SetStateAction<number[]>>;
+  setIsSubmitModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function VerifyQuizButton({
@@ -17,6 +18,7 @@ function VerifyQuizButton({
   setQuizLevel,
   choiceNumberList,
   setChoiceNumberList,
+  setIsSubmitModalOpen,
 }: VerifyQuizButtonProps) {
   if (quizLevel === 1) {
     return (
@@ -114,7 +116,7 @@ function VerifyQuizButton({
             }}
           />
           <Button
-            text={'제출하기'}
+            text={'다음'}
             width="100%"
             isActive={choiceNumberList[3] ? true : false}
             backgroundColor={Green}
@@ -147,7 +149,7 @@ function VerifyQuizButton({
             backgroundColor={Green}
             height="5.2rem"
             onClick={() => {
-              setQuizLevel(5);
+              setIsSubmitModalOpen(true);
             }}
           />
         </div>
@@ -175,7 +177,7 @@ const VerifyQuizButtonWrapper = styled.div`
     width: calc(100% - 4rem);
   }
   @media (max-width: 767px) {
-    width: calc(100% - 4rem);
+    width: calc(100%);
   }
   @media (min-width: 768px) {
     width: calc(375px);

@@ -20,9 +20,11 @@ export const BottomButton = ({ text, onClick }: BottomButtonProps) => {
   );
 };
 
-const BottomButtonWrapper = styled.button`
+export const BottomButtonWrapper = styled.div`
+  display: block;
   height: 5.2rem;
   width: 100%;
+  text-align: center;
   margin-bottom: 1.6rem;
   border-radius: 1.2rem;
   @media (max-width: 767px) {
@@ -30,7 +32,8 @@ const BottomButtonWrapper = styled.button`
     bottom: 1rem;
   }
   @media (min-width: 768px) {
-    position: sticky;
+    width: 375px;
+    position: fixed;
     bottom: 1rem;
   }
 `;
