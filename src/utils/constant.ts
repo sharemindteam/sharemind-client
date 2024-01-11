@@ -23,6 +23,8 @@ export const quizList = [
   '다음 중 잘못된 것은?',
 ];
 
+export const quizAnswerList = [4, 4, 1, 3, 2];
+
 export const quizChoiceList = [
   [
     '내담자가 자유롭게 말할 수 있도록 편안한 분위기를 조성한다',
