@@ -9,6 +9,7 @@ export const BackDrop = styled.div`
   }
   position: fixed;
   top: 0;
+
   z-index: 2001;
   height: calc(var(--vh, 1vh) * 100);
   background-color: rgba(0, 0, 0, 0.5);

@@ -5,11 +5,16 @@ import { Body3 } from 'styles/font';
 import { Button } from 'components/Common/Button';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { isTakingQuizModalOpenState } from 'utils/atom';
 interface VerifyMaterialButtonProps {
   level: number;
 }
 function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
   const navigate = useNavigate();
+  const setIsTakingQuizModalOpen = useSetRecoilState(
+    isTakingQuizModalOpenState,
+  );
   if (level === 1) {
     return (
       <VerifyMaterialButtonWrapper>
@@ -86,7 +91,32 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
       </VerifyMaterialButtonWrapper>
     );
   } else if (level === 4) {
-    return <VerifyMaterialButtonWrapper></VerifyMaterialButtonWrapper>;
+    return (
+      <VerifyMaterialButtonWrapper>
+        {' '}
+        <div className="buttons">
+          <Button
+            text={'이전'}
+            width="100%"
+            backgroundColor={LightGreen}
+            color={Green}
+            height="5.2rem"
+            onClick={() => {
+              navigate('/seller/education/third');
+            }}
+          />
+          <Button
+            text={'퀴즈 응시하기'}
+            width="100%"
+            backgroundColor={Green}
+            height="5.2rem"
+            onClick={() => {
+              setIsTakingQuizModalOpen(true);
+            }}
+          />
+        </div>
+      </VerifyMaterialButtonWrapper>
+    );
   }
 }
 

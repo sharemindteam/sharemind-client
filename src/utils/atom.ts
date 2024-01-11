@@ -21,12 +21,12 @@ export const isTypeOpenModalState = atom({
   key: 'isTypeOpenModalState',
   default: false,
 });
-
+// 판매 정보 수정 페이지: 은행 모달 여부
 export const isBankModalOpenState = atom({
   key: 'isBankModalOpenState',
   default: false,
 });
-
+// 판매 정보 수정 페이지: 업데이트 모달 여부
 export const isUpdateModalOpenState = atom({
   key: "isUpdateModalOpenState",
   default:false,
@@ -47,6 +47,13 @@ export const isConsultModalOpenState = atom({
   key: 'isConsultModalOpenState',
   default: false,
 });
+
+// 마인더 인증하기 - 교육자료 퀴즈 응시?
+export const isTakingQuizModalOpenState = atom({
+  key: "isTakingQuizModalOpenState",
+  default:false,
+})
+
 //true가 될 시 scroll lock, 모달창에 사용
 export const scrollLockState = atom({
   key: 'scrollLockState',
