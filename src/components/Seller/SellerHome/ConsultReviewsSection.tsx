@@ -4,11 +4,17 @@ import { Black, Grey6 } from 'styles/color';
 import { Body1, Body2, Body3, Heading } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { ReactComponent as ReviewHeart } from 'assets/icons/review-heart.svg';
+import { useNavigate } from 'react-router-dom';
 // 섹션 안에서 axios 요청
 export const ConsultReviewSection = () => {
+  const navigate = useNavigate();
   return (
     <>
-      <ContentTag>
+      <ContentTag
+        onClick={() => {
+          navigate('/seller/mypage/review');
+        }}
+      >
         <Heading color={Black} margin="0px auto 0px 0px">
           상담 후기
         </Heading>

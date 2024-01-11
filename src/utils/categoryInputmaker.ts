@@ -9,10 +9,10 @@ export const categoryInputMaker = (enumList: number[]) => {
     '권태기',
     '기타',
   ];
-
-  const result = enumList.map((enumValue) => {
-    if (enumValue >= 0 && enumValue < categoryList.length) {
-      return categoryList[enumValue-1];
+  
+  const result = enumList.map((enumValue: number) => {
+    if (enumValue >= 0 && enumValue <= categoryList.length) {
+      return categoryList[enumValue - 1];
     }
   });
 
