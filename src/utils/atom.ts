@@ -1,9 +1,4 @@
 import { atom } from 'recoil';
-//상담사 리스트 최근순 인기순 별점순 modal open toggle
-export const isSortModalOpenState = atom({
-  key: 'isSortModalOpenState',
-  default: false,
-});
 //퍈매 정보 수정 페이지 : 상담 카테고리 선택 모달
 export const isCategoryModalOpenState = atom({
   key: 'categoryModalOpenState',
@@ -50,10 +45,16 @@ export const isConsultModalOpenState = atom({
 
 // 마인더 인증하기 - 교육자료 퀴즈 응시?
 export const isTakingQuizModalOpenState = atom({
-  key: "isTakingQuizModalOpenState",
-  default:false,
-})
+  key: 'isTakingQuizModalOpenState',
+  default: false,
+});
 
+export const replyState = atom({
+  key: 'replyState',
+  default: '',
+});
+
+/////buyer
 //리뷰 페이지 수정하기 modal open toggle
 export const isModifyReviewState = atom({
   key: 'isModifyReviewState',
@@ -64,6 +65,17 @@ export const isPaymentModalOpenState = atom({
   key: 'isPaymentModalOpenState',
   default: false,
 });
+//상담사 리스트 최근순 인기순 별점순 modal open toggle
+export const isSortModalOpenState = atom({
+  key: 'isSortModalOpenState',
+  default: false,
+});
+//편지 상담 카테고리 modal open toggle
+export const isLetterModalOpenState = atom({
+  key: 'isLetterModalOpenState',
+  default: false,
+});
+
 //true가 될 시 scroll lock, 모달창에 사용
 export const scrollLockState = atom({
   key: 'scrollLockState',
@@ -78,10 +90,5 @@ export const sortTypeState = atom({
 //셰어 side searchKeywordState
 export const searchKeywordState = atom({
   key: 'searchKeywordState',
-  default: '',
-});
-
-export const replyState = atom({
-  key: 'replyState',
   default: '',
 });

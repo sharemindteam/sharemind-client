@@ -77,6 +77,7 @@ const Box1 = styled.div<{ focus: boolean }>`
   height: 3.4rem;
   background-color: ${(props) => (props.focus ? Green : Grey5)};
   border-radius: 1.2rem;
+  cursor: pointer;
 `;
 const Box2 = styled.div<{ focus: boolean }>`
   display: flex;
@@ -86,4 +87,5 @@ const Box2 = styled.div<{ focus: boolean }>`
   height: 3.4rem;
   background-color: ${(props) => (props.focus ? Green : Grey5)};
   border-radius: 1.2rem;
+  cursor: pointer;
 `;

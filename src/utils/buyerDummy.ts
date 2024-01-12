@@ -1,7 +1,7 @@
 //상담탭
 export const consultDummy = [
   {
-    counselorId: 0,
+    consultId: 0,
     name: '연애상담마스터',
     consultState: '질문 대기',
     time: '8분전',
@@ -10,7 +10,7 @@ export const consultDummy = [
     unread: 0,
   },
   {
-    counselorId: 1,
+    consultId: 1,
     name: '연애상담마스터',
     consultState: '답변 도착',
     time: '8분전',
@@ -19,7 +19,7 @@ export const consultDummy = [
     unread: 1,
   },
   {
-    counselorId: 2,
+    consultId: 2,
     name: '연애상담마스터',
     consultState: '상담 취소',
     time: '8분전',
@@ -28,7 +28,7 @@ export const consultDummy = [
     unread: 0,
   },
   {
-    counselorId: 3,
+    consultId: 3,
     name: '연애상담마스터',
     consultState: '상담 대기',
     time: '8분전',

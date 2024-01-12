@@ -4,8 +4,10 @@ import { Body1, Caption2 } from 'styles/font';
 
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from '../../Common/TagA2Consult';
+import { useNavigate } from 'react-router-dom';
 
 interface ConsultCardProps {
+  consultId: number;
   name: string;
   consultState: ConsultState;
   time: string;
@@ -13,18 +15,25 @@ interface ConsultCardProps {
   unread: number;
 }
 export const ConsultCard = ({
+  consultId,
   name,
   consultState,
   time,
   content,
   unread,
 }: ConsultCardProps) => {
+  const navigate = useNavigate();
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        //추후 consult id에 해당하는 letter로 navigate, 채팅 편지 구분까지
+        navigate('/buyer/letter/0');
+      }}
+    >
       <ConsultContent>
         <ConsultStateBox>
           <div className="col1">
-            <TagA2Consult tagType={consultState}/>
+            <TagA2Consult tagType={consultState} />
             <Characters number={9} width="5.4rem" height="5.1rem" />
           </div>
           <div className="col2">
