@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { normalize } from 'styled-normalize';
+import { isMobile } from 'react-device-detect';
 import PretendardSemiBold from 'assets/fonts/Pretendard-SemiBold.woff2';
 import PretendardRegular from 'assets/fonts/Pretendard-Regular.woff2';
 export const GlobalStyle = createGlobalStyle`
@@ -28,7 +29,7 @@ export const GlobalStyle = createGlobalStyle`
     justify-content: center;
     margin: 0;
     padding: 0;
-    background-color: #24a78b;
+    background-color: ${isMobile ? '#ffffff' : '#24a78b'};
     -ms-overflow-style: none;
     -webkit-tap-highlight-color : rgba(0,0,0,0);
   }
