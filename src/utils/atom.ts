@@ -75,6 +75,7 @@ export const isLetterModalOpenState = atom({
   key: 'isLetterModalOpenState',
   default: false,
 });
+
 //true가 될 시 scroll lock, 모달창에 사용
 export const scrollLockState = atom({
   key: 'scrollLockState',
