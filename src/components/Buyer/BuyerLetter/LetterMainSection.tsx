@@ -28,7 +28,7 @@ export const LetterMainSection = ({ tagStatus }: LetterMainSectionProps) => {
           width="89.33%"
           height="5.2rem"
           onClick={() => {
-            navigate('/buyer/letterWrite/0');
+            navigate('/buyer/writeLetter/0');
           }}
         />
         <Space height="3.2rem" />
@@ -40,14 +40,14 @@ const SectionWrapper = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(var(--vh, 1vh) * 100 - 10.2rem);
   align-items: center;
+  position: relative;
   .text-wrapper {
     display: flex;
   }
   .body-wrapper {
     display: flex;
-    height: calc(100vh - 18.6rem);
+    margin-top: 18vh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -63,8 +63,15 @@ const BodyText = styled.div`
   line-height: 3rem;
 `;
 const ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
 `;

@@ -13,7 +13,6 @@ export const LetterPostModal = ({
   setIsSend,
 }: LetterWritePostModal) => {
   const handlePostReplyText = () => {
-    
     // 서버로 POST 한 후에 편지를 보낼까요? 띄우기
     setIsSend(true);
   };

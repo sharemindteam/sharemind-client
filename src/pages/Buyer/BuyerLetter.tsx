@@ -15,7 +15,7 @@ export const BuyerLetter = () => {
   const [tagStatus, setTagStatus] = useState<number>(0);
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3 / 어디까지 가능한지 여부
   //넘어온 consult의 state에 따라서 api로 받아서 set 하면 될듯?
-  const [active, setActive] = useState<number>(0);
+  const [active, setActive] = useState<number>(1);
   return (
     <>
       <HeaderWrapper>

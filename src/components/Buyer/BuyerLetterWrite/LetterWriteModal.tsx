@@ -2,24 +2,30 @@ import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled, { keyframes } from 'styled-components';
-import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
+import { Green, Grey1, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
-import { isConsultModalOpenState } from 'utils/atom';
+import { isLetterModalOpenState } from 'utils/atom';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
-interface SortModalProps {
-  sortType: number;
-  setSortType: React.Dispatch<SetStateAction<number>>;
+interface LetterWriteModalProps {
+  categoryType: number;
+  setCategoryType: React.Dispatch<SetStateAction<number>>;
+  categoryList: string[];
 }
-//최근순 읽지않은순 modal
-export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
+//최근순 인기순 별점순 모달
+export const LetterWriteModal = ({
+  categoryType,
+  setCategoryType,
+  categoryList,
+}: LetterWriteModalProps) => {
   //modal 여부
-  const isModalOpen = useRecoilValue(isConsultModalOpenState);
+  const isModalOpen = useRecoilValue(isLetterModalOpenState);
   //여기서 unmount 시 sortType 바꾸고 새로 request
   //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
-  const [modalSortType, setModalSortType] = useState<number>(sortType);
+  const [modalCategoryType, setModalCategoryType] =
+    useState<number>(categoryType);
   useEffect(() => {
     return () => {
-      setSortType(modalSortType);
+      setCategoryType(modalCategoryType);
     };
   });
   return (
@@ -27,34 +33,52 @@ export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
       <div className="bar-wrapper">
         <BarIcon />
       </div>
+      <Body1 color={Grey1} margin="0 0 1.6rem 2rem">
+        상담 카테고리
+      </Body1>
       <div
         className="row"
         onClick={() => {
-          setModalSortType(0);
+          setModalCategoryType(1);
         }}
       >
-        {modalSortType === 0 ? (
+        {modalCategoryType === 1 ? (
           <>
-            <Body1 color={Green}>최근순</Body1>
+            <Body1 color={Green}>{categoryList[1]}</Body1>
             <CheckIcon />
           </>
         ) : (
-          <Body1 color={Grey1}>최근순</Body1>
+          <Body1 color={Grey1}>{categoryList[1]}</Body1>
         )}
       </div>
       <div
         className="row"
         onClick={() => {
-          setModalSortType(1);
+          setModalCategoryType(2);
         }}
       >
-        {modalSortType === 1 ? (
+        {modalCategoryType === 2 ? (
           <>
-            <Body1 color={Green}>읽지않은순</Body1>
+            <Body1 color={Green}>{categoryList[2]}</Body1>
             <CheckIcon />
           </>
         ) : (
-          <Body1 color={Grey1}>읽지않은순</Body1>
+          <Body1 color={Grey1}>{categoryList[2]}</Body1>
+        )}
+      </div>
+      <div
+        className="row"
+        onClick={() => {
+          setModalCategoryType(3);
+        }}
+      >
+        {modalCategoryType === 3 ? (
+          <>
+            <Body1 color={Green}>{categoryList[3]}</Body1>
+            <CheckIcon />
+          </>
+        ) : (
+          <Body1 color={Grey1}>{categoryList[3]}</Body1>
         )}
       </div>
     </Wrapper>
@@ -64,7 +88,7 @@ const slideIn = keyframes`
   from{
     transform : translateY(100%);
   }
-  to{
+  to{ 
     transform : translateY(0%);
   }
 `;
@@ -84,7 +108,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
     width: 37.5rem;
   }
   position: fixed;
-  height: 14.3rem;
+  height: 24rem;
   background-color: ${Grey6};
   bottom: 0;
   border-radius: 2rem 2rem 0 0;
@@ -99,11 +123,11 @@ const Wrapper = styled.div<{ visible: boolean }>`
   }
   .row {
     display: flex;
+    box-sizing: border-box;
     padding: 1rem 2rem 0 2rem;
     height: 4.4rem;
     justify-content: space-between;
     cursor: pointer;
-    box-sizing: border-box;
   }
 `;
 const BarIcon = styled(Bar)`
