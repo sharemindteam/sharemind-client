@@ -99,6 +99,7 @@ export const BuyerConsult = () => {
           const state = value.consultState as ConsultState;
           return (
             <ConsultCard
+              consultId={value.consultId}
               name={value.name}
               consultState={state}
               time={value.time}
