@@ -51,7 +51,7 @@ const RecentTag = styled.div`
 `;
 const TagWrapper = styled.div`
   display: flex;
-  gap: 0.4rem;
+  gap: 1.2rem;
   padding-top: 0.7rem;
   padding-left: 0.1rem;
   overflow-x: scroll;
