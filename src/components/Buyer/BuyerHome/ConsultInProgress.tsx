@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Green } from 'styles/color';
+import { Red } from 'styles/color';
 import { Body1, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ConsultCard } from '../Common/ConsultCard';
@@ -25,11 +25,12 @@ export const ConsultInProgress = () => {
         <NavConsult>
           <Subtitle>진행 중인 상담</Subtitle>
           {/* 나중에 api */}
-          <Body1 color={Green}>8</Body1>
+          <Body1 color={Red}>8</Body1>
         </NavConsult>
         <MoreIcon />
       </div>
       <ConsultCard
+        consultId={0}
         name={CounselorName}
         consultState={ConsultState}
         time={Time}
