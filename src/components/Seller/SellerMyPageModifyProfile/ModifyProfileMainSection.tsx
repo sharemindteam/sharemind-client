@@ -7,6 +7,7 @@ import {
   Grey4,
   Grey5,
   Grey6,
+  LightGreen,
   Red,
   SafeColor,
   White,
@@ -20,7 +21,7 @@ import { profileDummyData } from 'utils/profileDummy';
 import { useCustomSelect } from 'hooks/useCustomSelect';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   isUpdateModalOpenState,
   isCategoryModalOpenState,
@@ -65,9 +66,14 @@ export const ModifyProfileMainSection = ({
   const bankType = useInput('');
   const bankOwner = useInput('');
 
-  const setIsCategoryModalOpen = useSetRecoilState(isCategoryModalOpenState);
-  const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
-  const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
+    isCategoryModalOpenState,
+  );
+  const [isStyleModalOpen, setIsStyleModalOpen] = useRecoilState(
+    isStyleModalOpenState,
+  );
+  const [isTypeModalOpen, setIsTypeModalOpen] =
+    useRecoilState(isTypeOpenModalState);
   const setIsBankModalOpen = useSetRecoilState(isBankModalOpenState);
 
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
@@ -158,6 +164,7 @@ export const ModifyProfileMainSection = ({
               isCursorPointer={true}
               padding="1.2rem 1.6rem"
               isBoxSizing={true}
+              backgroundColor={isCategoryModalOpen ? LightGreen : Grey6}
             />
           </div>
         </div>
@@ -176,6 +183,7 @@ export const ModifyProfileMainSection = ({
               isCursorPointer={true}
               padding="1.2rem 1.6rem"
               isBoxSizing={true}
+              backgroundColor={isStyleModalOpen ? LightGreen : Grey6}
             />
           </div>
         </div>
@@ -196,6 +204,7 @@ export const ModifyProfileMainSection = ({
               isCursorPointer={true}
               padding="1.2rem 1.6rem"
               isBoxSizing={true}
+              backgroundColor={isTypeModalOpen ? LightGreen : Grey6}
             />
           </div>
         </div>
