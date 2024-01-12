@@ -16,7 +16,7 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
       <Wrapper>
         <Logo onClick={onClick}>
           <LogoBuyer />
-          <StyledLogoText width="98.202px" height="16.364px" />
+          <LogoText />
         </Logo>
         <StyledSearch
           onClick={() => {
@@ -34,7 +34,7 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
       <Wrapper>
         <Logo>
           <LogoSeller />
-          <StyledLogoText width="98.202px" height="16.364px" />
+          <LogoText />
         </Logo>
         <StyledSearch />
       </Wrapper>
@@ -52,13 +52,10 @@ const Wrapper = styled.div`
   z-index: 999;
 `;
 const Logo = styled.div`
-  margin-left: 2rem;
+  margin-left: 2.1rem;
   margin-top: 1.4rem;
   display: flex;
   cursor: pointer;
-`;
-const StyledLogoText = styled(LogoText)`
-  padding-top: 0.81rem;
 `;
 const StyledSearch = styled(Search)`
   margin-top: 1rem;
