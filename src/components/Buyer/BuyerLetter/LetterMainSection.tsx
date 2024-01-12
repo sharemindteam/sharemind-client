@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ReactComponent as NotWrite } from 'assets/icons/graphic-not-write.svg';
+import { ReactComponent as NotArriveGraphic } from 'assets/icons/graphic-not-arrive.svg';
 import { Body1, Body2 } from 'styles/font';
 import { Grey1 } from 'styles/color';
 import { Button } from 'components/Common/Button';
@@ -8,33 +9,93 @@ import { useNavigate } from 'react-router-dom';
 interface LetterMainSectionProps {
   tagStatus: number;
 }
+//TODO :마감시간 api로 받아서 전달
 export const LetterMainSection = ({ tagStatus }: LetterMainSectionProps) => {
   const navigate = useNavigate();
-  return (
-    <SectionWrapper>
-      <div className="body-wrapper">
-        <NotWrite />
-        <BodyText>고민 내용을 남겨주세요</BodyText>
-        <Body2 color={Grey1}>연애상담마스터 님이</Body2>
-        <div className="text-wrapper">
-          <Body1 color={Grey1}>24시간 이내</Body1>
-          <Body2 color={Grey1}>에 답장을 드릴 거예요.</Body2>
+  if (tagStatus === 0) {
+    return (
+      <SectionWrapper>
+        <div className="body-wrapper-question">
+          <NotWriteGraphic />
+          <Space height="1.2rem" />
+          <BodyText>고민 내용을 남겨주세요</BodyText>
+          <Space height="1.2rem" />
+          <Body2 color={Grey1}>연애상담마스터 님이</Body2>
+          <div className="text-wrapper">
+            <Body1 color={Grey1}>24시간 이내</Body1>
+            <Body2 color={Grey1}>에 답장을 드릴 거예요.</Body2>
+          </div>
         </div>
-      </div>
 
-      <ButtonWrapper>
-        <Button
-          text="질문 작성하기"
-          width="89.33%"
-          height="5.2rem"
-          onClick={() => {
-            navigate('/buyer/writeLetter/0');
-          }}
-        />
-        <Space height="3.2rem" />
-      </ButtonWrapper>
-    </SectionWrapper>
-  );
+        <ButtonWrapper>
+          <Button
+            text="질문 작성하기"
+            width="89.33%"
+            height="5.2rem"
+            onClick={() => {
+              navigate('/buyer/writeLetter/0');
+            }}
+          />
+          <Space height="3.2rem" />
+        </ButtonWrapper>
+      </SectionWrapper>
+    );
+  } else if (tagStatus === 1) {
+    return (
+      <SectionWrapper>
+        <div className="body-wrapper-answer">
+          <NotArriveGraphic />
+          <Space height="3.4rem" />
+          <BodyText>아직 답장이 오지 않았어요!</BodyText>
+          <Space height="1.2rem" />
+          <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
+          <Body2 color={Grey1}>답장이 달리지 않을 경우</Body2>
+          <Body2 color={Grey1}>자동으로 환불처리를 진행해드릴게요.</Body2>
+          <Body2 color={Grey1}>환불이 진행될 시 이메일로 안내됩니다.</Body2>
+        </div>
+      </SectionWrapper>
+    );
+  } else if (tagStatus === 2) {
+    return (
+      <SectionWrapper>
+        <div className="body-wrapper-question">
+          <NotWriteGraphic />
+          <BodyText>1회 더 질문할 수 있어요</BodyText>
+          <Space height="2.2rem" />
+          <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
+          <Body2 color={Grey1}>추가 질문을 작성하지 않으면</Body2>
+          <Body2 color={Grey1}>자동으로 상담이 종료됩니다.</Body2>
+        </div>
+
+        <ButtonWrapper>
+          <Button
+            text="추가질문 작성하기"
+            width="89.33%"
+            height="5.2rem"
+            onClick={() => {
+              navigate('/buyer/writeLetter/0');
+            }}
+          />
+          <Space height="3.2rem" />
+        </ButtonWrapper>
+      </SectionWrapper>
+    );
+  } else if (tagStatus === 3) {
+    return (
+      <SectionWrapper>
+        <div className="body-wrapper-answer">
+          <NotArriveGraphic />
+          <Space height="3.4rem" />
+          <BodyText>아직 답장이 오지 않았어요!</BodyText>
+          <Space height="1.2rem" />
+          <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
+          <Body2 color={Grey1}>답장이 달리지 않을 경우</Body2>
+          <Body2 color={Grey1}>자동으로 환불처리를 진행해드릴게요.</Body2>
+          <Body2 color={Grey1}>환불이 진행될 시 이메일로 안내됩니다.</Body2>
+        </div>
+      </SectionWrapper>
+    );
+  }
 };
 const SectionWrapper = styled.section`
   display: flex;
@@ -45,9 +106,16 @@ const SectionWrapper = styled.section`
   .text-wrapper {
     display: flex;
   }
-  .body-wrapper {
+  .body-wrapper-question {
     display: flex;
-    margin-top: 18vh;
+    margin-top: 10vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .body-wrapper-answer {
+    display: flex;
+    margin-top: 8vh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -74,4 +142,7 @@ const ButtonWrapper = styled.div`
   @media (min-width: 768px) {
     width: 37.5rem;
   }
+`;
+const NotWriteGraphic = styled(NotWrite)`
+  margin: 3.2rem 0;
 `;
