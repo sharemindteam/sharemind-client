@@ -171,6 +171,7 @@ const CategoryDropDown = styled.div`
   align-items: center;
   margin-top: 1.2rem;
   margin-bottom: 0.8rem;
+  cursor: pointer;
 `;
 const TextArea = styled.textarea`
   resize: none;
