@@ -27,20 +27,24 @@ import {
   isStyleModalOpenState,
   isTypeOpenModalState,
   isSuccessUpdateState,
+  isBankModalOpenState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
+import { BankIcon } from 'utils/BankIcon';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
   selectStyle: string;
   selectType: string[];
+  selectBankType: string;
 }
 export const ModifyProfileMainSection = ({
   selectCategory,
   selectStyle,
   selectType,
+  selectBankType,
 }: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
   const nickname = useInput('');
@@ -64,6 +68,8 @@ export const ModifyProfileMainSection = ({
   const setIsCategoryModalOpen = useSetRecoilState(isCategoryModalOpenState);
   const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
   const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
+  const setIsBankModalOpen = useSetRecoilState(isBankModalOpenState);
+
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
 
   useEffect(() => {
@@ -312,7 +318,12 @@ export const ModifyProfileMainSection = ({
           </div>
           <div className="bank-type">
             <AccountTag>은행</AccountTag>
-            <BankTypeSelect onClick={() => {}}>
+            <BankTypeSelect
+              onClick={() => {
+                setIsBankModalOpen(true);
+              }}
+            >
+              <BankIcon bankType={bankType.value} />
               <Body1>{bankType.value}</Body1>
             </BankTypeSelect>
           </div>
