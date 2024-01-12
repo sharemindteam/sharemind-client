@@ -20,17 +20,23 @@ function BankSelectModal({ setSelectBankType }: BankSelectModalProps) {
       <BankCaption>
         <Body1>은행</Body1>
       </BankCaption>
-
-      <BankSelectList>
-        {bankNameList.map((item) => (
-          <BankItem>
-            <BankIcon bankType={item} key={item} />
-            <BankName>
-              <Body1>{item}</Body1>
-            </BankName>
-          </BankItem>
-        ))}
-      </BankSelectList>
+      <BankSelectBox>
+        <BankSelectList>
+          {bankNameList.map((item) => (
+            <BankItem
+              onClick={() => {
+                setSelectBankType(item);
+                setIsBankModalOpen(false);
+              }}
+            >
+              <BankIcon bankType={item} key={item} />
+              <BankName>
+                <Body1>{item}</Body1>
+              </BankName>
+            </BankItem>
+          ))}
+        </BankSelectList>
+      </BankSelectBox>
     </Wrapper>
   );
 }
@@ -38,13 +44,20 @@ const BankCaption = styled.div`
   margin-left: 2rem;
   margin-bottom: 1.6rem;
 `;
+
+const BankSelectBox = styled.div`
+  height: calc(100% - 4rem);
+  overflow: scroll;
+`;
 const BankSelectList = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding-bottom: 10rem;
 `;
 const BankItem = styled.div`
   width: 50%;
   display: flex;
+  cursor: pointer;
   gap: 0.8rem;
   align-items: center;
   padding: 1.6rem 2.85rem 1.6rem;

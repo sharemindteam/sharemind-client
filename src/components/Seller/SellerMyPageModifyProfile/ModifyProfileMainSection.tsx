@@ -84,6 +84,9 @@ export const ModifyProfileMainSection = ({
     type.setViewValue(selectType.join(', '));
   }, [selectType]);
   useEffect(() => {
+    bankType.setValue(selectBankType);
+  }, [selectBankType]);
+  useEffect(() => {
     nickname.setValue(profileDummyData.nickName);
     category.setViewValue(profileDummyData.category);
     style.setViewValue(profileDummyData.style);
@@ -215,6 +218,7 @@ export const ModifyProfileMainSection = ({
               value={letterPrice.value}
               onChange={letterPrice.onChangePrice}
               placeholder="1회당 최소 5,000원~최대 50,000원"
+              maxLength={6}
             />
 
             <Body1>원</Body1>
@@ -225,6 +229,7 @@ export const ModifyProfileMainSection = ({
               value={chatPrice.value}
               onChange={chatPrice.onChangePrice}
               placeholder="30분당 최소 5,000원~최대 50,000원"
+              maxLength={6}
             />
             <Body1>원</Body1>
           </div>
