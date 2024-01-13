@@ -7,6 +7,7 @@ import {
   Grey4,
   Grey5,
   Grey6,
+  LightGreen,
   Red,
   SafeColor,
   White,
@@ -20,27 +21,31 @@ import { profileDummyData } from 'utils/profileDummy';
 import { useCustomSelect } from 'hooks/useCustomSelect';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   isUpdateModalOpenState,
   isCategoryModalOpenState,
   isStyleModalOpenState,
   isTypeOpenModalState,
   isSuccessUpdateState,
+  isBankModalOpenState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
+import { BankIcon } from 'utils/BankIcon';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
   selectStyle: string;
   selectType: string[];
+  selectBankType: string;
 }
 export const ModifyProfileMainSection = ({
   selectCategory,
   selectStyle,
   selectType,
+  selectBankType,
 }: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
   const nickname = useInput('');
@@ -61,9 +66,16 @@ export const ModifyProfileMainSection = ({
   const bankType = useInput('');
   const bankOwner = useInput('');
 
-  const setIsCategoryModalOpen = useSetRecoilState(isCategoryModalOpenState);
-  const setIsStyleModalOpen = useSetRecoilState(isStyleModalOpenState);
-  const setIsTypeModalOpen = useSetRecoilState(isTypeOpenModalState);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
+    isCategoryModalOpenState,
+  );
+  const [isStyleModalOpen, setIsStyleModalOpen] = useRecoilState(
+    isStyleModalOpenState,
+  );
+  const [isTypeModalOpen, setIsTypeModalOpen] =
+    useRecoilState(isTypeOpenModalState);
+  const setIsBankModalOpen = useSetRecoilState(isBankModalOpenState);
+
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
 
   useEffect(() => {
@@ -77,6 +89,9 @@ export const ModifyProfileMainSection = ({
   useEffect(() => {
     type.setViewValue(selectType.join(', '));
   }, [selectType]);
+  useEffect(() => {
+    bankType.setValue(selectBankType);
+  }, [selectBankType]);
   useEffect(() => {
     nickname.setValue(profileDummyData.nickName);
     category.setViewValue(profileDummyData.category);
@@ -149,6 +164,7 @@ export const ModifyProfileMainSection = ({
               isCursorPointer={true}
               padding="1.2rem 1.6rem"
               isBoxSizing={true}
+              backgroundColor={isCategoryModalOpen ? LightGreen : Grey6}
             />
           </div>
         </div>
@@ -167,6 +183,7 @@ export const ModifyProfileMainSection = ({
               isCursorPointer={true}
               padding="1.2rem 1.6rem"
               isBoxSizing={true}
+              backgroundColor={isStyleModalOpen ? LightGreen : Grey6}
             />
           </div>
         </div>
@@ -187,6 +204,7 @@ export const ModifyProfileMainSection = ({
               isCursorPointer={true}
               padding="1.2rem 1.6rem"
               isBoxSizing={true}
+              backgroundColor={isTypeModalOpen ? LightGreen : Grey6}
             />
           </div>
         </div>
@@ -209,6 +227,7 @@ export const ModifyProfileMainSection = ({
               value={letterPrice.value}
               onChange={letterPrice.onChangePrice}
               placeholder="1회당 최소 5,000원~최대 50,000원"
+              maxLength={6}
             />
 
             <Body1>원</Body1>
@@ -219,6 +238,7 @@ export const ModifyProfileMainSection = ({
               value={chatPrice.value}
               onChange={chatPrice.onChangePrice}
               placeholder="30분당 최소 5,000원~최대 50,000원"
+              maxLength={6}
             />
             <Body1>원</Body1>
           </div>
@@ -312,7 +332,12 @@ export const ModifyProfileMainSection = ({
           </div>
           <div className="bank-type">
             <AccountTag>은행</AccountTag>
-            <BankTypeSelect onClick={() => {}}>
+            <BankTypeSelect
+              onClick={() => {
+                setIsBankModalOpen(true);
+              }}
+            >
+              <BankIcon bankType={bankType.value} />
               <Body1>{bankType.value}</Body1>
             </BankTypeSelect>
           </div>
