@@ -23,12 +23,21 @@ function SellerRefundBankAccount() {
   const [isBankModalOpen, setIsBankModalOpen] =
     useRecoilState(isBankModalOpenState);
 
+  const [isActiveFisnishButton, setIsActiveFinishButton] = useState(false);
   useEffect(() => {
     // API 요청
     setAccountNum('12345678900');
     setBankType('우리은행');
     setOwner('김고민');
   }, []);
+
+  useEffect(() => {
+    if (accountNum !== '' && bankType !== '' && owner !== '') {
+      setIsActiveFinishButton(true);
+    } else {
+      setIsActiveFinishButton(false);
+    }
+  }, [accountNum, bankType, owner]);
 
   const handleAccountNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -81,6 +90,10 @@ function SellerRefundBankAccount() {
           <Body1>예금주</Body1>
           <Input
             width="100%"
+            value={owner}
+            onChange={(e) => {
+              setOwner(e.target.value);
+            }}
             height="4.8rem"
             isBoxSizing={true}
             padding="1rem 1.6rem"
@@ -93,7 +106,7 @@ function SellerRefundBankAccount() {
           text="완료"
           width="calc(100% - 4rem)"
           height="5.2rem"
-          isActive={false}
+          isActive={isActiveFisnishButton ? true : false}
           onClick={() => {
             handlePostAccountInfo();
             navigate('/seller/setting');
