@@ -35,6 +35,7 @@ import { BuyerPayment } from 'pages/Buyer/BuyerPayment';
 import { BuyerLetter } from 'pages/Buyer/BuyerLetter';
 import { BuyerLetterWrite } from 'pages/Buyer/BuyerLetterWrite';
 import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
+import SellerRefundBankAccount from 'pages/Seller/SellerRefundBankAccount';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -88,6 +89,10 @@ const Router = () => {
       <Route path="/setting/logout" element={<BuyerLogout />} />
       <Route path="/seller" element={<SellerHome />} />
       <Route path="/seller/setting" element={<SellerAccountSetting />} />
+      <Route
+        path="/setting/refundBankAccount"
+        element={<SellerRefundBankAccount />}
+      />
       {/* 판매자 : 상담 */}
       {/* 판매자 : 편지 */}
       {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}

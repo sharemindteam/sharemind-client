@@ -27,7 +27,12 @@ function SellerAccountSetting() {
         >
           <Body2 color={Grey1}>비밀번호 변경</Body2>
         </div>
-        <div className="row">
+        <div
+          className="row"
+          onClick={() => {
+            navigate('/setting/refundBankAccount');
+          }}
+        >
           <Body2 color={Grey1}>환불계좌 관리</Body2>
         </div>
         <div

@@ -25,7 +25,7 @@ export const BuyerLogout = () => {
         </div>
         <div className="button-row">
           <Button
-            text="아니오"
+            text="취소"
             width="16rem"
             height="5.2rem"
             onClick={() => {
@@ -33,7 +33,7 @@ export const BuyerLogout = () => {
             }}
           />
           <Button
-            text="네"
+            text="로그아웃"
             width="16rem"
             height="5.2rem"
             backgroundColor={LightGreen}

@@ -95,6 +95,9 @@ export const Profile = ({
       ) : (
         <VerifyButtonWrapper>
           <VerifyButton
+          onClick={()=>{
+            navigate("/seller/education/first")
+          }}
             width="100%"
             backgroundColor={Green}
             height="5.2rem"
