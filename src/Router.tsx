@@ -36,6 +36,7 @@ import { BuyerLetter } from 'pages/Buyer/BuyerLetter';
 import { BuyerLetterWrite } from 'pages/Buyer/BuyerLetterWrite';
 import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
 import SellerRefundBankAccount from 'pages/Seller/SellerRefundBankAccount';
+import SellerChat from 'pages/Seller/SellerChat';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -94,6 +95,9 @@ const Router = () => {
         element={<SellerRefundBankAccount />}
       />
       {/* 판매자 : 상담 */}
+      {/* 판매자 : 채팅 */}
+      <Route path="/seller/chat/:consultid" element={<SellerChat />} />
+
       {/* 판매자 : 편지 */}
       {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}
       <Route path="/seller/letter/:consultid" element={<SellerLetter />} />

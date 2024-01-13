@@ -1,4 +1,4 @@
-import BankSelectModal from 'components/Seller/SellerMyPageModifyProfile/BankSelectModal';
+import BankSelectModal from 'components/Seller/Common/BankSelectModal';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
 import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';

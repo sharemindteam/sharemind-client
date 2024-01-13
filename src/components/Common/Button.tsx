@@ -101,16 +101,13 @@ const StyledButton = styled.button<{
   border: ${(props) => props.border};
 `;
 
-const StyledDiv = styled.div<{
+const StyledDiv = styled.button<{
   width: string;
   height: string;
   backgroundColor: string;
   borderRadius: string;
   border: string;
 }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-family: Pretendard;
   border-radius: ${(props) => props.borderRadius};
   background-color: ${(props) => props.backgroundColor};
