@@ -17,7 +17,7 @@ export const SellerMypage = () => {
         name="김고민"
         levelStatus={1}
         isBuyer={false}
-        isVerified={true}
+        isVerified={false}
         profileIdentifier={1}
       />
     </>

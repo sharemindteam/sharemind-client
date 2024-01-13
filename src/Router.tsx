@@ -34,6 +34,7 @@ import { BuyerSavedCounselor } from 'pages/Buyer/BuyerSavedCounselor';
 import { BuyerPayment } from 'pages/Buyer/BuyerPayment';
 import { BuyerLetter } from 'pages/Buyer/BuyerLetter';
 import { BuyerLetterWrite } from 'pages/Buyer/BuyerLetterWrite';
+import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -86,8 +87,8 @@ const Router = () => {
       <Route path="/setting/terminate" element={<BuyerTerminate />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />
       <Route path="/seller" element={<SellerHome />} />
+      <Route path="/seller/setting" element={<SellerAccountSetting />} />
       {/* 판매자 : 상담 */}
-
       {/* 판매자 : 편지 */}
       {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}
       <Route path="/seller/letter/:consultid" element={<SellerLetter />} />
