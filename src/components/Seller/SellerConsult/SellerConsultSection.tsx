@@ -8,6 +8,7 @@ import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
+import { useNavigate } from 'react-router-dom';
 
 interface ConsultTypeProps {
   isActive: boolean;
@@ -26,6 +27,7 @@ export const SellerConsultSection = () => {
   );
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+  const navigate = useNavigate();
   return (
     <>
       <ConsultSortingMenu>
@@ -78,6 +80,9 @@ export const SellerConsultSection = () => {
           content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
           newMessageCounts={1}
           counselorprofileStatus={2}
+          onClick={() => {
+            navigate('/seller/letter/1');
+          }}
         />{' '}
         <OngoingCounsultBox
           consultStatus="상담 중"

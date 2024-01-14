@@ -6,14 +6,14 @@ import { Green, Grey1, LightGreen } from 'styles/color';
 import { Body2, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
 
-export const BuyerTerminate = () => {
+export const SellerTerminate = () => {
   const navigate = useNavigate();
   return (
     <Wrapper>
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/mypage');
+            navigate('/seller/setting');
           }}
         />
         <Heading color={Grey1}>회원 탈퇴</Heading>
@@ -32,7 +32,7 @@ export const BuyerTerminate = () => {
             width="16rem"
             height="5.2rem"
             onClick={() => {
-              navigate('/buyer/mypage');
+              navigate('/seller/setting');
             }}
           />
           <Button

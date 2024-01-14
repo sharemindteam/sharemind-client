@@ -3,28 +3,25 @@ import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, LightGreen } from 'styles/color';
-import { Body2, Heading } from 'styles/font';
+import { Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
 
-export const BuyerTerminate = () => {
+export const SellerLogout = () => {
   const navigate = useNavigate();
   return (
     <Wrapper>
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/mypage');
+            navigate('/seller/setting');
           }}
         />
-        <Heading color={Grey1}>회원 탈퇴</Heading>
+        <Heading color={Grey1}>로그아웃</Heading>
       </HeaderWrapper>
       <div className="body-wrapper">
         <div className="center-content">
           <Characters number={6} width="20.5rem" height="20.5rem" />
-          <Heading margin="2.7rem 0 0 0">
-            정말로 회원을 탈퇴하시겠습니까?
-          </Heading>
-          <Body2 margin="2.2rem 0 0 0">탈퇴하시면 ~~~~ 내용 필요</Body2>
+          <Heading margin="2.7rem 0 0 0">로그아웃 하시겠습니까?</Heading>
         </div>
         <div className="button-row">
           <Button
@@ -32,11 +29,11 @@ export const BuyerTerminate = () => {
             width="16rem"
             height="5.2rem"
             onClick={() => {
-              navigate('/buyer/mypage');
+              navigate('/seller/setting');
             }}
           />
           <Button
-            text="탈퇴하기"
+            text="로그아웃"
             width="16rem"
             height="5.2rem"
             backgroundColor={LightGreen}

@@ -34,6 +34,12 @@ import { BuyerSavedCounselor } from 'pages/Buyer/BuyerSavedCounselor';
 import { BuyerPayment } from 'pages/Buyer/BuyerPayment';
 import { BuyerLetter } from 'pages/Buyer/BuyerLetter';
 import { BuyerLetterWrite } from 'pages/Buyer/BuyerLetterWrite';
+import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
+import SellerRefundBankAccount from 'pages/Seller/SellerRefundBankAccount';
+import SellerChat from 'pages/Seller/SellerChat';
+import { SellerPwChange } from 'pages/Seller/SellerPwChange';
+import { SellerTerminate } from 'pages/Seller/SellerTerminate';
+import { SellerLogout } from 'pages/Seller/SellerLogout';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -85,8 +91,27 @@ const Router = () => {
       <Route path="/setting/changePassword" element={<BuyerPwChange />} />
       <Route path="/setting/terminate" element={<BuyerTerminate />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />
+
+
+
       <Route path="/seller" element={<SellerHome />} />
+      {/* 판매자 설정 */}
+      <Route path="/seller/setting" element={<SellerAccountSetting />} />
+      <Route
+        path="/seller/setting/changePassword"
+        element={<SellerPwChange />}
+      />
+      <Route
+        path="/setting/refundBankAccount"
+        element={<SellerRefundBankAccount />}
+      />
+      <Route path="/seller/setting/terminate" element={<SellerTerminate />} />
+      <Route path="/seller/setting/logout" element={<SellerLogout />} />
+
+
       {/* 판매자 : 상담 */}
+      {/* 판매자 : 채팅 */}
+      <Route path="/seller/chat/:consultid" element={<SellerChat />} />
 
       {/* 판매자 : 편지 */}
       {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}
