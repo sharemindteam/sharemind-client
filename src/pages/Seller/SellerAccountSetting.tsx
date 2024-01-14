@@ -13,7 +13,7 @@ function SellerAccountSetting() {
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate('/buyer/mypage');
+              navigate('/seller/mypage');
             }}
           />
           <Heading color={Grey1}>계정 설정</Heading>
@@ -22,7 +22,7 @@ function SellerAccountSetting() {
         <div
           className="row"
           onClick={() => {
-            navigate('/setting/changePassword');
+            navigate('/seller/setting/changePassword');
           }}
         >
           <Body2 color={Grey1}>비밀번호 변경</Body2>
@@ -38,7 +38,7 @@ function SellerAccountSetting() {
         <div
           className="row"
           onClick={() => {
-            navigate('/setting/terminate');
+            navigate('/seller/setting/terminate');
           }}
         >
           <Body2 color={Grey1}>회원 탈퇴</Body2>
@@ -46,10 +46,12 @@ function SellerAccountSetting() {
         <div
           className="row"
           onClick={() => {
-            navigate('/setting/logout');
+            navigate('/seller/setting/logout');
           }}
         >
-          <Body2 color={Grey1}>로그아웃</Body2>
+          <Body2 color={Grey1} onClick={() => {}}>
+            로그아웃
+          </Body2>
         </div>
       </Wrapper>
     </>

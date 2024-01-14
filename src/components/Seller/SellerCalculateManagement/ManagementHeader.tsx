@@ -9,15 +9,12 @@ export const ManagementHeader = () => {
     <ManagementHeaderWrapper>
       <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
         <LeftArrowIcon
-          onClick={() => {  
+          onClick={() => {
             navigate('/seller');
           }}
         />
       </div>
       <Heading>수익 관리</Heading>
-      <div style={{ position: 'absolute', right: '1.6rem', cursor: 'pointer' }}>
-        <MoreIcon />
-      </div>
     </ManagementHeaderWrapper>
   );
 };
