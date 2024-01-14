@@ -75,7 +75,6 @@ export const ModifyProfileMainSection = ({
   const [isTypeModalOpen, setIsTypeModalOpen] =
     useRecoilState(isTypeOpenModalState);
   const setIsBankModalOpen = useSetRecoilState(isBankModalOpenState);
-
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
 
   useEffect(() => {
@@ -286,7 +285,7 @@ export const ModifyProfileMainSection = ({
             maxLength={20000}
             value={experience.value}
             onChange={(e) => {
-              experience.handleCheckOneLiner(e.target.value);
+              experience.handleCheckExperience(e.target.value);
               experience.onChange(e);
             }}
           />
@@ -480,3 +479,13 @@ const BankTypeSelect = styled.div`
   box-sizing: border-box;
   width: 100%;
 `;
+
+const OneLinerInput = styled.div`
+  width: 100%;
+  height; 4.8rem;
+  background-color: ${Grey6};
+  padding: 1.2rem 1.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  `;
