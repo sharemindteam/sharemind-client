@@ -27,9 +27,7 @@ export const CounselorFooter = ({ isBookmarked }: CounselorFooterProps) => {
           }}
         />
       )}
-      <div className="button-wrapper">
-        <Button text="상담 신청하기" width="26rem" height="5.2rem" />
-      </div>
+      <Button text="상담 신청하기" width="26rem" height="5.2rem" />
     </Wrapper>
   );
 };
@@ -50,8 +48,6 @@ const Wrapper = styled.div`
   position: fixed;
   bottom: 0;
   z-index: 999;
-  .button-wrapper {
-  }
 `;
 const NoneBookMarkIcon = styled(NoneBookMark)`
   width: 4.2rem;

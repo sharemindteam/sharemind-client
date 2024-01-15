@@ -45,5 +45,7 @@ const ReviewCard = styled.div`
   margin-bottom: 1.2rem;
   .row1 {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
