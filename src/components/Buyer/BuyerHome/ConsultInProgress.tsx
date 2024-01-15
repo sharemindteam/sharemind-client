@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Green } from 'styles/color';
+import { Red } from 'styles/color';
 import { Body1, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ConsultCard } from '../Common/ConsultCard';
@@ -8,7 +8,7 @@ export const ConsultInProgress = () => {
   //얘네 props로 넘겨준다, 나중에 api
   const CounselorName = '연애상담마스터';
   const ConsultState: ConsultState = '답변 도착';
-  const Time = '8분전';
+  const Time = '8분 전';
   //일정 크기 넘어가면 ...처리
   const ContentText =
     '연애상담마스터님께 고민 내용을 남겨 주세요. 연애상담마스터님이 24시간 어쩌구 블라블라 주저리 주저리주저리 주저리주저리 주저리주저리 주저리주저리 주저리주저리 ';
@@ -25,11 +25,12 @@ export const ConsultInProgress = () => {
         <NavConsult>
           <Subtitle>진행 중인 상담</Subtitle>
           {/* 나중에 api */}
-          <Body1 color={Green}>8</Body1>
+          <Body1 color={Red}>8</Body1>
         </NavConsult>
         <MoreIcon />
       </div>
       <ConsultCard
+        consultId={0}
         name={CounselorName}
         consultState={ConsultState}
         time={Time}

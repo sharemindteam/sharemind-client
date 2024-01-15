@@ -1,21 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 import { normalize } from 'styled-normalize';
-import PretendardSemiBold from 'assets/fonts/Pretendard-SemiBold.woff2';
-import PretendardRegular from 'assets/fonts/Pretendard-Regular.woff2';
+import { isMobile } from 'react-device-detect';
+
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
-  @font-face {
-    font-family: 'Pretendard';
-    font-weight: 600;
-    font-display: swap;
-    src: local('PretendardSemiBold'), url(${PretendardSemiBold}) format('woff2');
-  }
-  @font-face {
-    font-family: 'Pretendard';
-    font-weight: 400;
-    font-display: swap;
-    src: local('PretendardRegular'), url(${PretendardRegular}) format('woff2');
-  }
   html {
     font-size:10px;
     box-sizing: border-box;
@@ -28,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
     justify-content: center;
     margin: 0;
     padding: 0;
-    background-color: #24a78b;
+    background-color: ${isMobile ? '#ffffff' : '#24a78b'};
     -ms-overflow-style: none;
     -webkit-tap-highlight-color : rgba(0,0,0,0);
   }

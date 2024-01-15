@@ -91,7 +91,7 @@ export const BuyerConsult = () => {
               style={{ cursor: 'pointer' }}
             />
           )}
-          <Body3 color={Grey3}>완료된 상담 제외</Body3>
+          <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
         </div>
       </div>
       <CardWrapper>

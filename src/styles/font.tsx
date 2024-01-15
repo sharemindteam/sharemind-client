@@ -12,6 +12,7 @@ export const Heading = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 2rem;
   font-weight: 600;
+  font-style: normal;
   line-height: 100%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
@@ -22,6 +23,7 @@ export const Subtitle = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 1.8rem;
   font-weight: 600;
+  font-style: normal;
   line-height: 135%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
@@ -32,6 +34,7 @@ export const Body1 = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 1.6rem;
   font-weight: 600;
+  font-style: normal;
   line-height: 150%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
@@ -42,6 +45,7 @@ export const Body2 = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 1.6rem;
   font-weight: 400;
+  font-style: normal;
   line-height: 150%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
@@ -52,6 +56,7 @@ export const Body3 = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 1.4rem;
   font-weight: 400;
+  font-style: normal;
   line-height: 155%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
@@ -62,6 +67,7 @@ export const Button1 = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 1.6rem;
   font-weight: 600;
+  font-style: normal;
   line-height: 125%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
@@ -72,6 +78,7 @@ export const Button2 = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 1.4rem;
   font-weight: 400;
+  font-style: normal;
   line-height: 125%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
@@ -82,6 +89,7 @@ export const Caption1 = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 1.2rem;
   font-weight: 600;
+  font-style: normal;
   line-height: 140%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
@@ -92,6 +100,7 @@ export const Caption2 = styled.div<FontProps>`
   color: ${(props) => props.color || '#000000'};
   font-size: 1.2rem;
   font-weight: 400;
+  font-style: normal;
   line-height: 140%;
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};

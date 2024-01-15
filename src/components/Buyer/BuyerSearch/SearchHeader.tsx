@@ -40,6 +40,7 @@ export const SearchHeader = () => {
           height="4.4rem"
           width="100%"
           padding="0 3.2rem 0 0"
+          textIndent="1rem"
         />
         <SearchIcon onClick={handleSubmit} />
       </FormWrapper>
