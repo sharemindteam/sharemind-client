@@ -7,50 +7,48 @@ import Input from 'components/Common/Input';
 import { useEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-//TODO useInput으로 refactor
+import { useInput } from 'hooks/useInput';
+
 export const BuyerSignup = () => {
   const navigate = useNavigate();
-  //입력 아이디 valid 여부
-  const [idValid, setIdValid] = useState<boolean>(false);
-  //인증번호 valid 여부
-  const [verifyValid, setVerifyValid] = useState<boolean>(false);
+  const idInput = useInput('');
+  const verifyInput = useInput('');
+
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
   //인증 전송됨 여부
   const [isSended, setIsSended] = useState<boolean>(false);
-  //id input temp
-  const [input, setInput] = useState<string>('');
-  //인증번호 input temp
-  const [verifyInput, setVerifyInput] = useState<string>('');
+
   //verify button text
   const [verifyText, setVerifyText] = useState<string>('인증 요청');
   useEffect(() => {
     //TODO:(아이디) 추후 valid 체크 후 true처리
     //현재는 입력만 들어오면 valid true
-    if (input.trim() !== '') {
-      if (idValid === false) {
-        setIdValid(true);
+    if (idInput.value.trim() !== '') {
+      if (idInput.isValid === false) {
+        idInput.setIsValid(true);
       }
     } else {
-      setIdValid(false);
+      idInput.setIsValid(false);
     }
     //TODO:(인증번호) 추후 valid 체크 후 true처리
-    if (verifyInput.trim() !== '') {
-      if (verifyValid === false) {
-        setVerifyValid(true);
+    if (verifyInput.value.trim() !== '') {
+      if (verifyInput.isValid === false) {
+        verifyInput.setIsValid(true);
       }
     } else {
-      setVerifyValid(false);
+      verifyInput.setIsValid(false);
     }
-  }, [input, verifyInput]);
+  }, [idInput.value, verifyInput.value]);
   // 다음 button valid 체크
   useEffect(() => {
-    if (idValid && verifyValid) {
+    if (idInput.isValid && verifyInput.isValid) {
       setValid(true);
     } else {
       setValid(false);
     }
-  }, [idValid, verifyValid]);
+  }, [idInput.isValid, verifyInput.isValid]);
+
   //5분 타이머
   const [remainingTime, setRemainingTime] = useState<number>(0); // 초 단위로 5분 설정
   const [minutes, setMinutes] = useState<number>(0);
@@ -87,20 +85,18 @@ export const BuyerSignup = () => {
             </Body1>
             <div className="input-wrapper">
               <Input
-                value={input}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setInput(e.target.value);
-                }}
+                value={idInput.value}
+                onChange={idInput.onChange}
                 width="33.5rem"
                 height="4.8rem"
                 isBoxSizing={true}
                 maxLength={23}
               />
               <VerifyButton
-                isActive={idValid}
+                isActive={idInput.isValid}
                 isSended={isSended}
                 onClick={() => {
-                  if (idValid === true) {
+                  if (idInput.isValid === true) {
                     setIsSended(true);
                     setVerifyText('재발송');
                     setRemainingTime(5 * 60);
@@ -124,10 +120,8 @@ export const BuyerSignup = () => {
                   인증번호 입력
                 </Body1>
                 <Input
-                  value={verifyInput}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setVerifyInput(e.target.value);
-                  }}
+                  value={verifyInput.value}
+                  onChange={verifyInput.onChange}
                   width="33.5rem"
                   height="4.8rem"
                   isBoxSizing={true}
@@ -143,22 +137,19 @@ export const BuyerSignup = () => {
             </>
           ) : null}
         </div>
-        {/* <div className="next-button"> */}
         <Button
           text="다음"
           width="33.5rem"
           height="5.2rem"
           isActive={valid}
           onClick={() => {
-            navigate('/signup/setting');
+            navigate('/signup/setting', { state: { valid } });
           }}
         />
-        {/* </div> */}
       </div>
     </Wrapper>
   );
 };
-// height: calc(var(--vh, 1vh) * 100);
 
 const Wrapper = styled.div`
   .body-wrapper {

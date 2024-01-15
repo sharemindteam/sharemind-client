@@ -1,6 +1,6 @@
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import Input from 'components/Common/Input';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4 } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
@@ -10,7 +10,10 @@ import { useInput } from 'hooks/useInput';
 export const BuyerSignupInfo = () => {
   //첫렌더 시 예외처리
   const isInitialRender = useRef(true);
+  const location = useLocation();
   const navigate = useNavigate();
+  //params로 넘어온 이전 페이지 valid 값, null이면 예외처리
+  const prevValid = location.state;
   //pw input temp
   const email = useInput('');
   const phoneNumber = useInput('');
@@ -49,70 +52,88 @@ export const BuyerSignupInfo = () => {
       phoneNumber.setIsValid(false);
     }
   }, [email.value, phoneNumber.value]);
-  return (
-    <Wrapper>
-      <HeaderWrapper>
-        <BackIcon
-          onClick={() => {
-            navigate('/login');
-          }}
-        />
-        <Heading color={Grey1}>회원가입</Heading>
-      </HeaderWrapper>
-      <div className="body-wrapper">
-        <div>
-          <div className="id-wrapper">
-            <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
-              복구 이메일
-            </Body1>
-            <div className="input-wrapper">
+  if (prevValid === null) {
+    return (
+      <Wrapper>
+        <HeaderWrapper>
+          <BackIcon
+            onClick={() => {
+              navigate('/signup');
+            }}
+          />
+          <Heading color={Grey1}>회원가입</Heading>
+        </HeaderWrapper>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Body1>잘못된 접근입니다.</Body1>
+        </div>
+      </Wrapper>
+    );
+  } else {
+    return (
+      <Wrapper>
+        <HeaderWrapper>
+          <BackIcon
+            onClick={() => {
+              navigate('/login');
+            }}
+          />
+          <Heading color={Grey1}>회원가입</Heading>
+        </HeaderWrapper>
+        <div className="body-wrapper">
+          <div>
+            <div className="id-wrapper">
+              <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
+                복구 이메일
+              </Body1>
+              <div className="input-wrapper">
+                <Input
+                  isError={errorState}
+                  value={email.value}
+                  onChange={email.onChange}
+                  width="33.5rem"
+                  height="4.8rem"
+                  isBoxSizing={true}
+                />
+              </div>
+            </div>
+            <div className="caption">
+              {errorState ? (
+                <Caption2 color={ErrorColor}>중복된 이메일입니다.</Caption2>
+              ) : (
+                <Caption2 color={Grey4}>
+                  아이디 이메일 분실 시 복구 이메일로 아이디가 발송됩니다.
+                  <br />
+                  로그인에 사용하는 이메일 주소와 다른 이메일 주소를 선택하세요.
+                </Caption2>
+              )}
+            </div>
+
+            <div className="id-wrapper">
+              <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
+                전화번호
+              </Body1>
               <Input
-                isError={errorState}
-                value={email.value}
-                onChange={email.onChange}
+                value={phoneNumber.value}
+                onChange={phoneNumber.onChange}
                 width="33.5rem"
                 height="4.8rem"
                 isBoxSizing={true}
               />
             </div>
           </div>
-          <div className="caption">
-            {errorState ? (
-              <Caption2 color={ErrorColor}>중복된 이메일입니다.</Caption2>
-            ) : (
-              <Caption2 color={Grey4}>
-                아이디 이메일 분실 시 복구 이메일로 아이디가 발송됩니다.
-                <br />
-                로그인에 사용하는 이메일 주소와 다른 이메일 주소를 선택하세요.
-              </Caption2>
-            )}
-          </div>
-
-          <div className="id-wrapper">
-            <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
-              전화번호
-            </Body1>
-            <Input
-              value={phoneNumber.value}
-              onChange={phoneNumber.onChange}
-              width="33.5rem"
-              height="4.8rem"
-              isBoxSizing={true}
-            />
-          </div>
+          <Button
+            text="다음"
+            width="33.5rem"
+            height="5.2rem"
+            isActive={valid}
+            onClick={() => {
+              navigate('/signup/nav');
+            }}
+          />
         </div>
-        <Button
-          text="다음"
-          width="33.5rem"
-          height="5.2rem"
-          isActive={valid}
-          onClick={() => {
-            navigate('/signup/nav');
-          }}
-        />
-      </div>
-    </Wrapper>
-  );
+      </Wrapper>
+    );
+  }
 };
 const Wrapper = styled.div`
   .body-wrapper {
