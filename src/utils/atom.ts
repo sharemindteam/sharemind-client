@@ -65,6 +65,7 @@ export const isPaymentModalOpenState = atom({
   key: 'isPaymentModalOpenState',
   default: false,
 });
+
 //상담사 리스트 최근순 인기순 별점순 modal open toggle
 export const isSortModalOpenState = atom({
   key: 'isSortModalOpenState',

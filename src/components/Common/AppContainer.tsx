@@ -21,7 +21,8 @@ export const AppContainer = ({ children }: AppContainerProps) => {
       pathname === '/seller/mypage' ||
       pathname === '/buyer/mypage' ||
       pathname === '/seller/mypage/modifyProfile' ||
-      reviewPageRegex.test(pathname)
+      reviewPageRegex.test(pathname) ||
+      pathname === '/buyer/paymentDetail'
     ) {
       setIsGray(true);
     } else {

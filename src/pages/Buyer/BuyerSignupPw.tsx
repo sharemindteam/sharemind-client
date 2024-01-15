@@ -86,7 +86,7 @@ export const BuyerSignupPw = () => {
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate('/signup');
+              navigate('/login');
             }}
           />
           <Heading color={Grey1}>회원가입</Heading>

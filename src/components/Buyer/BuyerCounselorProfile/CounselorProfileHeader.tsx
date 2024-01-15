@@ -12,7 +12,7 @@ export const CounselorProfileHeader = () => {
           navigate(-1);
         }}
       />
-      <Heading color={Grey1}>상담사 프로필</Heading>
+      <Heading color={Grey1}>마인더 프로필</Heading>
     </Wrapper>
   );
 };

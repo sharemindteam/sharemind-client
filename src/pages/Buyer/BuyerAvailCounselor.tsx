@@ -29,7 +29,7 @@ export const BuyerAvailCounselor = () => {
             navigate(-1);
           }}
         />
-        <Heading color={Grey1}>들을 준비가 된 상담사들</Heading>
+        <Heading color={Grey1}>들을 준비가 된 마인더들</Heading>
       </HeaderWrapper>
       <div className="select">
         <div
