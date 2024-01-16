@@ -189,7 +189,7 @@ const Wrapper = styled.div`
     width: 89.33%;
     justify-content: flex-end;
     margin-top: 0.4rem;
-    margin-bottom: 7rem;
+    margin-bottom: 3rem;
   }
 `;
 const InfoCard = styled.div`
@@ -240,7 +240,7 @@ const EmptyRateIcon = styled(EmptyRate)`
 `;
 const Textarea = styled.textarea`
   width: 89.33%;
-  height: 18.9rem;
+  height: 12.9rem;
   padding: 1.6rem;
   box-sizing: border-box;
   border-radius: 1.2rem;

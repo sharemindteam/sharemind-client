@@ -36,6 +36,7 @@ import { BuyerLetter } from 'pages/Buyer/BuyerLetter';
 import { BuyerLetterWrite } from 'pages/Buyer/BuyerLetterWrite';
 import { BuyerConsultRequest } from 'pages/Buyer/BuyerConsultRequest';
 import { BuyerPaymentDetail } from 'pages/Buyer/BuyerPaymentDetail';
+import { BuyerPaymentComplete } from 'pages/Buyer/BuyerPaymentComplete';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -70,6 +71,7 @@ const Router = () => {
       <Route path="/buyer/search/result" element={<BuyerSearchResult />} />
       <Route path="/buyer/consultRequest" element={<BuyerConsultRequest />} />
       <Route path="/buyer/paymentDetail" element={<BuyerPaymentDetail />} />
+      <Route path="/buyer/paymentComplete" element={<BuyerPaymentComplete />} />
       <Route path="/buyer/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/buyer/mypage" element={<BuyerMypage />} />
       <Route path="/buyer/reviewManage" element={<BuyerReviewManage />} />

@@ -19,7 +19,7 @@ export const BuyerLogin = () => {
       password: pwInput,
     };
     const response = await postLogin(body);
-    console.log(response);
+    console.log(response, emailInput, pwInput);
   };
   return (
     <Wrapper>

@@ -208,6 +208,33 @@ export const BuyerPaymentDetail = () => {
                 </Body3>
               </div>
             </div>
+            <div className="service-info-line-wrapper">
+              <Heart />
+              <div className="text-wrapper">
+                <Body3 color={Grey3}>
+                  상담이 시작되면 취소 및 환불이 제한됩니다. 이미 시작된 상담의
+                  환불처리의 경우 신고하기를 통해 분쟁접수를 해주시기 바랍니다.
+                </Body3>
+              </div>
+            </div>
+            <div className="service-info-line-wrapper">
+              <Heart />
+              <div className="text-wrapper">
+                <Body3 color={Grey3}>
+                  상담을 마치고 24시간 이내 판매자가 상담완료를 누르지 않으면
+                  거래가 자동 완료됩니다.
+                </Body3>
+              </div>
+            </div>
+            <div className="service-info-line-wrapper">
+              <Heart />
+              <div className="text-wrapper">
+                <Body3 color={Grey3}>
+                  상담 완료 후 7일간 거래 확정을 하지 않으면 자동 거래
+                  확정됩니다.
+                </Body3>
+              </div>
+            </div>
           </div>
         </Box>
       </div>
