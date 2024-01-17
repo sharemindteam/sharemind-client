@@ -12,7 +12,12 @@ export const getInstance = async (url: string, params?: any, header?: any) => {
     return error;
   }
 };
-export const postInstance = async (url: string, body: any, params?: any) => {
+export const postInstance = async (
+  url: string,
+  body: any,
+  params?: any,
+  headers?: any,
+) => {
   try {
     const data = await instance.post(url, body, params);
     return data;
@@ -20,7 +25,12 @@ export const postInstance = async (url: string, body: any, params?: any) => {
     return error;
   }
 };
-export const putInstance = async (url: string, body: any, params: any) => {
+export const putInstance = async (
+  url: string,
+  body: any,
+  params: any,
+  headers?: any,
+) => {
   try {
     const data = await instance.put(url, body, params);
     return data;
@@ -29,7 +39,12 @@ export const putInstance = async (url: string, body: any, params: any) => {
   }
 };
 
-export const patchInstance = async (url: string, body: any, params: any) => {
+export const patchInstance = async (
+  url: string,
+  body: any,
+  params: any,
+  headers?: any,
+) => {
   try {
     const data = await instance.patch(url, body, params);
     return data;
@@ -38,7 +53,7 @@ export const patchInstance = async (url: string, body: any, params: any) => {
   }
 };
 
-export const deleteInstance = async (url: string) => {
+export const deleteInstance = async (url: string, headers?: any) => {
   try {
     const data = await instance.delete(url);
     return data;
