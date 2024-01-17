@@ -4,7 +4,7 @@ export const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
-export const getInstance = async (url: string, params?: any, header?: any) => {
+export const getInstance = async (url: string, params?: any) => {
   try {
     const data = await instance.get(url, params);
     return data;
@@ -12,12 +12,7 @@ export const getInstance = async (url: string, params?: any, header?: any) => {
     return error;
   }
 };
-export const postInstance = async (
-  url: string,
-  body: any,
-  params?: any,
-  headers?: any,
-) => {
+export const postInstance = async (url: string, body: any, params?: any) => {
   try {
     const data = await instance.post(url, body, params);
     return data;
@@ -25,12 +20,7 @@ export const postInstance = async (
     return error;
   }
 };
-export const putInstance = async (
-  url: string,
-  body: any,
-  params: any,
-  headers?: any,
-) => {
+export const putInstance = async (url: string, body: any, params: any) => {
   try {
     const data = await instance.put(url, body, params);
     return data;
@@ -39,12 +29,7 @@ export const putInstance = async (
   }
 };
 
-export const patchInstance = async (
-  url: string,
-  body: any,
-  params: any,
-  headers?: any,
-) => {
+export const patchInstance = async (url: string, body: any, params: any) => {
   try {
     const data = await instance.patch(url, body, params);
     return data;
@@ -53,7 +38,7 @@ export const patchInstance = async (
   }
 };
 
-export const deleteInstance = async (url: string, headers?: any) => {
+export const deleteInstance = async (url: string) => {
   try {
     const data = await instance.delete(url);
     return data;
