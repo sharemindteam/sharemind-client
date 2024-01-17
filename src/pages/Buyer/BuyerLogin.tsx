@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/Common/Button';
 import { postLogin } from 'api/post';
 import { useInput } from 'hooks/useInput';
+import { setCookie } from 'utils/cookie';
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
@@ -19,10 +20,13 @@ export const BuyerLogin = () => {
       password: pwInput.value,
     };
     try {
-      const response = await postLogin(body);
-      console.log(response, emailInput, pwInput);
+      const response: any = await postLogin(body);
+      const { accessToken, refreshToken } = response.data;
+
+      setCookie('refreshToken', refreshToken, { path: '/' });
+      navigate('/buyer');
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
   return (
