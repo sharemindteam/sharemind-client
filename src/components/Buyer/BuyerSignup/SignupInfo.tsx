@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4 } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { UseInputResult } from 'hooks/useInput';
 import { postSingup } from 'api/post';
