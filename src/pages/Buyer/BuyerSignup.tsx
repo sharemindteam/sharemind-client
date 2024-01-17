@@ -25,6 +25,7 @@ export const BuyerSignup = () => {
   } else if (signupState === 1) {
     return <SignupPw pw={pw} setSignupState={setSignupState} />;
   } else if (signupState === 2) {
+    //SignupInfo 컴포넌트 내부에서 회원가입 api call, navigate
     return (
       <SignupInfo
         idInput={idInput}
