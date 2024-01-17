@@ -5,7 +5,7 @@ import {
 } from 'utils/isIncludeSpecialLetter';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 
-type UseInputResult = {
+export type UseInputResult = {
   value: string;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

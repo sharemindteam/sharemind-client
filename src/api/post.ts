@@ -11,3 +11,7 @@ export const postEmails = async (body: any) =>
 //인증번호 확인
 export const postEmailsCode = async (body: any) =>
   await postInstance('/emails/code', body);
+
+//인증번호 확인
+export const postSingup = async (body: any) =>
+  await postInstance('/auth/signUp', body);

@@ -3,21 +3,22 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Button } from 'components/Common/Button';
-import { useInput } from 'hooks/useInput';
+import { UseInputResult, useInput } from 'hooks/useInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 import PwInput from 'components/Buyer/Common/PwInput';
-export const BuyerSignupPw = () => {
+interface SignupPwProps {
+  pw: UseInputResult;
+  setSignupState: Dispatch<SetStateAction<number>>;
+}
+export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
   //첫렌더 시 예외처리
   const isInitialRender = useRef(true);
-  const location = useLocation();
   const navigate = useNavigate();
   //params로 넘어온 이전 페이지 valid 값, null이면 예외처리
-  const prevValid = location.state;
-  //pw input temp
-  const pw = useInput('');
+  //pw check temp
   const pwCheck = useInput('');
   //caption color
   const [typeColor, setTypeColor] = useState<string>(Grey4);
@@ -80,90 +81,73 @@ export const BuyerSignupPw = () => {
       pwCheck.setIsValid(false);
     }
   }, [pw.value, pwCheck.value]);
-  if (prevValid === null) {
-    return (
-      <Wrapper>
-        <HeaderWrapper>
-          <BackIcon
-            onClick={() => {
-              navigate('/login');
-            }}
-          />
-          <Heading color={Grey1}>회원가입</Heading>
-        </HeaderWrapper>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Body1>잘못된 접근입니다.</Body1>
-        </div>
-      </Wrapper>
-    );
-  } else {
-    return (
-      <Wrapper>
-        <HeaderWrapper>
-          <BackIcon
-            onClick={() => {
-              navigate('/signup');
-            }}
-          />
-          <Heading color={Grey1}>회원가입</Heading>
-        </HeaderWrapper>
-        <div className="body-wrapper">
-          <div>
-            <div className="id-wrapper">
-              <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
-                비밀번호
-              </Body1>
-              <PwInput
-                value={pw.value}
-                onChange={pw.onChange}
-                width="33.5rem"
-                height="4.8rem"
-                isBoxSizing={true}
-                textIndent="1rem"
-              />
-            </div>
-            <div className="caption">
-              <Caption2 color={typeColor}>
-                영문, 숫자, 특수문자 중 2종 이상 조합
-              </Caption2>
-              <SignupValidIcon type={typeState} />
-              <Caption2 color={lengthColor} margin="0 0 0 1.6rem">
-                10자 이상
-              </Caption2>
-              <SignupValidIcon type={lengthState} />
-            </div>
 
-            <div className="id-wrapper">
-              <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
-                비밀번호 확인
-              </Body1>
-              <PwInput
-                value={pwCheck.value}
-                onChange={pwCheck.onChange}
-                width="33.5rem"
-                height="4.8rem"
-                isBoxSizing={true}
-                textIndent="1rem"
-              />
-            </div>
-            <div className="caption">
-              <Caption2 color={correctColor}>비밀번호 일치</Caption2>
-              <SignupValidIcon type={correctState} />
-            </div>
+  return (
+    <Wrapper>
+      <HeaderWrapper>
+        <BackIcon
+          onClick={() => {
+            navigate('/signup');
+          }}
+        />
+        <Heading color={Grey1}>회원가입</Heading>
+      </HeaderWrapper>
+      <div className="body-wrapper">
+        <div>
+          <div className="id-wrapper">
+            <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
+              비밀번호
+            </Body1>
+            <PwInput
+              value={pw.value}
+              onChange={pw.onChange}
+              width="33.5rem"
+              height="4.8rem"
+              isBoxSizing={true}
+              textIndent="1rem"
+            />
           </div>
-          <Button
-            text="다음"
-            width="33.5rem"
-            height="5.2rem"
-            isActive={valid}
-            onClick={() => {
-              navigate('/signup/info', { state: { valid } });
-            }}
-          />
+          <div className="caption">
+            <Caption2 color={typeColor}>
+              영문, 숫자, 특수문자 중 2종 이상 조합
+            </Caption2>
+            <SignupValidIcon type={typeState} />
+            <Caption2 color={lengthColor} margin="0 0 0 1.6rem">
+              10자 이상
+            </Caption2>
+            <SignupValidIcon type={lengthState} />
+          </div>
+
+          <div className="id-wrapper">
+            <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
+              비밀번호 확인
+            </Body1>
+            <PwInput
+              value={pwCheck.value}
+              onChange={pwCheck.onChange}
+              width="33.5rem"
+              height="4.8rem"
+              isBoxSizing={true}
+              textIndent="1rem"
+            />
+          </div>
+          <div className="caption">
+            <Caption2 color={correctColor}>비밀번호 일치</Caption2>
+            <SignupValidIcon type={correctState} />
+          </div>
         </div>
-      </Wrapper>
-    );
-  }
+        <Button
+          text="다음"
+          width="33.5rem"
+          height="5.2rem"
+          isActive={valid}
+          onClick={() => {
+            setSignupState(2);
+          }}
+        />
+      </div>
+    </Wrapper>
+  );
 };
 const Wrapper = styled.div`
   .body-wrapper {
