@@ -53,6 +53,7 @@ export const SellerVerifyQuiz = () => {
               </ChoiceItem>
             ))}
           </ChoiceList>
+          <Space height="8rem" />
           <VerifyQuizButton
             quizLevel={quizLevel}
             setQuizLevel={setQuizLevel}
