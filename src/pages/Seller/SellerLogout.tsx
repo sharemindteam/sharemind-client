@@ -6,14 +6,14 @@ import { Green, Grey1, LightGreen } from 'styles/color';
 import { Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
 
-export const BuyerLogout = () => {
+export const SellerLogout = () => {
   const navigate = useNavigate();
   return (
     <Wrapper>
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/mypage');
+            navigate('/seller/setting');
           }}
         />
         <Heading color={Grey1}>로그아웃</Heading>
@@ -29,7 +29,7 @@ export const BuyerLogout = () => {
             width="16rem"
             height="5.2rem"
             onClick={() => {
-              navigate('/buyer/mypage');
+              navigate('/seller/setting');
             }}
           />
           <Button
@@ -49,10 +49,9 @@ export const BuyerLogout = () => {
 };
 const Wrapper = styled.div`
   .body-wrapper {
-    height: calc(var(--vh, 1vh) * 100 - 9.3rem);
+    height: calc(var(--vh, 1vh) * 100 - 11.5rem);
     margin-top: 2.8rem;
     display: flex;
-    position: relative;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
@@ -67,9 +66,6 @@ const Wrapper = styled.div`
   }
   .button-row {
     display: flex;
-    position: absolute;
-    bottom: 0;
     gap: 1.5rem;
-    margin-bottom: 1.9rem;
   }
 `;

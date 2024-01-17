@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import axios from 'axios';
 import { JWT_EXPIRY_TIME } from 'utils/constant';
 import { getCookie, setCookie } from 'utils/cookie';
 import { postReissue } from 'api/post';

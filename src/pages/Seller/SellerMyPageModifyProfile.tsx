@@ -1,3 +1,4 @@
+import BankSelectModal from 'components/Seller/Common/BankSelectModal';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
 import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
@@ -24,6 +25,8 @@ export const SellerMypageModifyProfile = () => {
   const [selectStyle, setSelectStyle] = useState<string>('');
   // 상담 방식 enum List
   const [selectType, setSelectType] = useState<string[]>([]);
+  // 은행
+  const [selectBankType, setSelectBankType] = useState<string>('');
 
   // 모달 띄워주는 여부
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState<boolean>(
@@ -53,6 +56,7 @@ export const SellerMypageModifyProfile = () => {
           selectCategory={selectCategory}
           selectStyle={selectStyle}
           selectType={selectType}
+          selectBankType={selectBankType}
         />
       )}
 
@@ -77,6 +81,9 @@ export const SellerMypageModifyProfile = () => {
         <TypeModal selectType={selectType} setSelectType={setSelectType} />
       )}
       {isUpdateModalOpen && <UpdatePopup />}
+      {isBankModalOpen && (
+        <BankSelectModal setSelectBankType={setSelectBankType} />
+      )}
     </>
   );
 };

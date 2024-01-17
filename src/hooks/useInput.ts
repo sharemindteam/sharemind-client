@@ -23,6 +23,7 @@ export type UseInputResult = {
   setIsError: Dispatch<SetStateAction<boolean>>;
   handleCheckSpecialLetter: any;
   handleCheckOneLiner: any;
+  handleCheckExperience: any;
   setValue: Dispatch<SetStateAction<string>>;
   typeValid: boolean;
   setTypeValid: Dispatch<SetStateAction<boolean>>;
@@ -39,11 +40,9 @@ export const useInput = (initialValue: string) => {
   const [lengthValid, setLengthValid] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
-
   const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPrice = e.target.value
       .replace(/[^0-9]/g, '')
@@ -71,6 +70,19 @@ export const useInput = (initialValue: string) => {
       setIsError(false);
     }
   };
+  const handleCheckExperience = (str: string) => {
+    if (isIncludeSpecialLetterOneLiner(str) || str.length === 0) {
+      setIsValid(false);
+      setIsError(true);
+      if (str.includes('\n')) {
+        setIsValid(true);
+        setIsError(false);
+      }
+    } else {
+      setIsValid(true);
+      setIsError(false);
+    }
+  };
 
   return {
     value,
@@ -84,6 +96,7 @@ export const useInput = (initialValue: string) => {
     onChangePrice,
     handleCheckSpecialLetter,
     handleCheckOneLiner,
+    handleCheckExperience,
     setValue,
     typeValid,
     setTypeValid,
