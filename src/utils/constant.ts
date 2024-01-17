@@ -57,3 +57,5 @@ export const quizChoiceList = [
     '내담자의 상담 신청 후 24시간 내 응답을 하지 않을 경우 상담이 자동으로 취소된다',
   ],
 ];
+//jwt 만료 시간
+export const JWT_EXPIRY_TIME = 1 * 3600 * 1000; // (1시간 밀리 초로 표현)
