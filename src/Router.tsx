@@ -40,7 +40,7 @@ import SellerChat from 'pages/Seller/SellerChat';
 import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
-
+// 판매자, 구매자 라우팅
 const Router = () => {
   const navigate = useNavigate();
   return (
