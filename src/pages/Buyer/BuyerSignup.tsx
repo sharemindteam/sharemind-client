@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useInput } from 'hooks/useInput';
+import { postEmails, postEmailsCode } from 'api/post';
 
 export const BuyerSignup = () => {
   const navigate = useNavigate();
@@ -22,8 +23,6 @@ export const BuyerSignup = () => {
   //verify button text
   const [verifyText, setVerifyText] = useState<string>('인증 요청');
   useEffect(() => {
-    //TODO:(아이디) 추후 valid 체크 후 true처리
-    //현재는 입력만 들어오면 valid true
     if (idInput.value.trim() !== '') {
       if (idInput.isValid === false) {
         idInput.setIsValid(true);
@@ -40,6 +39,24 @@ export const BuyerSignup = () => {
       verifyInput.setIsValid(false);
     }
   }, [idInput.value, verifyInput.value]);
+  useEffect(() => {
+    if (idInput.value.trim() !== '') {
+      if (idInput.isValid === false) {
+        idInput.setIsValid(true);
+      }
+    } else {
+      idInput.setIsValid(false);
+    }
+    //TODO:(인증번호) 추후 valid 체크 후 true처리
+    if (verifyInput.value.trim() !== '') {
+      if (verifyInput.isValid === false) {
+        verifyInput.setIsValid(true);
+      }
+    } else {
+      verifyInput.setIsValid(false);
+    }
+  }, [idInput.value, verifyInput.value]);
+
   // 다음 button valid 체크
   useEffect(() => {
     if (idInput.isValid && verifyInput.isValid) {
@@ -48,7 +65,32 @@ export const BuyerSignup = () => {
       setValid(false);
     }
   }, [idInput.isValid, verifyInput.isValid]);
-
+  const handleVerifyClick = async () => {
+    const body = { email: idInput.value };
+    try {
+      const res: any = await postEmails(body);
+      if (res.status === 200) {
+        setIsSended(true);
+        setVerifyText('재발송');
+        setRemainingTime(5 * 60);
+      }
+    } catch (ex) {
+      alert('이메일 인증 과정에서 오류가 발생했습니다.');
+    }
+  };
+  const handleNextClick = async () => {
+    const body = { email: idInput.value, code: verifyInput.value };
+    try {
+      const res: any = await postEmailsCode(body);
+      if (res.status === 200) {
+        navigate('/signup/setting', { state: { valid, email: idInput.value } });
+      } else if (res.response.status === 400) {
+        alert('틀림');
+      }
+    } catch (ex) {
+      alert('인증 번호 확인 과정에서 오류가 발생했습니다.');
+    }
+  };
   //5분 타이머
   const [remainingTime, setRemainingTime] = useState<number>(0); // 초 단위로 5분 설정
   const [minutes, setMinutes] = useState<number>(0);
@@ -91,17 +133,12 @@ export const BuyerSignup = () => {
                 height="4.8rem"
                 isBoxSizing={true}
                 maxLength={23}
+                textIndent="1rem"
               />
               <VerifyButton
                 isActive={idInput.isValid}
                 isSended={isSended}
-                onClick={() => {
-                  if (idInput.isValid === true) {
-                    setIsSended(true);
-                    setVerifyText('재발송');
-                    setRemainingTime(5 * 60);
-                  }
-                }}
+                onClick={handleVerifyClick}
               >
                 <Button2 color={White}>{verifyText}</Button2>
               </VerifyButton>
@@ -125,6 +162,7 @@ export const BuyerSignup = () => {
                   width="33.5rem"
                   height="4.8rem"
                   isBoxSizing={true}
+                  textIndent="1rem"
                 />
               </div>
               <div className="caption">
@@ -142,9 +180,7 @@ export const BuyerSignup = () => {
           width="33.5rem"
           height="5.2rem"
           isActive={valid}
-          onClick={() => {
-            navigate('/signup/setting', { state: { valid } });
-          }}
+          onClick={handleNextClick}
         />
       </div>
     </Wrapper>

@@ -15,11 +15,15 @@ export const BuyerLogin = () => {
     //TODO: submit handle
     //TODO: invalid 입력 예외처리
     const body = {
-      email: emailInput,
-      password: pwInput,
+      email: emailInput.value,
+      password: pwInput.value,
     };
-    const response = await postLogin(body);
-    console.log(response, emailInput, pwInput);
+    try {
+      const response = await postLogin(body);
+      console.log(response, emailInput, pwInput);
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <Wrapper>

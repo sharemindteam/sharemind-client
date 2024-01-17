@@ -10,6 +10,7 @@
     "axios": "^1.6.2",
     "cra-template-typescript": "1.2.0",
     "react": "^18.2.0",
+    "react-cookie": "^7.0.1",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",
