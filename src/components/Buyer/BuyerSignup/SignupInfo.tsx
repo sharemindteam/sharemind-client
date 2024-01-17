@@ -4,16 +4,27 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4 } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
-import { useInput } from 'hooks/useInput';
-export const BuyerSignupInfo = () => {
+import { UseInputResult } from 'hooks/useInput';
+import { postSingup } from 'api/post';
+interface SignupInfoProps {
+  idInput: UseInputResult;
+  pw: UseInputResult;
+  email: UseInputResult;
+  phoneNumber: UseInputResult;
+  setSignupState: Dispatch<SetStateAction<number>>;
+}
+export const SignupInfo = ({
+  idInput,
+  pw,
+  email,
+  phoneNumber,
+  setSignupState,
+}: SignupInfoProps) => {
   //첫렌더 시 예외처리
-  const isInitialRender = useRef(true);
+  //   const isInitialRender = useRef(true);
   const navigate = useNavigate();
-  //pw input temp
-  const email = useInput('');
-  const phoneNumber = useInput('');
   // emali error state
   //TODO 중복 체크 api로 중복 시 error
   const [errorState, setErrorState] = useState<boolean>(false);
@@ -30,13 +41,6 @@ export const BuyerSignupInfo = () => {
   }, [email.isValid, phoneNumber.isValid]);
 
   useEffect(() => {
-    // 첫 마운트 시에는 error 색상 안되게 처리
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
-    //TODO:(아이디) 추후 valid 체크 후 true처리
-    //현재는 입력만 들어오면 valid true
     if (email.value.trim() !== '') {
       email.setIsValid(true);
     } else {
@@ -49,6 +53,24 @@ export const BuyerSignupInfo = () => {
       phoneNumber.setIsValid(false);
     }
   }, [email.value, phoneNumber.value]);
+  const handleNextButton = async () => {
+    const body = {
+      email: idInput.value,
+      password: pw.value,
+      phoneNumber: phoneNumber.value,
+      recoveryEmail: email.value,
+    };
+    try {
+      const res: any = await postSingup(body);
+      if (res.status === 201) {
+        navigate('/signup/nav');
+      } else if (res.response.status === 400) {
+        alert('이미 가입된 이메일 주소입니다.');
+      }
+    } catch (ex) {
+      alert('인증 번호 확인 과정에서 오류가 발생했습니다.');
+    }
+  };
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -106,9 +128,7 @@ export const BuyerSignupInfo = () => {
           width="33.5rem"
           height="5.2rem"
           isActive={valid}
-          onClick={() => {
-            navigate('/signup/nav');
-          }}
+          onClick={handleNextButton}
         />
       </div>
     </Wrapper>

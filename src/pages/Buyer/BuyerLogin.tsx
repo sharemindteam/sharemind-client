@@ -4,12 +4,30 @@ import { Body1, Heading } from 'styles/font';
 import { Grey1, Grey3, Grey4, Grey6, White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/Common/Button';
+import { postLogin } from 'api/post';
+import { useInput } from 'hooks/useInput';
+import { setCookie } from 'utils/cookie';
 export const BuyerLogin = () => {
+  const emailInput = useInput('');
+  const pwInput = useInput('');
   const navigate = useNavigate();
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     //TODO: submit handle
     //TODO: invalid 입력 예외처리
+    const body = {
+      email: emailInput.value,
+      password: pwInput.value,
+    };
+    try {
+      const response: any = await postLogin(body);
+      const { accessToken, refreshToken } = response.data;
+
+      setCookie('refreshToken', refreshToken, { path: '/' });
+      navigate('/buyer');
+    } catch (e) {
+      alert(e);
+    }
   };
   return (
     <Wrapper>
@@ -27,14 +45,26 @@ export const BuyerLogin = () => {
             <Body1 color={Grey3} style={{ margin: '0.2rem 0' }}>
               아이디(이메일)
             </Body1>
-            <LoginInput />
+            <LoginInput
+              value={emailInput.value}
+              onChange={emailInput.onChange}
+            />
           </div>
           <div className="input-wrapper">
             <Body1 color={Grey3}>비밀번호</Body1>
-            <LoginInput type="password" />
+            <LoginInput
+              type="password"
+              value={pwInput.value}
+              onChange={pwInput.onChange}
+            />
           </div>
           <div className="submit-option">
-            <Button text="로그인" width="33.5rem" height="5.2rem" />
+            <Button
+              type="submit"
+              text="로그인"
+              width="33.5rem"
+              height="5.2rem"
+            />
             <div className="underline-option">
               <UnderlineText
                 onClick={() => {

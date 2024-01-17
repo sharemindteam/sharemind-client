@@ -4,10 +4,12 @@ import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { Button } from 'components/Common/Button';
 import { useEffect, useState } from 'react';
 import { White } from 'styles/color';
+import { useNavigate } from 'react-router-dom';
 interface CounselorFooterProps {
   isBookmarked: boolean;
 }
 export const CounselorFooter = ({ isBookmarked }: CounselorFooterProps) => {
+  const navigate = useNavigate();
   const [bookmarkToggle, setBookmarkToggle] = useState<boolean>();
   useEffect(() => {
     setBookmarkToggle(isBookmarked);
@@ -27,7 +29,12 @@ export const CounselorFooter = ({ isBookmarked }: CounselorFooterProps) => {
           }}
         />
       )}
-      <Button text="상담 신청하기" width="26rem" height="5.2rem" />
+      <Button
+        text="상담 신청하기"
+        width="26rem"
+        height="5.2rem"
+        onClick={() => navigate('/buyer/consultRequest')}
+      />
     </Wrapper>
   );
 };

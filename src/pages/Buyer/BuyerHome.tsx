@@ -6,6 +6,7 @@ import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
+import { getChats } from 'api/get';
 export const BuyerHome = () => {
   const navigate = useNavigate();
   return (
@@ -17,7 +18,6 @@ export const BuyerHome = () => {
         }}
       />
       <TabA1 isBuyer={true} initState={1} />
-
       <CartegorySearch />
       <ConsultInProgress />
       <ConsultInReady />

@@ -25,7 +25,7 @@ export const ConsultInReady = () => {
         }}
       >
         <NavConsult>
-          <Subtitle>들을 준비가 된 상담사들</Subtitle>
+          <Subtitle>들을 준비가 된 마인더들</Subtitle>
         </NavConsult>
         <MoreIcon />
       </div>

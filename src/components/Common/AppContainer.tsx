@@ -5,12 +5,14 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
 import { scrollLockState } from 'utils/atom';
+import { useTokenRefresh } from 'hooks/useTokenRefresh';
 interface AppContainerProps {
   children: React.ReactNode;
 }
 
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
+  useTokenRefresh();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
   var { pathname } = useLocation();
   const [isGray, setIsGray] = useState(false);
@@ -21,7 +23,8 @@ export const AppContainer = ({ children }: AppContainerProps) => {
       pathname === '/seller/mypage' ||
       pathname === '/buyer/mypage' ||
       pathname === '/seller/mypage/modifyProfile' ||
-      reviewPageRegex.test(pathname)
+      reviewPageRegex.test(pathname) ||
+      pathname === '/buyer/paymentDetail'
     ) {
       setIsGray(true);
     } else {
