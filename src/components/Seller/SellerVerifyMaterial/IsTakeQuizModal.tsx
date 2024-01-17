@@ -46,6 +46,12 @@ const IsTakeQuizModalBox = styled.div`
   justify-content: center;
   position: absolute;
   top: 22.3rem;
+  @media (max-width: 767px) {
+    width: 100vw;
+  }
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
 `;
 const ModalBox = styled.div`
   background: ${White};
