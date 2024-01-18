@@ -32,11 +32,9 @@ import { BuyerSavedCounselor } from 'pages/Buyer/BuyerSavedCounselor';
 import { BuyerPayment } from 'pages/Buyer/BuyerPayment';
 import { BuyerLetter } from 'pages/Buyer/BuyerLetter';
 import { BuyerLetterWrite } from 'pages/Buyer/BuyerLetterWrite';
-
 import { BuyerConsultRequest } from 'pages/Buyer/BuyerConsultRequest';
 import { BuyerPaymentDetail } from 'pages/Buyer/BuyerPaymentDetail';
 import { BuyerPaymentComplete } from 'pages/Buyer/BuyerPaymentComplete';
-
 import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
 import SellerRefundBankAccount from 'pages/Seller/SellerRefundBankAccount';
 import SellerChat from 'pages/Seller/SellerChat';
