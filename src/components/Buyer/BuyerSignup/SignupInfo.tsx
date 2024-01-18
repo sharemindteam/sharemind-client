@@ -30,6 +30,22 @@ export const SignupInfo = ({
   const [errorState, setErrorState] = useState<boolean>(false);
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
+  //phone number 포맷 함수
+  // 전화번호를 하이픈이 추가된 형태로 포맷하는 함수
+  const formatPhoneNumber = (input: string) => {
+    const cleaned = input.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+    const matchTemp = cleaned.match(/^(\d{3})(\d{4})$/);
+    const match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    } else if (matchTemp) {
+      return `${matchTemp[1]}-${matchTemp[2]}`;
+    }
+
+    return input;
+  };
+
   //valid check
   useEffect(() => {
     //세 case 모두 valid할 시 다음으로 넘어감
@@ -46,8 +62,12 @@ export const SignupInfo = ({
     } else {
       email.setIsValid(false);
     }
-    //TODO:(인증번호) 추후 valid 체크 후 true처리
-    if (phoneNumber.value.trim() !== '') {
+    // 전화번호 포맷팅 로직
+    const formattedPhoneNumber = formatPhoneNumber(phoneNumber.value);
+    phoneNumber.setValue(formattedPhoneNumber);
+
+    //TODO:number 하이픈 처리
+    if (formattedPhoneNumber.replace(/-/g, '').trim() !== '') {
       phoneNumber.setIsValid(true);
     } else {
       phoneNumber.setIsValid(false);

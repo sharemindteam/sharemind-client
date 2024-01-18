@@ -41,6 +41,7 @@ import SellerChat from 'pages/Seller/SellerChat';
 import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
+import { Admin } from 'pages/Common/Admin';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -67,6 +68,9 @@ const Router = () => {
           </>
         }
       />
+      {/* admin */}
+      <Route path="/admin" element={<Admin />} />
+      {/* minder(buyer) */}
       <Route path="/buyer" element={<BuyerHome />} />
       <Route path="/buyer/consult" element={<BuyerConsult />} />
       <Route path="/buyer/profile/:id" element={<BuyerCounselorProfile />} />
@@ -94,8 +98,6 @@ const Router = () => {
       <Route path="/setting/terminate" element={<BuyerTerminate />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />
 
-
-
       <Route path="/seller" element={<SellerHome />} />
       {/* 판매자 설정 */}
       <Route path="/seller/setting" element={<SellerAccountSetting />} />
@@ -109,7 +111,6 @@ const Router = () => {
       />
       <Route path="/seller/setting/terminate" element={<SellerTerminate />} />
       <Route path="/seller/setting/logout" element={<SellerLogout />} />
-
 
       {/* 판매자 : 상담 */}
       {/* 판매자 : 채팅 */}
