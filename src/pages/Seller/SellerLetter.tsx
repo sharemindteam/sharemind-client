@@ -20,14 +20,17 @@ export const SellerLetter = () => {
   const [tagActiveLevel, setTagActiveLevel] = useState<number>(0);
   // 신고하기 활성화 여부
   const [isActiveComplaint, setIsComplaint] = useState<boolean>(false);
-
   // 신고하기 팝업 뜨게할지 여부
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
+
   // 편지 ID
   // 모달 활성화 시 스크롤락
   const setScrollLock = useSetRecoilState(scrollLockState);
+  // 각 편지 레벨에 전달할 텍스트
+  const [text, setText] = useState<string>('');
+  const [date, setDate] = useState<string>('');
   const { consultid } = useParams();
   useEffect(() => {
     const fetchData = async () => {
@@ -64,10 +67,12 @@ export const SellerLetter = () => {
         isCompleted: true,
       };
       const res: any = await getLetterMessages({ params }, consultid);
+      setText(res.data.content);
+      setDate(res.data.updatedAt);
     };
     fetchMessages();
   }, [tagStatus]);
-  console.log(tagActiveLevel);
+
   return (
     <>
       <LetterHeader />
@@ -79,29 +84,29 @@ export const SellerLetter = () => {
       {/* 질문, 답장, 추가질문, 추가답장탭 */}
       {tagStatus === 0 ? (
         <LetterQuestionStep
-          isArrive={true}
-          time="2023년 10월 23일 오후 12시 34분"
-          questionMsg="일단 구현하기일단 구현하기일단 구현하기일단 구현일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기"
+          isArrive={tagActiveLevel >= 1}
+          time={date}
+          questionMsg={text}
         />
       ) : tagStatus === 1 ? (
         <LetterReplyStep
-          isArrive={false}
-          time="2023년 10월 23일 오후 12시 34분"
+          isArrive={tagActiveLevel >= 2}
+          time={date}
           deadline="2023년 12월 23일 00시"
-          replyMsg="으아아아아악"
+          replyMsg={text}
         />
       ) : tagStatus === 2 ? (
         <LetterBonusQuestionStep
-          isArrive={false}
-          time="2023년 10월 23일 오후 12시 34분"
-          questionMsg="일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기일단 구현하기"
+          isArrive={tagActiveLevel >= 3}
+          time={date}
+          questionMsg={text}
         />
       ) : (
         <LetterBonusReplyStep
-          isArrive={false}
-          time="2023년 10월 23일 오후 12시 34분"
+          isArrive={tagActiveLevel >= 4}
+          time={date}
           deadline="2023년 12월 23일 00시"
-          replyMsg="으아아아아악"
+          replyMsg={text}
         />
       )}
 
