@@ -34,3 +34,14 @@ type Review = {
   comment: string;
   time: string;
 };
+
+type ConsultInfoItem = {
+  letterId: number;
+  letterStatus: ConsultState;
+  opponentName:string;
+  updatedAt:string;
+  recentContent:string;
+}
+
+type ConsultInfoList = ConsultInfoItem[];
+

@@ -103,6 +103,7 @@ const OngoingCounsultBoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  cursor: pointer;
   position: relative;
   border-radius: 0.4rem;
   background-color: ${Grey6};

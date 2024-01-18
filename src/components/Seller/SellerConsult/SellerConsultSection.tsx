@@ -3,18 +3,20 @@ import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow
 import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { useNavigate } from 'react-router-dom';
+import { getLetters } from 'api/get';
 
 interface ConsultTypeProps {
   isActive: boolean;
 }
 
 export const SellerConsultSection = () => {
+  const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
   const [isLetterActive, setIsLetterActive] = useState<boolean>(true);
   const [isInclueCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
@@ -28,6 +30,21 @@ export const SellerConsultSection = () => {
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchConsultData = async () => {
+      const params = {
+        filter: !isInclueCompleteConsult,
+        isCustomer: false,
+        sortType: sortType === 0 ? 'latest' : 'unread',
+      };
+      const res: any = await getLetters({ params });
+      if (res.status === 200) {
+        const consultData: ConsultInfoList = res.data;
+        setConsultInfo(consultData);
+      }
+    };
+    fetchConsultData();
+  }, [isInclueCompleteConsult, isLetterActive, sortType]);
   return (
     <>
       <ConsultSortingMenu>
@@ -73,33 +90,21 @@ export const SellerConsultSection = () => {
       </ConsultSortingMenu>
 
       <ConsultBoxList>
-        <OngoingCounsultBox
-          consultStatus="상담 대기"
-          counselorName="연애상담마스터"
-          beforeMinutes="8분 전"
-          content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
-          newMessageCounts={1}
-          counselorprofileStatus={2}
-          onClick={() => {
-            navigate('/seller/letter/1');
-          }}
-        />{' '}
-        <OngoingCounsultBox
-          consultStatus="상담 중"
-          counselorName="연애상담마스터"
-          beforeMinutes="8분 전"
-          content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
-          newMessageCounts={1}
-          counselorprofileStatus={3}
-        />
-        <OngoingCounsultBox
-          consultStatus="상담 종료"
-          counselorName="연애상담마스터"
-          beforeMinutes="8분 전"
-          content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
-          newMessageCounts={0}
-          counselorprofileStatus={3}
-        />
+        {consultInfo?.map((item) => (
+          <OngoingCounsultBox
+            consultStatus={item.letterStatus}
+            counselorName={item.opponentName}
+            beforeMinutes={item.updatedAt}
+            content={item.recentContent}
+            key={item?.letterId}
+            counselorprofileStatus={2}
+            newMessageCounts={0}
+            onClick={() => {
+              navigate(`/seller/letter/${item?.letterId}`);
+            }}
+          />
+        ))}
+
         {isModalOpen ? (
           <>
             <BackDrop
