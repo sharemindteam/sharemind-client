@@ -88,9 +88,7 @@ function OngoingCounsultBox({
       ) : (
         ''
       )}
-      {newMessageCounts === 0 ? (
-        ''
-      ) : (
+      {newMessageCounts && (
         <NewMessageCounts>
           <Caption2 color={White}>{newMessageCounts}</Caption2>
         </NewMessageCounts>
