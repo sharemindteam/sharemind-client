@@ -20,7 +20,7 @@ export const getCounselorCategories = async (params: any, letterId: number) =>
 export const getDraftsLetter = async (
   params: any,
   letterId: string | undefined,
-) => await getInstance(`/api/v1/letterMessages/drafts/${letterId}`, params);
+) => await getInstance(`/letterMessages/drafts/${letterId}`, params);
 
 export const getLetterDeadline = async (letterId: string | undefined) =>
   await getInstance(`/letters/deadline/${letterId}`);

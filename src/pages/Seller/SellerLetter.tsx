@@ -1,4 +1,5 @@
 import {
+  getDraftsLetter,
   getLetterDeadline,
   getLetterMessages,
   getLetterRecentType,
@@ -41,6 +42,7 @@ export const SellerLetter = () => {
     const fetchData = async () => {
       const res: any = await getLetterRecentType(consultid);
       const res2: any = await getLetterDeadline(consultid);
+
       if (res.status === 200) {
         const { data } = res;
         if (data?.recentType === '질문') {
@@ -73,6 +75,17 @@ export const SellerLetter = () => {
             : 'second_reply',
         isCompleted: true,
       };
+      const params2 = {
+        messageType:
+          tagStatus === 0
+            ? 'first_question'
+            : tagStatus === 1
+            ? 'first_reply'
+            : tagStatus === 2
+            ? 'second_question'
+            : 'second_reply',
+      };
+
       const res: any = await getLetterMessages({ params }, consultid);
       setText(res.data.content);
       setDate(res.data.updatedAt);
