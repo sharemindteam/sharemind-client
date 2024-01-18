@@ -7,24 +7,29 @@ import { Button } from 'components/Common/Button';
 import { postLogin } from 'api/post';
 import { useInput } from 'hooks/useInput';
 import { setCookie } from 'utils/cookie';
+import { instance } from 'api/axios';
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    //TODO: submit handle
-    //TODO: invalid 입력 예외처리
+
     const body = {
       email: emailInput.value,
       password: pwInput.value,
     };
     try {
-      const response: any = await postLogin(body);
-      const { accessToken, refreshToken } = response.data;
-
-      setCookie('refreshToken', refreshToken, { path: '/' });
-      navigate('/buyer');
+      const res: any = await postLogin(body);
+      if (res.status === 200) {
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+          res.data;
+        // instance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
+        // setCookie('refreshToken', newRefreshToken, { path: '/' });
+        localStorage.setItem('accessToken', newAccessToken);
+        localStorage.setItem('refreshToken', newRefreshToken);
+        navigate('/buyer');
+      }
     } catch (e) {
       alert(e);
     }

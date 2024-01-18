@@ -12,7 +12,7 @@ interface AppContainerProps {
 
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
-  useTokenRefresh();
+  // useTokenRefresh();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
   var { pathname } = useLocation();
   const [isGray, setIsGray] = useState(false);
