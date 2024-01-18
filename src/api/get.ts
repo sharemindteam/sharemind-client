@@ -22,7 +22,7 @@ export const getLetterDeadline = async (params: any, letterId: number) =>
 
 //LetterMessage Controller
 
-export const getLetterMessages = async (params: any, letterId: number) =>
+export const getLetterMessages = async (params: any, letterId: string | undefined) =>
   await getInstance(`/letterMessages/${letterId}`, params);
 
 export const getLetterRecentType = async (letterId: string | undefined) =>

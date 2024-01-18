@@ -1,4 +1,4 @@
-import { getLetterRecentType } from 'api/get';
+import { getLetterMessages, getLetterRecentType } from 'api/get';
 import { LetterBonusQuestionStep } from 'components/Seller/SellerLetter/LetterBonusQuestionStep';
 import { LetterBonusReplyStep } from 'components/Seller/SellerLetter/LetterBonusReplyStep';
 import { LetterComplaintMenu } from 'components/Seller/SellerLetter/LetterComplaintMenu';
@@ -49,6 +49,24 @@ export const SellerLetter = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const params = {
+        messageType:
+          tagStatus === 0
+            ? 'first_question'
+            : tagStatus === 1
+            ? 'first_reply'
+            : tagStatus === 2
+            ? 'second_question'
+            : 'second_reply',
+        isCompleted: true,
+      };
+      const res: any = await getLetterMessages({ params }, consultid);
+    };
+    fetchMessages();
+  }, [tagStatus]);
   console.log(tagActiveLevel);
   return (
     <>
