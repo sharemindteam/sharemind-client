@@ -1,4 +1,8 @@
-import { getLetterMessages, getLetterRecentType } from 'api/get';
+import {
+  getLetterDeadline,
+  getLetterMessages,
+  getLetterRecentType,
+} from 'api/get';
 import { LetterBonusQuestionStep } from 'components/Seller/SellerLetter/LetterBonusQuestionStep';
 import { LetterBonusReplyStep } from 'components/Seller/SellerLetter/LetterBonusReplyStep';
 import { LetterComplaintMenu } from 'components/Seller/SellerLetter/LetterComplaintMenu';
@@ -31,10 +35,12 @@ export const SellerLetter = () => {
   // 각 편지 레벨에 전달할 텍스트
   const [text, setText] = useState<string>('');
   const [date, setDate] = useState<string>('');
+  const [deadline, setDeadLine] = useState<string>('');
   const { consultid } = useParams();
   useEffect(() => {
     const fetchData = async () => {
       const res: any = await getLetterRecentType(consultid);
+      const res2: any = await getLetterDeadline(consultid);
       if (res.status === 200) {
         const { data } = res;
         if (data?.recentType === '질문') {
@@ -48,6 +54,7 @@ export const SellerLetter = () => {
         } else {
           setTagActiveLevel(0);
         }
+        setDeadLine(res2?.data?.deadline);
       }
     };
     fetchData();
@@ -92,20 +99,21 @@ export const SellerLetter = () => {
         <LetterReplyStep
           isArrive={tagActiveLevel >= 2}
           time={date}
-          deadline="2023년 12월 23일 00시"
+          deadline={deadline}
           replyMsg={text}
         />
       ) : tagStatus === 2 ? (
         <LetterBonusQuestionStep
           isArrive={tagActiveLevel >= 3}
           time={date}
+          deadline={deadline}
           questionMsg={text}
         />
       ) : (
         <LetterBonusReplyStep
           isArrive={tagActiveLevel >= 4}
           time={date}
-          deadline="2023년 12월 23일 00시"
+          deadline={deadline}
           replyMsg={text}
         />
       )}

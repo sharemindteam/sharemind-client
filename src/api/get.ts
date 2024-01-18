@@ -17,13 +17,20 @@ export const getCustomerInfo = async (params: any, letterId: number) =>
 export const getCounselorCategories = async (params: any, letterId: number) =>
   await getInstance(`/letters/categories/${letterId}`, params);
 
-export const getLetterDeadline = async (params: any, letterId: number) =>
-  await getInstance(`/letterMessages/drafts/${letterId}`, params);
+export const getDraftsLetter = async (
+  params: any,
+  letterId: string | undefined,
+) => await getInstance(`/api/v1/letterMessages/drafts/${letterId}`, params);
+
+export const getLetterDeadline = async (letterId: string | undefined) =>
+  await getInstance(`/letters/deadline/${letterId}`);
 
 //LetterMessage Controller
 
-export const getLetterMessages = async (params: any, letterId: string | undefined) =>
-  await getInstance(`/letterMessages/${letterId}`, params);
+export const getLetterMessages = async (
+  params: any,
+  letterId: string | undefined,
+) => await getInstance(`/letterMessages/${letterId}`, params);
 
 export const getLetterRecentType = async (letterId: string | undefined) =>
   await getInstance(`/letterMessages/recent-type/${letterId}`);
