@@ -3,13 +3,13 @@ import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow
 import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { useNavigate } from 'react-router-dom';
-import { getLetters } from 'api/get';
+import { getChats, getLetters } from 'api/get';
 
 interface ConsultTypeProps {
   isActive: boolean;
@@ -20,31 +20,40 @@ export const SellerConsultSection = () => {
   const [isLetterActive, setIsLetterActive] = useState<boolean>(true);
   const [isInclueCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
-  //0 : 최신순 1:읽지 않은 순
-  // 바뀔 때마다 useEffect로 request
   const [sortType, setSortType] = useState<number>(0);
-  // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
-  //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchConsultData = async () => {
-      const params = {
-        filter: !isInclueCompleteConsult,
-        isCustomer: false,
-        sortType: sortType === 0 ? 'latest' : 'unread',
-      };
-      const res: any = await getLetters({ params });
-      if (res.status === 200) {
-        const consultData: ConsultInfoList = res.data;
-        setConsultInfo(consultData);
-      }
+
+  const fetchData = useCallback(async () => {
+    const params = {
+      filter: !isInclueCompleteConsult,
+      isCustomer: false,
+      sortType: sortType === 0 ? 'latest' : 'unread',
     };
-    fetchConsultData();
+
+    let res: any;
+    try {
+      res = isLetterActive
+        ? await getLetters({ params })
+        : await getChats({ params });
+      console.log(res);
+
+      if (res.status === 200) {
+        const data: ConsultInfoList = res.data;
+        setConsultInfo(data);
+      } else {
+        console.error('Failed to fetch data:', res.status, res.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while fetching data:', error);
+    }
   }, [isInclueCompleteConsult, isLetterActive, sortType]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   return (
     <>
       <ConsultSortingMenu>
@@ -92,15 +101,15 @@ export const SellerConsultSection = () => {
       <ConsultBoxList>
         {consultInfo?.map((item) => (
           <OngoingCounsultBox
-            consultStatus={item.letterStatus}
-            counselorName={item.opponentName}
-            beforeMinutes={item.updatedAt}
-            content={item.recentContent}
-            key={item?.letterId}
+            consultStatus={item?.status}
+            counselorName={item?.opponentNickname}
+            beforeMinutes={item?.latestMessageUpdatedAt}
+            content={item?.latestMessageContent}
+            key={item?.id}
             counselorprofileStatus={2}
             newMessageCounts={0}
             onClick={() => {
-              navigate(`/seller/letter/${item?.letterId}`);
+              navigate(`/seller/letter/${item?.id}`);
             }}
           />
         ))}

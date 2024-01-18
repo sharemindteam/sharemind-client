@@ -20,8 +20,8 @@ interface OngoingCounsultBoxProps {
   categoryStatus?: CartegoryState;
   consultStatus?: ConsultState;
   counselorName: string | undefined;
-  beforeMinutes: string | undefined;
-  content: string | undefined;
+  beforeMinutes: string | null;
+  content: string | null;
   newMessageCounts: number | undefined;
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
