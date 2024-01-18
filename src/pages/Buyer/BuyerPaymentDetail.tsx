@@ -19,7 +19,6 @@ export const BuyerPaymentDetail = () => {
       consultData.consultStyle,
     );
     const tagList = resultArray as CartegoryStateArray;
-    console.log(consultData.consultCategories);
     return (
       <Wrapper>
         <HeaderWrapper>

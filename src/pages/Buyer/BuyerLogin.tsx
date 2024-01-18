@@ -20,11 +20,16 @@ export const BuyerLogin = () => {
       password: pwInput.value,
     };
     try {
-      const response: any = await postLogin(body);
-      const { accessToken, refreshToken } = response.data;
-      instance.defaults.headers.common['Authorization'] = `${accessToken}`;
-      setCookie('refreshToken', refreshToken, { path: '/' });
-      navigate('/buyer');
+      const res: any = await postLogin(body);
+      if (res.status === 200) {
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+          res.data;
+        // instance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
+        // setCookie('refreshToken', newRefreshToken, { path: '/' });
+        localStorage.setItem('accessToken', newAccessToken);
+        localStorage.setItem('refreshToken', newRefreshToken);
+        navigate('/buyer');
+      }
     } catch (e) {
       alert(e);
     }
