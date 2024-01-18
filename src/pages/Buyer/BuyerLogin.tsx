@@ -7,14 +7,14 @@ import { Button } from 'components/Common/Button';
 import { postLogin } from 'api/post';
 import { useInput } from 'hooks/useInput';
 import { setCookie } from 'utils/cookie';
+import { instance } from 'api/axios';
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    //TODO: submit handle
-    //TODO: invalid 입력 예외처리
+
     const body = {
       email: emailInput.value,
       password: pwInput.value,
@@ -22,7 +22,7 @@ export const BuyerLogin = () => {
     try {
       const response: any = await postLogin(body);
       const { accessToken, refreshToken } = response.data;
-
+      instance.defaults.headers.common['Authorization'] = `${accessToken}`;
       setCookie('refreshToken', refreshToken, { path: '/' });
       navigate('/buyer');
     } catch (e) {
