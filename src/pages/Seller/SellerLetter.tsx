@@ -53,7 +53,11 @@ export const SellerLetter = () => {
   return (
     <>
       <LetterHeader />
-      <LetterTagListSection tagStatus={tagStatus} setTagStatus={setTagStatus} />
+      <LetterTagListSection
+        tagStatus={tagStatus}
+        setTagStatus={setTagStatus}
+        tagActiveLevel={tagActiveLevel}
+      />
       {/* 질문, 답장, 추가질문, 추가답장탭 */}
       {tagStatus === 0 ? (
         <LetterQuestionStep
