@@ -39,57 +39,45 @@ export const SellerLetter = () => {
   const [deadline, setDeadLine] = useState<string>('');
   const { consultid } = useParams();
   useEffect(() => {
-    const fetchData = async () => {
-      const res: any = await getLetterRecentType(consultid);
-      const res2: any = await getLetterDeadline(consultid);
-
-      if (res.status === 200) {
-        const { data } = res;
-        if (data?.recentType === '질문') {
-          setTagActiveLevel(1);
-        } else if (data?.recentType === '답장') {
-          setTagActiveLevel(2);
-        } else if (data?.recentType === '추가질문') {
-          setTagActiveLevel(3);
-        } else if (data?.recentType === '추가답변') {
-          setTagActiveLevel(4);
-        } else {
-          setTagActiveLevel(0);
-        }
-        setDeadLine(res2?.data?.deadline);
+    const fetchLetterInfo = async () => {
+      const recentTypeResponse: any = await getLetterRecentType(consultid);
+      const deadlineResponse: any = await getLetterDeadline(consultid);
+      if (recentTypeResponse.status === 200) {
+        const { data } = recentTypeResponse;
+        const levelMap = {
+          질문: 1,
+          답장: 2,
+          추가질문: 3,
+          추가답변: 4,
+        };
+        setTagActiveLevel(
+          levelMap[data?.recentType as keyof typeof levelMap] || 0,
+        );
+        setDeadLine(deadlineResponse?.data?.deadline);
       }
     };
-    fetchData();
+    fetchLetterInfo();
   }, []);
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const params = {
-        messageType:
-          tagStatus === 0
-            ? 'first_question'
-            : tagStatus === 1
-            ? 'first_reply'
-            : tagStatus === 2
-            ? 'second_question'
-            : 'second_reply',
-        isCompleted: true,
+      const messageTypeMap = {
+        0: 'first_question',
+        1: 'first_reply',
+        2: 'second_question',
+        3: 'second_reply',
       };
-      const params2 = {
-        messageType:
-          tagStatus === 0
-            ? 'first_question'
-            : tagStatus === 1
-            ? 'first_reply'
-            : tagStatus === 2
-            ? 'second_question'
-            : 'second_reply',
+
+      const params = {
+        messageType: messageTypeMap[tagStatus as keyof typeof messageTypeMap],
+        isCompleted: true,
       };
 
       const res: any = await getLetterMessages({ params }, consultid);
       setText(res.data.content);
       setDate(res.data.updatedAt);
     };
+
     fetchMessages();
   }, [tagStatus]);
 
