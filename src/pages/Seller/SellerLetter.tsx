@@ -1,3 +1,4 @@
+import { getLetterRecentType } from 'api/get';
 import { LetterBonusQuestionStep } from 'components/Seller/SellerLetter/LetterBonusQuestionStep';
 import { LetterBonusReplyStep } from 'components/Seller/SellerLetter/LetterBonusReplyStep';
 import { LetterComplaintMenu } from 'components/Seller/SellerLetter/LetterComplaintMenu';
@@ -5,7 +6,8 @@ import { LetterHeader } from 'components/Seller/SellerLetter/LetterHeader';
 import { LetterQuestionStep } from 'components/Seller/SellerLetter/LetterQuestionStep';
 import { LetterReplyStep } from 'components/Seller/SellerLetter/LetterReplyStep';
 import { LetterTagListSection } from 'components/Seller/SellerLetter/LetterTagListSection';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
@@ -13,7 +15,8 @@ import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 export const SellerLetter = () => {
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
   const [tagStatus, setTagStatus] = useState<number>(0);
-
+  // 태그 활성화되어있는 (검은색)
+  const [tagActiveLevel, setTagActiveLevel] = useState<number>(0);
   // 신고하기 활성화 여부
   const [isActiveComplaint, setIsComplaint] = useState<boolean>(false);
 
@@ -21,8 +24,17 @@ export const SellerLetter = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
-  //scorll 막기
+  // 편지 ID
+  // 모달 활성화 시 스크롤락
   const setScrollLock = useSetRecoilState(scrollLockState);
+  const { consultid } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getLetterRecentType(consultid);
+      console.log(res);
+    };
+    fetchData();
+  }, []);
   return (
     <>
       <LetterHeader />

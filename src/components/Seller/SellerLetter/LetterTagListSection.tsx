@@ -1,4 +1,5 @@
 import { TagLetterStatus } from 'components/Common/TagLetterStatus';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 interface LetterTagListSectionProps {
   tagStatus: number;
@@ -8,7 +9,9 @@ export const LetterTagListSection = ({
   tagStatus,
   setTagStatus,
 }: LetterTagListSectionProps) => {
-  
+  useEffect(()=>{
+    const fetchTagLevelData =()=>{}
+  },[])
   return (
     <LetterTagListSectionWrapper>
       <TagLetterStatus
