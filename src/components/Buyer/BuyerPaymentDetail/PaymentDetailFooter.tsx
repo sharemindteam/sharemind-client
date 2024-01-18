@@ -1,11 +1,20 @@
 import { Button } from 'components/Common/Button';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { White } from 'styles/color';
 
 export const PaymentDetailFooter = () => {
+  const navigate = useNavigate();
   return (
     <Wrapper>
-      <Button text="결제하기" width="33.5rem" height="5.2rem" />
+      <Button
+        text="결제하기"
+        width="33.5rem"
+        height="5.2rem"
+        onClick={() => {
+          navigate('/buyer/paymentComplete');
+        }}
+      />
     </Wrapper>
   );
 };
