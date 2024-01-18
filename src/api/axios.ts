@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getCookie } from 'utils/cookie';
 import { postReissue } from './post';
 // axios 인스턴스 생성
 export const instance = axios.create({
@@ -82,7 +81,7 @@ export const putInstance = async (url: string, body: any, params: any) => {
   }
 };
 
-export const patchInstance = async (url: string, body: any, params: any) => {
+export const patchInstance = async (url: string, body?: any, params?: any) => {
   try {
     const data = await instance.patch(url, body, params);
     return data;
