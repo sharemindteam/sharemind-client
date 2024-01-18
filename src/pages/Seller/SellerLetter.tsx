@@ -16,6 +16,7 @@ export const SellerLetter = () => {
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
   const [tagStatus, setTagStatus] = useState<number>(0);
   // 태그 활성화되어있는 (검은색)
+  // 태그 활성화레벨보다 작으면 검은색으로
   const [tagActiveLevel, setTagActiveLevel] = useState<number>(0);
   // 신고하기 활성화 여부
   const [isActiveComplaint, setIsComplaint] = useState<boolean>(false);
@@ -30,11 +31,25 @@ export const SellerLetter = () => {
   const { consultid } = useParams();
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getLetterRecentType(consultid);
-      console.log(res);
+      const res: any = await getLetterRecentType(consultid);
+      if (res.status === 200) {
+        const { data } = res;
+        if (data?.recentType === '질문') {
+          setTagActiveLevel(1);
+        } else if (data?.recentType === '답장') {
+          setTagActiveLevel(2);
+        } else if (data?.recentType === '추가질문') {
+          setTagActiveLevel(3);
+        } else if (data?.recentType === '추가답변') {
+          setTagActiveLevel(4);
+        } else {
+          setTagActiveLevel(0);
+        }
+      }
     };
     fetchData();
   }, []);
+  console.log(tagActiveLevel);
   return (
     <>
       <LetterHeader />
