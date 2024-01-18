@@ -22,7 +22,7 @@ interface OngoingCounsultBoxProps {
   counselorName: string | undefined;
   beforeMinutes: string | null;
   content: string | null;
-  newMessageCounts: number | undefined;
+  newMessageCounts: number | null;
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
 }

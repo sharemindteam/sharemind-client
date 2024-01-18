@@ -10,6 +10,7 @@ import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { useNavigate } from 'react-router-dom';
 import { getChats, getLetters } from 'api/get';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 
 interface ConsultTypeProps {
   isActive: boolean;
@@ -106,8 +107,8 @@ export const SellerConsultSection = () => {
             beforeMinutes={item?.latestMessageUpdatedAt}
             content={item?.latestMessageContent}
             key={item?.id}
-            counselorprofileStatus={2}
-            newMessageCounts={0}
+            counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
+            newMessageCounts={item?.unreadMessageCount}
             onClick={() => {
               navigate(`/seller/letter/${item?.id}`);
             }}
