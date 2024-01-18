@@ -1,6 +1,6 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-c
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { consultDummy } from 'utils/buyerDummy';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
+import { getLetters } from 'api/get';
 export const BuyerConsult = () => {
   const navigate = useNavigate();
   const sortList = ['최근순', '읽지않은순'];
@@ -29,6 +30,27 @@ export const BuyerConsult = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isLetter) {
+        let sortTypeText: string;
+        if (sortType === 0) {
+          sortTypeText = 'latest';
+        } else {
+          sortTypeText = 'unread';
+        }
+        const params = {
+          filter: isChecked,
+          isCustomer: true,
+          sortType: sortTypeText,
+        };
+        const res: any = await getLetters({ params });
+        console.log(res);
+      } else {
+      }
+    };
+    fetchData();
+  }, []);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   return (
