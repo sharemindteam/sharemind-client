@@ -15,7 +15,7 @@ import {
 import { Body1, Caption2 } from 'styles/font';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check.svg';
 import { useInput } from 'hooks/useInput';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { isIncludeSpecialLetter } from 'utils/isIncludeSpecialLetter';
 import { profileDummyData } from 'utils/profileDummy';
 import { useCustomSelect } from 'hooks/useCustomSelect';
@@ -40,12 +40,16 @@ interface ModifyProfileMainSectionProps {
   selectStyle: string;
   selectType: string[];
   selectBankType: string;
+  isSetChatTime: boolean;
+  setIsSetChatTime: React.Dispatch<SetStateAction<boolean>>;
 }
 export const ModifyProfileMainSection = ({
   selectCategory,
   selectStyle,
   selectType,
   selectBankType,
+  isSetChatTime,
+  setIsSetChatTime,
 }: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
   const nickname = useInput('');
@@ -216,6 +220,10 @@ export const ModifyProfileMainSection = ({
             readOnly={true}
             padding="1.2rem 1.6rem"
             isBoxSizing={true}
+            isCursorPointer={true}
+            onClick={() => {
+              setIsSetChatTime(true);
+            }}
           />
         </div>
         <div className="price">

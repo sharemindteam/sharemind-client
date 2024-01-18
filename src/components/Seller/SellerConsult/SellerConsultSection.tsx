@@ -3,31 +3,58 @@ import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow
 import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { useNavigate } from 'react-router-dom';
+import { getChats, getLetters } from 'api/get';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 
 interface ConsultTypeProps {
   isActive: boolean;
 }
 
 export const SellerConsultSection = () => {
+  const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
   const [isLetterActive, setIsLetterActive] = useState<boolean>(true);
   const [isInclueCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
-  //0 : 최신순 1:읽지 않은 순
-  // 바뀔 때마다 useEffect로 request
   const [sortType, setSortType] = useState<number>(0);
-  // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
-  //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   const navigate = useNavigate();
+
+  const fetchData = useCallback(async () => {
+    const params = {
+      filter: !isInclueCompleteConsult,
+      isCustomer: false,
+      sortType: sortType === 0 ? 'latest' : 'unread',
+    };
+
+    let res: any;
+    try {
+      res = isLetterActive
+        ? await getLetters({ params })
+        : await getChats({ params });
+      console.log(res);
+
+      if (res.status === 200) {
+        const data: ConsultInfoList = res.data;
+        setConsultInfo(data);
+      } else {
+        console.error('Failed to fetch data:', res.status, res.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while fetching data:', error);
+    }
+  }, [isInclueCompleteConsult, isLetterActive, sortType]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   return (
     <>
       <ConsultSortingMenu>
@@ -73,33 +100,21 @@ export const SellerConsultSection = () => {
       </ConsultSortingMenu>
 
       <ConsultBoxList>
-        <OngoingCounsultBox
-          consultStatus="상담 대기"
-          counselorName="연애상담마스터"
-          beforeMinutes="8분 전"
-          content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
-          newMessageCounts={1}
-          counselorprofileStatus={2}
-          onClick={() => {
-            navigate('/seller/letter/1');
-          }}
-        />{' '}
-        <OngoingCounsultBox
-          consultStatus="상담 중"
-          counselorName="연애상담마스터"
-          beforeMinutes="8분 전"
-          content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
-          newMessageCounts={1}
-          counselorprofileStatus={3}
-        />
-        <OngoingCounsultBox
-          consultStatus="상담 종료"
-          counselorName="연애상담마스터"
-          beforeMinutes="8분 전"
-          content="연애 상담마스터님께 고민 내용을 남겨주세요. 연애 상담마스터님이 어쩌구"
-          newMessageCounts={0}
-          counselorprofileStatus={3}
-        />
+        {consultInfo?.map((item) => (
+          <OngoingCounsultBox
+            consultStatus={item?.status}
+            counselorName={item?.opponentNickname}
+            beforeMinutes={item?.latestMessageUpdatedAt}
+            content={item?.latestMessageContent}
+            key={item?.id}
+            counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
+            newMessageCounts={item?.unreadMessageCount}
+            onClick={() => {
+              navigate(`/seller/letter/${item?.id}`);
+            }}
+          />
+        ))}
+
         {isModalOpen ? (
           <>
             <BackDrop

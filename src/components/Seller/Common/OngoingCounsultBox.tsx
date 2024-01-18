@@ -20,9 +20,9 @@ interface OngoingCounsultBoxProps {
   categoryStatus?: CartegoryState;
   consultStatus?: ConsultState;
   counselorName: string | undefined;
-  beforeMinutes: string | undefined;
-  content: string | undefined;
-  newMessageCounts: number | undefined;
+  beforeMinutes: string | null;
+  content: string | null;
+  newMessageCounts: number | null;
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
 }
@@ -88,9 +88,7 @@ function OngoingCounsultBox({
       ) : (
         ''
       )}
-      {newMessageCounts === 0 ? (
-        ''
-      ) : (
+      {newMessageCounts && (
         <NewMessageCounts>
           <Caption2 color={White}>{newMessageCounts}</Caption2>
         </NewMessageCounts>
@@ -103,6 +101,7 @@ const OngoingCounsultBoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  cursor: pointer;
   position: relative;
   border-radius: 0.4rem;
   background-color: ${Grey6};

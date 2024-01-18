@@ -34,3 +34,16 @@ type Review = {
   comment: string;
   time: string;
 };
+
+type ConsultInfoItem = {
+  consultStyle: string;
+  id: number;
+  latestMessageContent: string | null;
+  latestMessageIsCustomer: boolean | null;
+  latestMessageUpdatedAt: string | null;
+  opponentNickname: '사용자928380';
+  status: '질문 대기';
+  unreadMessageCount: null;
+};
+
+type ConsultInfoList = ConsultInfoItem[];
