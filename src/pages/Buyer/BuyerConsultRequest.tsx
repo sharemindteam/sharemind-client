@@ -1,3 +1,4 @@
+import { postConsults } from 'api/post';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import { useEffect, useState } from 'react';
@@ -11,6 +12,41 @@ export const BuyerConsultRequest = () => {
   const [letterFocus, setLetterFocus] = useState<boolean>(false);
   const [chatFocus, setChatFocus] = useState<boolean>(false);
   const [buttonAcitve, setButtonAcitve] = useState<boolean>(false);
+  const handleNextClick = async () => {
+    let consultType = '';
+    if (letterFocus) {
+      consultType = 'Letter';
+    } else {
+      consultType = 'Chat';
+    }
+    const body = {
+      counselorId: 1,
+      consultTypeName: consultType,
+    };
+    try {
+      const res: any = await postConsults(body);
+
+      if (res.status === 201) {
+        const consultData = {
+          // 위에서 받아온 데이터를 객체로 만듭니다.
+          consultId: res.data.consultId,
+          nickname: res.data.nickname,
+          level: res.data.level,
+          ratingAverage: res.data.ratingAverage,
+          totalReview: res.data.totalReview,
+          consultCategories: res.data.consultCategories,
+          consultStyle: res.data.consultStyle,
+          consultType: res.data.consultType,
+          cost: res.data.cost,
+        };
+        navigate('/buyer/paymentDetail', { state: { consultData } });
+      } else if (res.response.status === 404) {
+        alert('상담 유형이 존재하지 않습니다.');
+      }
+    } catch (e) {
+      alert(e);
+    }
+  };
   useEffect(() => {
     if (!(letterFocus === false && chatFocus === false)) {
       setButtonAcitve(true);
@@ -75,9 +111,7 @@ export const BuyerConsultRequest = () => {
           text="다음"
           width="89.33%"
           height="5.2rem"
-          onClick={() => {
-            navigate('/buyer/paymentDetail');
-          }}
+          onClick={handleNextClick}
         />
       </div>
     </Wrapper>
