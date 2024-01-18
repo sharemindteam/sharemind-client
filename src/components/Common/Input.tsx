@@ -24,6 +24,7 @@ interface InputProps {
   isCursorPointer?: boolean;
   isBoxSizing?: boolean;
   textIndent?: string;
+  onClick?: () => void;
 }
 const Input = ({
   width = 'auto',
@@ -48,6 +49,7 @@ const Input = ({
   isCursorPointer = false,
   isBoxSizing = false,
   textIndent = '0',
+  onClick,
 }: InputProps) => {
   return (
     <StyledInput
@@ -73,6 +75,7 @@ const Input = ({
       isCursorPointer={isCursorPointer}
       isBoxSizing={isBoxSizing}
       textIndent={textIndent}
+      onClick={onClick}
     />
   );
 };

@@ -41,7 +41,6 @@ import SellerChat from 'pages/Seller/SellerChat';
 import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
-import { Admin } from 'pages/Common/Admin';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -69,7 +68,6 @@ const Router = () => {
         }
       />
       {/* admin */}
-      <Route path="/admin" element={<Admin />} />
       {/* minder(buyer) */}
       <Route path="/buyer" element={<BuyerHome />} />
       <Route path="/buyer/consult" element={<BuyerConsult />} />

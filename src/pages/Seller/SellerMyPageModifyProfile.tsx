@@ -2,6 +2,7 @@ import BankSelectModal from 'components/Seller/Common/BankSelectModal';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
 import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
+import SetChatTimeSection from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';
 import { StyleModal } from 'components/Seller/SellerMyPageModifyProfile/StyleModal';
 import { TypeModal } from 'components/Seller/SellerMyPageModifyProfile/TypeModal';
 import { UpdatePopup } from 'components/Seller/SellerMyPageModifyProfile/UpdatePopup';
@@ -46,17 +47,28 @@ export const SellerMypageModifyProfile = () => {
 
   const [isSucessUpdate, setIsUpdateSuccess] =
     useRecoilState<boolean>(isSuccessUpdateState);
+
+  const [isSetChatTime, setIsSetChatTime] = useState<boolean>(false);
+
+  // 채팅 상담시간 
   return (
     <>
-      <ModifyProfileHeader />
+      <ModifyProfileHeader
+        isSetChatTime={isSetChatTime}
+        setIsSetChatTime={setIsSetChatTime}
+      />
       {isSucessUpdate ? (
         <UpdateSuccess />
+      ) : isSetChatTime ? (
+        <SetChatTimeSection />
       ) : (
         <ModifyProfileMainSection
           selectCategory={selectCategory}
           selectStyle={selectStyle}
           selectType={selectType}
           selectBankType={selectBankType}
+          isSetChatTime={isSetChatTime}
+          setIsSetChatTime={setIsSetChatTime}
         />
       )}
 
