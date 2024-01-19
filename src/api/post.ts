@@ -30,3 +30,8 @@ export const postLetterMessage = async (body: any) =>
 //Message 최초 생성 (first-question)
 export const postLetterMessageFirstQustion = async (body: any) =>
   await postInstance('/letterMessages/first-question', body);
+
+//Counselor Controller
+// 퀴즈 통과 여부 수정
+export const postIsPassQuiz = async (body: any,parmas: any) =>
+  await postInstance('counselors/quiz', body, parmas);

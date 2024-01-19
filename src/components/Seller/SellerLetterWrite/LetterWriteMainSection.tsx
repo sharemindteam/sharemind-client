@@ -2,12 +2,10 @@ import styled from 'styled-components';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Green, Grey3, Grey5, Grey6, LightGreen, White } from 'styles/color';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { LetterPostModal } from './LetterPostModal';
 import { LetterIsSaveModal } from './LetterIsSaveModal';
 import { LetterSavePostModal } from './LetterSavePostModal';
-import { useSetRecoilState } from 'recoil';
-import { replyState } from 'utils/atom';
 import {
   getCustomerInfo,
   getDraftsLetter,
@@ -68,10 +66,7 @@ export const LetterWriteMainSection = ({
     질문: 'first_question',
     '추가 질문': 'second_question',
   };
-  // const replyMapping ={
-  //   "답장" : "", "추가 답장"
-  // }
-  // 여기서 API 요청
+
   useEffect(() => {
     const fetchData = async () => {
       // 편지 단계 API
@@ -113,7 +108,7 @@ export const LetterWriteMainSection = ({
       }
 
       // 셰어가 최근에 보낸 질문 조회하는 API
-      const letterResponse = await getLetterMessages(
+      const letterResponse: any = await getLetterMessages(
         {
           params: {
             messageType: questionMapping[recentType],
@@ -137,8 +132,6 @@ export const LetterWriteMainSection = ({
     };
     fetchData();
   }, [isSave]);
-
-  const navigate = useNavigate();
 
   return (
     <LetterWriteMainSectionWrapper>

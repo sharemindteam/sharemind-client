@@ -52,7 +52,7 @@ export const SellerLetter = () => {
       '추가 답변': 4,
     };
   }, []);
-  // 태그 바뀜에 따라 getLetterMessages API 호출
+  // 처음 마운트될 떄 호출하는 API
   useEffect(() => {
     const fetchLetterInfo = async () => {
       try {
