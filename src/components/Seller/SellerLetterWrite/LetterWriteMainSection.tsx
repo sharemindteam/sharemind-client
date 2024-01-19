@@ -89,14 +89,13 @@ export const LetterWriteMainSection = ({
       const draftsResponse: any = await getDraftsLetter({ params }, consultid);
       // 임시저장 API 결과와 임시저장 모달 띄울지 여부와 임시저장이 있는 편지인지 여부 연동
       const isSaveTextData = draftsResponse?.data?.isSaved;
-      console.log(draftsResponse);
       setIsActiveSaveModal(isSaveTextData);
       setIsSave(isSaveTextData);
 
       // 임시저장 여부에 따라 마인더가 임시저장한 요소 불러오기
-      let minderSaveResponse;
+
       if (isSave) {
-        minderSaveResponse = await getLetterMessages(
+        const minderSaveResponse: any = await getLetterMessages(
           {
             params: {
               messageType: '질문' ? 'first_reply' : 'second_reply',
@@ -134,7 +133,7 @@ export const LetterWriteMainSection = ({
       });
     };
     fetchData();
-  }, []);
+  }, [isSave]);
 
   const navigate = useNavigate();
 
