@@ -1,5 +1,4 @@
 import {
-  getDraftsLetter,
   getLetterDeadline,
   getLetterMessages,
   getLetterRecentType,
@@ -22,7 +21,7 @@ export const SellerLetter = () => {
   const navigate = useNavigate();
   // 상단 태그상태 -> 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
   const [tagStatus, setTagStatus] = useState<number>(0);
-  // 현재 편지의 태그 활성화레벨, tagStatus가 tagActiveLevel보다 작으면 검은색, 크면 희색
+  // 현재 편지의 태그 활성화레벨, tagStatus가 tagActiveLevel보다 작으면 검은색, 같거나 크면 희색:  1 2 3 4
   const [tagActiveLevel, setTagActiveLevel] = useState<number>(0);
   // 신고할 것인지 여부
   const [isActiveComplaint, setIsComplaint] = useState<boolean>(false);
@@ -43,20 +42,29 @@ export const SellerLetter = () => {
     return ['', '답장 작성하기', '', '추가답장 작성하기', ''];
   }, []);
 
+  // consultid
   const { consultid } = useParams();
+  const levelMap = useMemo(() => {
+    return {
+      질문: 1,
+      답장: 2,
+      '추가 질문': 3,
+      '추가 답변': 4,
+    };
+  }, []);
+  // 태그 바뀜에 따라 getLetterMessages API 호출
   useEffect(() => {
     const fetchLetterInfo = async () => {
       try {
-        const recentTypeResponse: any = await getLetterRecentType(consultid);
-        const deadlineResponse: any = await getLetterDeadline(consultid);
+        const [recentTypeResponse, deadlineResponse]: [any, any] =
+          await Promise.all([
+            getLetterRecentType(consultid),
+            getLetterDeadline(consultid),
+          ]);
+
         if (recentTypeResponse.status && deadlineResponse.status === 200) {
           const { data } = recentTypeResponse;
-          const levelMap = {
-            질문: 1,
-            답장: 2,
-            추가질문: 3,
-            추가답변: 4,
-          };
+
           setTagActiveLevel(
             levelMap[data?.recentType as keyof typeof levelMap] || 0,
           );
@@ -69,14 +77,19 @@ export const SellerLetter = () => {
     };
     fetchLetterInfo();
   }, []);
+
+  // 태그 바뀜에 따라 getLetterMessages API 호출
+  const messageTypeMap = useMemo(
+    () => ({
+      0: 'first_question',
+      1: 'first_reply',
+      2: 'second_question',
+      3: 'second_reply',
+    }),
+    [],
+  );
   useEffect(() => {
     const fetchMessages = async () => {
-      const messageTypeMap = {
-        0: 'first_question',
-        1: 'first_reply',
-        2: 'second_question',
-        3: 'second_reply',
-      };
       const params = {
         messageType: messageTypeMap[tagStatus as keyof typeof messageTypeMap],
         isCompleted: true,
