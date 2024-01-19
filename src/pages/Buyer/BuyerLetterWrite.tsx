@@ -13,8 +13,17 @@ import { Button } from 'components/Common/Button';
 import { LetterPostModal } from 'components/Buyer/BuyerLetterWrite/LetterPostModal';
 import { LetterLoadModal } from 'components/Buyer/BuyerLetterWrite/LetterLoadModal';
 import { LetterSaveModal } from 'components/Buyer/BuyerLetterWrite/LetterSaveModal';
-import { getCounselorCategories, getDraftsLetter } from 'api/get';
-import { convertCategoryEnum } from 'utils/convertCategoryEnum';
+import {
+  getCounselorCategories,
+  getDraftsLetter,
+  getLetterMessages,
+} from 'api/get';
+interface GetMessagesType {
+  content: string | null;
+  messageId: number | null;
+  messageType: string | null;
+  updatedAt: string | null;
+}
 export const BuyerLetterWrite = () => {
   const navigate = useNavigate();
   //params로 consult id 넘어오고 tag status는 location으로 넘어옴
@@ -22,9 +31,9 @@ export const BuyerLetterWrite = () => {
   const location = useLocation();
   const { state } = location;
   const tagStatus: number = state?.tagStatus;
-  //id에 해당하는 상담 사의 카테고리 3가지 request, 0,1,2로 구분, 3일 떄는 상담카테고리로 표기
+  //id에 해당하는 상담 사의 카테고리 n가지 request, 1,2,3...로 구분, 0일 떄는 상담카테고리로 표기
   // 바뀔 때마다 useEffect로 request
-  const [categoryType, setCategoryType] = useState<number>(3);
+  const [categoryType, setCategoryType] = useState<number>(0);
   const [categoryList, setCategoryList] = useState<string[]>([]);
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
@@ -44,6 +53,13 @@ export const BuyerLetterWrite = () => {
   const [isActiveLoadModal, setIsActiveLoadModal] = useState(false);
   //임시저장 메세지 있는지 없는지 여부
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  // 임시 저장 메세지 get 요청 response
+  const [messageResponse, setMessageResponse] = useState<GetMessagesType>({
+    content: null,
+    messageId: null,
+    messageType: null,
+    updatedAt: null,
+  });
   //임시저장 확인후 모달
   const fetchDraftsData = async () => {
     let messageType: string;
@@ -87,6 +103,26 @@ export const BuyerLetterWrite = () => {
       console.log(e);
     }
   };
+  //임시 저장된 메세지 있으면 정보받아오기, 아니면 null
+  const fetchSavedData = async () => {
+    const params = {
+      messageType: 'FIRST_QUESTION',
+      isCompleted: false,
+    };
+    try {
+      const res: any = await getLetterMessages({ params }, id);
+      if (res.status === 200) {
+        setMessageResponse(res.data);
+      } else if (res.response.status === 403) {
+        alert('접근 권한이 없습니다.');
+        navigate('/buyer/consult');
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   //먼저 임시저장된거 있는지 api 콜하고 그다음에 카테고리 세팅
   useEffect(() => {
     if (
@@ -99,6 +135,7 @@ export const BuyerLetterWrite = () => {
     } else {
       fetchDraftsData();
       fetchCategoriesData();
+      fetchSavedData();
     }
   }, []);
   useEffect(() => {
@@ -197,9 +234,12 @@ export const BuyerLetterWrite = () => {
           setIsActive={setIsActiveSaveModal}
           replyText={input}
           isSaved={isSaved}
+          setIsSaved={setIsSaved}
           tagStatus={tagStatus}
+          categoryType={categoryType}
           consultCategory={categoryList[categoryType]}
           consultId={id}
+          messageId={messageResponse.messageId}
         />
       )}
       {isActivePostModal || isActiveSaveModal || isActiveLoadModal ? (

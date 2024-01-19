@@ -63,6 +63,7 @@ export const BuyerLetter = () => {
   //location null 시 예외처리
   useEffect(() => {
     fetchRecentType();
+    fetchMessageData();
   }, [tagStatus]);
   if (id !== undefined) {
     return (
