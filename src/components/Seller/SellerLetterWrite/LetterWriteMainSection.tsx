@@ -64,11 +64,13 @@ export const LetterWriteMainSection = ({
   // 여기서 API 요청
   useEffect(() => {
     const fetchData = async () => {
-      const res1: any = await getLetterRecentType(consultid);
-      const recentType: string = res1.data.recentType;
+      const recentLetterResponse: any = await getLetterRecentType(consultid);
+      const recentType: string = recentLetterResponse.data.recentType;
       const params = {
         messageType: questionMapping[recentType],
       };
+
+      
       const draftsResponse: any = await getDraftsLetter({ params }, consultid);
       // 임시저장 모달 띄울지 여부
       setIsActiveSaveModal(draftsResponse?.data?.isSaved);
@@ -85,13 +87,13 @@ export const LetterWriteMainSection = ({
       console.log(letterResponse);
       console.log(customerInfoResponse);
       setConsultInform({
-        categoryStatus: customerInfoResponse.data.category,
-        counselorName: customerInfoResponse.data.nickname,
+        categoryStatus: customerInfoResponse?.data?.category,
+        counselorName: customerInfoResponse?.data?.nickname,
         beforeMinutes: '5분 전', // 포매팅 필요
         counselorprofileStatus: 1, // 포매팅 필요
         newMessageCounts: 0,
-        content: letterResponse.data.content,
-        date: '2023년 10월 23일 오후 12시 34분',
+        content: letterResponse?.data?.content,
+        date: letterResponse?.data?.updatedAt,
       });
     };
     fetchData();

@@ -85,12 +85,13 @@ function OngoingCounsultBox({
           backgroundColor={White}
           buttonTextType={2}
         />
-      ) }
-      {newMessageCounts && (
-        <NewMessageCounts>
-          <Caption2 color={White}>{newMessageCounts}</Caption2>
-        </NewMessageCounts>
       )}
+      {newMessageCounts !== 0 ||
+        (newMessageCounts !== null && (
+          <NewMessageCounts>
+            <Caption2 color={White}>{newMessageCounts}</Caption2>
+          </NewMessageCounts>
+        ))}
     </OngoingCounsultBoxWrapper>
   );
 }
