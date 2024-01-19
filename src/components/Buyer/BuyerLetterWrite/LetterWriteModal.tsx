@@ -36,7 +36,28 @@ export const LetterWriteModal = ({
       <Body1 color={Grey1} margin="0 0 1.6rem 2rem">
         상담 카테고리
       </Body1>
-      <div
+      {categoryList.map((value, index) => {
+        if (index !== 0) {
+          return (
+            <div
+              className="row"
+              onClick={() => {
+                setModalCategoryType(index);
+              }}
+            >
+              {modalCategoryType === index ? (
+                <>
+                  <Body1 color={Green}>{categoryList[index]}</Body1>
+                  <CheckIcon />
+                </>
+              ) : (
+                <Body1 color={Grey1}>{categoryList[index]}</Body1>
+              )}
+            </div>
+          );
+        }
+      })}
+      {/* <div
         className="row"
         onClick={() => {
           setModalCategoryType(0);
@@ -80,7 +101,7 @@ export const LetterWriteModal = ({
         ) : (
           <Body1 color={Grey1}>{categoryList[2]}</Body1>
         )}
-      </div>
+      </div> */}
     </Wrapper>
   );
 };
@@ -108,7 +129,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
     width: 37.5rem;
   }
   position: fixed;
-  height: 24rem;
+  padding-bottom: 3rem;
   background-color: ${Grey6};
   bottom: 0;
   border-radius: 2rem 2rem 0 0;
