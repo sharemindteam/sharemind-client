@@ -8,7 +8,12 @@ import { LetterIsSaveModal } from './LetterIsSaveModal';
 import { LetterSavePostModal } from './LetterSavePostModal';
 import { useSetRecoilState } from 'recoil';
 import { replyState } from 'utils/atom';
-import { getCustomerInfo, getDraftsLetter, getLetterRecentType } from 'api/get';
+import {
+  getCustomerInfo,
+  getDraftsLetter,
+  getLetterMessages,
+  getLetterRecentType,
+} from 'api/get';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -18,6 +23,7 @@ interface LetterConsultInform {
   counselorprofileStatus: number | undefined;
   date: string | undefined;
 }
+
 export const LetterWriteMainSection = ({
   setIsSend,
   isViewQuestion,
@@ -48,36 +54,43 @@ export const LetterWriteMainSection = ({
   // 답안 텍스트
   const [replyText, setReplyText] = useState<string>('');
   const { consultid } = useParams();
-  const replyLevelMapping = {
-    '답장 쓰기': 'first_reply',
+  const questionMapping = {
     질문: 'first_question',
-    '추가답장 쓰기': 'second_reply',
-    '추가질문 쓰기': 'second_question',
+    '추가 질문': 'second_question',
   };
-
+  // const replyMapping ={
+  //   "답장" : "", "추가 답장"
+  // }
   // 여기서 API 요청
   useEffect(() => {
     const fetchData = async () => {
       const res1: any = await getLetterRecentType(consultid);
-      const data: string = res1.data.recentType;
+      const recentType: string = res1.data.recentType;
       const params = {
-        messageType: replyLevelMapping[data],
+        messageType: questionMapping[recentType],
       };
-
+      const draftsResponse: any = await getDraftsLetter({ params }, consultid);
       // 임시저장 모달 띄울지 여부
-      const draftsResponse:any = await getDraftsLetter({ params }, consultid);
       setIsActiveSaveModal(draftsResponse?.data?.isSaved);
-
-      const customerInfoResponse = getCustomerInfo(consultid);
-
+      const letterResponse: any = await getLetterMessages(
+        {
+          params: {
+            messageType: questionMapping[recentType],
+            isCompleted: true,
+          },
+        },
+        consultid,
+      );
+      const customerInfoResponse: any = await getCustomerInfo(consultid);
+      console.log(letterResponse);
+      console.log(customerInfoResponse);
       setConsultInform({
-        categoryStatus: '연애갈등',
-        counselorName: '슬픈 토끼',
-        beforeMinutes: '5분 전',
-        counselorprofileStatus: 1,
+        categoryStatus: customerInfoResponse.data.category,
+        counselorName: customerInfoResponse.data.nickname,
+        beforeMinutes: '5분 전', // 포매팅 필요
+        counselorprofileStatus: 1, // 포매팅 필요
         newMessageCounts: 0,
-        content:
-          'ㅋㅋㅋㅋㅋ 실험입니다 궁금해서 줄넘는지 써보고있어요 하하하 키키키 어떻게되나요',
+        content: letterResponse.data.content,
         date: '2023년 10월 23일 오후 12시 34분',
       });
     };
@@ -127,12 +140,12 @@ export const LetterWriteMainSection = ({
       ) : (
         <>
           <OngoingCounsultBox
-            counselorName={consultInform.counselorName}
-            categoryStatus={consultInform.categoryStatus}
-            beforeMinutes={consultInform.beforeMinutes}
-            counselorprofileStatus={consultInform.counselorprofileStatus}
-            content={consultInform.content}
-            newMessageCounts={consultInform.newMessageCounts}
+            counselorName={consultInform?.counselorName}
+            categoryStatus={consultInform?.categoryStatus}
+            beforeMinutes={consultInform?.beforeMinutes}
+            counselorprofileStatus={consultInform?.counselorprofileStatus}
+            content={consultInform?.content}
+            newMessageCounts={consultInform?.newMessageCounts}
             onClick={() => {
               setIsViewQuestion(true);
             }}

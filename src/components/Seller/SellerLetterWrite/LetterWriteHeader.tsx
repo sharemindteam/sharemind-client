@@ -25,7 +25,7 @@ export const LetterWriteHeader = ({
         const res1: any = await getLetterRecentType(consultid);
         if (res1.data.recentType === '질문') {
           setReplyLevel('답장 쓰기');
-        } else if (res1.data.recentType === '추가질문') {
+        } else if (res1.data.recentType === '추가 질문') {
           setReplyLevel('추가답장 쓰기');
         }
         // 현재 답장 쓰기 단계가 아닌데 들어왔을 떄
