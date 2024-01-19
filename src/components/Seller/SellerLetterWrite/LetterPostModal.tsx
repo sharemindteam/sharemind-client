@@ -10,6 +10,7 @@ interface LetterWritePostModal {
   setIsSend: React.Dispatch<React.SetStateAction<boolean>>;
   isSave: boolean;
   messageType: string;
+  saveId: string;
 }
 export const LetterPostModal = ({
   setIsActive,
@@ -17,6 +18,7 @@ export const LetterPostModal = ({
   setIsSend,
   isSave,
   messageType,
+  saveId,
 }: LetterWritePostModal) => {
   const { consultid } = useParams();
   const handlePostReplyText = async () => {
@@ -29,7 +31,7 @@ export const LetterPostModal = ({
     const patchBody = {
       isCompleted: true,
       content: replyText,
-      messageId: consultid,
+      messageId: saveId,
     };
     try {
       if (isSave) {

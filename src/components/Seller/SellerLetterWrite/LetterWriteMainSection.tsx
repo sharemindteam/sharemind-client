@@ -57,6 +57,8 @@ export const LetterWriteMainSection = ({
   const [saveText, setSaveText] = useState<string>('');
   // 임시저장 시각
   const [saveDate, setSaveDate] = useState<string>('');
+  // 임시저장 id
+  const [saveId, setSaveId] = useState<string>('');
   // 임시저장한 데이터가 있는지 여부
   const [isSave, setIsSave] = useState<boolean>(false);
 
@@ -106,6 +108,8 @@ export const LetterWriteMainSection = ({
         );
         setSaveText(minderSaveResponse?.data?.content);
         setSaveDate(minderSaveResponse?.data?.updatedAt);
+        setSaveId(minderSaveResponse?.data?.messageId);
+        console.log(minderSaveResponse);
       }
 
       // 셰어가 최근에 보낸 질문 조회하는 API
@@ -119,7 +123,6 @@ export const LetterWriteMainSection = ({
         consultid,
       );
 
-      console.log(letterResponse);
       // 셰어가 보낸 편지 불러오는 api
       const customerInfoResponse: any = await getCustomerInfo(consultid);
       setConsultInform({
@@ -146,6 +149,7 @@ export const LetterWriteMainSection = ({
           setIsSend={setIsSend}
           isSave={isSave}
           messageType={messageType}
+          saveId={saveId}
         />
       )}
       {isActiveSaveModal && (
@@ -162,6 +166,7 @@ export const LetterWriteMainSection = ({
           replyText={replyText}
           isSave={isSave}
           messageType={messageType}
+          saveId={saveId}
         />
       )}
       {isActivePostModal || isActiveSaveModal || isActiveSavePostModal ? (

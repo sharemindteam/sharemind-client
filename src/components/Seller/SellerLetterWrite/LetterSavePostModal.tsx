@@ -9,6 +9,7 @@ interface LetterWriteSavePostModal {
   replyText: string;
   isSave: boolean;
   messageType: string;
+  saveId: string;
 }
 // 임시저장 할까요? 모달
 export const LetterSavePostModal = ({
@@ -16,6 +17,7 @@ export const LetterSavePostModal = ({
   replyText,
   isSave,
   messageType,
+  saveId,
 }: LetterWriteSavePostModal) => {
   const navigate = useNavigate();
   const { consultid } = useParams();
@@ -29,7 +31,7 @@ export const LetterSavePostModal = ({
     const patchBody = {
       isCompleted: false,
       content: replyText,
-      messageId: consultid,
+      messageId: saveId,
     };
     try {
       if (isSave) {
