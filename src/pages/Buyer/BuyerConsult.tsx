@@ -50,7 +50,7 @@ export const BuyerConsult = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [sortType]);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   return (
@@ -134,13 +134,7 @@ export const BuyerConsult = () => {
 
       {isModalOpen ? (
         <>
-          <BackDrop
-            onClick={() => {
-              //여기서 api 호출
-              setIsModalOpen(false);
-              setScrollLock(false);
-            }}
-          />
+          <BackDrop />
           <ConsultModal sortType={sortType} setSortType={setSortType} />
         </>
       ) : null}
