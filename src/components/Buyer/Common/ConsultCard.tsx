@@ -7,47 +7,66 @@ import { TagA2Consult } from '../../Common/TagA2Consult';
 import { useNavigate } from 'react-router-dom';
 
 interface ConsultCardProps {
-  consultId: number;
-  name: string;
-  consultState: ConsultState;
-  time: string;
-  content: string;
-  unread: number;
+  consultStyle: string;
+  id: number;
+  latestMessageContent: string | null;
+  latestMessageIsCustomer: boolean | null;
+  latestMessageUpdatedAt: string | null;
+  opponentNickname: string;
+  status: string;
+  unreadMessageCount: number | null;
 }
 export const ConsultCard = ({
-  consultId,
-  name,
-  consultState,
-  time,
-  content,
-  unread,
+  consultStyle,
+  id,
+  latestMessageContent,
+  latestMessageIsCustomer,
+  latestMessageUpdatedAt,
+  opponentNickname,
+  status,
+  unreadMessageCount,
 }: ConsultCardProps) => {
   const navigate = useNavigate();
+  const consultStatus = status as ConsultState;
+  if (unreadMessageCount === null) {
+    unreadMessageCount = 0;
+  }
   return (
     <Wrapper
       onClick={() => {
         //추후 consult id에 해당하는 letter로 navigate, 채팅 편지 구분까지
-        navigate('/buyer/letter/0');
+        navigate(`/buyer/letter`, { state: { consultId: id } });
       }}
     >
       <ConsultContent>
         <ConsultStateBox>
           <div className="col1">
-            <TagA2Consult tagType={consultState} />
+            <TagA2Consult tagType={consultStatus} />
             <Characters number={9} width="5.4rem" height="5.1rem" />
           </div>
           <div className="col2">
             <div className="name-row">
-              <Body1 color={Black}>{name}</Body1>
-              <Caption2 color={Grey2}>•</Caption2>
-              <Caption2 color={Grey2}>{time}</Caption2>
-              {unread > 0 ? (
+              <Body1 color={Black}>{opponentNickname}</Body1>
+              {latestMessageUpdatedAt !== null && (
+                <>
+                  <Caption2 color={Grey2}>•</Caption2>
+                  <Caption2 color={Grey2}>{latestMessageUpdatedAt}</Caption2>
+                </>
+              )}
+
+              {unreadMessageCount > 0 ? (
                 <Unread>
-                  <Caption2 color={White}>{unread}</Caption2>
+                  <Caption2 color={White}>{unreadMessageCount}</Caption2>
                 </Unread>
               ) : null}
             </div>
-            <CardText color={Grey1}>{content}</CardText>
+            {latestMessageContent !== null ? (
+              <CardText color={Grey1}>{latestMessageContent}</CardText>
+            ) : (
+              <CardText color={Grey1}>
+                {opponentNickname}님께 고민 내용을 남겨 주세요.
+              </CardText>
+            )}
           </div>
         </ConsultStateBox>
       </ConsultContent>

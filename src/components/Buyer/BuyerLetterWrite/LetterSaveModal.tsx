@@ -13,9 +13,25 @@ export const LetterSaveModal = ({
   replyText,
 }: LetterSaveModalProps) => {
   const navigate = useNavigate();
-  const handleSaveReplyText = () => {
-    //서버로 임시 저장한 편지 POST
-    navigate('/seller/consult');
+
+  const handleSaveMessageClick = async () => {
+    const params = {
+      messageType: 'FIRST_QUESTION',
+      isCompleted: false,
+    };
+    try {
+      const res: any = await getLetterMessages({ params }, consultId);
+      if (res.status === 200) {
+        setIsActive(false);
+      } else if (res.response.status === 403) {
+        alert('접근 권한이 없습니다.');
+        navigate('/buyer/consult');
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <PostModalBox>
@@ -35,11 +51,7 @@ export const LetterSaveModal = ({
           />
           <Button
             text="임시저장"
-            onClick={() => {
-              //TODO: 서버로 post, param id로 navigate
-              setIsActive(false);
-              navigate('/buyer/letter/0');
-            }}
+            onClick={handleSaveMessageClick}
             width="14.8rem"
             height="5.2rem"
           />

@@ -30,7 +30,7 @@ instance.interceptors.response.use(
         const tokenResponse: any = await postReissue({
           refreshToken: localStorage.getItem('refreshToken'),
         });
-        if (tokenResponse.status === 201) {
+        if (tokenResponse.status === 200) {
           const newAccessToken = tokenResponse.data.token;
           localStorage.setItem('accessToken', tokenResponse.data.token);
           localStorage.setItem('refreshToken', tokenResponse.data.refreshToken);

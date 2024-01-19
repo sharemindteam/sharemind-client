@@ -84,8 +84,8 @@ const Router = () => {
       <Route path="/buyer/review/:id" element={<BuyerWriteReview />} />
       <Route path="/buyer/saved" element={<BuyerSavedCounselor />} />
       <Route path="/buyer/payment" element={<BuyerPayment />} />
-      <Route path="/buyer/letter/:id" element={<BuyerLetter />} />
-      <Route path="/buyer/writeLetter/:id" element={<BuyerLetterWrite />} />
+      <Route path="/buyer/letter" element={<BuyerLetter />} />
+      <Route path="/buyer/writeLetter" element={<BuyerLetterWrite />} />
       {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}
       <Route path="/login" element={<BuyerLogin />} />
       <Route path="/signup" element={<BuyerSignup />} />
