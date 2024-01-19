@@ -46,4 +46,13 @@ type ConsultInfoItem = {
   unreadMessageCount: null;
 };
 
+
+
+type SellerLetterLevelTypes ={
+}
+
+type LetterInfo ={
+  
+}
+
 type ConsultInfoList = ConsultInfoItem[];
