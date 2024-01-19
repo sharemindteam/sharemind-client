@@ -31,11 +31,11 @@ instance.interceptors.response.use(
           refreshToken: localStorage.getItem('refreshToken'),
         });
         if (tokenResponse.status === 200) {
-          const newAccessToken = tokenResponse.data.token;
-          localStorage.setItem('accessToken', tokenResponse.data.token);
-          localStorage.setItem('refreshToken', tokenResponse.data.refreshToken);
-          axios.defaults.headers.common.Authorization = `${newAccessToken}`;
-          originRequest.headers.Authorization = `${newAccessToken}`;
+          const { accessToken, refreshToken } = tokenResponse.data;
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+          axios.defaults.headers.common.Authorization = `${accessToken}`;
+          originRequest.headers.Authorization = `${accessToken}`;
           return axios(originRequest);
         }
       } catch (error) {
