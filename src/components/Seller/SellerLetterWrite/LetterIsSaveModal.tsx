@@ -28,6 +28,7 @@ export const LetterIsSaveModal = ({
           <YesButton
             onClick={() => {
               setIsActive(false);
+              // 
               setReplyText('임시저장한 텍스트');
             }}
           >

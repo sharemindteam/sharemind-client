@@ -1,4 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import { patchLetterMessages } from 'api/patch';
+import { postLetterMessage } from 'api/post';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
@@ -6,15 +8,40 @@ interface LetterWritePostModal {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   replyText: string;
   setIsSend: React.Dispatch<React.SetStateAction<boolean>>;
+  isSave: boolean;
+  messageType: string;
 }
 export const LetterPostModal = ({
   setIsActive,
   replyText,
   setIsSend,
+  isSave,
+  messageType,
 }: LetterWritePostModal) => {
-  const handlePostReplyText = () => {
-    // 서버로 POST 한 후에 편지를 보낼까요? 띄우기
-    setIsSend(true);
+  const { consultid } = useParams();
+  const handlePostReplyText = async () => {
+    const postBody = {
+      isCompleted: true,
+      content: replyText,
+      letterId: consultid,
+      messageType: messageType,
+    };
+    const patchBody = {
+      isCompleted: true,
+      content: replyText,
+      messageId: consultid,
+    };
+    try {
+      if (isSave) {
+        await patchLetterMessages(postBody);
+        setIsSend(true);
+      } else {
+        postLetterMessage(patchBody);
+        setIsSend(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <PostModalBox>
