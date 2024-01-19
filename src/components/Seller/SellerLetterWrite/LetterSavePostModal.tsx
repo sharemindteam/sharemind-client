@@ -34,8 +34,10 @@ export const LetterSavePostModal = ({
     try {
       if (isSave) {
         await patchLetterMessages(patchBody);
+        navigate(`/seller/letter/${consultid}`);
       } else {
-        postLetterMessage(postBody);
+        await postLetterMessage(postBody);
+        navigate(`/seller/letter/${consultid}`);
       }
     } catch (err) {
       console.log(err);

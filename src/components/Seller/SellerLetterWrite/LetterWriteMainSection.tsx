@@ -55,6 +55,8 @@ export const LetterWriteMainSection = ({
   const [replyText, setReplyText] = useState<string>('');
   // 임시저장 텍스트
   const [saveText, setSaveText] = useState<string>('');
+  // 임시저장 시각
+  const [saveDate, setSaveDate] = useState<string>('');
   // 임시저장한 데이터가 있는지 여부
   const [isSave, setIsSave] = useState<boolean>(false);
 
@@ -75,23 +77,40 @@ export const LetterWriteMainSection = ({
       const recentType: string = recentLetterResponse.data.recentType;
       // 편지 단계 API 결과값과 메시지 타입 연동
       if (recentType === '질문') {
-        setMessageType('first_answer');
+        setMessageType('first_reply');
       } else if (recentType === '추가 질문') {
-        setMessageType('second_answer');
+        setMessageType('second_reply');
       }
 
       // 임시저장 API
       const params = {
-        messageType: questionMapping[recentType],
+        messageType: recentType === '질문' ? 'first_reply' : 'second_reply',
       };
       const draftsResponse: any = await getDraftsLetter({ params }, consultid);
       // 임시저장 API 결과와 임시저장 모달 띄울지 여부와 임시저장이 있는 편지인지 여부 연동
       const isSaveTextData = draftsResponse?.data?.isSaved;
+      console.log(draftsResponse);
       setIsActiveSaveModal(isSaveTextData);
       setIsSave(isSaveTextData);
 
-      // 셰어 Info API,
-      const letterResponse: any = await getLetterMessages(
+      // 임시저장 여부에 따라 마인더가 임시저장한 요소 불러오기
+      let minderSaveResponse;
+      if (isSave) {
+        minderSaveResponse = await getLetterMessages(
+          {
+            params: {
+              messageType: '질문' ? 'first_reply' : 'second_reply',
+              isCompleted: false,
+            },
+          },
+          consultid,
+        );
+        setSaveText(minderSaveResponse?.data?.content);
+        setSaveDate(minderSaveResponse?.data?.updatedAt);
+      }
+
+      // 셰어가 최근에 보낸 질문 조회하는 API
+      const letterResponse = await getLetterMessages(
         {
           params: {
             messageType: questionMapping[recentType],
@@ -101,6 +120,7 @@ export const LetterWriteMainSection = ({
         consultid,
       );
 
+      console.log(letterResponse);
       // 셰어가 보낸 편지 불러오는 api
       const customerInfoResponse: any = await getCustomerInfo(consultid);
       setConsultInform({
@@ -131,9 +151,10 @@ export const LetterWriteMainSection = ({
       )}
       {isActiveSaveModal && (
         <LetterIsSaveModal
+          saveText={saveText}
           setReplyText={setReplyText}
           setIsActive={setIsActiveSaveModal}
-          lastModifyDate={consultInform?.date}
+          lastModifyDate={saveDate}
         />
       )}
       {isActiveSavePostModal && (
