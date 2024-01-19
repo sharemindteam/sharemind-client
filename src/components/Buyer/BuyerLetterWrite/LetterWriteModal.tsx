@@ -57,51 +57,6 @@ export const LetterWriteModal = ({
           );
         }
       })}
-      {/* <div
-        className="row"
-        onClick={() => {
-          setModalCategoryType(0);
-        }}
-      >
-        {modalCategoryType === 0 ? (
-          <>
-            <Body1 color={Green}>{categoryList[0]}</Body1>
-            <CheckIcon />
-          </>
-        ) : (
-          <Body1 color={Grey1}>{categoryList[0]}</Body1>
-        )}
-      </div>
-      <div
-        className="row"
-        onClick={() => {
-          setModalCategoryType(1);
-        }}
-      >
-        {modalCategoryType === 1 ? (
-          <>
-            <Body1 color={Green}>{categoryList[1]}</Body1>
-            <CheckIcon />
-          </>
-        ) : (
-          <Body1 color={Grey1}>{categoryList[1]}</Body1>
-        )}
-      </div>
-      <div
-        className="row"
-        onClick={() => {
-          setModalCategoryType(2);
-        }}
-      >
-        {modalCategoryType === 2 ? (
-          <>
-            <Body1 color={Green}>{categoryList[2]}</Body1>
-            <CheckIcon />
-          </>
-        ) : (
-          <Body1 color={Grey1}>{categoryList[2]}</Body1>
-        )}
-      </div> */}
     </Wrapper>
   );
 };
