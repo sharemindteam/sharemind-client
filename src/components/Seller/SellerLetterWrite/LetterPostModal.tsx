@@ -1,4 +1,4 @@
-import { patchLetterMessages } from 'api/patch';
+import { patchLetterMessage } from 'api/patch';
 import { postLetterMessage } from 'api/post';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -33,10 +33,10 @@ export const LetterPostModal = ({
     };
     try {
       if (isSave) {
-        await patchLetterMessages(postBody);
+        await patchLetterMessage(patchBody);
         setIsSend(true);
       } else {
-        postLetterMessage(patchBody);
+        postLetterMessage(postBody);
         setIsSend(true);
       }
     } catch (err) {

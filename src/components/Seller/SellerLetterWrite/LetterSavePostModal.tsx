@@ -1,4 +1,4 @@
-import { patchLetterMessages } from 'api/patch';
+import { patchLetterMessage } from 'api/patch';
 import { postLetterMessage } from 'api/post';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -33,7 +33,7 @@ export const LetterSavePostModal = ({
     };
     try {
       if (isSave) {
-        await patchLetterMessages(patchBody);
+        await patchLetterMessage(patchBody);
         navigate(`/seller/letter/${consultid}`);
       } else {
         await postLetterMessage(postBody);

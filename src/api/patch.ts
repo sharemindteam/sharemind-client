@@ -4,5 +4,10 @@ import { patchInstance } from './axios';
 export const patchAdmins = async (consultId: number) =>
   await patchInstance(`/admins/${consultId}`);
 
-export const patchLetterMessages = async (body: any) =>
+//LetterMessage Controller
+//Message 최초 생성
+export const patchLetterMessage = async (body: any) =>
   await patchInstance('/letterMessages', body);
+//Message 최초 생성 (first-question)
+export const patchLetterMessageFirstQustion = async (body: any) =>
+  await patchInstance('/letterMessages/first-question', body);

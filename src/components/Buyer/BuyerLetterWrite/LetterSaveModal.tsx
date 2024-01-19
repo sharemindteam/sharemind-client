@@ -1,4 +1,5 @@
-import { postLetterMessageFirstQustion } from 'api/post';
+import { patchLetterMessage, patchLetterMessageFirstQustion } from 'api/patch';
+import { postLetterMessage, postLetterMessageFirstQustion } from 'api/post';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,8 +11,11 @@ interface LetterSaveModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   replyText: string;
   isSaved: boolean;
+  setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
   tagStatus: number;
+  categoryType: number;
   consultCategory: string;
+  messageId: number | null;
   consultId: string | undefined;
 }
 // 임시저장 할까요? 모달
@@ -19,14 +23,17 @@ export const LetterSaveModal = ({
   setIsActive,
   replyText,
   isSaved,
+  setIsSaved,
   tagStatus,
+  categoryType,
   consultCategory,
+  messageId,
   consultId,
 }: LetterSaveModalProps) => {
   const navigate = useNavigate();
 
   const handleSaveMessageClick = async () => {
-    //임시 저장 메세지 없는 경우에 first or not
+    //임시 저장 메세지 없는 경우에 first or not(patch)
     if (!isSaved) {
       if (tagStatus === 0) {
         const body = {
@@ -35,48 +42,121 @@ export const LetterSaveModal = ({
           content: replyText,
           isCompleted: false,
         };
+        //카테고리 안정했을 때
+        if (categoryType === 0) {
+          alert('상담 카테고리를 정해주세요.');
+          setIsActive(false);
+        } else {
+          //첫번째 질문 임시저장 X 메세지 임시저장 수정
+          try {
+            const res: any = await postLetterMessageFirstQustion(body);
+            if (res.status === 201) {
+              //모달 끄고 isSaved true
+              setIsActive(false);
+              setIsSaved(true);
+            } else if (res.response.status === 400) {
+              alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
+              navigate(`/buyer/letter/${consultId}`);
+            } else if (res.response.status === 403) {
+              alert('접근 권한이 없습니다.');
+              navigate(`/buyer/letter/${consultId}`);
+            } else if (res.response.status === 404) {
+              alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      } else if (tagStatus === 2) {
+        //임시저장 없는 추가질문
+        const body = {
+          letterId: consultId,
+          messageType: 'second_question',
+          content: replyText,
+          isCompleted: false,
+        };
+        //추가 질문 임시저장 X 메세지 임시저장 수정
         try {
-          const res: any = await postLetterMessageFirstQustion(body);
-          console.log(body);
-          console.log(res);
-          if (res.status === 200) {
+          const res: any = await postLetterMessage(body);
+          if (res.status === 201) {
+            //모달 끄고 isSaved true
             setIsActive(false);
+            setIsSaved(true);
+          } else if (res.response.status === 400) {
+            alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
+            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 403) {
             alert('접근 권한이 없습니다.');
-            navigate('/buyer/consult');
+            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 404) {
             alert('존재하지 않는 편지 아이디로 요청되었습니다.');
           }
         } catch (e) {
           console.log(e);
         }
-      } else if (tagStatus === 2) {
       }
     } else {
-      //임시 저장 메세지 있는 경우에 first or not
-      // if (tagStatus === 0) {
-      //   const params = {
-      //     messageType: 'FIRST_QUESTION',
-      //     isCompleted: false,
-      //   };
-      //   try {
-      //     const res: any = await postLetterMessageFirstQustion(
-      //       { params },
-      //       consultId,
-      //     );
-      //     if (res.status === 200) {
-      //       setIsActive(false);
-      //     } else if (res.response.status === 403) {
-      //       alert('접근 권한이 없습니다.');
-      //       navigate('/buyer/consult');
-      //     } else if (res.response.status === 404) {
-      //       alert('존재하지 않는 편지 아이디로 요청되었습니다.');
-      //     }
-      //   } catch (e) {
-      //     console.log(e);
-      //   }
-      // } else if (tagStatus === 2) {
-      // }
+      //임시 저장 메세지 있는 경우에 first or not(patch)
+      if (tagStatus === 0) {
+        const body = {
+          messageId: messageId,
+          consultCategory: convertCategoryEnum(consultCategory),
+          content: replyText,
+          isCompleted: false,
+        };
+        //카테고리 안정했을 때
+        if (categoryType === 0) {
+          alert('상담 카테고리를 정해주세요.');
+          setIsActive(false);
+        } else {
+          //첫번째 질문 임시저장 O 메세지 임시저장 수정
+          try {
+            const res: any = await patchLetterMessageFirstQustion(body);
+            if (res.status === 200) {
+              //모달 끄고 isSaved true
+              setIsActive(false);
+              setIsSaved(true);
+            } else if (res.response.status === 400) {
+              alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
+              navigate(`/buyer/letter/${consultId}`);
+            } else if (res.response.status === 403) {
+              alert('접근 권한이 없습니다.');
+              navigate(`/buyer/letter/${consultId}`);
+            } else if (res.response.status === 404) {
+              alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      } else if (tagStatus === 2) {
+        //임시저장 없는 추가질문
+        const body = {
+          messageId: messageId,
+          content: replyText,
+          isCompleted: false,
+        };
+
+        //추가 질문 임시저장 O 메세지 임시저장 수정
+        try {
+          const res: any = await patchLetterMessage(body);
+          if (res.status === 201) {
+            //모달 끄고 isSaved true
+            setIsActive(false);
+            setIsSaved(true);
+          } else if (res.response.status === 400) {
+            alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
+            navigate(`/buyer/letter/${consultId}`);
+          } else if (res.response.status === 403) {
+            alert('접근 권한이 없습니다.');
+            navigate(`/buyer/letter/${consultId}`);
+          } else if (res.response.status === 404) {
+            alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   };
   return (
