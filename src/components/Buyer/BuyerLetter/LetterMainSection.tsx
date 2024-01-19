@@ -8,9 +8,13 @@ import { Space } from 'components/Common/Space';
 import { useNavigate } from 'react-router-dom';
 interface LetterMainSectionProps {
   tagStatus: number;
+  consultId: string;
 }
 //TODO :마감시간 api로 받아서 전달
-export const LetterMainSection = ({ tagStatus }: LetterMainSectionProps) => {
+export const LetterMainSection = ({
+  tagStatus,
+  consultId,
+}: LetterMainSectionProps) => {
   const navigate = useNavigate();
   if (tagStatus === 0) {
     return (
@@ -33,7 +37,9 @@ export const LetterMainSection = ({ tagStatus }: LetterMainSectionProps) => {
             width="89.33%"
             height="5.2rem"
             onClick={() => {
-              navigate('/buyer/writeLetter/0');
+              navigate(`/buyer/writeLetter/${consultId}`, {
+                state: { tagStatus: tagStatus },
+              });
             }}
           />
           <Space height="3.2rem" />
@@ -73,7 +79,9 @@ export const LetterMainSection = ({ tagStatus }: LetterMainSectionProps) => {
             width="89.33%"
             height="5.2rem"
             onClick={() => {
-              navigate('/buyer/writeLetter/0');
+              navigate(`/buyer/writeLetter/${consultId}`, {
+                state: { tagStatus: tagStatus },
+              });
             }}
           />
           <Space height="3.2rem" />

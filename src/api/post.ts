@@ -23,11 +23,10 @@ export const postEmailsCode = async (body: any) =>
 export const postConsults = async (body: any) =>
   await postInstance('/consults', body);
 
-
-  //LetterMessage Controller
+//LetterMessage Controller
 //Message 최초 생성
 export const postLetterMessage = async (body: any) =>
-await postInstance('/letterMessages', body);
+  await postInstance('/letterMessages', body);
 //Message 최초 생성 (first-question)
 export const postLetterMessageFirstQustion = async (body: any) =>
-await postInstance('/letterMessages/first-question', body);
+  await postInstance('/letterMessages/first-question', body);

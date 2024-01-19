@@ -1,5 +1,5 @@
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { Body3, Heading } from 'styles/font';
@@ -13,20 +13,19 @@ import { Button } from 'components/Common/Button';
 import { LetterPostModal } from 'components/Buyer/BuyerLetterWrite/LetterPostModal';
 import { LetterLoadModal } from 'components/Buyer/BuyerLetterWrite/LetterLoadModal';
 import { LetterSaveModal } from 'components/Buyer/BuyerLetterWrite/LetterSaveModal';
+import { getCounselorCategories, getDraftsLetter } from 'api/get';
+import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 export const BuyerLetterWrite = () => {
   const navigate = useNavigate();
-  //params로 consult id 넘어옴
+  //params로 consult id 넘어오고 tag status는 location으로 넘어옴
   const { id } = useParams();
-
-  //id에 해당하는 상담 사의 카테고리 3가지 request, 1,2,3로 구분, 0일 떄는 상담카테고리로 표기
+  const location = useLocation();
+  const { state } = location;
+  const tagStatus: number = state?.tagStatus;
+  //id에 해당하는 상담 사의 카테고리 3가지 request, 0,1,2로 구분, 3일 떄는 상담카테고리로 표기
   // 바뀔 때마다 useEffect로 request
-  const [categoryType, setCategoryType] = useState<number>(0);
-  const [categoryList, setCategoryList] = useState<string[]>([
-    '상담 카테고리',
-    '이별/재회',
-    '연애갈등',
-    '기타',
-  ]);
+  const [categoryType, setCategoryType] = useState<number>(3);
+  const [categoryList, setCategoryList] = useState<string[]>([]);
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isLetterModalOpenState,
@@ -42,7 +41,66 @@ export const BuyerLetterWrite = () => {
   // 임시저장, 편지, 불러오기 모달 활성화여부
   const [isActivePostModal, setIsActivePostModal] = useState(false);
   const [isActiveSaveModal, setIsActiveSaveModal] = useState(false);
-  const [isActiveLoadModal, setIsActiveLoadModal] = useState(true);
+  const [isActiveLoadModal, setIsActiveLoadModal] = useState(false);
+  //임시저장 메세지 있는지 없는지 여부
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+  //임시저장 확인후 모달
+  const fetchDraftsData = async () => {
+    let messageType: string;
+    if (tagStatus === 0) {
+      messageType = 'first_question';
+    } else if (tagStatus === 2) {
+      messageType = 'second_question';
+    } else {
+      messageType = '';
+    }
+    const params = {
+      messageType: messageType,
+    };
+    try {
+      const res: any = await getDraftsLetter({ params }, id);
+      if (res.status === 200) {
+        if (res.data.isSaved === true) {
+          setIsActiveLoadModal(true);
+          setIsSaved(true);
+        }
+      } else if (res.response.statue === 403) {
+        alert('접근 권한이 없습니다.');
+        navigate('/buyer/consult');
+      } else if (res.response.statue === 404) {
+        alert('존재하지 않는 상담입니다.');
+        navigate('/buyer/consult');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const fetchCategoriesData = async () => {
+    const definedId: string = id as string;
+    try {
+      const res: any = await getCounselorCategories(parseInt(definedId, 10));
+      if (res.status === 200) {
+        const updatedCategoryList = ['상담 카테고리', ...res.data.categories];
+        setCategoryList(updatedCategoryList);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  //먼저 임시저장된거 있는지 api 콜하고 그다음에 카테고리 세팅
+  useEffect(() => {
+    if (
+      tagStatus === undefined ||
+      Number.isNaN(tagStatus) ||
+      id === undefined
+    ) {
+      alert('유효하지 않은 접근입니다.');
+      navigate('/buyer/consult');
+    } else {
+      fetchDraftsData();
+      fetchCategoriesData();
+    }
+  }, []);
   useEffect(() => {
     if (input === '') {
       // 비어 있으면 전송못함
@@ -60,7 +118,7 @@ export const BuyerLetterWrite = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/letter/0');
+            navigate(`/buyer/letter/${id}`);
           }}
         />
         <Heading color={Grey1}>질문</Heading>
@@ -127,17 +185,22 @@ export const BuyerLetterWrite = () => {
         //TODO : 임시 저장된 글이 없을 떄는 안뜨게 하는 예외처리 추가
         isActiveLoadModal && (
           <LetterLoadModal
-            savedText={
-              '임시저장 텍스트입니다. 임시저장 텍스트입니다. 임시저장 텍스트입니다. 임시저장 텍스트입니다.'
-            }
             setReplyText={setInput}
             setIsActive={setIsActiveLoadModal}
             lastModifyDate={'2023년 10월 23일 오후 12시 34분'}
+            consultId={id}
           />
         )
       }
       {isActiveSaveModal && (
-        <LetterSaveModal setIsActive={setIsActiveSaveModal} replyText={input} />
+        <LetterSaveModal
+          setIsActive={setIsActiveSaveModal}
+          replyText={input}
+          isSaved={isSaved}
+          tagStatus={tagStatus}
+          consultCategory={categoryList[categoryType]}
+          consultId={id}
+        />
       )}
       {isActivePostModal || isActiveSaveModal || isActiveLoadModal ? (
         <BackDrop
