@@ -1,5 +1,5 @@
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { Body3, Heading } from 'styles/font';
@@ -14,12 +14,14 @@ import { LetterPostModal } from 'components/Buyer/BuyerLetterWrite/LetterPostMod
 import { LetterLoadModal } from 'components/Buyer/BuyerLetterWrite/LetterLoadModal';
 import { LetterSaveModal } from 'components/Buyer/BuyerLetterWrite/LetterSaveModal';
 import { getCounselorCategories, getDraftsLetter } from 'api/get';
+import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 export const BuyerLetterWrite = () => {
   const navigate = useNavigate();
-  //params로 consult id 넘어옴
+  //params로 consult id 넘어오고 tag status는 location으로 넘어옴
+  const { id } = useParams();
   const location = useLocation();
-  // const { id } = location.state.consultId;
-  const { consultId, tagStatus } = location.state;
+  const { state } = location;
+  const tagStatus: number = state?.tagStatus;
   //id에 해당하는 상담 사의 카테고리 3가지 request, 0,1,2로 구분, 3일 떄는 상담카테고리로 표기
   // 바뀔 때마다 useEffect로 request
   const [categoryType, setCategoryType] = useState<number>(3);
@@ -40,6 +42,8 @@ export const BuyerLetterWrite = () => {
   const [isActivePostModal, setIsActivePostModal] = useState(false);
   const [isActiveSaveModal, setIsActiveSaveModal] = useState(false);
   const [isActiveLoadModal, setIsActiveLoadModal] = useState(false);
+  //임시저장 메세지 있는지 없는지 여부
+  const [isSaved, setIsSaved] = useState<boolean>(false);
   //임시저장 확인후 모달
   const fetchDraftsData = async () => {
     let messageType: string;
@@ -53,13 +57,12 @@ export const BuyerLetterWrite = () => {
     const params = {
       messageType: messageType,
     };
-
     try {
-      const res: any = await getDraftsLetter({ params }, consultId);
-      console.log(params, consultId);
+      const res: any = await getDraftsLetter({ params }, id);
       if (res.status === 200) {
         if (res.data.isSaved === true) {
           setIsActiveLoadModal(true);
+          setIsSaved(true);
         }
       } else if (res.response.statue === 403) {
         alert('접근 권한이 없습니다.');
@@ -73,10 +76,11 @@ export const BuyerLetterWrite = () => {
     }
   };
   const fetchCategoriesData = async () => {
+    const definedId: string = id as string;
     try {
-      const res: any = await getCounselorCategories(consultId);
+      const res: any = await getCounselorCategories(parseInt(definedId, 10));
       if (res.status === 200) {
-        const updatedCategoryList = [...res.data.categories, '상담 카테고리'];
+        const updatedCategoryList = ['상담 카테고리', ...res.data.categories];
         setCategoryList(updatedCategoryList);
       }
     } catch (e) {
@@ -85,12 +89,17 @@ export const BuyerLetterWrite = () => {
   };
   //먼저 임시저장된거 있는지 api 콜하고 그다음에 카테고리 세팅
   useEffect(() => {
-    if (consultId === null) {
+    if (
+      tagStatus === undefined ||
+      Number.isNaN(tagStatus) ||
+      id === undefined
+    ) {
       alert('유효하지 않은 접근입니다.');
       navigate('/buyer/consult');
+    } else {
+      fetchDraftsData();
+      fetchCategoriesData();
     }
-    fetchDraftsData();
-    fetchCategoriesData();
   }, []);
   useEffect(() => {
     if (input === '') {
@@ -109,7 +118,7 @@ export const BuyerLetterWrite = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/letter', { state: { consultId: consultId } });
+            navigate(`/buyer/letter/${id}`);
           }}
         />
         <Heading color={Grey1}>질문</Heading>
@@ -179,12 +188,19 @@ export const BuyerLetterWrite = () => {
             setReplyText={setInput}
             setIsActive={setIsActiveLoadModal}
             lastModifyDate={'2023년 10월 23일 오후 12시 34분'}
-            consultId={consultId}
+            consultId={id}
           />
         )
       }
       {isActiveSaveModal && (
-        <LetterSaveModal setIsActive={setIsActiveSaveModal} replyText={input} />
+        <LetterSaveModal
+          setIsActive={setIsActiveSaveModal}
+          replyText={input}
+          isSaved={isSaved}
+          tagStatus={tagStatus}
+          consultCategory={categoryList[categoryType]}
+          consultId={id}
+        />
       )}
       {isActivePostModal || isActiveSaveModal || isActiveLoadModal ? (
         <BackDrop

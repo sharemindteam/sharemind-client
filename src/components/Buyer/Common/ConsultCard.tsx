@@ -35,7 +35,7 @@ export const ConsultCard = ({
     <Wrapper
       onClick={() => {
         //추후 consult id에 해당하는 letter로 navigate, 채팅 편지 구분까지
-        navigate(`/buyer/letter`, { state: { consultId: id } });
+        navigate(`/buyer/letter/${id}`);
       }}
     >
       <ConsultContent>
@@ -64,7 +64,8 @@ export const ConsultCard = ({
               <CardText color={Grey1}>{latestMessageContent}</CardText>
             ) : (
               <CardText color={Grey1}>
-                {opponentNickname}님께 고민 내용을 남겨 주세요.
+                {opponentNickname}님께 고민 내용을 남겨 주세요.{' '}
+                {opponentNickname}님이 24시간 이내 답장을 드릴 거예요.
               </CardText>
             )}
           </div>

@@ -8,14 +8,13 @@ import { LetterMainSection } from 'components/Buyer/BuyerLetter/LetterMainSectio
 import { LetterTags } from 'components/Buyer/BuyerLetter/LetterTags';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 export const BuyerLetter = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const consultId = location.state.consultId;
+  const { id } = useParams();
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3 / 어디까지 가능한지 여부
   const [active, setActive] = useState<number>(0);
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
@@ -24,7 +23,7 @@ export const BuyerLetter = () => {
   //제일 먼저 현재 상담 상태 정보업데이트
   const fetchRecentType = async () => {
     try {
-      const res: any = await getLetterRecentType(consultId);
+      const res: any = await getLetterRecentType(id);
 
       if (res.status === 200) {
         if (
@@ -49,7 +48,7 @@ export const BuyerLetter = () => {
       isCompleted: true,
     };
     try {
-      const res: any = await getLetterMessages({ params }, consultId);
+      const res: any = await getLetterMessages({ params }, id);
       if (res.status === 200) {
       } else if (res.response.status === 403) {
         alert('접근 권한이 없습니다.');
@@ -63,37 +62,33 @@ export const BuyerLetter = () => {
   };
   //location null 시 예외처리
   useEffect(() => {
-    if (location.state === null || location.state === undefined) {
-      alert('유효하지 않은 접근입니다.');
-      navigate('/buyer/consult');
-    }
     fetchRecentType();
   }, [tagStatus]);
-
-  return (
-    <>
-      <HeaderWrapper>
-        <BackIcon
-          onClick={() => {
-            navigate('/buyer/consult');
-          }}
+  if (id !== undefined) {
+    return (
+      <>
+        <HeaderWrapper>
+          <BackIcon
+            onClick={() => {
+              navigate('/buyer/consult');
+            }}
+          />
+          {/* params로 넘어온 id에 해당하는 상담이름 */}
+          <Heading color={Grey1}>연애상담마스터</Heading>
+          <MoreIcon />
+        </HeaderWrapper>
+        <LetterTags
+          tagStatus={tagStatus}
+          setTagStatus={setTagStatus}
+          active={active}
         />
-        {/* params로 넘어온 id에 해당하는 상담이름 */}
-        <Heading color={Grey1}>연애상담마스터</Heading>
-        <MoreIcon />
-      </HeaderWrapper>
-      <LetterTags
-        tagStatus={tagStatus}
-        setTagStatus={setTagStatus}
-        active={active}
-      />
-      {/* 현재 선택된 tag와 해당 태그에  content가 있는지 여부를 전달 */}
-      <LetterMainSection
-        tagStatus={tagStatus}
-        consultId={parseInt(consultId, 10)}
-      />
-    </>
-  );
+        {/* 현재 선택된 tag와 해당 태그에  content가 있는지 여부를 전달 */}
+        <LetterMainSection tagStatus={tagStatus} consultId={id} />
+      </>
+    );
+  } else {
+    <>404 error</>;
+  }
 };
 const MoreIcon = styled(More)`
   padding: 1.2rem 0.4rem;

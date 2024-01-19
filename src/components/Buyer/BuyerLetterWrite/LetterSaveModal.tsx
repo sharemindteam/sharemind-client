@@ -1,36 +1,82 @@
+import { postLetterMessageFirstQustion } from 'api/post';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
+import { convertCategoryEnum } from 'utils/convertCategoryEnum';
+//tagStatus가 0이면 첫번째 질문, 2면 추가질문
 interface LetterSaveModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   replyText: string;
+  isSaved: boolean;
+  tagStatus: number;
+  consultCategory: string;
+  consultId: string | undefined;
 }
 // 임시저장 할까요? 모달
 export const LetterSaveModal = ({
   setIsActive,
   replyText,
+  isSaved,
+  tagStatus,
+  consultCategory,
+  consultId,
 }: LetterSaveModalProps) => {
   const navigate = useNavigate();
 
   const handleSaveMessageClick = async () => {
-    const params = {
-      messageType: 'FIRST_QUESTION',
-      isCompleted: false,
-    };
-    try {
-      const res: any = await getLetterMessages({ params }, consultId);
-      if (res.status === 200) {
-        setIsActive(false);
-      } else if (res.response.status === 403) {
-        alert('접근 권한이 없습니다.');
-        navigate('/buyer/consult');
-      } else if (res.response.status === 404) {
-        alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+    //임시 저장 메세지 없는 경우에 first or not
+    if (!isSaved) {
+      if (tagStatus === 0) {
+        const body = {
+          letterId: consultId,
+          consultCategory: convertCategoryEnum(consultCategory),
+          content: replyText,
+          isCompleted: false,
+        };
+        try {
+          const res: any = await postLetterMessageFirstQustion(body);
+          console.log(body);
+          console.log(res);
+          if (res.status === 200) {
+            setIsActive(false);
+          } else if (res.response.status === 403) {
+            alert('접근 권한이 없습니다.');
+            navigate('/buyer/consult');
+          } else if (res.response.status === 404) {
+            alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      } else if (tagStatus === 2) {
       }
-    } catch (e) {
-      console.log(e);
+    } else {
+      //임시 저장 메세지 있는 경우에 first or not
+      // if (tagStatus === 0) {
+      //   const params = {
+      //     messageType: 'FIRST_QUESTION',
+      //     isCompleted: false,
+      //   };
+      //   try {
+      //     const res: any = await postLetterMessageFirstQustion(
+      //       { params },
+      //       consultId,
+      //     );
+      //     if (res.status === 200) {
+      //       setIsActive(false);
+      //     } else if (res.response.status === 403) {
+      //       alert('접근 권한이 없습니다.');
+      //       navigate('/buyer/consult');
+      //     } else if (res.response.status === 404) {
+      //       alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+      //     }
+      //   } catch (e) {
+      //     console.log(e);
+      //   }
+      // } else if (tagStatus === 2) {
+      // }
     }
   };
   return (

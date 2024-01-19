@@ -11,7 +11,7 @@ interface LetterWriteModalProps {
   setCategoryType: React.Dispatch<SetStateAction<number>>;
   categoryList: string[];
 }
-//최근순 인기순 별점순 모달
+//상담 카테고리
 export const LetterWriteModal = ({
   categoryType,
   setCategoryType,

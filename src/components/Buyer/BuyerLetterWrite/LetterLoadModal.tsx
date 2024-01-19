@@ -8,7 +8,7 @@ interface LetterLoadModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReplyText: React.Dispatch<React.SetStateAction<string>>;
   lastModifyDate: string;
-  consultId: string;
+  consultId: string | undefined;
 }
 // 임시저장할지 여부 모달
 export const LetterLoadModal = ({
