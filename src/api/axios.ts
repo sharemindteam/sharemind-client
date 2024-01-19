@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getCookie } from 'utils/cookie';
 import { postReissue } from './post';
 // axios 인스턴스 생성
 export const instance = axios.create({
@@ -31,12 +30,12 @@ instance.interceptors.response.use(
         const tokenResponse: any = await postReissue({
           refreshToken: localStorage.getItem('refreshToken'),
         });
-        if (tokenResponse.status === 201) {
-          const newAccessToken = tokenResponse.data.token;
-          localStorage.setItem('accessToken', tokenResponse.data.token);
-          localStorage.setItem('refreshToken', tokenResponse.data.refreshToken);
-          axios.defaults.headers.common.Authorization = `${newAccessToken}`;
-          originRequest.headers.Authorization = `${newAccessToken}`;
+        if (tokenResponse.status === 200) {
+          const { accessToken, refreshToken } = tokenResponse.data;
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+          axios.defaults.headers.common.Authorization = `${accessToken}`;
+          originRequest.headers.Authorization = `${accessToken}`;
           return axios(originRequest);
         }
       } catch (error) {
@@ -82,7 +81,7 @@ export const putInstance = async (url: string, body: any, params: any) => {
   }
 };
 
-export const patchInstance = async (url: string, body: any, params: any) => {
+export const patchInstance = async (url: string, body?: any, params?: any) => {
   try {
     const data = await instance.patch(url, body, params);
     return data;

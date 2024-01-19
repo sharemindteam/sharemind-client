@@ -11,7 +11,7 @@ interface LetterWriteModalProps {
   setCategoryType: React.Dispatch<SetStateAction<number>>;
   categoryList: string[];
 }
-//최근순 인기순 별점순 모달
+//상담 카테고리
 export const LetterWriteModal = ({
   categoryType,
   setCategoryType,
@@ -36,6 +36,21 @@ export const LetterWriteModal = ({
       <Body1 color={Grey1} margin="0 0 1.6rem 2rem">
         상담 카테고리
       </Body1>
+      <div
+        className="row"
+        onClick={() => {
+          setModalCategoryType(0);
+        }}
+      >
+        {modalCategoryType === 0 ? (
+          <>
+            <Body1 color={Green}>{categoryList[0]}</Body1>
+            <CheckIcon />
+          </>
+        ) : (
+          <Body1 color={Grey1}>{categoryList[0]}</Body1>
+        )}
+      </div>
       <div
         className="row"
         onClick={() => {
@@ -64,21 +79,6 @@ export const LetterWriteModal = ({
           </>
         ) : (
           <Body1 color={Grey1}>{categoryList[2]}</Body1>
-        )}
-      </div>
-      <div
-        className="row"
-        onClick={() => {
-          setModalCategoryType(3);
-        }}
-      >
-        {modalCategoryType === 3 ? (
-          <>
-            <Body1 color={Green}>{categoryList[3]}</Body1>
-            <CheckIcon />
-          </>
-        ) : (
-          <Body1 color={Grey1}>{categoryList[3]}</Body1>
         )}
       </div>
     </Wrapper>

@@ -29,14 +29,14 @@ export const ConsultInProgress = () => {
         </NavConsult>
         <MoreIcon />
       </div>
-      <ConsultCard
+      {/* <ConsultCard
         consultId={0}
         name={CounselorName}
         consultState={ConsultState}
         time={Time}
         content={ContentText}
         unread={unreadNumber}
-      />
+      /> */}
     </Wrapper>
   );
 };
