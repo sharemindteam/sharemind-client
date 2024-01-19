@@ -9,12 +9,14 @@ interface LetterBonusQuestionStepProps {
   time: string;
   questionMsg: string;
   deadline: string;
+  tagActiveLevel: number;
 }
 export const LetterBonusQuestionStep = ({
   isArrive,
   time,
   questionMsg,
   deadline,
+  tagActiveLevel,
 }: LetterBonusQuestionStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();
