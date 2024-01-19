@@ -46,20 +46,25 @@ export const SellerLetter = () => {
   const { consultid } = useParams();
   useEffect(() => {
     const fetchLetterInfo = async () => {
-      const recentTypeResponse: any = await getLetterRecentType(consultid);
-      const deadlineResponse: any = await getLetterDeadline(consultid);
-      if (recentTypeResponse.status === 200) {
-        const { data } = recentTypeResponse;
-        const levelMap = {
-          질문: 1,
-          답장: 2,
-          추가질문: 3,
-          추가답변: 4,
-        };
-        setTagActiveLevel(
-          levelMap[data?.recentType as keyof typeof levelMap] || 0,
-        );
-        setDeadLine(deadlineResponse?.data?.deadline);
+      try {
+        const recentTypeResponse: any = await getLetterRecentType(consultid);
+        const deadlineResponse: any = await getLetterDeadline(consultid);
+        if (recentTypeResponse.status && deadlineResponse.status === 200) {
+          const { data } = recentTypeResponse;
+          const levelMap = {
+            질문: 1,
+            답장: 2,
+            추가질문: 3,
+            추가답변: 4,
+          };
+          setTagActiveLevel(
+            levelMap[data?.recentType as keyof typeof levelMap] || 0,
+          );
+          setDeadLine(deadlineResponse?.data?.deadline);
+        }
+      } catch (err) {
+        alert(err);
+        navigate('/seller');
       }
     };
     fetchLetterInfo();
@@ -76,9 +81,14 @@ export const SellerLetter = () => {
         messageType: messageTypeMap[tagStatus as keyof typeof messageTypeMap],
         isCompleted: true,
       };
-      const res: any = await getLetterMessages({ params }, consultid);
-      setText(res.data.content);
-      setDate(res.data.updatedAt);
+      try {
+        const res: any = await getLetterMessages({ params }, consultid);
+        setText(res.data.content);
+        setDate(res.data.updatedAt);
+      } catch (err) {
+        alert(err);
+        navigate('/seller');
+      }
     };
     fetchMessages();
   }, [tagStatus]);

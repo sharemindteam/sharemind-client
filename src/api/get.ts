@@ -11,8 +11,8 @@ export const getChats = async (params: any) =>
 export const getLetters = async (params: any) =>
   await getInstance('/letters', params);
 
-export const getCustomerInfo = async (params: any, letterId: number) =>
-  await getInstance(`/letters/customer-info/${letterId}`, params);
+export const getCustomerInfo = async (letterId: string | undefined) =>
+  await getInstance(`/letters/customer-info/${letterId}`);
 
 export const getCounselorCategories = async (params: any, letterId: number) =>
   await getInstance(`/letters/categories/${letterId}`, params);

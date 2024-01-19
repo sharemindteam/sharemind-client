@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Green, Grey3, Grey5, Grey6, LightGreen, White } from 'styles/color';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { LetterPostModal } from './LetterPostModal';
 import { LetterIsSaveModal } from './LetterIsSaveModal';
 import { LetterSavePostModal } from './LetterSavePostModal';
 import { useSetRecoilState } from 'recoil';
 import { replyState } from 'utils/atom';
+import { getCustomerInfo, getDraftsLetter, getLetterRecentType } from 'api/get';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -46,26 +47,41 @@ export const LetterWriteMainSection = ({
 
   // 답안 텍스트
   const [replyText, setReplyText] = useState<string>('');
-
-  const setReplyState = useSetRecoilState(replyState);
+  const { consultid } = useParams();
+  const replyLevelMapping = {
+    '답장 쓰기': 'first_reply',
+    질문: 'first_question',
+    '추가답장 쓰기': 'second_reply',
+    '추가질문 쓰기': 'second_question',
+  };
 
   // 여기서 API 요청
   useEffect(() => {
-    setConsultInform({
-      categoryStatus: '연애갈등',
-      counselorName: '슬픈 토끼',
-      beforeMinutes: '5분 전',
-      counselorprofileStatus: 1,
-      newMessageCounts: 0,
-      content:
-        'ㅋㅋㅋㅋㅋ 실험입니다 궁금해서 줄넘는지 써보고있어요 하하하 키키키 어떻게되나요',
-      date: '2023년 10월 23일 오후 12시 34분',
-    });
-    setReplyState('추가답장 쓰기');
-  }, []);
+    const fetchData = async () => {
+      const res1: any = await getLetterRecentType(consultid);
+      const data: string = res1.data.recentType;
+      const params = {
+        messageType: replyLevelMapping[data],
+      };
 
-  useEffect(() => {
-    setIsActiveSaveModal(true);
+      // 임시저장 모달 띄울지 여부
+      const draftsResponse:any = await getDraftsLetter({ params }, consultid);
+      setIsActiveSaveModal(draftsResponse?.data?.isSaved);
+
+      const customerInfoResponse = getCustomerInfo(consultid);
+
+      setConsultInform({
+        categoryStatus: '연애갈등',
+        counselorName: '슬픈 토끼',
+        beforeMinutes: '5분 전',
+        counselorprofileStatus: 1,
+        newMessageCounts: 0,
+        content:
+          'ㅋㅋㅋㅋㅋ 실험입니다 궁금해서 줄넘는지 써보고있어요 하하하 키키키 어떻게되나요',
+        date: '2023년 10월 23일 오후 12시 34분',
+      });
+    };
+    fetchData();
   }, []);
 
   const navigate = useNavigate();
