@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { ReactComponent as NotWrite } from 'assets/icons/graphic-not-write.svg';
 import { ReactComponent as NotArriveGraphic } from 'assets/icons/graphic-not-arrive.svg';
-import { Body1, Body2 } from 'styles/font';
-import { Grey1, Grey6 } from 'styles/color';
+import { Body1, Body2, Body3, Body4 } from 'styles/font';
+import { Grey1, Grey3, Grey6 } from 'styles/color';
 import { Button } from 'components/Common/Button';
 import { Space } from 'components/Common/Space';
 import { useNavigate } from 'react-router-dom';
@@ -113,6 +113,9 @@ export const LetterMainSection = ({
     if (tagStatus === 0) {
       return (
         <SectionWrapper>
+          <UpdatedAtBox>
+            <Body3 color={Grey3}>{messageResponse.updatedAt}</Body3>
+          </UpdatedAtBox>
           <ContentBox>
             <Body2 color={Grey1}>{messageResponse.content}</Body2>
           </ContentBox>
@@ -229,6 +232,13 @@ const ContentBox = styled.div`
   padding: 1.6rem;
   width: 89.33%;
   border-radius: 1.2rem;
+  box-sizing: border-box;
+`;
+const UpdatedAtBox = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 1.2rem 2.4rem;
+  width: 100%;
   box-sizing: border-box;
 `;
 const NotWriteGraphic = styled(NotWrite)`

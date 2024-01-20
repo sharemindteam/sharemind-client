@@ -4,6 +4,7 @@ import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from '../../Common/TagA2Consult';
 import { useNavigate } from 'react-router-dom';
+import { ConsultState } from 'utils/type';
 
 interface ConsultCardProps {
   consultStyle: string;

@@ -1,3 +1,4 @@
+import { display } from '@mui/system';
 import {
   getCounselorCategories,
   getLetterMessages,
@@ -12,6 +13,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { GetMessagesType } from 'utils/type';
 
 export const BuyerLetter = () => {
@@ -106,9 +108,19 @@ export const BuyerLetter = () => {
               navigate('/buyer/consult');
             }}
           />
-          <Heading color={Grey1}>로딩중</Heading>
+          <Heading color={Grey1}></Heading>
           <MoreIcon />
         </HeaderWrapper>
+        <div
+          style={{
+            height: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <LoadingSpinner />
+        </div>
       </>
     );
   } else {
