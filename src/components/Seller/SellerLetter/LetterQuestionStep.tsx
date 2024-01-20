@@ -8,11 +8,13 @@ interface LetterQuestionStepProps {
   isArrive: boolean;
   time: string;
   questionMsg: string;
+  tagActiveLevel: number;
 }
 export const LetterQuestionStep = ({
   isArrive,
   time,
   questionMsg,
+  tagActiveLevel,
 }: LetterQuestionStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();
@@ -22,12 +24,6 @@ export const LetterQuestionStep = ({
         <ArriveSection>
           <Time>{time}</Time>
           <TextField>{questionMsg}</TextField>
-          <BottomButton
-            text="답안 작성하기"
-            onClick={() => {
-              navigate(`/seller/writeLetter/${consultid}`);
-            }}
-          />
         </ArriveSection>
       ) : (
         <NotArriveSection>

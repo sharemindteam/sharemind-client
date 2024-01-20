@@ -11,8 +11,8 @@ export const getChats = async (params: any) =>
 export const getLetters = async (params: any) =>
   await getInstance('/letters', params);
 
-export const getCustomerInfo = async (params: any, letterId: number) =>
-  await getInstance(`/letters/customer-info/${letterId}`, params);
+export const getCustomerInfo = async (letterId: string | undefined) =>
+  await getInstance(`/letters/customer-info/${letterId}`);
 
 export const getCounselorCategories = async (letterId: number) =>
   await getInstance(`/letters/categories/${letterId}`);
@@ -34,3 +34,8 @@ export const getLetterMessages = async (
 
 export const getLetterRecentType = async (letterId: string | undefined) =>
   await getInstance(`/letterMessages/recent-type/${letterId}`);
+
+// Conuselor Controller
+
+export const getIsPassQuiz = async () =>
+  await getInstance('counselors/quiz');

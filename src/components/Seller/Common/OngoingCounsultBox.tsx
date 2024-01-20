@@ -76,7 +76,7 @@ function OngoingCounsultBox({
           {content}
         </Content>
       </div>
-      {consultStatus === '상담 종료' ? (
+      {consultStatus === '상담 종료' && (
         <Button
           text="리뷰 확인하기"
           color={Green}
@@ -85,14 +85,13 @@ function OngoingCounsultBox({
           backgroundColor={White}
           buttonTextType={2}
         />
-      ) : (
-        ''
       )}
-      {newMessageCounts && (
-        <NewMessageCounts>
-          <Caption2 color={White}>{newMessageCounts}</Caption2>
-        </NewMessageCounts>
-      )}
+      {newMessageCounts !== 0 ||
+        (newMessageCounts !== null && (
+          <NewMessageCounts>
+            <Caption2 color={White}>{newMessageCounts}</Caption2>
+          </NewMessageCounts>
+        ))}
     </OngoingCounsultBoxWrapper>
   );
 }
