@@ -1,7 +1,7 @@
 import { patchLetterMessage, patchLetterMessageFirstQustion } from 'api/patch';
 import { postLetterMessage, postLetterMessageFirstQustion } from 'api/post';
 import { Button } from 'components/Common/Button';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';

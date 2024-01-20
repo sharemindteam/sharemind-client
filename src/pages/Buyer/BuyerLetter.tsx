@@ -1,6 +1,5 @@
-import { display } from '@mui/system';
 import {
-  getCounselorCategories,
+  getLetterDeadline,
   getLetterMessages,
   getLetterRecentType,
 } from 'api/get';
@@ -34,6 +33,8 @@ export const BuyerLetter = () => {
     messageType: null,
     updatedAt: null,
   });
+  //마감기한
+  const [deadline, setDeadline] = useState<string>('');
   //로딩 state
   const [isLoading, setIsLoading] = useState(false);
   //제일 먼저 현재 상담 상태 정보업데이트
@@ -48,7 +49,12 @@ export const BuyerLetter = () => {
         ) {
           setActive(0);
         } else if (res.data.recentType === '질문') {
+          await fetchDeadline();
           setActive(1);
+          //나중에 답장도 추가
+        } else if (res.data.recentType === '추가 질문') {
+          await fetchDeadline();
+          setActive(3);
         }
       } else if (res.response.status === 404) {
         console.error('Failed to fetch recent type:', res);
@@ -57,6 +63,19 @@ export const BuyerLetter = () => {
       console.error('Error fetching recent type:', error);
     } finally {
       await fetchMessageData(); // API 요청이 완료되면 isLoading을 false로 설정
+    }
+  };
+  const fetchDeadline = async () => {
+    try {
+      const res: any = await getLetterDeadline(id);
+      if (res.status === 200) {
+        setDeadline(res.data.deadline);
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 상담입니다.');
+        navigate('/buyer/consult');
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
   //그 후 message가져옴 tagState에 따라 params 다르게처리
@@ -147,6 +166,7 @@ export const BuyerLetter = () => {
             tagStatus={tagStatus}
             consultId={id}
             messageResponse={messageResponse}
+            deadline={deadline}
           />
         </>
       );

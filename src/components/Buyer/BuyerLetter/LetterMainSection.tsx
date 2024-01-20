@@ -11,12 +11,14 @@ interface LetterMainSectionProps {
   tagStatus: number;
   consultId: string;
   messageResponse: GetMessagesType;
+  deadline: string;
 }
 //TODO :마감시간 api로 받아서 전달
 export const LetterMainSection = ({
   tagStatus,
   consultId,
   messageResponse,
+  deadline,
 }: LetterMainSectionProps) => {
   const navigate = useNavigate();
 
@@ -59,7 +61,7 @@ export const LetterMainSection = ({
             <Space height="3.4rem" />
             <BodyText>아직 답장이 오지 않았어요!</BodyText>
             <Space height="1.2rem" />
-            <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
+            <Body1 color={Grey1}>{deadline}까지</Body1>
             <Body2 color={Grey1}>답장이 달리지 않을 경우</Body2>
             <Body2 color={Grey1}>자동으로 환불처리를 진행해드릴게요.</Body2>
             <Body2 color={Grey1}>환불이 진행될 시 이메일로 안내됩니다.</Body2>
@@ -73,7 +75,7 @@ export const LetterMainSection = ({
             <NotWriteGraphic />
             <BodyText>1회 더 질문할 수 있어요</BodyText>
             <Space height="2.2rem" />
-            <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
+            <Body1 color={Grey1}>{deadline}까지</Body1>
             <Body2 color={Grey1}>추가 질문을 작성하지 않으면</Body2>
             <Body2 color={Grey1}>자동으로 상담이 종료됩니다.</Body2>
           </div>
@@ -101,7 +103,7 @@ export const LetterMainSection = ({
             <Space height="3.4rem" />
             <BodyText>아직 답장이 오지 않았어요!</BodyText>
             <Space height="1.2rem" />
-            <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
+            <Body1 color={Grey1}>{deadline}까지</Body1>
             <Body2 color={Grey1}>답장이 달리지 않을 경우</Body2>
             <Body2 color={Grey1}>자동으로 환불처리를 진행해드릴게요.</Body2>
             <Body2 color={Grey1}>환불이 진행될 시 이메일로 안내됩니다.</Body2>
@@ -110,75 +112,16 @@ export const LetterMainSection = ({
       );
     }
   } else {
-    if (tagStatus === 0) {
-      return (
-        <SectionWrapper>
-          <UpdatedAtBox>
-            <Body3 color={Grey3}>{messageResponse.updatedAt}</Body3>
-          </UpdatedAtBox>
-          <ContentBox>
-            <Body2 color={Grey1}>{messageResponse.content}</Body2>
-          </ContentBox>
-        </SectionWrapper>
-      );
-    } else if (tagStatus === 1) {
-      return (
-        <SectionWrapper>
-          <div className="body-wrapper-answer">
-            <NotArriveGraphic />
-            <Space height="3.4rem" />
-            <BodyText>아직 답장이 오지 않았어요!</BodyText>
-            <Space height="1.2rem" />
-            <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
-            <Body2 color={Grey1}>답장이 달리지 않을 경우</Body2>
-            <Body2 color={Grey1}>자동으로 환불처리를 진행해드릴게요.</Body2>
-            <Body2 color={Grey1}>환불이 진행될 시 이메일로 안내됩니다.</Body2>
-          </div>
-        </SectionWrapper>
-      );
-    } else if (tagStatus === 2) {
-      return (
-        <SectionWrapper>
-          <div className="body-wrapper-question">
-            <NotWriteGraphic />
-            <BodyText>1회 더 질문할 수 있어요</BodyText>
-            <Space height="2.2rem" />
-            <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
-            <Body2 color={Grey1}>추가 질문을 작성하지 않으면</Body2>
-            <Body2 color={Grey1}>자동으로 상담이 종료됩니다.</Body2>
-          </div>
-
-          <ButtonWrapper>
-            <Button
-              text="추가질문 작성하기"
-              width="89.33%"
-              height="5.2rem"
-              onClick={() => {
-                navigate(`/buyer/writeLetter/${consultId}`, {
-                  state: { tagStatus: tagStatus },
-                });
-              }}
-            />
-            <Space height="3.2rem" />
-          </ButtonWrapper>
-        </SectionWrapper>
-      );
-    } else if (tagStatus === 3) {
-      return (
-        <SectionWrapper>
-          <div className="body-wrapper-answer">
-            <NotArriveGraphic />
-            <Space height="3.4rem" />
-            <BodyText>아직 답장이 오지 않았어요!</BodyText>
-            <Space height="1.2rem" />
-            <Body1 color={Grey1}>2023년 12월 23일 00시까지</Body1>
-            <Body2 color={Grey1}>답장이 달리지 않을 경우</Body2>
-            <Body2 color={Grey1}>자동으로 환불처리를 진행해드릴게요.</Body2>
-            <Body2 color={Grey1}>환불이 진행될 시 이메일로 안내됩니다.</Body2>
-          </div>
-        </SectionWrapper>
-      );
-    }
+    return (
+      <SectionWrapper>
+        <UpdatedAtBox>
+          <Body3 color={Grey3}>{messageResponse.updatedAt}</Body3>
+        </UpdatedAtBox>
+        <ContentBox>
+          <Body2 color={Grey1}>{messageResponse.content}</Body2>
+        </ContentBox>
+      </SectionWrapper>
+    );
   }
 };
 const SectionWrapper = styled.section`
