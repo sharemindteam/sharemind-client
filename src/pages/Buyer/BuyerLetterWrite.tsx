@@ -18,12 +18,8 @@ import {
   getDraftsLetter,
   getLetterMessages,
 } from 'api/get';
-interface GetMessagesType {
-  content: string | null;
-  messageId: number | null;
-  messageType: string | null;
-  updatedAt: string | null;
-}
+import { GetMessagesType } from 'utils/type';
+
 export const BuyerLetterWrite = () => {
   const navigate = useNavigate();
   //params로 consult id 넘어오고 tag status는 location으로 넘어옴
@@ -189,7 +185,7 @@ export const BuyerLetterWrite = () => {
             }}
           />
           <Button
-            text="보내기"
+            text="제출하기"
             width="42.66%"
             height="5.2rem"
             isActive={isActivePostButton}
@@ -216,15 +212,26 @@ export const BuyerLetterWrite = () => {
         </>
       ) : null}
       {isActivePostModal && (
-        <LetterPostModal setIsActive={setIsActivePostModal} replyText={input} />
+        <LetterPostModal
+          setIsActive={setIsActivePostModal}
+          replyText={input}
+          isSaved={isSaved}
+          setIsSaved={setIsSaved}
+          tagStatus={tagStatus}
+          categoryType={categoryType}
+          consultCategory={categoryList[categoryType]}
+          consultId={id}
+          messageId={messageResponse.messageId}
+        />
       )}
       {
         //TODO : 임시 저장된 글이 없을 떄는 안뜨게 하는 예외처리 추가
         isActiveLoadModal && (
           <LetterLoadModal
+            savedText={messageResponse.content}
+            updatedAt={messageResponse.updatedAt}
             setReplyText={setInput}
             setIsActive={setIsActiveLoadModal}
-            lastModifyDate={'2023년 10월 23일 오후 12시 34분'}
             consultId={id}
           />
         )

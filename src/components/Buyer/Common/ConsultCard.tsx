@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Black, Green, Grey1, Grey2, Grey6, White } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
-
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from '../../Common/TagA2Consult';
 import { useNavigate } from 'react-router-dom';
@@ -35,7 +34,9 @@ export const ConsultCard = ({
     <Wrapper
       onClick={() => {
         //추후 consult id에 해당하는 letter로 navigate, 채팅 편지 구분까지
-        navigate(`/buyer/letter/${id}`);
+        navigate(`/buyer/letter/${id}`, {
+          state: { opponentNickname: opponentNickname },
+        });
       }}
     >
       <ConsultContent>
