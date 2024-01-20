@@ -5,6 +5,8 @@ import { Characters } from 'utils/Characters';
 import { TagA2Consult } from '../../Common/TagA2Consult';
 import { useNavigate } from 'react-router-dom';
 import { ConsultState } from 'utils/type';
+import { useSetRecoilState } from 'recoil';
+import { opponentNicknameState } from 'utils/atom';
 
 interface ConsultCardProps {
   consultStyle: string;
@@ -27,6 +29,7 @@ export const ConsultCard = ({
   unreadMessageCount,
 }: ConsultCardProps) => {
   const navigate = useNavigate();
+  const setOpponentNickname = useSetRecoilState(opponentNicknameState);
   const consultStatus = status as ConsultState;
   if (unreadMessageCount === null) {
     unreadMessageCount = 0;
@@ -35,9 +38,11 @@ export const ConsultCard = ({
     <Wrapper
       onClick={() => {
         //추후 consult id에 해당하는 letter로 navigate, 채팅 편지 구분까지
-        navigate(`/buyer/letter/${id}`, {
-          state: { opponentNickname: opponentNickname },
-        });
+        setOpponentNickname(opponentNickname);
+        // navigate(`/buyer/letter/${id}`, {
+        //   state: { opponentNickname: opponentNickname },
+        // });
+        navigate(`/buyer/letter/${id}`);
       }}
     >
       <ConsultContent>

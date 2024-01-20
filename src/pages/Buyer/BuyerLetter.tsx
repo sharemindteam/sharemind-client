@@ -9,10 +9,12 @@ import { LetterTags } from 'components/Buyer/BuyerLetter/LetterTags';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+import { opponentNicknameState } from 'utils/atom';
 import { GetMessagesType } from 'utils/type';
 
 export const BuyerLetter = () => {
@@ -20,7 +22,7 @@ export const BuyerLetter = () => {
   const { id } = useParams();
   const location = useLocation();
   const { state } = location;
-  const opponentNickname: number = state?.opponentNickname;
+  const opponentNickname = useRecoilValue(opponentNicknameState);
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3 / 어디까지 가능한지 여부
   const [active, setActive] = useState<number>(0);
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
@@ -43,6 +45,7 @@ export const BuyerLetter = () => {
     setIsLoading(true);
     try {
       const res: any = await getLetterRecentType(id);
+      console.log(res.data);
       if (res.status === 200) {
         if (
           res.data.recentType === '해당 편지에 대해 작성된 메시지가 없습니다.'
@@ -51,7 +54,9 @@ export const BuyerLetter = () => {
         } else if (res.data.recentType === '질문') {
           await fetchDeadline();
           setActive(1);
-          //나중에 답장도 추가
+        } else if (res.data.recentType === '답장') {
+          await fetchDeadline();
+          setActive(2);
         } else if (res.data.recentType === '추가 질문') {
           await fetchDeadline();
           setActive(3);

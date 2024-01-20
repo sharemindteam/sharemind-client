@@ -40,6 +40,7 @@ export const BuyerConsult = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
+  //card에 넘길 데이터
   const [cardData, setCardData] = useState<consultApiObject[]>([]);
   useEffect(() => {
     const fetchData = async () => {
