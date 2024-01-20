@@ -1,7 +1,16 @@
 import styled from 'styled-components';
 import { ReactComponent as Check } from 'assets/icons/icon-signup-check.svg';
 import { Body1, Button2, Caption1, Caption2, Heading } from 'styles/font';
-import { Green, Grey1, Grey3, Grey4, Grey5, Red, White } from 'styles/color';
+import {
+  ErrorColor,
+  Green,
+  Grey1,
+  Grey3,
+  Grey4,
+  Grey5,
+  Red,
+  White,
+} from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import Input from 'components/Common/Input';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -22,10 +31,16 @@ export const SignupVerifyEmail = ({
   const verifyInput = useInput('');
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
-
+  //전송 횟수 카운트
+  const [sendCount, setSendCount] = useState<number>(0);
   //인증 전송됨 여부
   const [isSended, setIsSended] = useState<boolean>(false);
-
+  //이메일 에러 메세지
+  const [errorMessage, setErrorMessage] = useState<string>(
+    ' *최초 인증 및 비밀번호 분실시 안내 메일이 발송됩니다.',
+  );
+  const [isEmailError, setIsEmailError] = useState<boolean>(false);
+  const [errorMessageColor, setErrorMessageColor] = useState<string>(Grey4);
   //verify button text
   const [verifyText, setVerifyText] = useState<string>('인증 요청');
   useEffect(() => {
@@ -77,8 +92,33 @@ export const SignupVerifyEmail = ({
       const res: any = await postEmails(body);
       if (res.status === 200) {
         setIsSended(true);
+        //이메일 입력 캡션
+        setErrorMessageColor(Grey4);
+        setErrorMessage(
+          '*최초 인증 및 비밀번호 분실시 안내 메일이 발송됩니다.',
+        );
+        setIsEmailError(false);
+        //전송 5회 카운트
+        setSendCount(sendCount + 1);
+        //버튼 텍스트랑 남은시간
         setVerifyText('재발송');
-        setRemainingTime(5 * 60);
+        //최초 전송시에만 5분으로 설정
+        //TODO : 나중에 횟수 return 받으면200 response로 setTime해주는걸로
+        if (sendCount === 0) {
+          setRemainingTime(5 * 60);
+        }
+      } else if (res.response.status === 400) {
+        setErrorMessageColor(ErrorColor);
+        setIsEmailError(true);
+        if (res.response.data.errorName === 'EMAIL_ALREADY_EXIST') {
+          setErrorMessage(res.response.data.message.split(' : ')[0]);
+        } else if (res.response.data.errorName === 'BAD_REQUEST') {
+          setErrorMessage(res.response.data.message + '.');
+        } else if (
+          res.response.data.errorName === 'CODE_REQUEST_COUNT_EXCEED'
+        ) {
+          setErrorMessage(res.response.data.message.split(' : ')[0]);
+        }
       }
     } catch (ex) {
       alert('이메일 인증 과정에서 오류가 발생했습니다.');
@@ -151,10 +191,16 @@ export const SignupVerifyEmail = ({
             </div>
           </div>
           <div className="caption">
-            <Caption2 color={Grey4}>
-              *최초 인증 및 비밀번호 분실시 안내 메일이 발송됩니다.
-            </Caption2>
-            <Check />
+            {isEmailError ? (
+              <>
+                <Caption2 color={errorMessageColor}>{errorMessage}</Caption2>
+              </>
+            ) : (
+              <>
+                <Caption2 color={errorMessageColor}>{errorMessage}</Caption2>
+                <Check />
+              </>
+            )}
           </div>
           {isSended ? (
             <>
