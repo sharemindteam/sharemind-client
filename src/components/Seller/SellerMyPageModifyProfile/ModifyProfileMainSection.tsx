@@ -34,6 +34,8 @@ import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { BankIcon } from 'utils/BankIcon';
+import { getProfiles } from 'api/get';
+import { ProfileData } from 'pages/Seller/SellerMyPageViewProfile';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
@@ -43,6 +45,7 @@ interface ModifyProfileMainSectionProps {
   isSetChatTime: boolean;
   setIsSetChatTime: React.Dispatch<SetStateAction<boolean>>;
 }
+
 export const ModifyProfileMainSection = ({
   selectCategory,
   selectStyle,
@@ -54,9 +57,9 @@ export const ModifyProfileMainSection = ({
   const navigate = useNavigate();
   const nickname = useInput('');
 
-  const category = useCustomSelect();
-  const style = useCustomSelect();
-  const type = useCustomSelect();
+  const category = useCustomSelect('category');
+  const style = useCustomSelect('style');
+  const type = useCustomSelect('type');
 
   // 시간 설정은 나중에....ㅠㅠ
   const availableTime = useCustomSelect();
@@ -66,9 +69,9 @@ export const ModifyProfileMainSection = ({
 
   const oneLiner = useInput('');
   const experience = useInput('');
-  const accountNum = useInput('');
-  const bankType = useInput('');
-  const bankOwner = useInput('');
+  // const accountNum = useInput('');
+  // const bankType = useInput('');
+  // const bankOwner = useInput('');
 
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
     isCategoryModalOpenState,
@@ -92,26 +95,41 @@ export const ModifyProfileMainSection = ({
   useEffect(() => {
     type.setViewValue(selectType.join(', '));
   }, [selectType]);
+  // useEffect(() => {
+  //   bankType.setValue(selectBankType);
+  // }, [selectBankType]);
+
   useEffect(() => {
-    bankType.setValue(selectBankType);
-  }, [selectBankType]);
-  useEffect(() => {
-    nickname.setValue(profileDummyData.nickName);
-    category.setViewValue(profileDummyData.category);
-    style.setViewValue(profileDummyData.style);
-    type.setViewValue(profileDummyData.type);
-    availableTime.setViewValue(profileDummyData.time);
-    letterPrice.setValue(
-      profileDummyData.letterPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-    );
-    chatPrice.setValue(
-      profileDummyData.chatPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-    );
-    oneLiner.setValue(profileDummyData.oneLiner);
-    experience.setValue(profileDummyData.experience);
-    accountNum.setValue(profileDummyData.accountNum);
-    bankType.setValue(profileDummyData.bankType);
-    bankOwner.setValue(profileDummyData.bankOwner);
+    const fetchProfile = async () => {
+      const { data }: any = await getProfiles();
+      console.log(data);
+      nickname.setValue(data?.nickname);
+      category.setViewValue(data?.consultCategories.join(', '));
+      style.setViewValue(data?.consultStyle);
+      type.setViewValue(data?.consultTypes.join(', '));
+      // availableTime.setViewValue(data?.consultTimes);
+      data?.consultCosts?.편지 &&
+        letterPrice.setValue(
+          String(data?.consultCosts?.편지)?.replace(
+            /\B(?=(\d{3})+(?!\d))/g,
+            ',',
+          ),
+        );
+      data?.consultCosts?.채팅 &&
+        chatPrice.setValue(
+          String(data?.consultCosts?.채팅)?.replace(
+            /\B(?=(\d{3})+(?!\d))/g,
+            ',',
+          ),
+        );
+
+      oneLiner.setValue(data?.introduction);
+      experience.setValue(data?.experience);
+      // accountNum.setValue(profileDummyData.accountNum);
+      // bankType.setValue(profileDummyData.bankType);
+      // bankOwner.setValue(profileDummyData.bankOwner);
+    };
+    fetchProfile();
   }, []);
   return (
     <ModifyProfileMainSectionWrapper>
@@ -242,7 +260,7 @@ export const ModifyProfileMainSection = ({
           <div className="chat-price">
             <PriceInformTag>채팅</PriceInformTag>
             <PriceInput
-              value={chatPrice.value}
+              value={chatPrice?.value}
               onChange={chatPrice.onChangePrice}
               placeholder="30분당 최소 5,000원~최대 50,000원"
               maxLength={6}
@@ -320,7 +338,7 @@ export const ModifyProfileMainSection = ({
             <CheckIcon />
           </ConditionMessage>
         </div>
-        <div className="account">
+        {/* <div className="account">
           <ProfileInformTag>수익 계좌</ProfileInformTag>
           <div className="account-num">
             <AccountTag>계좌번호</AccountTag>
@@ -363,7 +381,7 @@ export const ModifyProfileMainSection = ({
               isBoxSizing={true}
             />
           </div>
-        </div>
+        </div> */}
         <Space height="9.2rem" />
       </ModifyProfileBox>
       <BottomButton

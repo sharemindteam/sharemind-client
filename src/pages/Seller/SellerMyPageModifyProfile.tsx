@@ -48,9 +48,10 @@ export const SellerMypageModifyProfile = () => {
   const [isSucessUpdate, setIsUpdateSuccess] =
     useRecoilState<boolean>(isSuccessUpdateState);
 
+    // 채팅 상담시간 페이지로 이동할지여부
   const [isSetChatTime, setIsSetChatTime] = useState<boolean>(false);
 
-  // 채팅 상담시간 
+  
   return (
     <>
       <ModifyProfileHeader

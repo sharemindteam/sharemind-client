@@ -2,7 +2,7 @@ import { getProfiles } from 'api/get';
 import { ViewProfileHeader } from 'components/Seller/SellerMyPageViewProfile/ViewProfileHeader';
 import { ViewProfileMainSection } from 'components/Seller/SellerMyPageViewProfile/ViewProfileMainSection';
 import { useEffect, useState } from 'react';
-interface profileData {
+export interface ProfileData {
   counselorId: string;
   nickname: string;
   consultCategories: string[];
@@ -14,7 +14,7 @@ interface profileData {
   experience: string;
 }
 export const SellerMypageViewProfile = () => {
-  const [profile, setProfile] = useState<profileData>();
+  const [profile, setProfile] = useState<ProfileData>();
   useEffect(() => {
     const fetchMinderProfile = async () => {
       const profileRes: any = await getProfiles();
