@@ -93,3 +93,8 @@ export const searchKeywordState = atom({
   key: 'searchKeywordState',
   default: '',
 });
+//셰어 상대 마인더 nickname
+export const opponentNicknameState = atom({
+  key: 'opponentNicknameState',
+  default: '',
+});

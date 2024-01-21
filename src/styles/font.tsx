@@ -51,11 +51,24 @@ export const Body2 = styled.div<FontProps>`
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
 `;
+//피그마 상에선 body4
 export const Body3 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};
   font-size: 1.4rem;
   font-weight: 400;
+  font-style: normal;
+  line-height: 155%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
+`;
+//피그마 상에선 body3
+export const Body4 = styled.div<FontProps>`
+  font-family: Pretendard;
+  color: ${(props) => props.color || '#000000'};
+  font-size: 1.4rem;
+  font-weight: 600;
   font-style: normal;
   line-height: 155%;
   padding: ${(props) => props.padding || ''};

@@ -1,6 +1,6 @@
 //type
 //tagA2 상담 상태 type
-type ConsultState =
+export type ConsultState =
   | '답변 대기'
   | '질문 대기'
   | '답변 도착'
@@ -46,13 +46,15 @@ type ConsultInfoItem = {
   unreadMessageCount: null;
 };
 
-
-
-type SellerLetterLevelTypes ={
+export interface GetMessagesType {
+  content: string | null;
+  messageId: number | null;
+  messageType: string | null;
+  updatedAt: string | null;
 }
 
-type LetterInfo ={
-  
-}
+type SellerLetterLevelTypes = {};
+
+type LetterInfo = {};
 
 type ConsultInfoList = ConsultInfoItem[];

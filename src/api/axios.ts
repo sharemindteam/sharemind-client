@@ -37,6 +37,9 @@ instance.interceptors.response.use(
           axios.defaults.headers.common.Authorization = `${accessToken}`;
           originRequest.headers.Authorization = `${accessToken}`;
           return axios(originRequest);
+        } else if (tokenResponse.response.status === 400) {
+          window.location.href = '/login';
+          //나중에 지우고 로그인으로 navigate
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
