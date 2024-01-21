@@ -1,3 +1,4 @@
+import { getIsPassQuiz } from 'api/get';
 import { BackDrop } from 'components/Common/BackDrop';
 import { Space } from 'components/Common/Space';
 import IsStopQuizModal from 'components/Seller/SellerVerifyQuiz/IsStopQuizModal';
@@ -8,6 +9,7 @@ import VerifyQuizButton from 'components/Seller/SellerVerifyQuiz/VerifyQuizButto
 import VerifyQuizHeader from 'components/Seller/SellerVerifyQuiz/VerifyQuizHeader';
 import VerifySuccess from 'components/Seller/SellerVerifyQuiz/VerifySuccess';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey6, LightGreen } from 'styles/color';
 import { Subtitle } from 'styles/font';
@@ -21,6 +23,18 @@ export const SellerVerifyQuiz = () => {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState<boolean>(false);
   const [isStopModalOpen, setIsStopModalOpen] = useState<boolean>(false);
   const [verifyStatus, setVerifyStatus] = useState<string>('인증 전');
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchIsPassQuiz = async () => {
+      const isPassResult: any = await getIsPassQuiz();
+      // 상담 퀴즈를 통과했으면 내 정보탭으로 리다이렉트
+      if (isPassResult?.data) {
+        alert('이미 퀴즈를 통과했습니다.');
+        navigate('/seller/mypage');
+      }
+    };
+    fetchIsPassQuiz();
+  }, []);
   return (
     <>
       <VerifyQuizHeader
