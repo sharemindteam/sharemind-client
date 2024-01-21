@@ -1,6 +1,6 @@
 // 서버에서 념겨준 consultStyle을 Character num 으로 mapping..
 
-export const consultStyleToCharNum = (consultStyle: string) => {
+export const consultStyleToCharNum = (consultStyle: string | undefined) => {
   if (consultStyle === '조언') {
     return 9;
   } else if (consultStyle === '공감') {
