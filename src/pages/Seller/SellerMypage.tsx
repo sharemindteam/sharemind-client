@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Profile } from 'components/Common/Profile';
 import { useEffect, useState } from 'react';
 import { getMyInfo } from 'api/get';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 interface UserInfo {
   nickname: string;
   level: string;
@@ -21,6 +22,7 @@ export const SellerMypage = () => {
     };
     fetchMyInfo();
   }, []);
+  console.log(userInfo);
   return (
     <>
       <Header
@@ -34,7 +36,7 @@ export const SellerMypage = () => {
         name={userInfo?.nickname}
         levelStatus={userInfo?.level}
         isVerified={userInfo?.isEducated}
-        profileIdentifier={1}
+        profileIdentifier={consultStyleToCharNum(userInfo?.consultStyle)}
         isBuyer={false}
       />
     </>

@@ -7,5 +7,11 @@ export const consultStyleToCharNum = (consultStyle: string) => {
     return 10;
   } else if (consultStyle === '팩폭') {
     return 11;
+  } else {
+    return 9;
   }
+};
+
+export const consultCategoryToCharNum = (consultCategory: string) => {
+  // if (consultCategory==="")
 };
