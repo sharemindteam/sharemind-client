@@ -11,9 +11,9 @@ import { Characters } from 'utils/Characters';
 interface ProfileProps {
   isBuyer: boolean;
   isVerified?: undefined | boolean;
-  profileIdentifier: number;
-  name: string;
-  levelStatus: number;
+  profileIdentifier: number | undefined;
+  name: string | undefined;
+  levelStatus: string | undefined;
 }
 //일단 프로필 이미지는 한개만 불러왔음!
 export const Profile = ({
@@ -95,9 +95,9 @@ export const Profile = ({
       ) : (
         <VerifyButtonWrapper>
           <VerifyButton
-          onClick={()=>{
-            navigate("/seller/education/first")
-          }}
+            onClick={() => {
+              navigate('/seller/education/first');
+            }}
             width="100%"
             backgroundColor={Green}
             height="5.2rem"
