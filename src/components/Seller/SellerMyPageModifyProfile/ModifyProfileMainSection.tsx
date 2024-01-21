@@ -8,26 +8,19 @@ import {
   Grey5,
   Grey6,
   LightGreen,
-  Red,
   SafeColor,
   White,
 } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check.svg';
-import { useInput } from 'hooks/useInput';
-import { SetStateAction, useEffect, useState } from 'react';
-import { isIncludeSpecialLetter } from 'utils/isIncludeSpecialLetter';
-import { profileDummyData } from 'utils/profileDummy';
-import { useCustomSelect } from 'hooks/useCustomSelect';
-import { Button } from 'components/Common/Button';
+import { SetStateAction, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   isUpdateModalOpenState,
   isCategoryModalOpenState,
   isStyleModalOpenState,
   isTypeOpenModalState,
-  isSuccessUpdateState,
   isBankModalOpenState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
@@ -36,43 +29,41 @@ import { Space } from 'components/Common/Space';
 import { BankIcon } from 'utils/BankIcon';
 import { getProfiles } from 'api/get';
 import { ProfileData } from 'pages/Seller/SellerMyPageViewProfile';
+import { UpdatePopup } from './UpdatePopup';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
   selectStyle: string;
   selectType: string[];
-  selectBankType: string;
-  isSetChatTime: boolean;
+  selectAvailableTime: any;
   setIsSetChatTime: React.Dispatch<SetStateAction<boolean>>;
+  nickname: any;
+  category: any;
+  style: any;
+  type: any;
+  availableTime: any;
+  letterPrice: any;
+  chatPrice: any;
+  oneLiner: any;
+  experience: any;
 }
 
 export const ModifyProfileMainSection = ({
   selectCategory,
   selectStyle,
   selectType,
-  selectBankType,
-  isSetChatTime,
   setIsSetChatTime,
+  nickname,
+  category,
+  style,
+  type,
+  availableTime,
+  letterPrice,
+  chatPrice,
+  oneLiner,
+  experience,
 }: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
-  const nickname = useInput('');
-
-  const category = useCustomSelect('category');
-  const style = useCustomSelect('style');
-  const type = useCustomSelect('type');
-
-  // 시간 설정은 나중에....ㅠㅠ
-  const availableTime = useCustomSelect();
-
-  const letterPrice = useInput('');
-  const chatPrice = useInput('');
-
-  const oneLiner = useInput('');
-  const experience = useInput('');
-  // const accountNum = useInput('');
-  // const bankType = useInput('');
-  // const bankOwner = useInput('');
-
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
     isCategoryModalOpenState,
   );
@@ -82,10 +73,12 @@ export const ModifyProfileMainSection = ({
   const [isTypeModalOpen, setIsTypeModalOpen] =
     useRecoilState(isTypeOpenModalState);
   const setIsBankModalOpen = useSetRecoilState(isBankModalOpenState);
-  const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
-
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useRecoilState<boolean>(
+    isUpdateModalOpenState,
+  );
   useEffect(() => {
     category.setViewValue(categoryInputMaker(selectCategory));
+    console.log('!');
   }, [selectCategory]);
 
   useEffect(() => {
@@ -99,40 +92,21 @@ export const ModifyProfileMainSection = ({
   //   bankType.setValue(selectBankType);
   // }, [selectBankType]);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const { data }: any = await getProfiles();
-      console.log(data);
-      nickname.setValue(data?.nickname);
-      category.setViewValue(data?.consultCategories.join(', '));
-      style.setViewValue(data?.consultStyle);
-      type.setViewValue(data?.consultTypes.join(', '));
-      // availableTime.setViewValue(data?.consultTimes);
-      data?.consultCosts?.편지 &&
-        letterPrice.setValue(
-          String(data?.consultCosts?.편지)?.replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ',',
-          ),
-        );
-      data?.consultCosts?.채팅 &&
-        chatPrice.setValue(
-          String(data?.consultCosts?.채팅)?.replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ',',
-          ),
-        );
-
-      oneLiner.setValue(data?.introduction);
-      experience.setValue(data?.experience);
-      // accountNum.setValue(profileDummyData.accountNum);
-      // bankType.setValue(profileDummyData.bankType);
-      // bankOwner.setValue(profileDummyData.bankOwner);
-    };
-    fetchProfile();
-  }, []);
   return (
     <ModifyProfileMainSectionWrapper>
+      {isUpdateModalOpen && (
+        <UpdatePopup
+          nickname={nickname}
+          category={category}
+          style={style}
+          type={type}
+          availableTime={availableTime}
+          letterPrice={letterPrice}
+          chatPrice={chatPrice}
+          oneLiner={oneLiner}
+          experience={experience}
+        />
+      )}
       <ModifyProfileBox>
         <div className="nickname">
           <ProfileInformTag>닉네임</ProfileInformTag>

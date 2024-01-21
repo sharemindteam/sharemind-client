@@ -1,3 +1,4 @@
+import { getProfiles } from 'api/get';
 import BankSelectModal from 'components/Seller/Common/BankSelectModal';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
@@ -7,7 +8,9 @@ import { StyleModal } from 'components/Seller/SellerMyPageModifyProfile/StyleMod
 import { TypeModal } from 'components/Seller/SellerMyPageModifyProfile/TypeModal';
 import { UpdatePopup } from 'components/Seller/SellerMyPageModifyProfile/UpdatePopup';
 import { UpdateSuccess } from 'components/Seller/SellerMyPageModifyProfile/UpdateSuccess';
-import { useState } from 'react';
+import { useCustomSelect } from 'hooks/useCustomSelect';
+import { useInput } from 'hooks/useInput';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import {
@@ -26,8 +29,6 @@ export const SellerMypageModifyProfile = () => {
   const [selectStyle, setSelectStyle] = useState<string>('');
   // 상담 방식 enum List
   const [selectType, setSelectType] = useState<string[]>([]);
-  // 은행
-  const [selectBankType, setSelectBankType] = useState<string>('');
 
   // 모달 띄워주는 여부
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState<boolean>(
@@ -48,10 +49,53 @@ export const SellerMypageModifyProfile = () => {
   const [isSucessUpdate, setIsUpdateSuccess] =
     useRecoilState<boolean>(isSuccessUpdateState);
 
-    // 채팅 상담시간 페이지로 이동할지여부
+  // 채팅 상담시간 페이지로 이동할지여부
   const [isSetChatTime, setIsSetChatTime] = useState<boolean>(false);
 
-  
+  const nickname = useInput('');
+  const category = useCustomSelect('category');
+  const style = useCustomSelect('style');
+  const type = useCustomSelect('type');
+  // 시간 설정은 나중에....ㅠㅠ
+  const availableTime = useCustomSelect();
+
+  const letterPrice = useInput('');
+  const chatPrice = useInput('');
+
+  const oneLiner = useInput('');
+  const experience = useInput('');
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data }: any = await getProfiles();
+      console.log(data);
+      nickname.setValue(data?.nickname);
+      category.setViewValue(data?.consultCategories.join(', '));
+      style.setViewValue(data?.consultStyle);
+      type.setViewValue(data?.consultTypes.join(', '));
+      // availableTime.setViewValue(data?.consultTimes);
+      data?.consultCosts?.편지 &&
+        letterPrice.setValue(
+          String(data?.consultCosts?.편지)?.replace(
+            /\B(?=(\d{3})+(?!\d))/g,
+            ',',
+          ),
+        );
+      data?.consultCosts?.채팅 &&
+        chatPrice.setValue(
+          String(data?.consultCosts?.채팅)?.replace(
+            /\B(?=(\d{3})+(?!\d))/g,
+            ',',
+          ),
+        );
+
+      oneLiner.setValue(data?.introduction);
+      experience.setValue(data?.experience);
+      // accountNum.setValue(profileDummyData.accountNum);
+      // bankType.setValue(profileDummyData.bankType);
+      // bankOwner.setValue(profileDummyData.bankOwner);
+    };
+    fetchProfile();
+  }, []);
   return (
     <>
       <ModifyProfileHeader
@@ -64,12 +108,20 @@ export const SellerMypageModifyProfile = () => {
         <SetChatTimeSection />
       ) : (
         <ModifyProfileMainSection
+          nickname={nickname}
+          category={category}
+          style={style}
+          type={type}
+          availableTime={availableTime}
+          letterPrice={letterPrice}
+          chatPrice={chatPrice}
+          oneLiner={oneLiner}
+          experience={experience}
           selectCategory={selectCategory}
           selectStyle={selectStyle}
           selectType={selectType}
-          selectBankType={selectBankType}
-          isSetChatTime={isSetChatTime}
           setIsSetChatTime={setIsSetChatTime}
+          selectAvailableTime={undefined}
         />
       )}
 
@@ -93,10 +145,10 @@ export const SellerMypageModifyProfile = () => {
       {isTypeModalOpen && (
         <TypeModal selectType={selectType} setSelectType={setSelectType} />
       )}
-      {isUpdateModalOpen && <UpdatePopup />}
-      {isBankModalOpen && (
+
+      {/* {isBankModalOpen && (
         <BankSelectModal setSelectBankType={setSelectBankType} />
-      )}
+      )} */}
     </>
   );
 };
