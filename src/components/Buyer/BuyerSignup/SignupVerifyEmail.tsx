@@ -18,6 +18,8 @@ import { Button } from 'components/Common/Button';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { UseInputResult, useInput } from 'hooks/useInput';
 import { postEmails, postEmailsCode } from 'api/post';
+import { BackDrop } from 'components/Common/BackDrop';
+import { SignupModal } from './SignupModal';
 interface SignupVerifyEmailProps {
   idInput: UseInputResult;
   setSignupState: Dispatch<SetStateAction<number>>;
@@ -31,8 +33,6 @@ export const SignupVerifyEmail = ({
   const verifyInput = useInput('');
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
-  //전송 횟수 카운트
-  const [sendCount, setSendCount] = useState<number>(0);
   //인증 전송됨 여부
   const [isSended, setIsSended] = useState<boolean>(false);
   //이메일 에러 메세지
@@ -43,6 +43,12 @@ export const SignupVerifyEmail = ({
   const [errorMessageColor, setErrorMessageColor] = useState<string>(Grey4);
   //verify button text
   const [verifyText, setVerifyText] = useState<string>('인증 요청');
+  //처음 인증요청보내는건지 체크
+  const [isFirstRequest, setIsFirstRequest] = useState<boolean>(true);
+  // 임시저장, 편지, 불러오기 모달 활성화여부
+  const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
+  // 모달 에러 메세지
+  const [modalErrorMessage, setModalErrorMessage] = useState<string>('');
   useEffect(() => {
     if (idInput.value.trim() !== '') {
       if (idInput.isValid === false) {
@@ -86,6 +92,8 @@ export const SignupVerifyEmail = ({
       setValid(false);
     }
   }, [idInput.isValid, verifyInput.isValid]);
+  // 다음 button valid 체크
+  useEffect(() => {}, []);
   const handleVerifyClick = async () => {
     const body = { email: idInput.value };
     try {
@@ -99,13 +107,12 @@ export const SignupVerifyEmail = ({
         );
         setIsEmailError(false);
         //전송 5회 카운트
-        setSendCount(sendCount + 1);
         //버튼 텍스트랑 남은시간
         setVerifyText('재발송');
         //최초 전송시에만 5분으로 설정
-        //TODO : 나중에 횟수 return 받으면200 response로 setTime해주는걸로
-        if (sendCount === 0) {
+        if (isFirstRequest) {
           setRemainingTime(5 * 60);
+          setIsFirstRequest(false);
         }
       } else if (res.response.status === 400) {
         setErrorMessageColor(ErrorColor);
@@ -131,7 +138,12 @@ export const SignupVerifyEmail = ({
       if (res.status === 200) {
         setSignupState(1);
       } else if (res.response.status === 400) {
-        alert('인증번호가 일치하지 않습니다.');
+        if (res.response.data.errorName === 'CODE_MISMATCH') {
+          setModalErrorMessage('인증번호가 일치하지 않습니다');
+        } else if (res.response.data.errorName === 'BAD_REQUEST') {
+          setModalErrorMessage('올바른 형식의 이메일 주소여야 합니다');
+        }
+        setIsActiveModal(true);
       }
     } catch (ex) {
       alert('인증 번호 확인 과정에서 오류가 발생했습니다.');
@@ -235,11 +247,25 @@ export const SignupVerifyEmail = ({
           onClick={handleNextClick}
         />
       </div>
+      {isActiveModal && (
+        <SignupModal
+          setIsActive={setIsActiveModal}
+          errorMessage={modalErrorMessage}
+        />
+      )}
+      {isActiveModal ? (
+        <BackDrop
+          onClick={() => {
+            setIsActiveModal(false);
+          }}
+        />
+      ) : null}
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  position: relative;
   .body-wrapper {
     height: calc(var(--vh, 1vh) * 100 - 11.5rem);
     margin-top: 2.8rem;

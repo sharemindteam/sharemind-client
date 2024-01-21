@@ -224,18 +224,15 @@ export const BuyerLetterWrite = () => {
           messageId={messageResponse.messageId}
         />
       )}
-      {
-        //TODO : 임시 저장된 글이 없을 떄는 안뜨게 하는 예외처리 추가
-        isActiveLoadModal && (
-          <LetterLoadModal
-            savedText={messageResponse.content}
-            updatedAt={messageResponse.updatedAt}
-            setReplyText={setInput}
-            setIsActive={setIsActiveLoadModal}
-            consultId={id}
-          />
-        )
-      }
+      {isActiveLoadModal && (
+        <LetterLoadModal
+          savedText={messageResponse.content}
+          updatedAt={messageResponse.updatedAt}
+          setReplyText={setInput}
+          setIsActive={setIsActiveLoadModal}
+          consultId={id}
+        />
+      )}
       {isActiveSaveModal && (
         <LetterSaveModal
           setIsActive={setIsActiveSaveModal}

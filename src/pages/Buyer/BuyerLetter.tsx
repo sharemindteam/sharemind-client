@@ -20,8 +20,6 @@ import { GetMessagesType } from 'utils/type';
 export const BuyerLetter = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const location = useLocation();
-  const { state } = location;
   const opponentNickname = useRecoilValue(opponentNicknameState);
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3 / 어디까지 가능한지 여부
   const [active, setActive] = useState<number>(0);
