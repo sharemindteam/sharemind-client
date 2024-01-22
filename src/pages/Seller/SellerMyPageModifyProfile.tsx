@@ -21,7 +21,16 @@ import {
   isTypeOpenModalState,
   isUpdateModalOpenState,
 } from 'utils/atom';
-
+const categoryList = {
+  연애갈등: 1,
+  '이별/재회': 2,
+  여자심리: 3,
+  남자심리: 4,
+  '썸/연애초기': 5,
+  짝사랑: 6,
+  권태기: 7,
+  기타: 8,
+};
 export const SellerMypageModifyProfile = () => {
   // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
   const [selectCategory, setSelectCategory] = useState<number[]>([]);
@@ -70,8 +79,14 @@ export const SellerMypageModifyProfile = () => {
       console.log(data);
       nickname.setValue(data?.nickname);
       category.setViewValue(data?.consultCategories.join(', '));
+      setSelectCategory(
+        data?.consultCategories.map((item) => categoryList[item]),
+      );
       style.setViewValue(data?.consultStyle);
+      setSelectStyle(data?.consultStyle);
+
       type.setViewValue(data?.consultTypes.join(', '));
+      setSelectType(data?.consultTypes);
       // availableTime.setViewValue(data?.consultTimes);
       data?.consultCosts?.편지 &&
         letterPrice.setValue(
