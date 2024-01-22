@@ -1,15 +1,56 @@
+import { patchProfiles } from 'api/patch';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { isSuccessUpdateState, isUpdateModalOpenState } from 'utils/atom';
-export const UpdatePopup = () => {
+interface UpdatePopupProps {
+  nickname: any;
+  category: any;
+  style: any;
+  type: any;
+  availableTime: any;
+  letterPrice: any;
+  chatPrice: any;
+  oneLiner: any;
+  experience: any;
+}
+export const UpdatePopup = ({
+  nickname,
+  category,
+  style,
+  type,
+  availableTime,
+  letterPrice,
+  chatPrice,
+  oneLiner,
+  experience,
+}: UpdatePopupProps) => {
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
   const setIsSuccess = useSetRecoilState(isSuccessUpdateState);
-  const handlePostUpdate = () => {
+  const handlePostUpdate = async () => {
     // 여기서 서버로 모든 데이터를 POST
-    setIsUpdateModalOpen(false);
-    setIsSuccess(true);
+    const body = {
+      nickname: nickname.value,
+      consultCategories: category.serverValue,
+      consultStyle: style.serverValue,
+      consultTypes: type.serverValue,
+      consultTimes: {
+        MON: ['14~15', '15~20'],
+        WED: ['11~13'],
+      },
+      letterCost: letterPrice.value.replace(',', ''),
+      chatCost: chatPrice.value.replace(',', ''),
+      introduction: oneLiner.value,
+      experience: experience.value,
+    };
+    try {
+      await patchProfiles(body);
+      setIsUpdateModalOpen(false);
+      setIsSuccess(true);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <UpdateModalBox>

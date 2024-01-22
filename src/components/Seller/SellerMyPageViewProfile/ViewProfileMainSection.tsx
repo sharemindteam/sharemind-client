@@ -7,21 +7,22 @@ import { useNavigate } from 'react-router-dom';
 import { Space } from 'components/Common/Space';
 import Input from 'components/Common/Input';
 import { Button } from 'components/Common/Button';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 
 interface ViewProfileMainSectionProps {
   profileIdentifier: number;
-  name: string;
-  category: string;
-  chatStyle: string;
-  type: string;
-  chatTime: string;
+  name: string | undefined;
+  category: string[] | undefined;
+  chatStyle: string | undefined;
+  type: string[] | undefined;
+  chatTime: string | undefined;
   letterFee: number;
   chatFee: number;
-  oneLiner: string;
-  experience: string;
-  accountNum: string;
-  bankType: string;
-  bankOwner: string;
+  oneLiner: string | undefined;
+  experience: string | undefined;
+  // accountNum: string;
+  // bankType: string;
+  // bankOwner: string;
 }
 
 export const ViewProfileMainSection = ({
@@ -35,10 +36,10 @@ export const ViewProfileMainSection = ({
   chatFee,
   oneLiner,
   experience,
-  accountNum,
-  bankType,
-  bankOwner,
-}: ViewProfileMainSectionProps) => {
+}: // accountNum,
+// bankType,
+// bankOwner,
+ViewProfileMainSectionProps) => {
   const navigate = useNavigate();
   return (
     <ViewProfileMainSectionWrapper>
@@ -48,7 +49,10 @@ export const ViewProfileMainSection = ({
           <Caption2 color={Grey3} style={{ marginBottom: '1rem' }}>
             설정한 상담 스타일에 따라 프로필 캐릭터가 자동으로 부여됩니다.
           </Caption2>
-          <Characters number={profileIdentifier} width="7.6rem" />
+          <Characters
+            number={consultStyleToCharNum(chatStyle)}
+            width="7.6rem"
+          />
         </div>
       </FirstWhiteBox>
       <WhiteBox>
@@ -58,7 +62,7 @@ export const ViewProfileMainSection = ({
         </div>
         <div className="category">
           <ProfileInformTag>상담 카테고리</ProfileInformTag>
-          <ProfileInform>{category}</ProfileInform>
+          <ProfileInform>{category?.join()}</ProfileInform>
         </div>
         <div className="style">
           <ProfileInformTag>상담 스타일</ProfileInformTag>
@@ -68,7 +72,7 @@ export const ViewProfileMainSection = ({
       <WhiteBox>
         <div className="type">
           <ProfileInformTag>상담 방식</ProfileInformTag>
-          <ProfileInform>{type}</ProfileInform>
+          <ProfileInform>{type?.join()}</ProfileInform>
         </div>
         <div className="chat-time">
           {' '}
@@ -82,8 +86,14 @@ export const ViewProfileMainSection = ({
             (1건 기준)
           </ProfileInformTag>
           <div className="flex-end">
-            <ProfileInform>편지 {letterFee.toLocaleString()}원</ProfileInform>
-            <ProfileInform>채팅 {chatFee.toLocaleString()}원</ProfileInform>
+            {letterFee && (
+              <ProfileInform>
+                편지 {letterFee?.toLocaleString()}원
+              </ProfileInform>
+            )}
+            {chatFee && (
+              <ProfileInform>채팅 {chatFee?.toLocaleString()}원</ProfileInform>
+            )}
           </div>
         </div>
       </WhiteBox>{' '}
@@ -97,7 +107,7 @@ export const ViewProfileMainSection = ({
           <Body1>{experience}</Body1>
         </div>
       </IntroduceWhiteBox>
-      <AccountWhiteBox>
+      {/* <AccountWhiteBox>
         <ProfileInformTag>수익 계좌</ProfileInformTag>
         <div className="account-num">
           <AccountTag>계좌번호</AccountTag>
@@ -132,7 +142,7 @@ export const ViewProfileMainSection = ({
             value={bankOwner}
           />
         </div>
-      </AccountWhiteBox>
+      </AccountWhiteBox> */}
       <Space height="9.2rem" />
       <BottomButtonWrapper style={{ display: 'block' }}>
         <Button

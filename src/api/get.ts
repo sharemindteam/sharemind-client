@@ -36,6 +36,6 @@ export const getLetterRecentType = async (letterId: string | undefined) =>
   await getInstance(`/letterMessages/recent-type/${letterId}`);
 
 // Conuselor Controller
-
-export const getIsPassQuiz = async () =>
-  await getInstance('counselors/quiz');
+export const getMyInfo = async () => await getInstance('counselors/my-info');
+export const getProfiles = async () => await getInstance('counselors/profiles');
+export const getIsPassQuiz = async () => await getInstance('counselors/quiz');

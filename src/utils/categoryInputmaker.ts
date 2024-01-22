@@ -4,7 +4,7 @@ export const categoryInputMaker = (enumList: number[]) => {
     '이별/재회',
     '여자심리',
     '남자심리',
-    '썸/연애제조기',
+    '썸/연애초기',
     '짝사랑',
     '권태기',
     '기타',
