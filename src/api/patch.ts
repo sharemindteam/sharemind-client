@@ -21,3 +21,6 @@ export const patchLetterMessage = async (body: any) =>
 //Message 최초 생성 (first-question)
 export const patchLetterMessageFirstQustion = async (body: any) =>
   await patchInstance('/letterMessages/first-question', body);
+
+export const patchProfiles = async (body: any) =>
+  await patchInstance('counselors/profiles', body);

@@ -21,7 +21,6 @@ function IsSubmitQuizModal({
         isEducated: true,
       },
     });
-
     setVerifyStatus('인증 성공');
   };
   const postFail = async () => {
