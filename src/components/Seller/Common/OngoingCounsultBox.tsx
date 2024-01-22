@@ -106,7 +106,6 @@ const OngoingCounsultBoxWrapper = styled.div`
   background-color: ${Grey6};
   margin: 0 2rem;
   .button {
-    width: 6.1rem;
     display: flex;
     justify-content: center;
   }
