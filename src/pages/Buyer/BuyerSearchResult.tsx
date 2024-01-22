@@ -20,6 +20,7 @@ import { patchSearchWordsResults } from 'api/patch';
 import { SearchResultData } from 'utils/type';
 
 export const BuyerSearchResult = () => {
+  const navigate = useNavigate();
   //0 : 최신순 1:인기순 2: 별점순
   // 바뀔 때마다 useEffect로 request
   const [sortType, setSortType] = useState<number>(0);
@@ -64,6 +65,9 @@ export const BuyerSearchResult = () => {
       const res: any = await patchSearchWordsResults(sortTypeString, body);
       if (res.status === 200) {
         setSearchData(res.data);
+      } else if (res.response.status === 400) {
+        alert('검색어는 2~20자 사이여야 합니다.');
+        navigate('/buyer/search');
       }
     } catch (e) {
       console.log(e);
@@ -72,7 +76,6 @@ export const BuyerSearchResult = () => {
   useEffect(() => {
     fectchSearchResults(keyword);
   }, [keyword, sortType]);
-  const navigate = useNavigate();
   return (
     <Wrapper>
       <HeaderWrapper>

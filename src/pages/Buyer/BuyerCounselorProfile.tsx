@@ -12,14 +12,15 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
 import { reviewDummy } from 'utils/buyerDummy';
+import { CartegoryState } from 'utils/type';
 export const BuyerCounselorProfile = () => {
   const { id } = useParams();
   //Nav 버튼 toggle
   const [isInfo, setIsInfo] = useState<boolean>(true);
   if (id !== undefined) {
     const counselorId = parseInt(id, 10);
-    const tagListCast: CartegoryStateArray = dummy[counselorId]
-      .tagList as CartegoryStateArray;
+    const tagListCast: CartegoryState[] = dummy[counselorId]
+      .tagList as CartegoryState[];
     return (
       <Wrapper>
         <CounselorProfileHeader />
