@@ -45,3 +45,9 @@ export const getIsPassQuiz = async () => await getInstance('counselors/quiz');
 
 // SearchWord Controller
 export const getSearchWords = async () => await getInstance('/searchWords');
+
+
+//Review Controller 
+
+export const getMinderReviews = async (params:any)=>await getInstance('/reviews/counselors', params);
+export const getMinderReviewsHome =async()=>await getInstance('/reviews/counselors/home');
