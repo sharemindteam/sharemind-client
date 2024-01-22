@@ -42,7 +42,6 @@ import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
 import { Admin } from 'pages/Common/Admin';
-
 const Router = () => {
   const navigate = useNavigate();
   return (
