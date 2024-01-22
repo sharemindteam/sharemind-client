@@ -21,7 +21,8 @@ export const SellerMypageViewProfile = () => {
     const fetchMinderProfile = async () => {
       try {
         const profileRes: any = await getProfiles();
-        if (profileRes.response.status === 404) {
+        console.log(profileRes);
+        if (profileRes?.response?.status === 404) {
           alert('마인더 인증을 통과한 뒤 판매 정보를 등록할 수 있습니다.');
           navigate('/seller/mypage');
         }
@@ -29,7 +30,6 @@ export const SellerMypageViewProfile = () => {
       } catch (err) {
         alert('판매 정보 가져오는도중 에러 발생');
         navigate('/seller/mypage');
-        console.log(err);
       }
     };
     fetchMinderProfile();
