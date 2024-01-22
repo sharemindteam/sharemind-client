@@ -116,7 +116,6 @@ export const Profile = ({
         <ServiceList>
           <ServiceItem>서비스 소개</ServiceItem>
           <ServiceItem>정산 문의</ServiceItem>
-          <ServiceItem>알림 설정</ServiceItem>
           <ServiceItem
             onClick={() => {
               navigate('/seller/setting');
@@ -128,14 +127,6 @@ export const Profile = ({
       ) : (
         <ServiceList>
           <ServiceItem>서비스 소개</ServiceItem>
-          <ServiceItem>알림 설정</ServiceItem>
-          <ServiceItem
-            onClick={() => {
-              navigate('/seller/setting');
-            }}
-          >
-            계정 설정
-          </ServiceItem>
         </ServiceList>
       )}
     </>
