@@ -20,6 +20,7 @@ interface ViewProfileMainSectionProps {
   chatFee: number;
   oneLiner: string | undefined;
   experience: string | undefined;
+  isEvaluationPending: boolean;
   // accountNum: string;
   // bankType: string;
   // bankOwner: string;
@@ -36,6 +37,7 @@ export const ViewProfileMainSection = ({
   chatFee,
   oneLiner,
   experience,
+  isEvaluationPending,
 }: // accountNum,
 // bankType,
 // bankOwner,
@@ -153,7 +155,8 @@ ViewProfileMainSectionProps) => {
       <Space height="9.2rem" />
       <BottomButtonWrapper style={{ display: 'block' }}>
         <Button
-          text="수정하기"
+          text={isEvaluationPending ? "판매정보 검토 중" : "수정하기"} 
+          isActive={!isEvaluationPending}
           height="5.2rem"
           width="calc(100% - 4rem)"
           onClick={() => {

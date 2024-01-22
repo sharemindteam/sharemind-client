@@ -19,12 +19,15 @@ export const SellerMypageViewProfile = () => {
   const [profile, setProfile] = useState<ProfileData>();
   const navigate = useNavigate();
   const [isNoProfile, setIsNoProfile] = useState(false);
+  const [isEvaluationPending, setIsEvaluationPending] = useState(false);
   useEffect(() => {
     const fetchMinderProfile = async () => {
       try {
         const profileLevel: any = await getMyInfo();
         if (profileLevel?.data?.profileStatus === 'NO_PROFILE') {
           setIsNoProfile(true);
+        } else if (profileLevel?.data?.profileStatus === 'EVALUATION_PENDING') {
+          setIsEvaluationPending(true);
         }
         const profileRes: any = await getProfiles();
         if (profileRes?.response?.status === 404) {
@@ -57,6 +60,7 @@ export const SellerMypageViewProfile = () => {
           chatFee={profile?.consultCosts?.채팅}
           oneLiner={profile?.introduction}
           experience={profile?.experience}
+          isEvaluationPending={isEvaluationPending}
           // accountNum="1234567890000"
           // bankType="우리은행"
           // bankOwner="정인영"
