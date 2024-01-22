@@ -77,16 +77,25 @@ export const ModifyProfileMainSection = ({
     isUpdateModalOpenState,
   );
   useEffect(() => {
-    category.setViewValue(categoryInputMaker(selectCategory));
-    console.log('!');
+    try {
+      category?.setViewValue(categoryInputMaker(selectCategory ?? [1]));
+    } catch (err) {
+      alert('판매 정보를 제대로 가져오지 못했어요.');
+      navigate('/seller/mypage');
+    }
   }, [selectCategory]);
 
   useEffect(() => {
-    style.setViewValue(selectStyle);
+    try {
+      style?.setViewValue(selectStyle);
+    } catch (err) {
+      alert('판매 정보를 제대로 가져오지 못했어요.');
+      navigate('/seller/mypage');
+    }
   }, [selectStyle]);
 
   useEffect(() => {
-    type.setViewValue(selectType.join(', '));
+    type?.setViewValue(selectType?.join(', '));
   }, [selectType]);
   // useEffect(() => {
   //   bankType.setValue(selectBankType);
@@ -359,7 +368,7 @@ export const ModifyProfileMainSection = ({
         <Space height="9.2rem" />
       </ModifyProfileBox>
       <BottomButton
-      // 폼 입력이 있으면서 에러가 없어야 저장하기 버튼 활성화
+        // 폼 입력이 있으면서 에러가 없어야 저장하기 버튼 활성화
         isActive={
           !(
             nickname.isError ||
