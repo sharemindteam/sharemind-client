@@ -93,9 +93,12 @@ export const patchInstance = async (url: string, body?: any, params?: any) => {
   }
 };
 
-export const deleteInstance = async (url: string) => {
+export const deleteInstance = async (url: string, body?: any) => {
   try {
-    const data = await instance.delete(url);
+    const config = {
+      data: body,
+    };
+    const data = await instance.delete(url, config);
     return data;
   } catch (error) {
     return error;
