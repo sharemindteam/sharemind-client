@@ -1,4 +1,6 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+const { persistAtom } = recoilPersist();
 //퍈매 정보 수정 페이지 : 상담 카테고리 선택 모달
 export const isCategoryModalOpenState = atom({
   key: 'categoryModalOpenState',
@@ -92,6 +94,7 @@ export const sortTypeState = atom({
 export const searchKeywordState = atom({
   key: 'searchKeywordState',
   default: '',
+  effects_UNSTABLE: [persistAtom],
 });
 //셰어 상대 마인더 nickname
 export const opponentNicknameState = atom({
