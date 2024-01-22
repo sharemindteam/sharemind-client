@@ -5,15 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen } from 'styles/color';
-import { Body3, Button2 } from 'styles/font';
+import { Body3, Button2, Heading } from 'styles/font';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.svg';
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
-import { consultDummy } from 'utils/buyerDummy';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
 import { getLetters } from 'api/get';
+import { ReactComponent as Empty } from 'assets/icons/graphic-consult-noting.svg';
 interface consultApiObject {
   consultStyle: string;
   id: number;
@@ -132,22 +132,29 @@ export const BuyerConsult = () => {
           <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
         </div>
       </div>
-      <CardWrapper>
-        {cardData.map((value) => {
-          return (
-            <ConsultCard
-              consultStyle={value.consultStyle}
-              id={value.id}
-              latestMessageContent={value.latestMessageContent}
-              latestMessageIsCustomer={value.latestMessageIsCustomer}
-              latestMessageUpdatedAt={value.latestMessageUpdatedAt}
-              opponentNickname={value.opponentNickname}
-              status={value.status}
-              unreadMessageCount={value.unreadMessageCount}
-            />
-          );
-        })}
-      </CardWrapper>
+      {cardData.length !== 0 ? (
+        <CardWrapper>
+          {cardData.map((value) => {
+            return (
+              <ConsultCard
+                consultStyle={value.consultStyle}
+                id={value.id}
+                latestMessageContent={value.latestMessageContent}
+                latestMessageIsCustomer={value.latestMessageIsCustomer}
+                latestMessageUpdatedAt={value.latestMessageUpdatedAt}
+                opponentNickname={value.opponentNickname}
+                status={value.status}
+                unreadMessageCount={value.unreadMessageCount}
+              />
+            );
+          })}
+        </CardWrapper>
+      ) : (
+        <EmptyWrapper>
+          <EmptyIcon />
+          <Heading>아직 진행한 상담이 없어요</Heading>
+        </EmptyWrapper>
+      )}
 
       {isModalOpen ? (
         <>
@@ -215,4 +222,14 @@ const BackDrop = styled.div`
   height: calc(var(--vh, 1vh) * 100);
   background-color: rgba(0, 0, 0, 0.5);
   transition: opacity 0.3s ease;
+`;
+
+const EmptyIcon = styled(Empty)`
+  padding: 4.7rem 4.41rem 4.603rem 4.5rem;
+`;
+const EmptyWrapper = styled.div`
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

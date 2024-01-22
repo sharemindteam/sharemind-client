@@ -10,7 +10,7 @@ export type ConsultState =
   | '상담 종료'
   | '상담 취소';
 //tagA2 카테고리 type
-type CartegoryState =
+export type CartegoryState =
   | '연애갈등'
   | '이별/재회'
   | '여자심리'
@@ -58,3 +58,33 @@ type SellerLetterLevelTypes = {};
 type LetterInfo = {};
 
 type ConsultInfoList = ConsultInfoItem[];
+
+///buyer search result 페이지
+
+type ConsultCosts = {
+  편지: number;
+  채팅: number;
+};
+type ConsultTimes = {
+  MON: Array<string>; //(ex: "14~15")
+  TUE: Array<string>;
+  WED: Array<string>;
+  THU: Array<string>;
+  FRI: Array<string>;
+  SAT: Array<string>;
+  SUN: Array<string>;
+};
+
+export type SearchResultData = {
+  consultCategories: CartegoryState[];
+  consultCosts: ConsultCosts;
+  consultStyle: '조언';
+  consultTimes: ConsultTimes;
+  consultTypes: string[];
+  introduction: string;
+  isWishList: boolean;
+  level: number;
+  nickname: string;
+  ratingAverage: number;
+  totalReview: number;
+};

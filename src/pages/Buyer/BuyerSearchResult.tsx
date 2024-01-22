@@ -5,9 +5,9 @@ import { Button2 } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { ReactComponent as Search } from 'assets/icons/search.svg';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
-import { SearchResults } from 'components/Buyer/Common/SearchResults';
+import { SearchResults } from 'components/Buyer/BuyerSearchResult/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
@@ -16,8 +16,11 @@ import {
   searchKeywordState,
 } from 'utils/atom';
 import Input from 'components/Common/Input';
-//백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
+import { patchSearchWordsResults } from 'api/patch';
+import { SearchResultData } from 'utils/type';
+
 export const BuyerSearchResult = () => {
+  const navigate = useNavigate();
   //0 : 최신순 1:인기순 2: 별점순
   // 바뀔 때마다 useEffect로 request
   const [sortType, setSortType] = useState<number>(0);
@@ -31,6 +34,8 @@ export const BuyerSearchResult = () => {
   //input value
   const initInput = keyword;
   const [input, setInput] = useState(initInput);
+  //결과저장
+  const [searchData, setSearchData] = useState<SearchResultData[]>([]);
   //input onchagne
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
@@ -38,9 +43,39 @@ export const BuyerSearchResult = () => {
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     setKeyword(input);
-    //여기서 바뀐 state로 get 요청
   };
-  const navigate = useNavigate();
+  const ConverSortType = (typeNum: number) => {
+    if (typeNum === 0) {
+      return 'LATEST';
+    } else if (typeNum === 1) {
+      return 'POPULARITY';
+    } else if (typeNum === 2) {
+      return 'STAR_RATING';
+    } else {
+      return '';
+    }
+  };
+  const fectchSearchResults = async (searchWord: string) => {
+    try {
+      const body = {
+        word: searchWord,
+        index: 0,
+      };
+      const sortTypeString: string = ConverSortType(sortType);
+      const res: any = await patchSearchWordsResults(sortTypeString, body);
+      if (res.status === 200) {
+        setSearchData(res.data);
+      } else if (res.response.status === 400) {
+        alert('검색어는 2~20자 사이여야 합니다.');
+        navigate('/buyer/search');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    fectchSearchResults(keyword);
+  }, [keyword, sortType]);
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -78,7 +113,7 @@ export const BuyerSearchResult = () => {
           <Down />
         </div>
       </div>
-      <SearchResults />
+      <SearchResults searchData={searchData} />
       {isModalOpen ? (
         <>
           <BackDrop

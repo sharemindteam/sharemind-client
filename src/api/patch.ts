@@ -24,3 +24,8 @@ export const patchLetterMessageFirstQustion = async (body: any) =>
 
 export const patchProfiles = async (body: any) =>
   await patchInstance('counselors/profiles', body);
+
+//SearchWord Controller
+//검색 결과 반환
+export const patchSearchWordsResults = async (sortType: string, body: any) =>
+  await patchInstance(`/searchWords/results?sortType=${sortType}`, body);

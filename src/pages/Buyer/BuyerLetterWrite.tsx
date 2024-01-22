@@ -154,23 +154,30 @@ export const BuyerLetterWrite = () => {
             navigate(`/buyer/letter/${id}`);
           }}
         />
-        <Heading color={Grey1}>질문</Heading>
+        {tagStatus === 0 ? (
+          <Heading color={Grey1}>질문</Heading>
+        ) : (
+          <Heading color={Grey1}>추가질문</Heading>
+        )}
       </HeaderWrapper>
       <div className="body">
-        <CategoryDropDown
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
-          <Body3 color={Green}>{categoryList[categoryType]}</Body3>
-          <DownIcon />
-        </CategoryDropDown>
+        {tagStatus === 0 ? (
+          <CategoryDropDown
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            <Body3 color={Green}>{categoryList[categoryType]}</Body3>
+            <DownIcon />
+          </CategoryDropDown>
+        ) : null}
         <TextArea
           value={input}
           placeholder="고민 내용을 남겨주세요."
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
             setInput(e.target.value);
           }}
+          tagStatus={tagStatus}
         />
         <ButtonWrapper>
           <Button
@@ -280,7 +287,7 @@ const CategoryDropDown = styled.div`
   margin-bottom: 0.8rem;
   cursor: pointer;
 `;
-const TextArea = styled.textarea`
+const TextArea = styled.textarea<{ tagStatus: number }>`
   resize: none;
   width: 89.33%;
   min-height: 60vh;
@@ -302,6 +309,7 @@ const TextArea = styled.textarea`
   rgba(242, 241, 248, 0.8);
   background: ${Grey6};
   box-sizing: border-box;
+  ${(props) => (props.tagStatus === 2 ? 'margin-top:1.2rem' : null)};
 `;
 const ButtonWrapper = styled.div`
   @media (max-width: 767px) {
