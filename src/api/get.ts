@@ -1,6 +1,9 @@
 import { getInstance } from './axios';
 //admin
-export const getAdmins = async () => await getInstance('/admins');
+export const getAdminsUnpaidConsults = async () =>
+  await getInstance('/admins/unpaid-consults');
+export const getAdminsPedningProfilse = async () =>
+  await getInstance('/admins/pending-profiles');
 
 //buyer
 //채팅 목록 반환
@@ -39,3 +42,6 @@ export const getLetterRecentType = async (letterId: string | undefined) =>
 export const getMyInfo = async () => await getInstance('counselors/my-info');
 export const getProfiles = async () => await getInstance('counselors/profiles');
 export const getIsPassQuiz = async () => await getInstance('counselors/quiz');
+
+// SearchWord Controller
+export const getSearchWords = async () => await getInstance('/searchWords');
