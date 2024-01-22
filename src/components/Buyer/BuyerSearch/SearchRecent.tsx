@@ -26,8 +26,7 @@ export const SearchRecent = () => {
         if (res.status === 200) {
           setRecentSearch(res.data);
         } else if (res.response.status === 404) {
-          // 스웨거 문서 잘못된거 같아서 추후 수정
-          // 지금 검색할 수 있는 로직이 없어서 나중에 연결
+          alert('최근  검색어를 불러올 수 없습니다');
         }
       } catch (e) {
         alert(e);
@@ -89,5 +88,4 @@ const TagWrapper = styled.div`
   gap: 1.2rem;
   padding-top: 0.7rem;
   overflow-x: scroll;
-  height: 3.4rem;
 `;
