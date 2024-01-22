@@ -4,12 +4,46 @@ import { Body1, Heading } from 'styles/font';
 import { Grey1, Grey3, Grey4, Grey6, White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/Common/Button';
+import { postLogin } from 'api/post';
+import { useInput } from 'hooks/useInput';
+import { BackDrop } from 'components/Common/BackDrop';
+import { LoginModal } from 'components/Buyer/BuyerLogin/LoginModal';
+import { useState } from 'react';
 export const BuyerLogin = () => {
+  const emailInput = useInput('');
+  const pwInput = useInput('');
   const navigate = useNavigate();
-  const handleSubmit = (e: React.FormEvent) => {
+  // 임시저장, 편지, 불러오기 모달 활성화여부
+  const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
+  // 모달 에러 메세지
+  const [modalErrorMessage, setModalErrorMessage] = useState<string>('');
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    //TODO: submit handle
-    //TODO: invalid 입력 예외처리
+
+    const body = {
+      email: emailInput.value,
+      password: pwInput.value,
+    };
+    try {
+      const res: any = await postLogin(body);
+      if (res.status === 200) {
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+          res.data;
+        // instance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
+        // setCookie('refreshToken', newRefreshToken, { path: '/' });
+        localStorage.setItem('accessToken', newAccessToken);
+        localStorage.setItem('refreshToken', newRefreshToken);
+        navigate('/buyer');
+      } else if (res.response.status === 400) {
+        setIsActiveModal(true);
+        setModalErrorMessage('비밀번호가 일치하지 않습니다.');
+      } else if (res.response.status === 404) {
+        setIsActiveModal(true);
+        setModalErrorMessage('존재하지 않는 이메일입니다.');
+      }
+    } catch (e) {
+      alert(e);
+    }
   };
   return (
     <Wrapper>
@@ -27,14 +61,26 @@ export const BuyerLogin = () => {
             <Body1 color={Grey3} style={{ margin: '0.2rem 0' }}>
               아이디(이메일)
             </Body1>
-            <LoginInput />
+            <LoginInput
+              value={emailInput.value}
+              onChange={emailInput.onChange}
+            />
           </div>
           <div className="input-wrapper">
             <Body1 color={Grey3}>비밀번호</Body1>
-            <LoginInput type="password" />
+            <LoginInput
+              type="password"
+              value={pwInput.value}
+              onChange={pwInput.onChange}
+            />
           </div>
           <div className="submit-option">
-            <Button text="로그인" width="33.5rem" height="5.2rem" />
+            <Button
+              type="submit"
+              text="로그인"
+              width="33.5rem"
+              height="5.2rem"
+            />
             <div className="underline-option">
               <UnderlineText
                 onClick={() => {
@@ -54,10 +100,24 @@ export const BuyerLogin = () => {
           </div>
         </div>
       </form>
+      {isActiveModal && (
+        <LoginModal
+          setIsActive={setIsActiveModal}
+          errorMessage={modalErrorMessage}
+        />
+      )}
+      {isActiveModal ? (
+        <BackDrop
+          onClick={() => {
+            setIsActiveModal(false);
+          }}
+        />
+      ) : null}
     </Wrapper>
   );
 };
 const Wrapper = styled.div`
+  position: relative;
   .body-wrapper {
     display: flex;
     flex-direction: column;

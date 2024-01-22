@@ -9,12 +9,14 @@ interface LetterBonusReplyStepProps {
   time: string;
   deadline: string;
   replyMsg: string;
+  tagActiveLevel: number;
 }
 export const LetterBonusReplyStep = ({
   isArrive,
   time,
   deadline,
   replyMsg,
+  tagActiveLevel,
 }: LetterBonusReplyStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();
@@ -33,12 +35,6 @@ export const LetterBonusReplyStep = ({
             <span style={{ fontWeight: '600' }}>{deadline}</span> 이전에 <br />{' '}
             답장을 보내주셔야 해요.
           </AlertMessage>
-          <BottomButton
-            text="추가답안 작성하기"
-            onClick={() => {
-              navigate(`/seller/writeLetter/${consultid}`);
-            }}
-          />
         </NotWriteSection>
       )}
     </LetterBonusReplyStepWrapper>

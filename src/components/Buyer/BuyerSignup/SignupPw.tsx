@@ -3,18 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Button } from 'components/Common/Button';
-import { useInput } from 'hooks/useInput';
+import { UseInputResult, useInput } from 'hooks/useInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 import PwInput from 'components/Buyer/Common/PwInput';
-export const BuyerSignupPw = () => {
+interface SignupPwProps {
+  pw: UseInputResult;
+  setSignupState: Dispatch<SetStateAction<number>>;
+}
+export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
   //첫렌더 시 예외처리
   const isInitialRender = useRef(true);
   const navigate = useNavigate();
-  //pw input temp
-  const pw = useInput('');
+  //params로 넘어온 이전 페이지 valid 값, null이면 예외처리
+  //pw check temp
   const pwCheck = useInput('');
   //caption color
   const [typeColor, setTypeColor] = useState<string>(Grey4);
@@ -77,12 +81,14 @@ export const BuyerSignupPw = () => {
       pwCheck.setIsValid(false);
     }
   }, [pw.value, pwCheck.value]);
+
   return (
     <Wrapper>
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/login');
+            //TODO : 변경사항 alert하고 로그인으로 뺵
+            navigate('/signup');
           }}
         />
         <Heading color={Grey1}>회원가입</Heading>
@@ -137,7 +143,7 @@ export const BuyerSignupPw = () => {
           height="5.2rem"
           isActive={valid}
           onClick={() => {
-            navigate('/signup/info');
+            setSignupState(2);
           }}
         />
       </div>

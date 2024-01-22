@@ -58,6 +58,9 @@ export const quizChoiceList = [
   ],
 ];
 
+//jwt 만료 시간
+export const JWT_EXPIRY_TIME = 1 * 3600 * 1000; // (1시간 밀리 초로 표현)
+
 export const bankNameList = [
   '우리은행',
   '카카오뱅크',

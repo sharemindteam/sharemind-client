@@ -10,12 +10,14 @@ interface LetterReplyStepProps {
   time: string;
   deadline: string;
   replyMsg: string;
+  tagActiveLevel:number;
 }
 export const LetterReplyStep = ({
   isArrive,
   time,
   deadline,
   replyMsg,
+  tagActiveLevel
 }: LetterReplyStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();

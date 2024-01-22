@@ -18,8 +18,6 @@ import { SellerMypage } from 'pages/Seller/SellerMypage';
 import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { SellerMyPageReview } from 'pages/Seller/SellerMyPageReview';
-import { BuyerSignupPw } from 'pages/Buyer/BuyerSignupPw';
-import { BuyerSignupInfo } from 'pages/Buyer/BuyerSignupInfo';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
 import { SellerVerifyMaterial } from 'pages/Seller/SellerVerifyMaterial';
@@ -34,13 +32,16 @@ import { BuyerSavedCounselor } from 'pages/Buyer/BuyerSavedCounselor';
 import { BuyerPayment } from 'pages/Buyer/BuyerPayment';
 import { BuyerLetter } from 'pages/Buyer/BuyerLetter';
 import { BuyerLetterWrite } from 'pages/Buyer/BuyerLetterWrite';
+import { BuyerConsultRequest } from 'pages/Buyer/BuyerConsultRequest';
+import { BuyerPaymentDetail } from 'pages/Buyer/BuyerPaymentDetail';
+import { BuyerPaymentComplete } from 'pages/Buyer/BuyerPaymentComplete';
 import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
 import SellerRefundBankAccount from 'pages/Seller/SellerRefundBankAccount';
 import SellerChat from 'pages/Seller/SellerChat';
 import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
-// 판매자, 구매자 라우팅
+import { Admin } from 'pages/Common/Admin';
 const Router = () => {
   const navigate = useNavigate();
   return (
@@ -66,12 +67,18 @@ const Router = () => {
           </>
         }
       />
+      {/* admin */}
+      <Route path="/admin" element={<Admin />} />
+      {/* minder(buyer) */}
       <Route path="/buyer" element={<BuyerHome />} />
       <Route path="/buyer/consult" element={<BuyerConsult />} />
       <Route path="/buyer/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/buyer/search" element={<BuyerSearch />} />
       <Route path="/buyer/search/:id" element={<BuyerCategoryResult />} />
       <Route path="/buyer/search/result" element={<BuyerSearchResult />} />
+      <Route path="/buyer/consultRequest" element={<BuyerConsultRequest />} />
+      <Route path="/buyer/paymentDetail" element={<BuyerPaymentDetail />} />
+      <Route path="/buyer/paymentComplete" element={<BuyerPaymentComplete />} />
       <Route path="/buyer/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/buyer/mypage" element={<BuyerMypage />} />
       <Route path="/buyer/reviewManage" element={<BuyerReviewManage />} />
@@ -83,16 +90,12 @@ const Router = () => {
       {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}
       <Route path="/login" element={<BuyerLogin />} />
       <Route path="/signup" element={<BuyerSignup />} />
-      <Route path="/signup/setting" element={<BuyerSignupPw />} />
-      <Route path="/signup/info" element={<BuyerSignupInfo />} />
       <Route path="/signup/nav" element={<BuyerSignupComplete />} />
       <Route path="/find" element={<BuyerFindInfo />} />
       <Route path="/setting" element={<BuyerAccountSetting />} />
       <Route path="/setting/changePassword" element={<BuyerPwChange />} />
       <Route path="/setting/terminate" element={<BuyerTerminate />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />
-
-
 
       <Route path="/seller" element={<SellerHome />} />
       {/* 판매자 설정 */}
@@ -107,7 +110,6 @@ const Router = () => {
       />
       <Route path="/seller/setting/terminate" element={<SellerTerminate />} />
       <Route path="/seller/setting/logout" element={<SellerLogout />} />
-
 
       {/* 판매자 : 상담 */}
       {/* 판매자 : 채팅 */}

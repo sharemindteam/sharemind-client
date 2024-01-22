@@ -20,9 +20,9 @@ interface OngoingCounsultBoxProps {
   categoryStatus?: CartegoryState;
   consultStatus?: ConsultState;
   counselorName: string | undefined;
-  beforeMinutes: string | undefined;
-  content: string | undefined;
-  newMessageCounts: number | undefined;
+  beforeMinutes: string | null;
+  content: string | null;
+  newMessageCounts: number | null;
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
 }
@@ -76,7 +76,7 @@ function OngoingCounsultBox({
           {content}
         </Content>
       </div>
-      {consultStatus === '상담 종료' ? (
+      {consultStatus === '상담 종료' && (
         <Button
           text="리뷰 확인하기"
           color={Green}
@@ -85,16 +85,13 @@ function OngoingCounsultBox({
           backgroundColor={White}
           buttonTextType={2}
         />
-      ) : (
-        ''
       )}
-      {newMessageCounts === 0 ? (
-        ''
-      ) : (
-        <NewMessageCounts>
-          <Caption2 color={White}>{newMessageCounts}</Caption2>
-        </NewMessageCounts>
-      )}
+      {newMessageCounts !== 0 ||
+        (newMessageCounts !== null && (
+          <NewMessageCounts>
+            <Caption2 color={White}>{newMessageCounts}</Caption2>
+          </NewMessageCounts>
+        ))}
     </OngoingCounsultBoxWrapper>
   );
 }
@@ -103,12 +100,12 @@ const OngoingCounsultBoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  cursor: pointer;
   position: relative;
   border-radius: 0.4rem;
   background-color: ${Grey6};
   margin: 0 2rem;
   .button {
-    width: 6.1rem;
     display: flex;
     justify-content: center;
   }

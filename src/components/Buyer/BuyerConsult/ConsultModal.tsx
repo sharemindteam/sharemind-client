@@ -1,27 +1,30 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
 import { SetStateAction, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
-import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
+import { Green, Grey1, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
-import { isConsultModalOpenState } from 'utils/atom';
+import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
 interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
 }
+
 //최근순 읽지않은순 modal
 export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
   //modal 여부
-  const isModalOpen = useRecoilValue(isConsultModalOpenState);
+  const [isModalOpen, setIsModalOpen] = useRecoilState(isConsultModalOpenState);
   //여기서 unmount 시 sortType 바꾸고 새로 request
   //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
   const [modalSortType, setModalSortType] = useState<number>(sortType);
-  useEffect(() => {
-    return () => {
-      setSortType(modalSortType);
-    };
-  });
+  //scorll 막기
+  const setScrollLock = useSetRecoilState(scrollLockState);
+  // useEffect(() => {
+  //   return () => {
+  //     setSortType(modalSortType);
+  //   };
+  // });
   return (
     <Wrapper visible={isModalOpen}>
       <div className="bar-wrapper">
@@ -30,7 +33,9 @@ export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
       <div
         className="row"
         onClick={() => {
-          setModalSortType(0);
+          setSortType(0);
+          setIsModalOpen(false);
+          setScrollLock(false);
         }}
       >
         {modalSortType === 0 ? (
@@ -45,7 +50,9 @@ export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
       <div
         className="row"
         onClick={() => {
-          setModalSortType(1);
+          setSortType(1);
+          setIsModalOpen(false);
+          setScrollLock(false);
         }}
       >
         {modalSortType === 1 ? (

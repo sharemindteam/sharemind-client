@@ -1,3 +1,4 @@
+import { postIsPassQuiz } from 'api/post';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,6 +15,22 @@ function IsSubmitQuizModal({
   choiceNumberList,
   setVerifyStatus,
 }: IsSubmitQuizModalProps) {
+  const postSuccess = async () => {
+    await postIsPassQuiz(null, {
+      params: {
+        isEducated: true,
+      },
+    });
+    setVerifyStatus('인증 성공');
+  };
+  const postFail = async () => {
+    await postIsPassQuiz(null, {
+      params: {
+        isEducated: false,
+      },
+    });
+    setVerifyStatus('인증 실패');
+  };
   return (
     <IsSubmitQuizModalBox>
       <ModalBox>
@@ -31,9 +48,9 @@ function IsSubmitQuizModal({
             onClick={() => {
               setIsSubmitModalOpen(false);
               if (choiceNumberList.toString() === quizAnswerList.toString()) {
-                setVerifyStatus('인증 성공');
+                postSuccess();
               } else {
-                setVerifyStatus('인증 실패');
+                postFail();
               }
             }}
           >

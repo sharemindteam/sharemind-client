@@ -1,6 +1,6 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -13,6 +13,17 @@ import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-c
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { consultDummy } from 'utils/buyerDummy';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
+import { getLetters } from 'api/get';
+interface consultApiObject {
+  consultStyle: string;
+  id: number;
+  latestMessageContent: string | null;
+  latestMessageIsCustomer: boolean | null;
+  latestMessageUpdatedAt: string | null;
+  opponentNickname: string;
+  status: string;
+  unreadMessageCount: number | null;
+}
 export const BuyerConsult = () => {
   const navigate = useNavigate();
   const sortList = ['최근순', '읽지않은순'];
@@ -29,6 +40,33 @@ export const BuyerConsult = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
+  //card에 넘길 데이터
+  const [cardData, setCardData] = useState<consultApiObject[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isLetter) {
+        let sortTypeText: string;
+        if (sortType === 0) {
+          sortTypeText = 'latest';
+        } else {
+          sortTypeText = 'unread';
+        }
+        const params = {
+          filter: isChecked,
+          isCustomer: true,
+          sortType: sortTypeText,
+        };
+        const res: any = await getLetters({ params });
+        if (res.status === 200) {
+          setCardData(res.data);
+        } else if (res.response.status === 404) {
+          alert('존재하지 않는 정렬 방식입니다.');
+        }
+      } else {
+      }
+    };
+    fetchData();
+  }, [sortType, isChecked]);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   return (
@@ -95,16 +133,17 @@ export const BuyerConsult = () => {
         </div>
       </div>
       <CardWrapper>
-        {consultDummy.map((value) => {
-          const state = value.consultState as ConsultState;
+        {cardData.map((value) => {
           return (
             <ConsultCard
-              consultId={value.consultId}
-              name={value.name}
-              consultState={state}
-              time={value.time}
-              content={value.content}
-              unread={value.unread}
+              consultStyle={value.consultStyle}
+              id={value.id}
+              latestMessageContent={value.latestMessageContent}
+              latestMessageIsCustomer={value.latestMessageIsCustomer}
+              latestMessageUpdatedAt={value.latestMessageUpdatedAt}
+              opponentNickname={value.opponentNickname}
+              status={value.status}
+              unreadMessageCount={value.unreadMessageCount}
             />
           );
         })}
@@ -112,13 +151,7 @@ export const BuyerConsult = () => {
 
       {isModalOpen ? (
         <>
-          <BackDrop
-            onClick={() => {
-              //여기서 api 호출
-              setIsModalOpen(false);
-              setScrollLock(false);
-            }}
-          />
+          <BackDrop />
           <ConsultModal sortType={sortType} setSortType={setSortType} />
         </>
       ) : null}

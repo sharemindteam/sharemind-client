@@ -1,25 +1,35 @@
+import { getLetterMessages } from 'api/get';
 import { Button } from 'components/Common/Button';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 interface LetterLoadModalProps {
-  savedText: string;
+  savedText: string | null;
+  updatedAt: string | null;
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReplyText: React.Dispatch<React.SetStateAction<string>>;
-  lastModifyDate: string;
+  consultId: string | undefined;
 }
 // 임시저장할지 여부 모달
 export const LetterLoadModal = ({
   savedText,
+  updatedAt,
   setIsActive,
   setReplyText,
-  lastModifyDate,
+  consultId,
 }: LetterLoadModalProps) => {
+  const handleLoadMessageClick = () => {
+    if (savedText !== null) {
+      setReplyText(savedText);
+    }
+    setIsActive(false);
+  };
   return (
     <SaveModalBox>
       <ModalBox>
         <Body1>임시저장된 글을 불러올까요?</Body1>
-        <Body3 color={Grey4}>마지막 수정 {lastModifyDate ?? ''}</Body3>
+        <Body3 color={Grey4}>마지막 수정 {updatedAt}</Body3>
         <ButtonWrapper>
           <Button
             text="취소"
@@ -33,11 +43,7 @@ export const LetterLoadModal = ({
           />
           <Button
             text="불러오기"
-            onClick={() => {
-              //TODO: 서버로 post, param id로
-              setIsActive(false);
-              setReplyText(savedText);
-            }}
+            onClick={handleLoadMessageClick}
             width="14.8rem"
             height="5.2rem"
           />

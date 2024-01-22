@@ -1,20 +1,50 @@
-import { useNavigate } from 'react-router-dom';
+import { patchLetterMessage } from 'api/patch';
+import { postLetterMessage } from 'api/post';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 interface LetterWriteSavePostModal {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   replyText: string;
+  isSave: boolean;
+  messageType: string;
+  saveId: string;
 }
 // 임시저장 할까요? 모달
 export const LetterSavePostModal = ({
   setIsActive,
   replyText,
+  isSave,
+  messageType,
+  saveId,
 }: LetterWriteSavePostModal) => {
   const navigate = useNavigate();
-  const handleSaveReplyText = () => {
-    //서버로 임시 저장한 편지 POST
-    navigate('/seller/consult');
+  const { consultid } = useParams();
+  const handleSaveReplyText = async () => {
+    const postBody = {
+      isCompleted: false,
+      content: replyText,
+      letterId: consultid,
+      messageType: messageType,
+    };
+    const patchBody = {
+      isCompleted: false,
+      content: replyText,
+      messageId: saveId,
+    };
+    try {
+      if (isSave) {
+        await patchLetterMessage(patchBody);
+        navigate(`/seller/letter/${consultid}`);
+      } else {
+        await postLetterMessage(postBody);
+        navigate(`/seller/letter/${consultid}`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    navigate(`/seller/letter/${consultid}`);
   };
   return (
     <PostModalBox>

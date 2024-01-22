@@ -8,64 +8,62 @@ import {
   Grey5,
   Grey6,
   LightGreen,
-  Red,
   SafeColor,
   White,
 } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check.svg';
-import { useInput } from 'hooks/useInput';
-import { useEffect, useState } from 'react';
-import { isIncludeSpecialLetter } from 'utils/isIncludeSpecialLetter';
-import { profileDummyData } from 'utils/profileDummy';
-import { useCustomSelect } from 'hooks/useCustomSelect';
-import { Button } from 'components/Common/Button';
+import { SetStateAction, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   isUpdateModalOpenState,
   isCategoryModalOpenState,
   isStyleModalOpenState,
   isTypeOpenModalState,
-  isSuccessUpdateState,
   isBankModalOpenState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { BankIcon } from 'utils/BankIcon';
+import { getProfiles } from 'api/get';
+import { ProfileData } from 'pages/Seller/SellerMyPageViewProfile';
+import { UpdatePopup } from './UpdatePopup';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
   selectStyle: string;
   selectType: string[];
-  selectBankType: string;
+  selectAvailableTime: any;
+  setIsSetChatTime: React.Dispatch<SetStateAction<boolean>>;
+  nickname: any;
+  category: any;
+  style: any;
+  type: any;
+  availableTime: any;
+  letterPrice: any;
+  chatPrice: any;
+  oneLiner: any;
+  experience: any;
 }
+
 export const ModifyProfileMainSection = ({
   selectCategory,
   selectStyle,
   selectType,
-  selectBankType,
+  setIsSetChatTime,
+  nickname,
+  category,
+  style,
+  type,
+  availableTime,
+  letterPrice,
+  chatPrice,
+  oneLiner,
+  experience,
 }: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
-  const nickname = useInput('');
-
-  const category = useCustomSelect();
-  const style = useCustomSelect();
-  const type = useCustomSelect();
-
-  // 시간 설정은 나중에....ㅠㅠ
-  const availableTime = useCustomSelect();
-
-  const letterPrice = useInput('');
-  const chatPrice = useInput('');
-
-  const oneLiner = useInput('');
-  const experience = useInput('');
-  const accountNum = useInput('');
-  const bankType = useInput('');
-  const bankOwner = useInput('');
-
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
     isCategoryModalOpenState,
   );
@@ -75,10 +73,12 @@ export const ModifyProfileMainSection = ({
   const [isTypeModalOpen, setIsTypeModalOpen] =
     useRecoilState(isTypeOpenModalState);
   const setIsBankModalOpen = useSetRecoilState(isBankModalOpenState);
-  const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
-
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useRecoilState<boolean>(
+    isUpdateModalOpenState,
+  );
   useEffect(() => {
     category.setViewValue(categoryInputMaker(selectCategory));
+    console.log('!');
   }, [selectCategory]);
 
   useEffect(() => {
@@ -88,29 +88,25 @@ export const ModifyProfileMainSection = ({
   useEffect(() => {
     type.setViewValue(selectType.join(', '));
   }, [selectType]);
-  useEffect(() => {
-    bankType.setValue(selectBankType);
-  }, [selectBankType]);
-  useEffect(() => {
-    nickname.setValue(profileDummyData.nickName);
-    category.setViewValue(profileDummyData.category);
-    style.setViewValue(profileDummyData.style);
-    type.setViewValue(profileDummyData.type);
-    availableTime.setViewValue(profileDummyData.time);
-    letterPrice.setValue(
-      profileDummyData.letterPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-    );
-    chatPrice.setValue(
-      profileDummyData.chatPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-    );
-    oneLiner.setValue(profileDummyData.oneLiner);
-    experience.setValue(profileDummyData.experience);
-    accountNum.setValue(profileDummyData.accountNum);
-    bankType.setValue(profileDummyData.bankType);
-    bankOwner.setValue(profileDummyData.bankOwner);
-  }, []);
+  // useEffect(() => {
+  //   bankType.setValue(selectBankType);
+  // }, [selectBankType]);
+
   return (
     <ModifyProfileMainSectionWrapper>
+      {isUpdateModalOpen && (
+        <UpdatePopup
+          nickname={nickname}
+          category={category}
+          style={style}
+          type={type}
+          availableTime={availableTime}
+          letterPrice={letterPrice}
+          chatPrice={chatPrice}
+          oneLiner={oneLiner}
+          experience={experience}
+        />
+      )}
       <ModifyProfileBox>
         <div className="nickname">
           <ProfileInformTag>닉네임</ProfileInformTag>
@@ -216,6 +212,10 @@ export const ModifyProfileMainSection = ({
             readOnly={true}
             padding="1.2rem 1.6rem"
             isBoxSizing={true}
+            isCursorPointer={true}
+            onClick={() => {
+              setIsSetChatTime(true);
+            }}
           />
         </div>
         <div className="price">
@@ -234,7 +234,7 @@ export const ModifyProfileMainSection = ({
           <div className="chat-price">
             <PriceInformTag>채팅</PriceInformTag>
             <PriceInput
-              value={chatPrice.value}
+              value={chatPrice?.value}
               onChange={chatPrice.onChangePrice}
               placeholder="30분당 최소 5,000원~최대 50,000원"
               maxLength={6}
@@ -312,7 +312,7 @@ export const ModifyProfileMainSection = ({
             <CheckIcon />
           </ConditionMessage>
         </div>
-        <div className="account">
+        {/* <div className="account">
           <ProfileInformTag>수익 계좌</ProfileInformTag>
           <div className="account-num">
             <AccountTag>계좌번호</AccountTag>
@@ -355,7 +355,7 @@ export const ModifyProfileMainSection = ({
               isBoxSizing={true}
             />
           </div>
-        </div>
+        </div> */}
         <Space height="9.2rem" />
       </ModifyProfileBox>
       <BottomButton
