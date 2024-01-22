@@ -1,4 +1,5 @@
-import { getProfiles } from 'api/get';
+import { getMyInfo, getProfiles } from 'api/get';
+import NoProfileSection from 'components/Seller/SellerMyPageViewProfile/NoProfileSection';
 import { ViewProfileHeader } from 'components/Seller/SellerMyPageViewProfile/ViewProfileHeader';
 import { ViewProfileMainSection } from 'components/Seller/SellerMyPageViewProfile/ViewProfileMainSection';
 import { useEffect, useState } from 'react';
@@ -17,11 +18,15 @@ export interface ProfileData {
 export const SellerMypageViewProfile = () => {
   const [profile, setProfile] = useState<ProfileData>();
   const navigate = useNavigate();
+  const [isNoProfile, setIsNoProfile] = useState(false);
   useEffect(() => {
     const fetchMinderProfile = async () => {
       try {
+        const profileLevel: any = await getMyInfo();
+        if (profileLevel?.data?.profileStatus === 'NO_PROFILE') {
+          setIsNoProfile(true);
+        }
         const profileRes: any = await getProfiles();
-        console.log(profileRes);
         if (profileRes?.response?.status === 404) {
           alert('마인더 인증을 통과한 뒤 판매 정보를 등록할 수 있습니다.');
           navigate('/seller/mypage');
@@ -38,21 +43,25 @@ export const SellerMypageViewProfile = () => {
   return (
     <>
       <ViewProfileHeader />
-      <ViewProfileMainSection
-        profileIdentifier={3}
-        name={profile?.nickname}
-        category={profile?.consultCategories}
-        chatStyle={profile?.consultStyle}
-        type={profile?.consultTypes}
-        chatTime="1시간"
-        letterFee={profile?.consultCosts?.편지}
-        chatFee={profile?.consultCosts?.채팅}
-        oneLiner={profile?.introduction}
-        experience={profile?.experience}
-        // accountNum="1234567890000"
-        // bankType="우리은행"
-        // bankOwner="정인영"
-      />
+      {isNoProfile ? (
+        <NoProfileSection />
+      ) : (
+        <ViewProfileMainSection
+          profileIdentifier={3}
+          name={profile?.nickname}
+          category={profile?.consultCategories}
+          chatStyle={profile?.consultStyle}
+          type={profile?.consultTypes}
+          chatTime="1시간"
+          letterFee={profile?.consultCosts?.편지}
+          chatFee={profile?.consultCosts?.채팅}
+          oneLiner={profile?.introduction}
+          experience={profile?.experience}
+          // accountNum="1234567890000"
+          // bankType="우리은행"
+          // bankOwner="정인영"
+        />
+      )}
     </>
   );
 };

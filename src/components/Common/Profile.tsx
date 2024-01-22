@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Button } from './Button';
-import { Black, Green, Grey6, Red, White } from 'styles/color';
+import { Black, Green, Grey6, LightGreen, Red, White } from 'styles/color';
 import { Button2, Caption2, Subtitle } from 'styles/font';
 import { ReactComponent as InfoIcon } from 'assets/icons/info.svg';
 import { ReactComponent as ReciptIcon } from 'assets/icons/recipt.svg';
@@ -53,7 +53,7 @@ export const Profile = ({
           height="4.2rem"
           border={'1px solid' + (isBuyer ? Green : Green)}
           buttonTextType={2}
-          backgroundColor={White}
+          backgroundColor={LightGreen}
           color={Black}
         />
       </ProfileBox>
