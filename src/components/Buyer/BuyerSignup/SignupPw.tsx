@@ -87,6 +87,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
+            //TODO : 변경사항 alert하고 로그인으로 뺵
             navigate('/signup');
           }}
         />

@@ -6,12 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/Common/Button';
 import { postLogin } from 'api/post';
 import { useInput } from 'hooks/useInput';
-import { setCookie } from 'utils/cookie';
-import { instance } from 'api/axios';
+import { BackDrop } from 'components/Common/BackDrop';
+import { LoginModal } from 'components/Buyer/BuyerLogin/LoginModal';
+import { useState } from 'react';
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
   const navigate = useNavigate();
+  // 임시저장, 편지, 불러오기 모달 활성화여부
+  const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
+  // 모달 에러 메세지
+  const [modalErrorMessage, setModalErrorMessage] = useState<string>('');
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -29,6 +34,12 @@ export const BuyerLogin = () => {
         localStorage.setItem('accessToken', newAccessToken);
         localStorage.setItem('refreshToken', newRefreshToken);
         navigate('/buyer');
+      } else if (res.response.status === 400) {
+        setIsActiveModal(true);
+        setModalErrorMessage('비밀번호가 일치하지 않습니다.');
+      } else if (res.response.status === 404) {
+        setIsActiveModal(true);
+        setModalErrorMessage('존재하지 않는 이메일입니다.');
       }
     } catch (e) {
       alert(e);
@@ -89,10 +100,24 @@ export const BuyerLogin = () => {
           </div>
         </div>
       </form>
+      {isActiveModal && (
+        <LoginModal
+          setIsActive={setIsActiveModal}
+          errorMessage={modalErrorMessage}
+        />
+      )}
+      {isActiveModal ? (
+        <BackDrop
+          onClick={() => {
+            setIsActiveModal(false);
+          }}
+        />
+      ) : null}
     </Wrapper>
   );
 };
 const Wrapper = styled.div`
+  position: relative;
   .body-wrapper {
     display: flex;
     flex-direction: column;

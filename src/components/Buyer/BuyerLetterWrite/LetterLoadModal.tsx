@@ -5,45 +5,31 @@ import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 interface LetterLoadModalProps {
+  savedText: string | null;
+  updatedAt: string | null;
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReplyText: React.Dispatch<React.SetStateAction<string>>;
-  lastModifyDate: string;
   consultId: string | undefined;
 }
 // 임시저장할지 여부 모달
 export const LetterLoadModal = ({
+  savedText,
+  updatedAt,
   setIsActive,
   setReplyText,
-  lastModifyDate,
   consultId,
 }: LetterLoadModalProps) => {
-  const navigate = useNavigate();
-  const handleLoadMessageClick = async () => {
-    const params = {
-      messageType: 'FIRST_QUESTION',
-      isCompleted: false,
-    };
-    try {
-      const res: any = await getLetterMessages({ params }, consultId);
-      if (res.status === 200) {
-      } else if (res.response.status === 403) {
-        alert('접근 권한이 없습니다.');
-        navigate('/buyer/consult');
-      } else if (res.response.status === 404) {
-        alert('존재하지 않는 편지 아이디로 요청되었습니다.');
-      }
-    } catch (e) {
-      console.log(e);
+  const handleLoadMessageClick = () => {
+    if (savedText !== null) {
+      setReplyText(savedText);
     }
-    //TODO: 서버로 post, param id로
     setIsActive(false);
-    setReplyText('');
   };
   return (
     <SaveModalBox>
       <ModalBox>
         <Body1>임시저장된 글을 불러올까요?</Body1>
-        <Body3 color={Grey4}>마지막 수정 {lastModifyDate ?? ''}</Body3>
+        <Body3 color={Grey4}>마지막 수정 {updatedAt}</Body3>
         <ButtonWrapper>
           <Button
             text="취소"

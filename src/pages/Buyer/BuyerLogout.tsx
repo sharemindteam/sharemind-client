@@ -39,6 +39,8 @@ export const BuyerLogout = () => {
             backgroundColor={LightGreen}
             color={Green}
             onClick={() => {
+              localStorage.removeItem('accessToken');
+              localStorage.removeItem('refreshToken');
               navigate('/buyer/mypage');
             }}
           />

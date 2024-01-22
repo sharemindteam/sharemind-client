@@ -1,8 +1,18 @@
 import { patchInstance } from './axios';
-
-//채팅 목록 반환
-export const patchAdmins = async (consultId: number) =>
-  await patchInstance(`/admins/${consultId}`);
+//Admin Controller
+//admin 미결제 상담 승인
+export const patchAdminsUnpaidConsults = async (consultId: number) =>
+  await patchInstance(`/admins/unpaid-consults/${consultId}`);
+//admin 프로필 수정 승인
+export const patchAdminsPendingProfiles = async (
+  counselorId: number,
+  params: any,
+) =>
+  await patchInstance(
+    `/admins/pending-profiles/${counselorId}`,
+    undefined,
+    params,
+  );
 
 //LetterMessage Controller
 //Message 최초 생성
