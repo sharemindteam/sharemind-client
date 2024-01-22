@@ -42,8 +42,17 @@ export const BuyerSearchResult = () => {
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     setKeyword(input);
-    //여기서 바뀐 state로 get 요청
-    fectchSearchResults(input);
+  };
+  const ConverSortType = (typeNum: number) => {
+    if (typeNum === 0) {
+      return 'LATEST';
+    } else if (typeNum === 1) {
+      return 'POPULARITY';
+    } else if (typeNum === 2) {
+      return 'STAR_RATING';
+    } else {
+      return '';
+    }
   };
   const fectchSearchResults = async (searchWord: string) => {
     try {
@@ -51,7 +60,8 @@ export const BuyerSearchResult = () => {
         word: searchWord,
         index: 0,
       };
-      const res: any = await patchSearchWordsResults('LATEST', body);
+      const sortTypeString: string = ConverSortType(sortType);
+      const res: any = await patchSearchWordsResults(sortTypeString, body);
       if (res.status === 200) {
         setSearchData(res.data);
       }
@@ -61,7 +71,7 @@ export const BuyerSearchResult = () => {
   };
   useEffect(() => {
     fectchSearchResults(keyword);
-  }, []);
+  }, [keyword, sortType]);
   const navigate = useNavigate();
   return (
     <Wrapper>
