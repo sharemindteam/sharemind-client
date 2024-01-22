@@ -2,6 +2,7 @@ import { getProfiles } from 'api/get';
 import { ViewProfileHeader } from 'components/Seller/SellerMyPageViewProfile/ViewProfileHeader';
 import { ViewProfileMainSection } from 'components/Seller/SellerMyPageViewProfile/ViewProfileMainSection';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 export interface ProfileData {
   counselorId: string;
   nickname: string;
@@ -15,10 +16,21 @@ export interface ProfileData {
 }
 export const SellerMypageViewProfile = () => {
   const [profile, setProfile] = useState<ProfileData>();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchMinderProfile = async () => {
-      const profileRes: any = await getProfiles();
-      setProfile(profileRes.data);
+      try {
+        const profileRes: any = await getProfiles();
+        setProfile(profileRes.data);
+        if (profileRes.response.status === 404) {
+          alert('마인더 인증을 통과한 뒤 판매 정보를 등록할 수 있습니다.');
+          navigate('/seller/mypage');
+        }
+      } catch (err) {
+        alert('판매 정보 가져오는도중 에러 발생');
+        navigate('/seller/mypage');
+        console.log(err);
+      }
     };
     fetchMinderProfile();
   }, []);
