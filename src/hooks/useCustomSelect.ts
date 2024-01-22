@@ -24,7 +24,9 @@ const TypeMap: Record<string, string> = {
 
 export const useCustomSelect = (type: 'category' | 'style' | 'type') => {
   // 서버로 전달해야 될 값
-  const [serverValue, setServerValue] = useState<string | string[] | undefined>(undefined);
+  const [serverValue, setServerValue] = useState<string | string[] | undefined>(
+    undefined,
+  );
   // 화면에 띄울 값
   const [viewValue, setViewValue] = useState<string>(''); // 적절한 초기값으로 변경
 
@@ -42,6 +44,5 @@ export const useCustomSelect = (type: 'category' | 'style' | 'type') => {
     }
   }, [viewValue, type]); // type을 의존성 배열에 추가
 
-  console.log(serverValue);
   return { serverValue, setServerValue, viewValue, setViewValue };
 };

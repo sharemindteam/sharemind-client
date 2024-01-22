@@ -75,12 +75,10 @@ ViewProfileMainSectionProps) => {
           <ProfileInform>{type?.join()}</ProfileInform>
         </div>
         <div className="chat-time">
-          {' '}
           <ProfileInformTag>채팅 상담시간</ProfileInformTag>
           <ProfileInform>{chatTime}</ProfileInform>
         </div>
         <div className="consult-fee">
-          {' '}
           <ProfileInformTag>
             상담료 <br />
             (1건 기준)

@@ -16,7 +16,7 @@ export const ViewProfileHeader = () => {
           }}
         />
       </div>
-      <Heading>프로필 정보</Heading>
+      <Heading>판매정보</Heading>
     </ViewProfileHeaderWrapper>
   );
 };

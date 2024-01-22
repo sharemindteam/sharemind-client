@@ -359,6 +359,19 @@ export const ModifyProfileMainSection = ({
         <Space height="9.2rem" />
       </ModifyProfileBox>
       <BottomButton
+      // 폼 입력이 있으면서 에러가 없어야 저장하기 버튼 활성화
+        isActive={
+          !(
+            nickname.isError ||
+            !category.serverValue ||
+            !style.serverValue ||
+            !type.serverValue ||
+            letterPrice.isError ||
+            chatPrice.isError ||
+            oneLiner.isError ||
+            experience.isError
+          )
+        }
         text="저장하기"
         onClick={() => {
           setIsUpdateModalOpen(true);
