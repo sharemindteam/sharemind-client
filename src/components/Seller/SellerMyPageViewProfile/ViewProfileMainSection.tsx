@@ -102,7 +102,16 @@ ViewProfileMainSectionProps) => {
         </div>
         <div className="experience">
           <ProfileInformTag>경험 소개</ProfileInformTag>
-          <Body1>{experience}</Body1>
+          <Body1>
+            {experience?.split('\n').map((item, key) => {
+              return (
+                <span key={key}>
+                  {item}
+                  <br />
+                </span>
+              );
+            })}
+          </Body1>
         </div>
       </IntroduceWhiteBox>
       {/* <AccountWhiteBox>
