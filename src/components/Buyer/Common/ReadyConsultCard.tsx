@@ -10,21 +10,19 @@ import { ReactComponent as DownIcon } from 'assets/icons/icon-down-toggle.svg';
 import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { consultTypeList } from 'utils/constant';
-// import { isSortModalOpenState } from 'utils/atom';
+import { CartegoryState } from 'utils/type';
 interface ReadyConsultCardProps {
   index: number;
   counselorId: number;
-  tagList: CartegoryStateArray;
+  tagList: CartegoryState[];
   introduction: string;
   nickname: string;
   level: number;
   bookmarkStates: boolean[];
   setBookmarkStates: React.Dispatch<React.SetStateAction<boolean[]>>;
   rating: number;
-  reviewNumber: number;
-  iconNumber: number;
-  consultType: number;
+  totalReview: number;
+  consultType: string[];
   letterPrice: number;
   chattingPrice: number;
 }
@@ -39,8 +37,7 @@ export const ReadyConsultCard = ({
   bookmarkStates,
   setBookmarkStates,
   rating,
-  reviewNumber,
-  iconNumber,
+  totalReview,
   consultType,
   letterPrice,
   chattingPrice,
@@ -54,35 +51,27 @@ export const ReadyConsultCard = ({
     newStates[index] = !newStates[index];
     setBookmarkStates(newStates);
   };
-  //가능한 상담방식
-  let availableConsult: string = consultTypeList[consultType];
-  //상담사 list에서 modal이 켜져있다면 onClick 발생 X
-  // const isModalOpen = useRecoilValue(isModalOpenState);
   return (
     <Wrapper>
       <UpperWrapper
         onClick={() => {
-          // if (isModalOpen === false) {
           navigate('/buyer/profile/' + counselorId);
-          // }
         }}
       >
         <TagWrapper>
-          {tagList.map((value) => {
+          {tagList.map((value: any) => {
             return <TagA2Cartegory tagType={value} bgColorType={1} />;
           })}
         </TagWrapper>
-        <Body1 margin={'0.8rem 1.6rem 0 1.6rem'}>{introduction}</Body1>
+        <Body1 margin={'0.8rem 1.6rem 1.2rem 1.6rem'}>{introduction}</Body1>
       </UpperWrapper>
       <LowerWrapper
         onClick={() => {
-          // if (isModalOpen === false) {
           navigate('/buyer/profile/' + counselorId);
-          // }
         }}
       >
         <Characters
-          number={iconNumber}
+          number={1}
           width="6.5rem"
           height="5.4rem"
           margin="1.2rem 0 0 1.6rem"
@@ -94,25 +83,21 @@ export const ReadyConsultCard = ({
           </div>
           <div className="row2">
             <HeartIcon />
-            <Body3 color={Grey2}>{rating + ' (' + reviewNumber + ')'}</Body3>
+            <Body3 color={Grey2}>{rating + ' (' + totalReview + ')'}</Body3>
           </div>
         </div>
         {bookmarkStates[index] ? (
           <BookMarkIcon
             onClick={(e: React.MouseEvent<HTMLElement>) => {
-              // if (isModalOpen === false) {
               e.stopPropagation();
               handleBookmark();
-              // }
             }}
           />
         ) : (
           <NoneBookMarkIcon
             onClick={(e: React.MouseEvent<HTMLElement>) => {
-              // if (isModalOpen === false) {
               e.stopPropagation();
               handleBookmark();
-              // }
             }}
           />
         )}
@@ -121,7 +106,7 @@ export const ReadyConsultCard = ({
         <ToggleWrapper>
           <div className="row1">
             <Body3 color={Grey3}>상담 방식</Body3>
-            <Body3 color={Grey1}>{availableConsult}</Body3>
+            <Body3 color={Grey1}>{consultType}</Body3>
           </div>
           <div className="row2">
             <Body3 color={Grey3}>상담가능 시간</Body3>
@@ -142,9 +127,7 @@ export const ReadyConsultCard = ({
       ) : null}
       <ToggleBar
         onClick={() => {
-          // if (isModalOpen === false) {
           setToggle(!toggle);
-          // }
         }}
       >
         {toggle ? <UpIcon /> : <DownIcon />}
@@ -159,7 +142,6 @@ const Wrapper = styled.div`
   background-color: ${Grey6};
 `;
 const UpperWrapper = styled.div`
-  height: 10rem;
   border-bottom: 1px solid ${White};
   cursor: pointer;
 `;

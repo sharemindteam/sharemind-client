@@ -3,35 +3,42 @@ import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
-import { CartegoryState } from 'utils/type';
+import { CartegoryState, SearchResultData } from 'utils/type';
+import { AppendCategoryType } from 'utils/AppendCategoryType';
+interface SearchResultsProps {
+  searchData: SearchResultData[];
+}
 
 //임의로 ConsultInReady 그대로 사용
-export const SearchResults = () => {
+export const SearchResults = ({ searchData }: SearchResultsProps) => {
   //찜하기 배열 init
-  const initialBookmarkStates = dummy.map((data) => data.isBookmarked || false);
+  const initialBookmarkStates = searchData.map(
+    (data) => data.isWishList || false,
+  );
   const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
     initialBookmarkStates,
   );
   return (
     <Wrapper>
-      {dummy.map((value, index) => {
-        const tagListCast: CartegoryState[] = value.tagList as CartegoryState[];
+      {searchData.map((value, index) => {
         return (
           <ReadyConsultCard
             index={index}
-            counselorId={value.counselorId}
-            tagList={tagListCast}
+            counselorId={1}
+            tagList={AppendCategoryType(
+              value.consultCategories,
+              value.consultStyle,
+            )}
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
             bookmarkStates={bookmarkStates}
             setBookmarkStates={setBookmarkStates}
-            rating={value.rating}
-            reviewNumber={value.reviewNumber}
-            iconNumber={value.iconNumber}
-            consultType={value.consultType}
-            letterPrice={value.letterPrice}
-            chattingPrice={value.chattingPrice}
+            rating={value.ratingAverage}
+            totalReview={value.totalReview}
+            consultType={value.consultTypes}
+            letterPrice={value.consultCosts.편지}
+            chattingPrice={value.consultCosts.채팅}
           />
         );
       })}
