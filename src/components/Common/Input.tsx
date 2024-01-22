@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Black, Grey4, Grey6 } from 'styles/color';
+import { Black, Grey3, Grey4, Grey6 } from 'styles/color';
 
 interface InputProps {
   width?: string;
@@ -9,6 +9,7 @@ interface InputProps {
   fontWeight?: string;
   fontColor?: string;
   placeHolderColor?: string;
+  placeHolderWeight?: string;
   value?: string;
   placeholder?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -33,7 +34,8 @@ const Input = ({
   fontSize = '1.6rem',
   fontWeight = '600',
   fontColor = Black,
-  placeHolderColor = Grey4,
+  placeHolderColor = Grey3,
+  placeHolderWeight = '400',
   value,
   placeholder,
   onChange,
@@ -60,6 +62,7 @@ const Input = ({
       fontWeight={fontWeight}
       fontColor={fontColor}
       placeHolderColor={placeHolderColor}
+      placeHolderWeight={placeHolderWeight}
       value={value}
       placeholder={placeholder}
       onChange={onChange}
@@ -87,6 +90,7 @@ const StyledInput = styled.input<{
   fontColor: string;
   fontSize: string;
   placeHolderColor: string;
+  placeHolderWeight: string;
   fontWeight: string;
   padding: string;
   margin: string;
@@ -117,7 +121,7 @@ const StyledInput = styled.input<{
 
   &::placeholder {
     font-size: ${({ fontSize }) => fontSize};
-    font-weight: ${({ fontWeight }) => fontWeight};
+    font-weight: ${({ placeHolderWeight }) => placeHolderWeight};
     color: ${({ placeHolderColor }) => placeHolderColor};
   }
 `;

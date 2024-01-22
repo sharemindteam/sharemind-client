@@ -26,9 +26,6 @@ import {
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
-import { BankIcon } from 'utils/BankIcon';
-import { getProfiles } from 'api/get';
-import { ProfileData } from 'pages/Seller/SellerMyPageViewProfile';
 import { UpdatePopup } from './UpdatePopup';
 
 interface ModifyProfileMainSectionProps {
@@ -123,6 +120,7 @@ export const ModifyProfileMainSection = ({
             width="100%"
             height="4.8rem"
             isError={nickname.isError}
+            placeholder="닉네임을 입력해주세요"
             value={nickname.value}
             onChange={(e) => {
               nickname.handleCheckSpecialLetter(e.target.value);
@@ -165,6 +163,7 @@ export const ModifyProfileMainSection = ({
               height="4.8rem"
               value={category.viewValue}
               readOnly={true}
+              placeholder="상담 카테고리를 선택해주세요"
               isCursorPointer={true}
               padding="1.2rem 1.6rem"
               isBoxSizing={true}
@@ -181,6 +180,7 @@ export const ModifyProfileMainSection = ({
           >
             <Input
               width="100%"
+              placeholder="상담 스타일을 선택해주세요"
               height="4.8rem"
               value={style.viewValue}
               readOnly={true}
@@ -203,6 +203,7 @@ export const ModifyProfileMainSection = ({
             <Input
               width="100%"
               height="4.8rem"
+              placeholder="상담 방식을 선택해주세요"
               value={type.viewValue}
               readOnly={true}
               isCursorPointer={true}
@@ -234,7 +235,7 @@ export const ModifyProfileMainSection = ({
             <PriceInput
               value={letterPrice.value}
               onChange={letterPrice.onChangePrice}
-              placeholder="1회당 최소 5,000원~최대 50,000원"
+              placeholder="1건 당 5,000원 이상으로 입력해주세요"
               maxLength={6}
             />
 
@@ -245,7 +246,7 @@ export const ModifyProfileMainSection = ({
             <PriceInput
               value={chatPrice?.value}
               onChange={chatPrice.onChangePrice}
-              placeholder="30분당 최소 5,000원~최대 50,000원"
+              placeholder="1건 당 5,000원 이상으로 입력해주세요"
               maxLength={6}
             />
             <Body1>원</Body1>
@@ -260,6 +261,7 @@ export const ModifyProfileMainSection = ({
             height="4.8rem"
             maxLength={50}
             value={oneLiner.value}
+            placeholder="내 경험을 한 줄로 요약해주세요"
             onChange={(e) => {
               oneLiner.handleCheckOneLiner(e.target.value);
               oneLiner.onChange(e);
@@ -292,6 +294,7 @@ export const ModifyProfileMainSection = ({
           <ProfileInformTag>경험 소개</ProfileInformTag>
           <ExperienceTextArea
             maxLength={20000}
+            placeholder="내 경험을 셰어에게 소개해주세요"
             value={experience.value}
             onChange={(e) => {
               experience.handleCheckExperience(e.target.value);
@@ -475,6 +478,15 @@ const ExperienceTextArea = styled.textarea`
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 150%;
+  &::placeholder {
+    color: var(--Greyscale-Grey-3, #95959b);
+    text-overflow: ellipsis;
+    font-family: Pretendard;
+    font-size: 1.6rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 2.4rem */
+  }
   &:focus {
     outline: none;
   }
