@@ -43,6 +43,7 @@ interface ModifyProfileMainSectionProps {
   chatPrice: any;
   oneLiner: any;
   experience: any;
+  isNoProfile: boolean;
 }
 
 export const ModifyProfileMainSection = ({
@@ -59,6 +60,7 @@ export const ModifyProfileMainSection = ({
   chatPrice,
   oneLiner,
   experience,
+  isNoProfile
 }: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
@@ -75,7 +77,7 @@ export const ModifyProfileMainSection = ({
   );
   useEffect(() => {
     try {
-      category?.setViewValue(categoryInputMaker(selectCategory ?? [1]));
+      category?.setViewValue(categoryInputMaker(selectCategory ?? ['']));
     } catch (err) {
       alert('판매 정보를 제대로 가져오지 못했어요.');
       navigate('/seller/mypage');
@@ -235,7 +237,7 @@ export const ModifyProfileMainSection = ({
             <PriceInput
               value={letterPrice.value}
               onChange={letterPrice.onChangePrice}
-              placeholder="1건 당 5,000원 이상으로 입력해주세요"
+              placeholder="1건 당 5,000~50,000"
               maxLength={6}
             />
 
@@ -246,7 +248,7 @@ export const ModifyProfileMainSection = ({
             <PriceInput
               value={chatPrice?.value}
               onChange={chatPrice.onChangePrice}
-              placeholder="1건 당 5,000원 이상으로 입력해주세요"
+              placeholder="1건 당 5,000~50,000"
               maxLength={6}
             />
             <Body1>원</Body1>
@@ -384,7 +386,7 @@ export const ModifyProfileMainSection = ({
             experience.isError
           )
         }
-        text="저장하기"
+        text={isNoProfile ? "작성 완료하기" : "저장하기"}
         onClick={() => {
           setIsUpdateModalOpen(true);
           // navigate('/seller/mypage/modifyProfile');
@@ -461,7 +463,9 @@ const PriceInput = styled.input`
   font-weight: 600;
   line-height: 150%;
   &::placeholder {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: ${Grey3};
   }
 `;
 

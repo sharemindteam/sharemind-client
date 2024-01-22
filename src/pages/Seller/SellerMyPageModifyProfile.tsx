@@ -1,4 +1,4 @@
-import { getProfiles } from 'api/get';
+import { getMyInfo, getProfiles } from 'api/get';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
 import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
@@ -72,11 +72,17 @@ export const SellerMypageModifyProfile = () => {
 
   const oneLiner = useInput('');
   const experience = useInput('');
+  const [isNoProfile, setIsNoProfile] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        const profileLevel: any = await getMyInfo();
+        if (profileLevel?.data?.profileStatus === 'NO_PROFILE') {
+          setIsNoProfile(true);
+        }
         const profileRes: any = await getProfiles();
+
         const data = profileRes.data;
         if (profileRes?.response?.status === 404) {
           alert('판매 정보가 등록되어 있지 않습니다.');
@@ -123,6 +129,7 @@ export const SellerMypageModifyProfile = () => {
   return (
     <>
       <ModifyProfileHeader
+        isNoProfile={isNoProfile}
         isSetChatTime={isSetChatTime}
         setIsSetChatTime={setIsSetChatTime}
       />
@@ -132,6 +139,7 @@ export const SellerMypageModifyProfile = () => {
         <SetChatTimeSection />
       ) : (
         <ModifyProfileMainSection
+          isNoProfile={isNoProfile}
           nickname={nickname}
           category={category}
           style={style}
