@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
+import { Grey1, Grey2, Grey3, Grey5, Grey6, White } from 'styles/color';
 import { TagA2Cartegory } from '../../Common/TagA2Cartegory';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
@@ -198,8 +198,8 @@ const ToggleWrapper = styled.div`
   }
 `;
 const ToggleBar = styled.div`
-  height: 2.1rem;
-  background-color: #f1f1f8;
+  height: 2.9rem;
+  background-color: ${Grey5};
   border-bottom-left-radius: 0.8rem;
   border-bottom-right-radius: 0.8rem;
   display: flex;
