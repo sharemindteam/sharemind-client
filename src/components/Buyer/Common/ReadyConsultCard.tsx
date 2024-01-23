@@ -58,7 +58,8 @@ export const ReadyConsultCard = ({
     <Wrapper>
       <UpperWrapper
         onClick={() => {
-          navigate('/buyer/profile/' + counselorId);
+          //마인더 프로필 개발되면 수정
+          navigate('/buyer/profile/0');
         }}
       >
         <TagWrapper>
@@ -70,7 +71,7 @@ export const ReadyConsultCard = ({
       </UpperWrapper>
       <LowerWrapper
         onClick={() => {
-          navigate('/buyer/profile/' + counselorId);
+          navigate('/buyer/profile/0');
         }}
       >
         <Characters
