@@ -36,7 +36,7 @@ export const ModifyProfileHeader = ({
       </div>
       <Heading>
         {isSetChatTime
-          ? '채팅 상담 시간'
+          ? '상담 시간'
           : isNoProfile
           ? '판매정보 작성'
           : '판매정보 수정'}

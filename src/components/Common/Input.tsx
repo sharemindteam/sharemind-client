@@ -26,6 +26,7 @@ interface InputProps {
   isBoxSizing?: boolean;
   textIndent?: string;
   onClick?: () => void;
+  alignCenter?: boolean;
 }
 const Input = ({
   width = 'auto',
@@ -45,6 +46,7 @@ const Input = ({
   padding = '',
   margin = '',
   name,
+  alignCenter = false,
   isError = false,
   maxLength,
   readOnly = false,
@@ -79,6 +81,7 @@ const Input = ({
       isBoxSizing={isBoxSizing}
       textIndent={textIndent}
       onClick={onClick}
+      alignCenter={alignCenter}
     />
   );
 };
@@ -98,6 +101,7 @@ const StyledInput = styled.input<{
   isCursorPointer: boolean;
   isBoxSizing: boolean;
   textIndent: string;
+  alignCenter: boolean;
 }>`
   border-radius: 10px;
   border: ${(props) => (props.isError ? '1px solid #ff002e' : '')};
@@ -113,6 +117,7 @@ const StyledInput = styled.input<{
   text-indent: ${({ textIndent }) => textIndent};
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
+  text-align: ${({ alignCenter }) => (alignCenter ? 'center' : 'left')};
   box-sizing: ${({ isBoxSizing }) =>
     isBoxSizing ? 'border-box' : 'content-box'};
   &:focus {
