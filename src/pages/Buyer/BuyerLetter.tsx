@@ -9,12 +9,12 @@ import { LetterTags } from 'components/Buyer/BuyerLetter/LetterTags';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useLayoutEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
-import { opponentNicknameState } from 'utils/atom';
+import { isLoadingState, opponentNicknameState } from 'utils/atom';
 import { GetMessagesType } from 'utils/type';
 
 export const BuyerLetter = () => {
@@ -36,14 +36,13 @@ export const BuyerLetter = () => {
   //마감기한
   const [deadline, setDeadline] = useState<string>('');
   //로딩 state
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
   //제일 먼저 현재 상담 상태 정보업데이트
   //그리고 메세지 fetch 이어서
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const res: any = await getLetterRecentType(id);
-      console.log(res.data);
       if (res.status === 200) {
         if (
           res.data.recentType === '해당 편지에 대해 작성된 메시지가 없습니다.'

@@ -1,16 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey3, Grey4, White } from 'styles/color';
-import { Button2 } from 'styles/font';
+import { Body2, Button2, Heading } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { ReactComponent as Search } from 'assets/icons/search.svg';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { SearchResults } from 'components/Buyer/BuyerSearchResult/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useLayoutEffect, useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
+  isLoadingState,
   isSortModalOpenState,
   scrollLockState,
   searchKeywordState,
@@ -18,7 +19,9 @@ import {
 import Input from 'components/Common/Input';
 import { patchSearchWordsResults } from 'api/patch';
 import { SearchResultData } from 'utils/type';
-
+import { ConverSortType } from 'utils/convertSortType';
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 export const BuyerSearchResult = () => {
   const navigate = useNavigate();
   //0 : 최신순 1:인기순 2: 별점순
@@ -44,18 +47,10 @@ export const BuyerSearchResult = () => {
     event.preventDefault();
     setKeyword(input);
   };
-  const ConverSortType = (typeNum: number) => {
-    if (typeNum === 0) {
-      return 'LATEST';
-    } else if (typeNum === 1) {
-      return 'POPULARITY';
-    } else if (typeNum === 2) {
-      return 'STAR_RATING';
-    } else {
-      return '';
-    }
-  };
+  //로딩 state
+  const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
   const fectchSearchResults = async (searchWord: string) => {
+    setIsLoading(true);
     try {
       const body = {
         word: searchWord,
@@ -64,6 +59,7 @@ export const BuyerSearchResult = () => {
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchSearchWordsResults(sortTypeString, body);
       if (res.status === 200) {
+        console.log(res.data);
         setSearchData(res.data);
       } else if (res.response.status === 400) {
         alert('검색어는 2~20자 사이여야 합니다.');
@@ -71,63 +67,101 @@ export const BuyerSearchResult = () => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
-  useEffect(() => {
+  useLayoutEffect(() => {
     fectchSearchResults(keyword);
   }, [keyword, sortType]);
-  return (
-    <Wrapper>
-      <HeaderWrapper>
-        <BackIcon
-          onClick={() => {
-            navigate(-1);
-          }}
-        />
-        <FormWrapper onSubmit={handleSubmit}>
-          <Input
-            value={input}
-            onChange={handleOnChange}
-            placeholder="상담사명, 제목, 키워드"
-            fontSize="1.6rem"
-            fontWeight="400"
-            fontColor={Grey1}
-            placeHolderColor={Grey4}
-            height="4.4rem"
-            width="100%"
-            padding="0 3.2rem 0 0"
-            textIndent="1rem"
-          />
-          <SearchIcon onClick={handleSubmit} />
-        </FormWrapper>
-      </HeaderWrapper>
-      <div className="select">
-        <div
-          className="select-wrapper"
-          onClick={() => {
-            setIsModalOpen(true);
-            setScrollLock(true);
-          }}
-        >
-          <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-          <Down />
-        </div>
-      </div>
-      <SearchResults searchData={searchData} />
-      {isModalOpen ? (
-        <>
-          <BackDrop
+  if (isLoading) {
+    return (
+      <>
+        <HeaderWrapper>
+          <BackIcon
             onClick={() => {
-              //여기서 api 호출
-              setIsModalOpen(false);
-              setScrollLock(false);
+              navigate('/buyer/consult');
             }}
           />
-          <SortModal sortType={sortType} setSortType={setSortType} />
-        </>
-      ) : null}
-    </Wrapper>
-  );
+        </HeaderWrapper>
+        <div
+          style={{
+            height: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <LoadingSpinner />
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <Wrapper>
+        <HeaderWrapper>
+          <BackIcon
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+          <FormWrapper onSubmit={handleSubmit}>
+            <Input
+              value={input}
+              onChange={handleOnChange}
+              placeholder="상담사명, 제목, 키워드"
+              fontSize="1.6rem"
+              fontWeight="400"
+              fontColor={Grey1}
+              placeHolderColor={Grey4}
+              height="4.4rem"
+              width="100%"
+              padding="0 3.2rem 0 0"
+              textIndent="1rem"
+            />
+            <SearchIcon onClick={handleSubmit} />
+          </FormWrapper>
+        </HeaderWrapper>
+        <div className="select">
+          <div
+            className="select-wrapper"
+            onClick={() => {
+              setIsModalOpen(true);
+              setScrollLock(true);
+            }}
+          >
+            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+            <Down />
+          </div>
+        </div>
+        {searchData.length !== 0 ? (
+          <SearchResults searchData={searchData} />
+        ) : (
+          <EmptyWrapper>
+            <EmptyIcon />
+            <Heading color={Grey1}>검색 결과가 없어요.</Heading>
+            <Body2 color={Grey1}>
+              마인더명, 제목, 카테고리, 상담 스타일 등
+            </Body2>
+            <Body2 color={Grey1}>더 간단한 단어로 검색해보세요.</Body2>
+          </EmptyWrapper>
+        )}
+
+        {isModalOpen ? (
+          <>
+            <BackDrop
+              onClick={() => {
+                //여기서 api 호출
+                setIsModalOpen(false);
+                setScrollLock(false);
+              }}
+            />
+            <SortModal sortType={sortType} setSortType={setSortType} />
+          </>
+        ) : null}
+      </Wrapper>
+    );
+  }
 };
 
 const Wrapper = styled.div`
@@ -182,4 +216,13 @@ const BackDrop = styled.div`
   height: calc(var(--vh, 1vh) * 100);
   background-color: rgba(0, 0, 0, 0.5);
   transition: opacity 0.3s ease;
+`;
+const EmptyIcon = styled(Empty)`
+  padding: 4.7rem 4.41rem 4.603rem 4.5rem;
+`;
+const EmptyWrapper = styled.div`
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
