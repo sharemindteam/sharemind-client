@@ -30,11 +30,14 @@ export const BuyerReviewManage = () => {
       const params = { isCompleted: !isReviewWrite, cursorId: 0 };
       const res: any = await getReviewsCustomer({ params });
       if (res.status === 200) {
+        console.log(res.data);
         setReviewData(res.data);
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 회원입니다.');
       }
     };
     fetchReviewData();
-  }, []);
+  }, [isReviewWrite]);
   return (
     <>
       <HeaderWrapper border={false}>
@@ -54,22 +57,8 @@ export const BuyerReviewManage = () => {
         </CardWrapper>
       ) : (
         <CardWrapper>
-          {wroteDummy.map((value) => {
-            return (
-              <ReviewWroteCard
-                counselorId={value.counselorId}
-                nickname={value.nickname}
-                level={value.level}
-                ratingAverage={value.rating_average}
-                reviewNumber={value.reviewNumber}
-                iconNumber={value.iconNumber}
-                consultType={value.consultType}
-                price={value.price}
-                date={value.date}
-                rating={value.rating}
-                comment={value.comment}
-              />
-            );
+          {reviewData.map((value) => {
+            return <ReviewWroteCard key={value.reviewId} reviewData={value} />;
           })}
         </CardWrapper>
       )}
