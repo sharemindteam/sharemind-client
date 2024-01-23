@@ -129,7 +129,6 @@ export const BuyerLetter = () => {
               navigate('/buyer/consult');
             }}
           />
-          <Heading color={Grey1}></Heading>
           <MoreIcon />
         </HeaderWrapper>
         <div
