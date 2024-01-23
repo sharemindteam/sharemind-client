@@ -42,6 +42,10 @@ export const getLetterRecentType = async (letterId: string | undefined) =>
 export const getMyInfo = async () => await getInstance('counselors/my-info');
 export const getProfiles = async () => await getInstance('counselors/profiles');
 export const getIsPassQuiz = async () => await getInstance('counselors/quiz');
+export const getCounselorConsults = async (
+  counselorId: string | undefined,
+  params: any,
+) => await getInstance(`/counselors/consults/${counselorId}`, params);
 
 // SearchWord Controller
 export const getSearchWords = async () => await getInstance('/searchWords');

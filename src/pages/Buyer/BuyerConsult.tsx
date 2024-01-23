@@ -42,7 +42,7 @@ export const BuyerConsult = () => {
   );
   //card에 넘길 데이터
   const [cardData, setCardData] = useState<consultApiObject[]>([]);
-  //test
+
   useEffect(() => {
     const fetchData = async () => {
       if (isLetter) {
