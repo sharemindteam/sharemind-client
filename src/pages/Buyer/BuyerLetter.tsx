@@ -7,7 +7,7 @@ import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
 import { LetterMainSection } from 'components/Buyer/BuyerLetter/LetterMainSection';
 import { LetterTags } from 'components/Buyer/BuyerLetter/LetterTags';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -113,7 +113,10 @@ export const BuyerLetter = () => {
     } catch (e) {
       console.log(e);
     } finally {
-      setIsLoading(false); // API 요청이 완료되면 isLoading을 false로 설정
+      // setIsLoading(false); // API 요청이 완료되면 isLoading을 false로 설정
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1);
     }
   };
   //location null 시 예외처리

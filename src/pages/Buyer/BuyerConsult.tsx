@@ -1,6 +1,6 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -49,7 +49,9 @@ export const BuyerConsult = () => {
   const [cardData, setCardData] = useState<consultApiObject[]>([]);
   //로딩 state
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
-  useEffect(() => {
+  //scorll 막기
+  const setScrollLock = useSetRecoilState(scrollLockState);
+  useLayoutEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       if (isLetter) {
@@ -74,17 +76,22 @@ export const BuyerConsult = () => {
         } catch (e) {
           alert(e);
         } finally {
-          setIsLoading(false);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1);
+          // setIsLoading(false);
         }
       } else {
         //채팅 리스트 가져오는 api
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1);
+        // setIsLoading(false);
       }
     };
     fetchData();
   }, [sortType, isChecked]);
-  //scorll 막기
-  const setScrollLock = useSetRecoilState(scrollLockState);
+
   if (isLoading) {
     return (
       <>

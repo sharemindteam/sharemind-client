@@ -68,7 +68,9 @@ export const BuyerSearchResult = () => {
     } catch (e) {
       console.log(e);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1);
     }
   };
   useLayoutEffect(() => {
