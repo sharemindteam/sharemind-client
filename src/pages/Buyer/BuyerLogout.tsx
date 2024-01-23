@@ -13,7 +13,7 @@ export const BuyerLogout = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/mypage');
+            navigate('/buyer/setting');
           }}
         />
         <Heading color={Grey1}>로그아웃</Heading>

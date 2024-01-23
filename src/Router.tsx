@@ -93,7 +93,7 @@ const Router = () => {
       <Route path="/signup" element={<BuyerSignup />} />
       <Route path="/signup/nav" element={<BuyerSignupComplete />} />
       <Route path="/find" element={<BuyerFindInfo />} />
-      <Route path="/setting" element={<BuyerAccountSetting />} />
+      <Route path="/buyer/setting" element={<BuyerAccountSetting />} />
       <Route path="/setting/changePassword" element={<BuyerPwChange />} />
       <Route path="/setting/terminate" element={<BuyerTerminate />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />

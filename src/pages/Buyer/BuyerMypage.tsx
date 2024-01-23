@@ -115,7 +115,7 @@ export const BuyerMypage = () => {
             <Body2
               color={Grey1}
               onClick={() => {
-                navigate('/setting');
+                navigate('/buyer/setting');
               }}
             >
               계정 설정

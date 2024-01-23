@@ -13,7 +13,7 @@ export const BuyerTerminate = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/mypage');
+            navigate('/buyer/setting');
           }}
         />
         <Heading color={Grey1}>회원 탈퇴</Heading>
