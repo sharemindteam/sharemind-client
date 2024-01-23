@@ -11,7 +11,6 @@ import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 import { isModifyReviewState, scrollLockState } from 'utils/atom';
-import { wroteReviewDummyData as wroteDummy } from 'utils/buyerDummy';
 import { BuyerReview } from 'utils/type';
 
 export const BuyerReviewManage = () => {

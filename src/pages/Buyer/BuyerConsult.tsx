@@ -1,6 +1,6 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -16,7 +16,7 @@ import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.sv
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
-import { getLetters } from 'api/get';
+import { getChats, getLetters } from 'api/get';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 interface consultApiObject {
@@ -82,15 +82,28 @@ export const BuyerConsult = () => {
           // setIsLoading(false);
         }
       } else {
-        //채팅 리스트 가져오는 api
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1);
-        // setIsLoading(false);
+        try {
+          const params = {
+            isCustomer: true,
+          };
+          const res: any = await getChats({ params });
+          if (res.status === 200) {
+            setCardData(res.data);
+          } else if (res.response.status === 404) {
+            alert('존재하지 않는 정렬 방식입니다.');
+          }
+        } catch (e) {
+          alert(e);
+        } finally {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1);
+          // setIsLoading(false);
+        }
       }
     };
     fetchData();
-  }, [sortType, isChecked]);
+  }, [sortType, isChecked, isLetter]);
 
   if (isLoading) {
     return (

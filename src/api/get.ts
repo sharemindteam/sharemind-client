@@ -5,7 +5,7 @@ export const getAdminsUnpaidConsults = async () =>
 export const getAdminsPedningProfilse = async () =>
   await getInstance('/admins/pending-profiles');
 
-//buyer
+//Chat Controller
 //채팅 목록 반환
 export const getChats = async (params: any) =>
   await getInstance('/chats', params);

@@ -40,11 +40,11 @@ export const ReviewWroteCard = ({ reviewData }: ReviewWroteCardProps) => {
           </div>
         </div>
 
-        <MoreIcon
+        {/* <MoreIcon
           onClick={() => {
             setIsModalOpen(true);
           }}
-        />
+        /> */}
       </UpperWrapper>
       <MiddleWrapper>
         <div className="row">
