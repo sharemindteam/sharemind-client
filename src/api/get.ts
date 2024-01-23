@@ -37,6 +37,9 @@ export const getLetterMessages = async (
 
 export const getLetterRecentType = async (letterId: string | undefined) =>
   await getInstance(`/letterMessages/recent-type/${letterId}`);
+//Review Controller
+export const getReviewsCustomer = async (params: any) =>
+  await getInstance('/reviews/customers', params);
 
 // Conuselor Controller
 export const getMyInfo = async () => await getInstance('counselors/my-info');

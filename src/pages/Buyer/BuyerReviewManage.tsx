@@ -1,26 +1,40 @@
+import { getReviewsCustomer } from 'api/get';
 import { ReviewManageCard } from 'components/Buyer/BuyerReviewManage/ReviewManageCard';
 import { ReviewManageNav } from 'components/Buyer/BuyerReviewManage/ReviewManageNav';
 import { ReviewModal } from 'components/Buyer/BuyerReviewManage/ReviewModal';
 import { ReviewWroteCard } from 'components/Buyer/BuyerReviewManage/ReviewWroteCard';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 import { isModifyReviewState, scrollLockState } from 'utils/atom';
-import { reviewDummyData as dummy } from 'utils/buyerDummy';
 import { wroteReviewDummyData as wroteDummy } from 'utils/buyerDummy';
+import { BuyerReview } from 'utils/type';
+
 export const BuyerReviewManage = () => {
   const navigate = useNavigate();
   //리뷰 작성이면 true 남긴 리뷰면 false
   const [isReviewWrite, setIsReviewWrite] = useState<boolean>(true);
+  //리뷰 작성이면 true 남긴 리뷰면 false
+  const [reviewData, setReviewData] = useState<BuyerReview[]>([]);
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isModifyReviewState);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+  useLayoutEffect(() => {
+    const fetchReviewData = async () => {
+      const params = { isCompleted: !isReviewWrite, cursorId: 0 };
+      const res: any = await getReviewsCustomer({ params });
+      if (res.status === 200) {
+        setReviewData(res.data);
+      }
+    };
+    fetchReviewData();
+  }, []);
   return (
     <>
       <HeaderWrapper border={false}>
@@ -34,20 +48,8 @@ export const BuyerReviewManage = () => {
       <ReviewManageNav isWrite={isReviewWrite} setIsWrite={setIsReviewWrite} />
       {isReviewWrite ? (
         <CardWrapper>
-          {dummy.map((value) => {
-            return (
-              <ReviewManageCard
-                counselorId={value.counselorId}
-                nickname={value.nickname}
-                level={value.level}
-                ratingAverage={value.rating_average}
-                reviewNumber={value.reviewNumber}
-                iconNumber={value.iconNumber}
-                consultType={value.consultType}
-                price={value.price}
-                date={value.date}
-              />
-            );
+          {reviewData.map((value) => {
+            return <ReviewManageCard key={value.reviewId} reviewData={value} />;
           })}
         </CardWrapper>
       ) : (

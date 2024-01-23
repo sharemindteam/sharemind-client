@@ -88,3 +88,17 @@ export type SearchResultData = {
   ratingAverage: number;
   totalReview: number;
 };
+
+export interface BuyerReview {
+  reviewId: number;
+  nickname: string;
+  consultStyle: string;
+  level: number;
+  ratingAverage: number;
+  totalReview: number;
+  consultType: string;
+  consultedAt: string;
+  consultCost: number;
+  rating: number;
+  comment: string;
+}
