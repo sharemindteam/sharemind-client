@@ -1,19 +1,24 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen } from 'styles/color';
 import { Body3, Button2, Heading } from 'styles/font';
-import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
+import {
+  isConsultModalOpenState,
+  isLoadingState,
+  scrollLockState,
+} from 'utils/atom';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.svg';
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
-import { getLetters } from 'api/get';
-import { ReactComponent as Empty } from 'assets/icons/graphic-consult-noting.svg';
+import { getChats, getLetters } from 'api/get';
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 interface consultApiObject {
   consultStyle: string;
   id: number;
@@ -42,128 +47,183 @@ export const BuyerConsult = () => {
   );
   //card에 넘길 데이터
   const [cardData, setCardData] = useState<consultApiObject[]>([]);
-  useEffect(() => {
+  //로딩 state
+  const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
+  //scorll 막기
+  const setScrollLock = useSetRecoilState(scrollLockState);
+  useLayoutEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       if (isLetter) {
-        let sortTypeText: string;
-        if (sortType === 0) {
-          sortTypeText = 'latest';
-        } else {
-          sortTypeText = 'unread';
-        }
-        const params = {
-          filter: isChecked,
-          isCustomer: true,
-          sortType: sortTypeText,
-        };
-        const res: any = await getLetters({ params });
-        if (res.status === 200) {
-          setCardData(res.data);
-        } else if (res.response.status === 404) {
-          alert('존재하지 않는 정렬 방식입니다.');
+        try {
+          let sortTypeText: string;
+          if (sortType === 0) {
+            sortTypeText = 'latest';
+          } else {
+            sortTypeText = 'unread';
+          }
+          const params = {
+            filter: isChecked,
+            isCustomer: true,
+            sortType: sortTypeText,
+          };
+          const res: any = await getLetters({ params });
+          if (res.status === 200) {
+            setCardData(res.data);
+          } else if (res.response.status === 404) {
+            alert('존재하지 않는 정렬 방식입니다.');
+          }
+        } catch (e) {
+          alert(e);
+        } finally {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1);
+          // setIsLoading(false);
         }
       } else {
+        try {
+          const params = {
+            isCustomer: true,
+          };
+          const res: any = await getChats({ params });
+          if (res.status === 200) {
+            setCardData(res.data);
+          } else if (res.response.status === 404) {
+            alert('존재하지 않는 정렬 방식입니다.');
+          }
+        } catch (e) {
+          alert(e);
+        } finally {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1);
+          // setIsLoading(false);
+        }
       }
     };
     fetchData();
-  }, [sortType, isChecked]);
-  //scorll 막기
-  const setScrollLock = useSetRecoilState(scrollLockState);
-  return (
-    <Wrapper>
-      <Header
-        isBuyer={true}
-        onClick={() => {
-          navigate('/buyer');
-        }}
-      />
-      <TabA1 isBuyer={true} initState={2} />
-      <div className="options">
-        <div className="select">
-          <div className="select-button">
-            <SelectButton
-              isSelected={isLetter}
-              onClick={() => {
-                setIsLetter(true);
-                setLetterColor(Green);
-                setChattingColor(Grey1);
-              }}
-            >
-              <Button2 color={letterColor}>편지</Button2>
-            </SelectButton>
-            <SelectButton
-              isSelected={!isLetter}
-              onClick={() => {
-                setIsLetter(false);
-                setLetterColor(Grey1);
-                setChattingColor(Green);
-              }}
-            >
-              <Button2 color={chattingColor}>채팅</Button2>
-            </SelectButton>
-          </div>
-          <div
-            className="select-wrapper"
-            onClick={() => {
-              setIsModalOpen(true);
-              setScrollLock(true);
-            }}
-          >
-            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-            <Down />
-          </div>
-        </div>
-        <div className="exception-toggle">
-          {isChecked ? (
-            <CheckIcon
-              onClick={() => {
-                setIsChecked(false);
-              }}
-              style={{ cursor: 'pointer' }}
-            />
-          ) : (
-            <NonCheckIcon
-              onClick={() => {
-                setIsChecked(true);
-              }}
-              style={{ cursor: 'pointer' }}
-            />
-          )}
-          <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
-        </div>
-      </div>
-      {cardData.length !== 0 ? (
-        <CardWrapper>
-          {cardData.map((value) => {
-            return (
-              <ConsultCard
-                consultStyle={value.consultStyle}
-                id={value.id}
-                latestMessageContent={value.latestMessageContent}
-                latestMessageIsCustomer={value.latestMessageIsCustomer}
-                latestMessageUpdatedAt={value.latestMessageUpdatedAt}
-                opponentNickname={value.opponentNickname}
-                status={value.status}
-                unreadMessageCount={value.unreadMessageCount}
-              />
-            );
-          })}
-        </CardWrapper>
-      ) : (
-        <EmptyWrapper>
-          <EmptyIcon />
-          <Heading>아직 진행한 상담이 없어요</Heading>
-        </EmptyWrapper>
-      )}
+  }, [sortType, isChecked, isLetter]);
 
-      {isModalOpen ? (
-        <>
-          <BackDrop />
-          <ConsultModal sortType={sortType} setSortType={setSortType} />
-        </>
-      ) : null}
-    </Wrapper>
-  );
+  if (isLoading) {
+    return (
+      <>
+        <Header
+          isBuyer={true}
+          onClick={() => {
+            navigate('/buyer');
+          }}
+        />
+        <TabA1 isBuyer={true} initState={2} />
+        <div
+          style={{
+            height: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <LoadingSpinner />
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <Wrapper>
+        <Header
+          isBuyer={true}
+          onClick={() => {
+            navigate('/buyer');
+          }}
+        />
+        <TabA1 isBuyer={true} initState={2} />
+        <div className="options">
+          <div className="select">
+            <div className="select-button">
+              <SelectButton
+                isSelected={isLetter}
+                onClick={() => {
+                  setIsLetter(true);
+                  setLetterColor(Green);
+                  setChattingColor(Grey1);
+                }}
+              >
+                <Button2 color={letterColor}>편지</Button2>
+              </SelectButton>
+              <SelectButton
+                isSelected={!isLetter}
+                onClick={() => {
+                  setIsLetter(false);
+                  setLetterColor(Grey1);
+                  setChattingColor(Green);
+                }}
+              >
+                <Button2 color={chattingColor}>채팅</Button2>
+              </SelectButton>
+            </div>
+            <div
+              className="select-wrapper"
+              onClick={() => {
+                setIsModalOpen(true);
+                setScrollLock(true);
+              }}
+            >
+              <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+              <Down />
+            </div>
+          </div>
+          <div className="exception-toggle">
+            {isChecked ? (
+              <CheckIcon
+                onClick={() => {
+                  setIsChecked(false);
+                }}
+                style={{ cursor: 'pointer' }}
+              />
+            ) : (
+              <NonCheckIcon
+                onClick={() => {
+                  setIsChecked(true);
+                }}
+                style={{ cursor: 'pointer' }}
+              />
+            )}
+            <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
+          </div>
+        </div>
+        {cardData.length !== 0 ? (
+          <CardWrapper>
+            {cardData.map((value) => {
+              return (
+                <ConsultCard
+                  consultStyle={value.consultStyle}
+                  id={value.id}
+                  latestMessageContent={value.latestMessageContent}
+                  latestMessageIsCustomer={value.latestMessageIsCustomer}
+                  latestMessageUpdatedAt={value.latestMessageUpdatedAt}
+                  opponentNickname={value.opponentNickname}
+                  status={value.status}
+                  unreadMessageCount={value.unreadMessageCount}
+                />
+              );
+            })}
+          </CardWrapper>
+        ) : (
+          <EmptyWrapper>
+            <EmptyIcon />
+            <Heading>아직 진행한 상담이 없어요</Heading>
+          </EmptyWrapper>
+        )}
+
+        {isModalOpen ? (
+          <>
+            <BackDrop />
+            <ConsultModal sortType={sortType} setSortType={setSortType} />
+          </>
+        ) : null}
+      </Wrapper>
+    );
+  }
 };
 const Wrapper = styled.div`
   .options {

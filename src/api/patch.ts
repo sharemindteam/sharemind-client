@@ -25,6 +25,10 @@ export const patchLetterMessageFirstQustion = async (body: any) =>
 export const patchProfiles = async (body: any) =>
   await patchInstance('counselors/profiles', body);
 
+//Review Controller
+export const patchReviews = async (body: any) =>
+  await patchInstance('/reviews', body);
+
 //SearchWord Controller
 //검색 결과 반환
 export const patchSearchWordsResults = async (sortType: string, body: any) =>

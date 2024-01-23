@@ -6,19 +6,30 @@ import { Grey1, Grey4 } from 'styles/color';
 import { ReactComponent as XIcon } from 'assets/icons/icon-grey-x.svg';
 import { getSearchWords } from 'api/get';
 import { deleteSearchWords } from 'api/delete';
-import { instance } from 'api/axios';
+import { useSetRecoilState } from 'recoil';
+import { searchKeywordState } from 'utils/atom';
+import { useNavigate } from 'react-router-dom';
 export const SearchRecent = () => {
+  const navigate = useNavigate();
   const [recentSearch, setRecentSearch] = useState<string[]>([]);
-  const handleXonClick = async (targetIndex: number) => {
+  const setKeyword = useSetRecoilState(searchKeywordState);
+  const handleXonClick = async (
+    targetIndex: number,
+    event: React.MouseEvent,
+  ) => {
+    event.stopPropagation();
     const body = {
       word: recentSearch[targetIndex],
     };
     const res: any = await deleteSearchWords(body);
-    console.log(res);
     if (res.status === 200) {
       const update = recentSearch.filter((_, index) => index !== targetIndex);
       setRecentSearch(update);
     }
+  };
+  const handleRecentClick = (index: number) => {
+    setKeyword(recentSearch[index]);
+    navigate('/buyer/search/result');
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -42,26 +53,50 @@ export const SearchRecent = () => {
         {recentSearch.map((value, index) => {
           if (index === 0) {
             return (
-              <RecentTag style={{ marginLeft: '2rem' }}>
+              <RecentTag
+                onClick={() => {
+                  handleRecentClick(index);
+                }}
+                style={{ marginLeft: '2rem' }}
+              >
                 <Button2 color={Grey1}>{value}</Button2>
-                <XIcon onClick={() => handleXonClick(index)} />
+                <XIcon
+                  onClick={(event: React.MouseEvent) =>
+                    handleXonClick(index, event)
+                  }
+                />
               </RecentTag>
             );
           } else if (index === recentSearch.length - 1) {
             return (
-              <RecentTag style={{ marginRight: '2rem' }}>
+              <RecentTag
+                onClick={() => {
+                  handleRecentClick(index);
+                }}
+                style={{ marginRight: '2rem' }}
+              >
                 <Button2 color={Grey1}>{value}</Button2>
                 <XIcon
-                  onClick={() => handleXonClick(index)}
+                  onClick={(event: React.MouseEvent) =>
+                    handleXonClick(index, event)
+                  }
                   style={{ padding: '0.1rem' }}
                 />
               </RecentTag>
             );
           } else {
             return (
-              <RecentTag>
+              <RecentTag
+                onClick={() => {
+                  handleRecentClick(index);
+                }}
+              >
                 <Button2 color={Grey1}>{value}</Button2>
-                <XIcon onClick={() => handleXonClick(index)} />
+                <XIcon
+                  onClick={(event: React.MouseEvent) =>
+                    handleXonClick(index, event)
+                  }
+                />
               </RecentTag>
             );
           }

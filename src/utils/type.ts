@@ -61,11 +61,11 @@ type ConsultInfoList = ConsultInfoItem[];
 
 ///buyer search result 페이지
 
-type ConsultCosts = {
+export type ConsultCosts = {
   편지: number;
   채팅: number;
 };
-type ConsultTimes = {
+export type ConsultTimes = {
   MON: Array<string>; //(ex: "14~15")
   TUE: Array<string>;
   WED: Array<string>;
@@ -88,3 +88,17 @@ export type SearchResultData = {
   ratingAverage: number;
   totalReview: number;
 };
+
+export interface BuyerReview {
+  reviewId: number;
+  nickname: string;
+  consultStyle: string;
+  level: number;
+  ratingAverage: number;
+  totalReview: number;
+  consultType: string;
+  consultedAt: string;
+  consultCost: number;
+  rating: number;
+  comment: string;
+}

@@ -1,17 +1,22 @@
 import { CategoryResultHeader } from 'components/Buyer/BuyerCategoryResult/CategoryResultHeader';
-import { SearchResults } from 'components/Buyer/Common/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { Button2 } from 'styles/font';
 import { Grey3 } from 'styles/color';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isSortModalOpenState, scrollLockState } from 'utils/atom';
+import { ConverSortType } from 'utils/convertSortType';
+import { patchSearchWordsResults } from 'api/patch';
+import { SearchResultData } from 'utils/type';
+import { convertNumToCategory } from 'utils/convertNumToCategory';
+import { SearchResults } from 'components/Buyer/BuyerCategoryResult/SearchResult';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerCategoryResult = () => {
+  const navigate = useNavigate();
   //0 : 최신순 1:인기순 2: 별점순
   // 바뀔 때마다 useEffect로 request
   const [sortType, setSortType] = useState<number>(0);
@@ -21,11 +26,38 @@ export const BuyerCategoryResult = () => {
     useRecoilState<boolean>(isSortModalOpenState);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+  //결과저장
+  const [searchData, setSearchData] = useState<SearchResultData[]>([]);
+  const fectchSearchResults = async (searchWord: string) => {
+    try {
+      const body = {
+        word: searchWord,
+        index: 0,
+      };
+      const sortTypeString: string = ConverSortType(sortType);
+      const res: any = await patchSearchWordsResults(sortTypeString, body);
+      if (res.status === 200) {
+        setSearchData(res.data);
+      } else if (res.response.status === 400) {
+        alert('검색어는 2~20자 사이여야 합니다.');
+        navigate('/buyer/home');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    if (id !== undefined) {
+      fectchSearchResults(convertNumToCategory(parseInt(id, 10)));
+    } else {
+      alert('잘못된 접근입니다');
+      navigate('/buyer/home');
+    }
+  }, []);
   if (id !== undefined) {
-    const categoryId = parseInt(id, 10);
     return (
       <Wrapper>
-        <CategoryResultHeader categoryType={categoryId} />
+        <CategoryResultHeader categoryType={parseInt(id, 10)} />
         <div className="select">
           <div
             className="select-wrapper"
@@ -38,7 +70,7 @@ export const BuyerCategoryResult = () => {
             <Down />
           </div>
         </div>
-        <SearchResults />
+        <SearchResults searchData={searchData} />
         {isModalOpen ? (
           <>
             <BackDrop

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
+import { Grey1, Grey2, Grey3, Grey5, Grey6, White } from 'styles/color';
 import { TagA2Cartegory } from '../../Common/TagA2Cartegory';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
@@ -10,11 +10,13 @@ import { ReactComponent as DownIcon } from 'assets/icons/icon-down-toggle.svg';
 import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CartegoryState } from 'utils/type';
+import { CartegoryState, ConsultTimes } from 'utils/type';
+import { convertTimeToString } from 'utils/convertTimeToString';
 interface ReadyConsultCardProps {
   index: number;
   counselorId: number;
   tagList: CartegoryState[];
+  consultTimes: ConsultTimes;
   introduction: string;
   nickname: string;
   level: number;
@@ -31,6 +33,7 @@ export const ReadyConsultCard = ({
   index,
   counselorId,
   tagList,
+  consultTimes,
   introduction,
   nickname,
   level,
@@ -55,7 +58,8 @@ export const ReadyConsultCard = ({
     <Wrapper>
       <UpperWrapper
         onClick={() => {
-          navigate('/buyer/profile/' + counselorId);
+          //마인더 프로필 개발되면 수정
+          navigate('/buyer/profile/0');
         }}
       >
         <TagWrapper>
@@ -67,7 +71,7 @@ export const ReadyConsultCard = ({
       </UpperWrapper>
       <LowerWrapper
         onClick={() => {
-          navigate('/buyer/profile/' + counselorId);
+          navigate('/buyer/profile/0');
         }}
       >
         <Characters
@@ -110,17 +114,49 @@ export const ReadyConsultCard = ({
           </div>
           <div className="row2">
             <Body3 color={Grey3}>상담가능 시간</Body3>
-            <Body3 color={Grey1}>
-              월-금 21:00-24:00
-              <br />
-              토-일 09:00-22:00
-            </Body3>
+            <div>
+              {consultTimes.MON !== undefined ? (
+                <Body3 color={Grey1}>
+                  월 {convertTimeToString(consultTimes.MON)}
+                </Body3>
+              ) : null}
+              {consultTimes.TUE !== undefined ? (
+                <Body3 color={Grey1}>
+                  화 {convertTimeToString(consultTimes.TUE)}
+                </Body3>
+              ) : null}
+              {consultTimes.WED !== undefined ? (
+                <Body3 color={Grey1}>
+                  수 {convertTimeToString(consultTimes.WED)}
+                </Body3>
+              ) : null}
+              {consultTimes.THU !== undefined ? (
+                <Body3 color={Grey1}>
+                  목 {convertTimeToString(consultTimes.THU)}
+                </Body3>
+              ) : null}
+              {consultTimes.FRI !== undefined ? (
+                <Body3 color={Grey1}>
+                  금 {convertTimeToString(consultTimes.FRI)}
+                </Body3>
+              ) : null}
+              {consultTimes.SAT !== undefined ? (
+                <Body3 color={Grey1}>
+                  토 {convertTimeToString(consultTimes.SAT)}
+                </Body3>
+              ) : null}
+              {consultTimes.SUN !== undefined ? (
+                <Body3 color={Grey1}>
+                  일 {convertTimeToString(consultTimes.SUN)}
+                </Body3>
+              ) : null}
+            </div>
           </div>
           <div className="row3">
             <Body3 color={Grey3}>상담료</Body3>
             <Body3 color={Grey1}>
-              편지 1건 {letterPrice}원<br />
-              실시간 30분당 {chattingPrice}
+              편지 1건 {letterPrice.toLocaleString()}원<br />
+              실시간 30분당 {chattingPrice.toLocaleString()}원
             </Body3>
           </div>
         </ToggleWrapper>
@@ -182,24 +218,25 @@ const NoneBookMarkIcon = styled(NoneBookMark)`
   cursor: pointer;
 `;
 const ToggleWrapper = styled.div`
-  height: 11rem;
   padding: 1rem 2rem;
   .row1 {
     display: flex;
     gap: 6.1rem;
   }
   .row2 {
+    margin-top: 0.8rem;
     display: flex;
     gap: 3.6rem;
   }
   .row3 {
+    margin-top: 0.8rem;
     display: flex;
     gap: 7.6rem;
   }
 `;
 const ToggleBar = styled.div`
-  height: 2.1rem;
-  background-color: #f1f1f8;
+  height: 2.9rem;
+  background-color: ${Grey5};
   border-bottom-left-radius: 0.8rem;
   border-bottom-right-radius: 0.8rem;
   display: flex;

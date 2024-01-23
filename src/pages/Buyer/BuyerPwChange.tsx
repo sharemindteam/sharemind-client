@@ -102,7 +102,7 @@ export const BuyerPwChange = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/setting');
+            navigate('/buyer/setting');
           }}
         />
         <Heading color={Grey1}>비밀번호 변경</Heading>

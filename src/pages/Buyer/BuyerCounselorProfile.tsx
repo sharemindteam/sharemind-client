@@ -7,7 +7,7 @@ import {
   CounselorProfileNav,
   CounselorReview,
 } from 'components/Buyer/BuyerCounselorProfile';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';

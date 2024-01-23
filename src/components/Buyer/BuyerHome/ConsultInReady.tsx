@@ -5,6 +5,7 @@ import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
 import { useNavigate } from 'react-router-dom';
+import { CartegoryState } from 'utils/type';
 export const ConsultInReady = () => {
   const navigate = useNavigate();
   //consult type은 1이면 편지,2 면 채팅 3이면 둘다
@@ -30,8 +31,7 @@ export const ConsultInReady = () => {
         <MoreIcon />
       </div>
       {dummy.map((value, index) => {
-        const tagListCast: CartegoryStateArray =
-          value.tagList as CartegoryStateArray;
+        const tagListCast: CartegoryState[] = value.tagList as CartegoryState[];
         return (
           <ReadyConsultCard
             index={index}
@@ -43,9 +43,8 @@ export const ConsultInReady = () => {
             bookmarkStates={bookmarkStates}
             setBookmarkStates={setBookmarkStates}
             rating={value.rating}
-            reviewNumber={value.reviewNumber}
-            iconNumber={value.iconNumber}
-            consultType={value.consultType}
+            totalReview={value.reviewNumber}
+            consultType={[]}
             letterPrice={value.letterPrice}
             chattingPrice={value.chattingPrice}
           />

@@ -8,33 +8,13 @@ import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
 import { HeartRate } from 'utils/HeartRate';
 import { useSetRecoilState } from 'recoil';
 import { isModifyReviewState } from 'utils/atom';
+import { BuyerReview } from 'utils/type';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 interface ReviewWroteCardProps {
-  counselorId: number;
-  nickname: string;
-  level: number;
-  ratingAverage: number;
-  reviewNumber: number;
-  iconNumber: number;
-  consultType: string;
-  price: number;
-  date: string;
-  rating: number;
-  comment: string;
+  reviewData: BuyerReview;
 }
 //캐릭터 넘버 레벨 별점 후기개수 상담유형 상담일자 상담가격 (남긴리뷰) 리뷰내용
-export const ReviewWroteCard = ({
-  counselorId,
-  nickname,
-  level,
-  ratingAverage,
-  reviewNumber,
-  iconNumber,
-  consultType,
-  price,
-  date,
-  rating,
-  comment,
-}: ReviewWroteCardProps) => {
+export const ReviewWroteCard = ({ reviewData }: ReviewWroteCardProps) => {
   const navigate = useNavigate();
   // Modal 여부(recoil)
   const setIsModalOpen = useSetRecoilState<boolean>(isModifyReviewState);
@@ -42,50 +22,50 @@ export const ReviewWroteCard = ({
     <Wrapper>
       <UpperWrapper>
         <Characters
-          number={iconNumber}
+          number={consultStyleToCharNum(reviewData.consultStyle)}
           width="6.1rem"
           height="5.4rem"
           margin="1.2rem 0 0 1.6rem"
         />
         <div>
           <div className="row1">
-            <Body1>{nickname}</Body1>
-            <Caption2 color={Grey1}>{'Lv. ' + level}</Caption2>
+            <Body1>{reviewData.nickname}</Body1>
+            <Caption2 color={Grey1}>{'Lv. ' + reviewData.level}</Caption2>
           </div>
           <div className="row2">
             <HeartIcon />
             <Body3 color={Grey2}>
-              {ratingAverage + ' (' + reviewNumber + ')'}
+              {reviewData.ratingAverage + ' (' + reviewData.totalReview + ')'}
             </Body3>
           </div>
         </div>
 
-        <MoreIcon
+        {/* <MoreIcon
           onClick={() => {
             setIsModalOpen(true);
           }}
-        />
+        /> */}
       </UpperWrapper>
       <MiddleWrapper>
         <div className="row">
           <Body3 color={Grey3}>상담유형</Body3>
-          <Body3 color={Grey1}>{consultType}</Body3>
+          <Body3 color={Grey1}>{reviewData.consultType}</Body3>
         </div>
         <div className="row">
           <Body3 color={Grey3}>상담일자</Body3>
-          <Body3 color={Grey1}>{date}</Body3>
+          <Body3 color={Grey1}>{reviewData.consultedAt}</Body3>
         </div>
         <div className="row">
           <Body3 color={Grey3}>상담가격</Body3>
-          <Body3 color={Grey1}>{price}원</Body3>
+          <Body3 color={Grey1}>{reviewData.consultCost}원</Body3>
         </div>
         <div className="rate-row">
           <Body3 color={Grey3}>별점</Body3>
-          <HeartRate rating={rating} />
+          <HeartRate rating={reviewData.rating} />
         </div>
       </MiddleWrapper>
       <LowerWrapper>
-        <Body3 color={Grey1}>{comment}</Body3>
+        <Body3 color={Grey1}>{reviewData.comment}</Body3>
       </LowerWrapper>
     </Wrapper>
   );
@@ -131,10 +111,8 @@ const MiddleWrapper = styled.div`
   }
 `;
 const LowerWrapper = styled.div`
-  height: 8.8rem;
   padding: 1.6rem;
   display: flex;
-  justify-content: center;
   align-items: center;
 `;
 const MoreIcon = styled(More)`

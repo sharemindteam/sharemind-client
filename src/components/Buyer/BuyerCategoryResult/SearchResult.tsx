@@ -1,10 +1,8 @@
-//모든 검색 결과, 나중에는 각 검색에 대하여 각각의 검색 컴포넌트 따로 생성
 import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
-import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 interface SearchResultsProps {
   searchData: SearchResultData[];
 }
@@ -23,15 +21,12 @@ export const SearchResults = ({ searchData }: SearchResultsProps) => {
       {searchData.map((value, index) => {
         return (
           <ReadyConsultCard
-            // 나중에 id로 변경
-            key={index}
             index={index}
-            counselorId={consultStyleToCharNum(value.consultStyle)}
+            counselorId={1}
             tagList={AppendCategoryType(
               value.consultCategories,
               value.consultStyle,
             )}
-            consultTimes={value.consultTimes}
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
