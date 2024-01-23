@@ -1,16 +1,15 @@
-import { getProfiles } from 'api/get';
-import BankSelectModal from 'components/Seller/Common/BankSelectModal';
+import { getMyInfo, getProfiles } from 'api/get';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
 import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
 import SetChatTimeSection from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';
 import { StyleModal } from 'components/Seller/SellerMyPageModifyProfile/StyleModal';
 import { TypeModal } from 'components/Seller/SellerMyPageModifyProfile/TypeModal';
-import { UpdatePopup } from 'components/Seller/SellerMyPageModifyProfile/UpdatePopup';
 import { UpdateSuccess } from 'components/Seller/SellerMyPageModifyProfile/UpdateSuccess';
 import { useCustomSelect } from 'hooks/useCustomSelect';
 import { useInput } from 'hooks/useInput';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import {
@@ -66,54 +65,76 @@ export const SellerMypageModifyProfile = () => {
   const style = useCustomSelect('style');
   const type = useCustomSelect('type');
   // 시간 설정은 나중에....ㅠㅠ
-  const availableTime = useCustomSelect();
+  const availableTime = useCustomSelect('time');
 
   const letterPrice = useInput('');
   const chatPrice = useInput('');
 
   const oneLiner = useInput('');
   const experience = useInput('');
+  const [isNoProfile, setIsNoProfile] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data }: any = await getProfiles();
-      console.log(data);
-      nickname.setValue(data?.nickname);
-      category.setViewValue(data?.consultCategories.join(', '));
-      setSelectCategory(
-        data?.consultCategories.map((item) => categoryList[item]),
-      );
-      style.setViewValue(data?.consultStyle);
-      setSelectStyle(data?.consultStyle);
+      try {
+        const profileLevel: any = await getMyInfo();
+        if (profileLevel?.data?.profileStatus === 'NO_PROFILE') {
+          setIsNoProfile(true);
+        } else if (profileLevel?.data?.profileStatus === 'EVALUATION_PENDING') {
+          alert('판매 정보 검토 중이니 조금만 기다려주세요!');
+          navigate('/seller/mypage/viewProfile');
+        } else {
+          const profileRes: any = await getProfiles();
+          console.log(profileRes);
+          const data = profileRes.data;
+          if (profileRes?.response?.status === 404) {
+            alert('판매 정보가 등록되어 있지 않습니다.');
+            navigate('/seller/mypage');
+          }
+          nickname.setValue(data?.nickname);
+          category.setViewValue(data?.consultCategories.join(', '));
+          setSelectCategory(
+            data?.consultCategories.map((item: any) => categoryList[item]),
+          );
+          style.setViewValue(data?.consultStyle);
+          setSelectStyle(data?.consultStyle);
 
-      type.setViewValue(data?.consultTypes.join(', '));
-      setSelectType(data?.consultTypes);
-      // availableTime.setViewValue(data?.consultTimes);
-      data?.consultCosts?.편지 &&
-        letterPrice.setValue(
-          String(data?.consultCosts?.편지)?.replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ',',
-          ),
-        );
-      data?.consultCosts?.채팅 &&
-        chatPrice.setValue(
-          String(data?.consultCosts?.채팅)?.replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ',',
-          ),
-        );
+          type.setViewValue(data?.consultTypes.join(', '));
+          setSelectType(data?.consultTypes);
+          // availableTime.setViewValue(data?.consultTimes);
+          data?.consultCosts?.편지 &&
+            letterPrice.setValue(
+              String(data?.consultCosts?.편지)?.replace(
+                /\B(?=(\d{3})+(?!\d))/g,
+                ',',
+              ),
+            );
+          data?.consultCosts?.채팅 &&
+            chatPrice.setValue(
+              String(data?.consultCosts?.채팅)?.replace(
+                /\B(?=(\d{3})+(?!\d))/g,
+                ',',
+              ),
+            );
 
-      oneLiner.setValue(data?.introduction);
-      experience.setValue(data?.experience);
+          oneLiner.setValue(data?.introduction);
+          experience.setValue(data?.experience);
+        }
+      } catch (err) {
+        navigate('/seller/mypage');
+        alert(err);
+      }
       // accountNum.setValue(profileDummyData.accountNum);
       // bankType.setValue(profileDummyData.bankType);
       // bankOwner.setValue(profileDummyData.bankOwner);
     };
     fetchProfile();
   }, []);
+  console.log(selectCategory);
   return (
     <>
       <ModifyProfileHeader
+        isNoProfile={isNoProfile}
         isSetChatTime={isSetChatTime}
         setIsSetChatTime={setIsSetChatTime}
       />
@@ -123,6 +144,7 @@ export const SellerMypageModifyProfile = () => {
         <SetChatTimeSection />
       ) : (
         <ModifyProfileMainSection
+          isNoProfile={isNoProfile}
           nickname={nickname}
           category={category}
           style={style}

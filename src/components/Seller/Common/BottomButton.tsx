@@ -5,11 +5,17 @@ import { Green } from 'styles/color';
 interface BottomButtonProps {
   text: string;
   onClick: () => void;
+  isActive?: boolean;
 }
-export const BottomButton = ({ text, onClick }: BottomButtonProps) => {
+export const BottomButton = ({
+  text,
+  onClick,
+  isActive = true,
+}: BottomButtonProps) => {
   return (
     <BottomButtonWrapper>
       <Button
+        isActive={isActive}
         onClick={onClick}
         text={text}
         width="80%"

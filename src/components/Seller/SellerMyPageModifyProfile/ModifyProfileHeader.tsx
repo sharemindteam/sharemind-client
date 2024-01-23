@@ -9,10 +9,12 @@ import { SetStateAction } from 'react';
 interface ModifyProfileHeaderProps {
   isSetChatTime: boolean;
   setIsSetChatTime: React.Dispatch<SetStateAction<boolean>>;
+  isNoProfile: boolean;
 }
 export const ModifyProfileHeader = ({
   isSetChatTime,
   setIsSetChatTime,
+  isNoProfile,
 }: ModifyProfileHeaderProps) => {
   const navigate = useNavigate();
   return (
@@ -32,7 +34,13 @@ export const ModifyProfileHeader = ({
           />
         )}
       </div>
-      <Heading>{isSetChatTime ? '채팅 상담 시간' : '판매정보 수정'}</Heading>
+      <Heading>
+        {isSetChatTime
+          ? '채팅 상담 시간'
+          : isNoProfile
+          ? '판매정보 작성'
+          : '판매정보 수정'}
+      </Heading>
     </TabB2>
   );
 };

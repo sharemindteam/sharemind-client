@@ -20,6 +20,7 @@ interface ViewProfileMainSectionProps {
   chatFee: number;
   oneLiner: string | undefined;
   experience: string | undefined;
+  isEvaluationPending: boolean;
   // accountNum: string;
   // bankType: string;
   // bankOwner: string;
@@ -36,6 +37,7 @@ export const ViewProfileMainSection = ({
   chatFee,
   oneLiner,
   experience,
+  isEvaluationPending,
 }: // accountNum,
 // bankType,
 // bankOwner,
@@ -75,12 +77,10 @@ ViewProfileMainSectionProps) => {
           <ProfileInform>{type?.join()}</ProfileInform>
         </div>
         <div className="chat-time">
-          {' '}
           <ProfileInformTag>채팅 상담시간</ProfileInformTag>
           <ProfileInform>{chatTime}</ProfileInform>
         </div>
         <div className="consult-fee">
-          {' '}
           <ProfileInformTag>
             상담료 <br />
             (1건 기준)
@@ -104,7 +104,16 @@ ViewProfileMainSectionProps) => {
         </div>
         <div className="experience">
           <ProfileInformTag>경험 소개</ProfileInformTag>
-          <Body1>{experience}</Body1>
+          <Body1>
+            {experience?.split('\n').map((item, key) => {
+              return (
+                <span key={key}>
+                  {item}
+                  <br />
+                </span>
+              );
+            })}
+          </Body1>
         </div>
       </IntroduceWhiteBox>
       {/* <AccountWhiteBox>
@@ -146,7 +155,8 @@ ViewProfileMainSectionProps) => {
       <Space height="9.2rem" />
       <BottomButtonWrapper style={{ display: 'block' }}>
         <Button
-          text="수정하기"
+          text={isEvaluationPending ? "판매정보 검토 중" : "수정하기"} 
+          isActive={!isEvaluationPending}
           height="5.2rem"
           width="calc(100% - 4rem)"
           onClick={() => {
