@@ -21,7 +21,7 @@ const dayEngtoKor: Record<string, string> = {
 };
 const dayList: string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 interface SelectedTimeList {
-  [key: string]: number[];
+  [key: string]: string[];
 }
 
 interface IsSelected {
@@ -38,7 +38,18 @@ function SetChatTimeSection() {
     SAT: [],
     SUN: [],
   });
+  // 현재 선택이 된 (언제나 유일한 하나)
   const [isSelected, setIsSelected] = useState<IsSelected>({
+    MON: false,
+    TUE: false,
+    WED: false,
+    THU: false,
+    FRI: false,
+    SAT: false,
+    SUN: false,
+  });
+  // 현재 체크표시가 되어있는
+  const [isActive, setIsActive] = useState<IsSelected>({
     MON: false,
     TUE: false,
     WED: false,
@@ -50,11 +61,20 @@ function SetChatTimeSection() {
 
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
+
+  console.log(selectedTimeList['THU'][0]);
+  console.log(selectedTimeList);
   return (
     <Wrapper>
       {isTimeModalOpen && (
         <>
-          <TimeSelectModal />
+          <TimeSelectModal
+            isSelected={isSelected}
+            setIsSelected={setIsSelected}
+            selectedTimeList={selectedTimeList}
+            setSelectedTimeList={setSelectedTimeList}
+            setIsActive={setIsActive}
+          />
           <BackDrop />
         </>
       )}
@@ -68,13 +88,18 @@ function SetChatTimeSection() {
           <DayItem key={item}>
             <DayIndicator
               onClick={() => {
-                if (!isSelected[item]) {
+                if (isActive[item]) {
+                  setSelectedTimeList({ ...selectedTimeList, [item]: [] });
+                  setIsActive({ ...isActive, [item]: false });
+                } else {
+                  setIsSelected({ ...isSelected, [item]: true });
                   setIsTimeModalOpen(true);
                 }
-                setIsSelected({ ...isSelected, [item]: !isSelected[item] });
               }}
             >
-              <CheckIcon2 fill={isSelected[item] ? Green : Grey5} />
+              <CheckIcon2
+                fill={isSelected[item] || isActive[item] ? Green : Grey5}
+              />
               <Month>{dayEngtoKor[item]}</Month>
             </DayIndicator>
             {selectedTimeList[item]?.length === 0 ? (
@@ -92,7 +117,7 @@ function SetChatTimeSection() {
               <TimeList>
                 {selectedTimeList[item].map((item) => (
                   <TimeItem>
-                    <Input height="5rem" isBoxSizing={true} />
+                    <Input alignCenter={true} height="5rem" value={item} />
                     <PlusIcon />
                   </TimeItem>
                 ))}
@@ -101,7 +126,12 @@ function SetChatTimeSection() {
               <TimeList>
                 {selectedTimeList[item].map((item) => (
                   <TimeItem>
-                    <Input width="100%" height="5rem" />
+                    <Input
+                      width="100%"
+                      height="5rem"
+                      alignCenter={true}
+                      value={item}
+                    />
                     <MinusIcon />
                   </TimeItem>
                 ))}

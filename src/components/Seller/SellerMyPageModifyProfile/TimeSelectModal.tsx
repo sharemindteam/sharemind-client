@@ -1,15 +1,42 @@
+import { lightGreen } from '@mui/material/colors';
 import { Space } from 'components/Common/Space';
 import React, { SetStateAction, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
-import { Green, Grey3, Grey4, Grey6, White } from 'styles/color';
+import {
+  Black,
+  Green,
+  Grey3,
+  Grey4,
+  Grey5,
+  Grey6,
+  LightGreen,
+  White,
+} from 'styles/color';
 import { Body1, Button2, Caption2 } from 'styles/font';
 import { isTimeModalOpenState } from 'utils/atom';
 // 0부터 24까지 배열 생성
 const hourList = Array.from({ length: 25 }, (_, index) => index);
-
-interface TimeSelectModalProps {}
-function TimeSelectModal({}: TimeSelectModalProps) {
+interface SelectedTimeList {
+  [key: string]: string[];
+}
+interface ActiveDay {
+  [key: string]: boolean;
+}
+interface TimeSelectModalProps {
+  isSelected: any;
+  selectedTimeList: SelectedTimeList;
+  setSelectedTimeList: React.Dispatch<React.SetStateAction<SelectedTimeList>>;
+  setIsActive: React.Dispatch<React.SetStateAction<ActiveDay>>;
+  setIsSelected: React.Dispatch<React.SetStateAction<ActiveDay>>;
+}
+function TimeSelectModal({
+  isSelected,
+  selectedTimeList,
+  setSelectedTimeList,
+  setIsActive,
+  setIsSelected,
+}: TimeSelectModalProps) {
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
   const [selectedArray, setSelectedArray] = useState<number[]>([]);
@@ -34,19 +61,41 @@ function TimeSelectModal({}: TimeSelectModalProps) {
       } else {
         setSelectedArray([hour]);
       }
-      // } else if (hour < selectedArray[0]) {
-      //   const copyArray = selectedArray.slice(1);
-      //   setSelectedArray([hour, ...copyArray]);
-      // } else if (hour > selectedArray[1]) {
-      //   const copyArray = selectedArray.slice(0, 1);
-      //   setSelectedArray([...copyArray, hour]);
-      // } else {
-      //   const copyArray = selectedArray.slice(1);
-      //   setSelectedArray([hour, ...copyArray]);
-      // }
     }
   };
-  const handleCompleteTime = () => {};
+  const handleCompleteTime = () => {
+    const foundDayKey: any = Object.keys(isSelected).find(
+      (key) => isSelected[key] === true,
+    );
+    if (foundDayKey) {
+      const pushedString = selectedArray[0] + '~' + selectedArray[1];
+      setSelectedTimeList((prevSelectedTimeList) => {
+        return {
+          ...prevSelectedTimeList,
+          [foundDayKey]: [...prevSelectedTimeList[foundDayKey], pushedString],
+        };
+      });
+
+      setIsTimeModalOpen(false);
+      setIsSelected({
+        MON: false,
+        TUE: false,
+        WED: false,
+        THU: false,
+        FRI: false,
+        SAT: false,
+        SUN: false,
+      });
+      setIsActive((prev) => {
+        return {
+          ...prev,
+          [foundDayKey]: true,
+        };
+      });
+    } else {
+      console.error('No day selected.'); // 선택된 요일이 없는 경우 에러 처리
+    }
+  };
   return (
     <Wrapper visible={isTimeModalOpen}>
       <div className="bar-wrapper">
@@ -54,7 +103,13 @@ function TimeSelectModal({}: TimeSelectModalProps) {
       </div>
       <div className="row1">
         <Body1>상담 시간</Body1>
-        <CompleteButton onClick={handleCompleteTime}>완료</CompleteButton>
+        <CompleteButton
+          onClick={() => {
+            handleCompleteTime();
+          }}
+        >
+          완료
+        </CompleteButton>
       </div>
       <div className="row2">
         <Caption2 color={Grey3}>
@@ -67,6 +122,14 @@ function TimeSelectModal({}: TimeSelectModalProps) {
           <HourButton
             key={hour}
             isActive={selectedArray.includes(hour)}
+            isBetween={
+              selectedArray.length === 2
+                ? hour > selectedArray[0] && hour < selectedArray[1]
+                  ? true
+                  : false
+                : false
+            }
+            isBlock={false}
             onClick={() => {
               handleClickHour(hour);
             }}
@@ -89,11 +152,17 @@ const HourButtonList = styled.div`
   flex-wrap: wrap;
 `;
 
-const HourButton = styled.div<{ isActive: boolean }>`
+const HourButton = styled.div<{
+  isActive: boolean;
+  isBetween: boolean;
+  isBlock: boolean;
+}>`
   display: flex;
   cursor: pointer;
-  background-color: ${({ isActive }) => (isActive ? Green : White)};
-  color: ${({ isActive }) => (isActive ? White : 'black')};
+  background-color: ${({ isActive, isBetween, isBlock }) =>
+    isActive ? Green : isBetween ? LightGreen : isBlock ? Grey5 : White};
+  color: ${({ isActive, isBetween, isBlock }) =>
+    isActive ? White : isBetween ? Black : isBlock ? White : Black};
   width: 6rem;
   font-size: 1.4rem;
   height: 3.4rem;
