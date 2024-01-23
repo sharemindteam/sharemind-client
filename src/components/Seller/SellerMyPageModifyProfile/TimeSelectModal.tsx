@@ -1,8 +1,8 @@
 import { Space } from 'components/Common/Space';
-import React, { SetStateAction } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
-import { Green, Grey3, Grey4, Grey6 } from 'styles/color';
+import { Green, Grey3, Grey4, Grey6, White } from 'styles/color';
 import { Body1, Button2, Caption2 } from 'styles/font';
 import { isTimeModalOpenState } from 'utils/atom';
 // 0부터 24까지 배열 생성
@@ -12,6 +12,40 @@ interface TimeSelectModalProps {}
 function TimeSelectModal({}: TimeSelectModalProps) {
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
+  const [selectedArray, setSelectedArray] = useState<number[]>([]);
+  console.log(selectedArray);
+  const handleClickHour = (hour: number) => {
+    if (selectedArray.length === 0) {
+      setSelectedArray([hour]);
+    } else if (selectedArray.length === 1) {
+      if (selectedArray.includes(hour)) {
+        const copyArray = [...selectedArray];
+        setSelectedArray(copyArray.filter((item) => item !== hour));
+      } else {
+        const copyArray = [...selectedArray];
+        copyArray.push(hour);
+        copyArray.sort((a, b) => a - b);
+        setSelectedArray([...copyArray]);
+      }
+    } else if (selectedArray.length === 2) {
+      if (selectedArray.includes(hour)) {
+        const copyArray = selectedArray.filter((item) => item !== hour);
+        setSelectedArray([...copyArray]);
+      } else {
+        setSelectedArray([hour]);
+      }
+      // } else if (hour < selectedArray[0]) {
+      //   const copyArray = selectedArray.slice(1);
+      //   setSelectedArray([hour, ...copyArray]);
+      // } else if (hour > selectedArray[1]) {
+      //   const copyArray = selectedArray.slice(0, 1);
+      //   setSelectedArray([...copyArray, hour]);
+      // } else {
+      //   const copyArray = selectedArray.slice(1);
+      //   setSelectedArray([hour, ...copyArray]);
+      // }
+    }
+  };
   const handleCompleteTime = () => {};
   return (
     <Wrapper visible={isTimeModalOpen}>
@@ -30,8 +64,14 @@ function TimeSelectModal({}: TimeSelectModalProps) {
       <Space height="1.6rem" />
       <HourButtonList>
         {hourList.map((hour) => (
-          <HourButton key={hour}>
-            <Button2>{hour < 10 ? `0${hour}` : hour}시</Button2>
+          <HourButton
+            key={hour}
+            isActive={selectedArray.includes(hour)}
+            onClick={() => {
+              handleClickHour(hour);
+            }}
+          >
+            {hour < 10 ? `0${hour}` : hour}시
           </HourButton>
         ))}
         <Caption2 color={Grey3}>
@@ -49,11 +89,13 @@ const HourButtonList = styled.div`
   flex-wrap: wrap;
 `;
 
-const HourButton = styled.div`
+const HourButton = styled.div<{ isActive: boolean }>`
   display: flex;
   cursor: pointer;
-  background-color: white;
+  background-color: ${({ isActive }) => (isActive ? Green : White)};
+  color: ${({ isActive }) => (isActive ? White : 'black')};
   width: 6rem;
+  font-size: 1.4rem;
   height: 3.4rem;
   justify-content: center;
   align-items: center;
