@@ -4,6 +4,7 @@ import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 interface SearchResultsProps {
   searchData: SearchResultData[];
 }
@@ -22,12 +23,15 @@ export const SearchResults = ({ searchData }: SearchResultsProps) => {
       {searchData.map((value, index) => {
         return (
           <ReadyConsultCard
+            // 나중에 id로 변경
+            key={index}
             index={index}
-            counselorId={1}
+            counselorId={consultStyleToCharNum(value.consultStyle)}
             tagList={AppendCategoryType(
               value.consultCategories,
               value.consultStyle,
             )}
+            consultTimes={value.consultTimes}
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
