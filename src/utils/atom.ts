@@ -101,3 +101,8 @@ export const opponentNicknameState = atom({
   key: 'opponentNicknameState',
   default: '',
 });
+//셰어 isLoading
+export const isLoadingState = atom({
+  key: 'isLoadingState',
+  default: false,
+});
