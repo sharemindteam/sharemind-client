@@ -13,7 +13,7 @@ import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-c
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
 import { getLetters } from 'api/get';
-import { ReactComponent as Empty } from 'assets/icons/graphic-consult-noting.svg';
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 interface consultApiObject {
   consultStyle: string;
   id: number;
