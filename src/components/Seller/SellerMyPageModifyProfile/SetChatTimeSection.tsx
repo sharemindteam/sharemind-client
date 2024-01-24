@@ -24,24 +24,24 @@ const dayEngtoKor: Record<string, string> = {
   SUN: '일',
 };
 const dayList: string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-interface SelectedTimeList {
+export interface SelectedTimeList {
   [key: string]: string[];
 }
 
 interface IsSelected {
   [key: string]: boolean;
 }
-function SetChatTimeSection() {
-  const dummyData = { MON: ['14~15', '15~20'], WED: ['11~13'] };
-  const [selectedTimeList, setSelectedTimeList] = useState<SelectedTimeList>({
-    MON: [],
-    TUE: [],
-    WED: [],
-    THU: [],
-    FRI: [],
-    SAT: [],
-    SUN: [],
-  });
+function SetChatTimeSection({
+  setSelectedList,
+  setIsSetChatTime,
+  selectedList,
+}: {
+  setIsSetChatTime: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedList: React.Dispatch<React.SetStateAction<SelectedTimeList>>;
+  selectedList: SelectedTimeList;
+}) {
+  const [selectedTimeList, setSelectedTimeList] =
+    useState<SelectedTimeList>(selectedList);
   // 현재 선택이 된 (언제나 유일한 하나)
   const [isSelected, setIsSelected] = useState<IsSelected>({
     MON: false,
@@ -103,10 +103,18 @@ function SetChatTimeSection() {
                 }}
               >
                 <CheckIcon2
-                  fill={isSelected[item] || isActive[item] ? Green : Grey5}
+                  fill={
+                    isSelected[item] || selectedTimeList[item]?.length > 0
+                      ? Green
+                      : Grey5
+                  }
                 />
                 <Month
-                  isFill={isSelected[item] || isActive[item] ? Black : Grey3}
+                  isFill={
+                    isSelected[item] || selectedTimeList[item]?.length > 0
+                      ? Black
+                      : Grey3
+                  }
                 >
                   {dayEngtoKor[item]}
                 </Month>
@@ -176,9 +184,10 @@ function SetChatTimeSection() {
           ))}
         </DayList>
         <BottomButton
-          text="저장하기"
+          text="상담 가능 시간 반영하기"
           onClick={() => {
-            console.log('/');
+            setSelectedList(selectedTimeList);
+            setIsSetChatTime(false);
           }}
         />
       </ScrollContainer>

@@ -27,12 +27,13 @@ import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { UpdatePopup } from './UpdatePopup';
+import { SelectedTimeList } from './SetChatTimeSection';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
   selectStyle: string;
   selectType: string[];
-  selectAvailableTime: any;
+  selectAvailableTime: SelectedTimeList;
   setIsSetChatTime: React.Dispatch<SetStateAction<boolean>>;
   nickname: any;
   category: any;
@@ -60,7 +61,8 @@ export const ModifyProfileMainSection = ({
   chatPrice,
   oneLiner,
   experience,
-  isNoProfile
+  isNoProfile,
+  selectAvailableTime,
 }: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
@@ -113,6 +115,7 @@ export const ModifyProfileMainSection = ({
           chatPrice={chatPrice}
           oneLiner={oneLiner}
           experience={experience}
+          selectAvailableTime={selectAvailableTime}
         />
       )}
       <ModifyProfileBox>
@@ -386,7 +389,7 @@ export const ModifyProfileMainSection = ({
             experience.isError
           )
         }
-        text={isNoProfile ? "작성 완료하기" : "저장하기"}
+        text={isNoProfile ? '작성 완료하기' : '저장하기'}
         onClick={() => {
           setIsUpdateModalOpen(true);
           // navigate('/seller/mypage/modifyProfile');

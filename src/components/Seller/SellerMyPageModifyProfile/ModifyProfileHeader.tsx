@@ -27,13 +27,13 @@ export const ModifyProfileHeader = ({
           <XIcon
             onClick={() => {
               setIsOutPopupOpen(true);
-              // setIsSetChatTime(false);
             }}
           />
         ) : (
           <LeftArrowIcon
             onClick={() => {
-              navigate('/seller/mypage/viewProfile');
+              setIsOutPopupOpen(true);
+              // navigate('/seller/mypage/viewProfile');
             }}
           />
         )}
