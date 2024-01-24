@@ -91,11 +91,12 @@ export const LetterWriteMainSection = ({
 
       // 임시저장 여부에 따라 마인더가 임시저장한 요소 불러오기
 
-      if (isSave) {
+      if (isSaveTextData) {
         const minderSaveResponse: any = await getLetterMessages(
           {
             params: {
-              messageType: '질문' ? 'first_reply' : 'second_reply',
+              messageType:
+                recentType === '질문' ? 'first_reply' : 'second_reply',
               isCompleted: false,
             },
           },

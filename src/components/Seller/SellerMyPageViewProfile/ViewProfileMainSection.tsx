@@ -92,10 +92,10 @@ ViewProfileMainSectionProps) => {
           <ChatTimeList>
             {daysOfWeek?.map(
               (day: string) =>
-                chatTime?.[day].length > 0 && (
+                chatTime?.[day]?.length > 0 && (
                   <ProfileInform>
                     {dayEngtoKor[day] +
-                      (chatTime?.[day].length === 1
+                      (chatTime?.[day]?.length === 1
                         ? ' ' + convertTimeRange(chatTime?.[day][0])
                         : ' ' +
                           convertTimeRange(chatTime?.[day][0]) +
