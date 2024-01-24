@@ -161,7 +161,6 @@ export const SellerMypageModifyProfile = () => {
         />
       ) : (
         <ModifyProfileMainSection
-          selectedTimeList={selectedTimeList}
           isNoProfile={isNoProfile}
           nickname={nickname}
           category={category}

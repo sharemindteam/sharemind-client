@@ -42,7 +42,6 @@ export const SellerMypageViewProfile = () => {
     };
     fetchMinderProfile();
   }, []);
-
   return (
     <>
       <ViewProfileHeader />
@@ -55,7 +54,7 @@ export const SellerMypageViewProfile = () => {
           category={profile?.consultCategories}
           chatStyle={profile?.consultStyle}
           type={profile?.consultTypes}
-          chatTime="1시간"
+          chatTime={profile?.consultTimes}
           letterFee={profile?.consultCosts?.편지}
           chatFee={profile?.consultCosts?.채팅}
           oneLiner={profile?.introduction}
