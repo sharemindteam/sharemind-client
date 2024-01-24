@@ -61,6 +61,29 @@ function TimeSelectModal({
         const copyArray = [...selectedArray];
         setSelectedArray(copyArray.filter((item) => item !== hour));
       } else {
+        if (blockRange) {
+          if (selectedArray[0] < blockRange[0]) {
+            if (hour < blockRange[0]) {
+              const copyArray = [...selectedArray];
+              copyArray.push(hour);
+              copyArray.sort((a, b) => a - b);
+              setSelectedArray([...copyArray]);
+            } else {
+              return;
+            }
+          } else if (selectedArray[0] > blockRange[0]) {
+            if (hour > blockRange[0]) {
+              const copyArray = [...selectedArray];
+              copyArray.push(hour);
+              copyArray.sort((a, b) => a - b);
+              setSelectedArray([...copyArray]);
+            } else {
+              return;
+            }
+          }
+          return;
+        }
+
         const copyArray = [...selectedArray];
         copyArray.push(hour);
         copyArray.sort((a, b) => a - b);
@@ -142,11 +165,16 @@ function TimeSelectModal({
             isBlock={
               !blockRange
                 ? false
-                : hour > blockRange[0] && hour < blockRange[1]
+                : hour >= blockRange[0] && hour <= blockRange[1]
                 ? true
                 : false
             }
             onClick={() => {
+              if (blockRange) {
+                if (hour >= blockRange[0] && hour <= blockRange[1]) {
+                  return;
+                }
+              }
               handleClickHour(hour);
             }}
           >
