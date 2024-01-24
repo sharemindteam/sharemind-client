@@ -37,7 +37,9 @@ function TimeSelectModal({
   setIsActive,
   setIsSelected,
 }: TimeSelectModalProps) {
+  // 이미 선택한 시간의 범위
   const [blockRange, setBlockRange] = useState<number[]>();
+  // 어떤 요일에 대한 시간 설정인지
   const foundDayKey: any = Object.keys(isSelected).find(
     (key) => isSelected[key] === true,
   );
@@ -49,10 +51,12 @@ function TimeSelectModal({
       setBlockRange([startNumber, endNumber]);
     }
   }, [foundDayKey]);
+  // 모달 오픈 여부
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
+  // 모달에서 선택한 시간
   const [selectedArray, setSelectedArray] = useState<number[]>([]);
-  console.log(selectedArray);
+  // 모달에서 시간을 클릭했을 때 trigger되는 함수
   const handleClickHour = (hour: number) => {
     if (selectedArray.length === 0) {
       setSelectedArray([hour]);
@@ -98,6 +102,8 @@ function TimeSelectModal({
       }
     }
   };
+
+  // 모달에서 완료버튼을 눌렀을 때 trigger되는 함수
   const handleCompleteTime = () => {
     if (foundDayKey) {
       const pushedString = selectedArray[0] + '~' + selectedArray[1];
@@ -137,8 +143,13 @@ function TimeSelectModal({
       <div className="row1">
         <Body1>상담 시간</Body1>
         <CompleteButton
+          color={selectedArray.length === 2 ? Green : Grey3}
           onClick={() => {
-            handleCompleteTime();
+            if (selectedArray.length === 2) {
+              handleCompleteTime();
+            } else {
+              setIsTimeModalOpen(false);
+            }
           }}
         >
           완료
@@ -232,7 +243,6 @@ const slideOut = keyframes`
   }
 `;
 const CompleteButton = styled(Button2)`
-  color: ${Green};
   cursor: pointer;
 `;
 

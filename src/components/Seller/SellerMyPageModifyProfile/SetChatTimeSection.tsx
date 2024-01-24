@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Green, Grey1, Grey3, Grey4, Grey5 } from 'styles/color';
+import { Black, Green, Grey1, Grey3, Grey4, Grey5 } from 'styles/color';
 import { ReactComponent as CheckIcon2SVG } from 'assets/icons/icon-check2.svg';
 import { ReactComponent as PlusIconSVG } from 'assets/icons/icon-plus.svg';
 import { ReactComponent as MinusIconSVG } from 'assets/icons/icon-minus.svg';
@@ -10,6 +10,9 @@ import TimeSelectModal from './TimeSelectModal';
 import { useRecoilState } from 'recoil';
 import { isTimeModalOpenState } from 'utils/atom';
 import { BackDrop } from 'components/Common/BackDrop';
+import { BottomButton } from '../Common/BottomButton';
+import { Space } from 'components/Common/Space';
+import { formatTimeRange } from 'utils/formatTimeRange';
 const dayEngtoKor: Record<string, string> = {
   MON: '월',
   TUE: '화',
@@ -66,103 +69,128 @@ function SetChatTimeSection() {
   console.log(selectedTimeList);
   return (
     <Wrapper>
-      {isTimeModalOpen && (
-        <>
-          <TimeSelectModal
-            isSelected={isSelected}
-            setIsSelected={setIsSelected}
-            selectedTimeList={selectedTimeList}
-            setSelectedTimeList={setSelectedTimeList}
-            setIsActive={setIsActive}
-          />
-          <BackDrop />
-        </>
-      )}
+      <ScrollContainer>
+        {isTimeModalOpen && (
+          <>
+            <TimeSelectModal
+              isSelected={isSelected}
+              setIsSelected={setIsSelected}
+              selectedTimeList={selectedTimeList}
+              setSelectedTimeList={setSelectedTimeList}
+              setIsActive={setIsActive}
+            />
+            <BackDrop />
+          </>
+        )}
 
-      <SetChatGuide>
-        상담 활동이 가능한 시간대를 설정해주세요. <br />
-        최소 1시간 이상 간격으로 설정해주세요.
-      </SetChatGuide>
-      <DayList>
-        {dayList.map((item) => (
-          <DayItem key={item}>
-            <DayIndicator
-              onClick={() => {
-                if (isActive[item]) {
-                  setSelectedTimeList({ ...selectedTimeList, [item]: [] });
-                  setIsActive({ ...isActive, [item]: false });
-                } else {
-                  setIsSelected({ ...isSelected, [item]: true });
-                  setIsTimeModalOpen(true);
-                }
-              }}
-            >
-              <CheckIcon2
-                fill={isSelected[item] || isActive[item] ? Green : Grey5}
-              />
-              <Month>{dayEngtoKor[item]}</Month>
-            </DayIndicator>
-            {selectedTimeList[item]?.length === 0 ? (
-              isSelected[item] ? (
+        <SetChatGuide>
+          상담 활동이 가능한 시간대를 설정해주세요. <br />
+          최소 1시간 이상 간격으로 설정해주세요.
+        </SetChatGuide>
+        <DayList>
+          {dayList.map((item) => (
+            <DayItem key={item}>
+              <DayIndicator
+                onClick={() => {
+                  if (isActive[item]) {
+                    setSelectedTimeList({ ...selectedTimeList, [item]: [] });
+                    setIsActive({ ...isActive, [item]: false });
+                  } else {
+                    setIsSelected({ ...isSelected, [item]: true });
+                    setIsTimeModalOpen(true);
+                  }
+                }}
+              >
+                <CheckIcon2
+                  fill={isSelected[item] || isActive[item] ? Green : Grey5}
+                />
+                <Month
+                  isFill={isSelected[item] || isActive[item] ? Black : Grey3}
+                >
+                  {dayEngtoKor[item]}
+                </Month>
+              </DayIndicator>
+              {selectedTimeList[item]?.length === 0 ? (
+                isSelected[item] ? (
+                  <TimeList>
+                    <TimeItem>
+                      <Input height="5rem" isBoxSizing={true} />
+                      <PlusIcon />
+                    </TimeItem>
+                  </TimeList>
+                ) : (
+                  <NoGuide>가능한 시간 없음</NoGuide>
+                )
+              ) : selectedTimeList[item]?.length === 1 ? (
                 <TimeList>
-                  <TimeItem>
-                    <Input height="5rem" isBoxSizing={true} />
-                    <PlusIcon />
-                  </TimeItem>
+                  {selectedTimeList[item].map((str) => (
+                    <TimeItem>
+                      <Input
+                        alignCenter={true}
+                        height="5rem"
+                        value={formatTimeRange(str)}
+                        width="100%"
+                        isBoxSizing={true}
+                      />
+                      <PlusIcon
+                        onClick={() => {
+                          setIsSelected({ ...isSelected, [item]: true });
+                          setIsTimeModalOpen(true);
+                        }}
+                      />
+                    </TimeItem>
+                  ))}
+                </TimeList>
+              ) : selectedTimeList[item]?.length === 2 ? (
+                <TimeList>
+                  {selectedTimeList[item].map((str) => (
+                    <TimeItem>
+                      <Input
+                        width="100%"
+                        height="5rem"
+                        alignCenter={true}
+                        value={formatTimeRange(str)}
+                        isBoxSizing={true}
+                      />
+                      <MinusIcon
+                        onClick={() => {
+                          const copySelectedTimeList = selectedTimeList;
+                          setSelectedTimeList({
+                            ...selectedTimeList,
+                            [item]: copySelectedTimeList[item].filter(
+                              (item) => {
+                                return item !== str;
+                              },
+                            ),
+                          });
+                        }}
+                      />
+                    </TimeItem>
+                  ))}
                 </TimeList>
               ) : (
-                <NoGuide>가능한 시간 없음</NoGuide>
-              )
-            ) : selectedTimeList[item]?.length === 1 ? (
-              <TimeList>
-                {selectedTimeList[item].map((str) => (
-                  <TimeItem>
-                    <Input alignCenter={true} height="5rem" value={str} />
-                    <PlusIcon
-                      onClick={() => {
-                        setIsSelected({ ...isSelected, [item]: true });
-                        setIsTimeModalOpen(true);
-                      }}
-                    />
-                  </TimeItem>
-                ))}
-              </TimeList>
-            ) : selectedTimeList[item]?.length === 2 ? (
-              <TimeList>
-                {selectedTimeList[item].map((str) => (
-                  <TimeItem>
-                    <Input
-                      width="100%"
-                      height="5rem"
-                      alignCenter={true}
-                      value={str}
-                    />
-                    <MinusIcon
-                      onClick={() => {
-                        const copySelectedTimeList = selectedTimeList;
-                        setSelectedTimeList({
-                          ...selectedTimeList,
-                          [item]: copySelectedTimeList[item].filter((item) => {
-                            return item !== str;
-                          }),
-                        });
-                      }}
-                    />
-                  </TimeItem>
-                ))}
-              </TimeList>
-            ) : (
-              ''
-            )}
-          </DayItem>
-        ))}
-      </DayList>
+                ''
+              )}
+            </DayItem>
+          ))}
+        </DayList>
+        <BottomButton
+          text="저장하기"
+          onClick={() => {
+            console.log('/');
+          }}
+        />
+      </ScrollContainer>
+      <Space height="15rem" />
     </Wrapper>
   );
 }
 const Wrapper = styled.div`
   background-color: white;
+  height: calc(100vh - 5.3rem);
 `;
+
+const ScrollContainer = styled.div``;
 const SetChatGuide = styled.div`
   color: ${Grey1};
   font-family: Pretendard;
@@ -191,6 +219,7 @@ const TimeList = styled.div`
   gap: 1.6rem;
   margin-top: -1.4rem;
   margin-left: 2rem;
+  width: 100%;
 `;
 
 const PlusIcon = styled(PlusIconSVG)`
@@ -221,8 +250,8 @@ const DayIndicator = styled.div`
   display: flex;
 `;
 
-const Month = styled.div`
-  color: ${Grey3};
+const Month = styled.div<{ isFill: string }>`
+  color: ${({ isFill }) => isFill};
   font-family: Pretendard;
   margin-left: 1rem;
   font-size: 1.6rem;
