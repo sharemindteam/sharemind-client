@@ -34,6 +34,7 @@ const categoryList = {
   권태기: 7,
   기타: 8,
 };
+
 export const SellerMypageModifyProfile = () => {
   // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
   const [selectCategory, setSelectCategory] = useState<number[]>([]);
@@ -129,7 +130,7 @@ export const SellerMypageModifyProfile = () => {
                 ',',
               ),
             );
-
+          setSelectedTimeList({ ...selectedTimeList, ...data?.consultTimes });
           oneLiner.setValue(data?.introduction);
           experience.setValue(data?.experience);
         }

@@ -24,8 +24,8 @@ export const convertTimeToString = (timeRanges: string[]) => {
     return result;
   }
 };
-export const convertTimeRange = (input) => {
-  const timeRanges = input.split('~').map((range) => {
+export const convertTimeRange = (input: string) => {
+  const timeRanges = input.split('~').map((range: any) => {
     const hours = parseInt(range, 10);
     return hours < 10 ? '0' + hours + ':00' : hours + ':00';
   });

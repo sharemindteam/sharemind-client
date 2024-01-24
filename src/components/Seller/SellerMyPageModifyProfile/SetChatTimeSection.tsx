@@ -93,7 +93,7 @@ function SetChatTimeSection({
             <DayItem key={item}>
               <DayIndicator
                 onClick={() => {
-                  if (isActive[item]) {
+                  if (isActive[item] || selectedTimeList[item]?.length > 0) {
                     setSelectedTimeList({ ...selectedTimeList, [item]: [] });
                     setIsActive({ ...isActive, [item]: false });
                   } else {

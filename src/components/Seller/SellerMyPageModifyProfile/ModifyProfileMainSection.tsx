@@ -28,6 +28,7 @@ import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { UpdatePopup } from './UpdatePopup';
 import { SelectedTimeList } from './SetChatTimeSection';
+import { convertTimeRange } from 'utils/convertTimeToString';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
@@ -45,6 +46,51 @@ interface ModifyProfileMainSectionProps {
   oneLiner: any;
   experience: any;
   isNoProfile: boolean;
+}
+const dayEngtoKor: Record<string, string> = {
+  MON: '월',
+  TUE: '화',
+  WED: '수',
+  THU: '목',
+  FRI: '금',
+  SAT: '토',
+  SUN: '일',
+};
+const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+
+function convertObjectToString(schedule: any) {
+  const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  let result = '';
+
+  // 각 요일에 대해 반복
+  daysOfWeek.forEach((day) => {
+    const timeRanges = schedule[day];
+
+    if (timeRanges && timeRanges.length > 0) {
+      // 각 시간 범위를 형식에 맞게 조합
+      const formattedTimeRanges = timeRanges.map((range: any) =>
+        convertTimeRange2(range),
+      );
+      const daySchedule = `${dayEngtoKor[day]} ${formattedTimeRanges.join(
+        ', ',
+      )}\n`;
+      result += daySchedule;
+    }
+  });
+  return result.trim();
+}
+
+function convertTimeRange2(input: string) {
+  const numbers = input.match(/\d+/g);
+
+  if (numbers && numbers.length === 2) {
+    const startTime = numbers[0].padStart(2, '0') + ':00';
+    const endTime = numbers[1].padStart(2, '0') + ':00';
+
+    return `${startTime}-${endTime} `;
+  } else {
+    return input; // 유효하지 않은 형식은 그대로 반환
+  }
 }
 
 export const ModifyProfileMainSection = ({
@@ -98,10 +144,7 @@ export const ModifyProfileMainSection = ({
   useEffect(() => {
     type?.setViewValue(selectType?.join(', '));
   }, [selectType]);
-  // useEffect(() => {
-  //   bankType.setValue(selectBankType);
-  // }, [selectBankType]);
-
+  console.log(selectAvailableTime);
   return (
     <ModifyProfileMainSectionWrapper>
       {isUpdateModalOpen && (
@@ -223,7 +266,7 @@ export const ModifyProfileMainSection = ({
           <Input
             width="100%"
             height="4.8rem"
-            value={availableTime.viewValue.slice(0, 26) + '...'}
+            value={convertObjectToString(selectAvailableTime)}
             readOnly={true}
             padding="1.2rem 1.6rem"
             isBoxSizing={true}

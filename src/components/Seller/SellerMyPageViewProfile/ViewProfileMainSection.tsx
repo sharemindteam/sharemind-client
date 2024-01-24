@@ -104,8 +104,6 @@ ViewProfileMainSectionProps) => {
                   </ProfileInform>
                 ),
             )}
-
-            {}
           </ChatTimeList>
         </div>
         <div className="consult-fee">
