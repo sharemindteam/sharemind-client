@@ -148,6 +148,15 @@ function TimeSelectModal({
             if (selectedArray.length === 2) {
               handleCompleteTime();
             } else {
+              setIsSelected({
+                MON: false,
+                TUE: false,
+                WED: false,
+                THU: false,
+                FRI: false,
+                SAT: false,
+                SUN: false,
+              });
               setIsTimeModalOpen(false);
             }
           }}

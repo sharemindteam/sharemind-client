@@ -8,11 +8,12 @@ import { Body1 } from 'styles/font';
 import Input from 'components/Common/Input';
 import TimeSelectModal from './TimeSelectModal';
 import { useRecoilState } from 'recoil';
-import { isTimeModalOpenState } from 'utils/atom';
+import { isOutPopupOpenState, isTimeModalOpenState } from 'utils/atom';
 import { BackDrop } from 'components/Common/BackDrop';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { formatTimeRange } from 'utils/formatTimeRange';
+import IsOutPopup from './IsOutPopup';
 const dayEngtoKor: Record<string, string> = {
   MON: '월',
   TUE: '화',
@@ -64,24 +65,24 @@ function SetChatTimeSection() {
 
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
-
+  const [isOutPopupOpen, setIsOutPopupOpen] =
+    useRecoilState(isOutPopupOpenState);
   console.log(selectedTimeList['THU'][0]);
   console.log(selectedTimeList);
   return (
     <Wrapper>
       <ScrollContainer>
+        {isOutPopupOpen && <IsOutPopup />}
         {isTimeModalOpen && (
-          <>
-            <TimeSelectModal
-              isSelected={isSelected}
-              setIsSelected={setIsSelected}
-              selectedTimeList={selectedTimeList}
-              setSelectedTimeList={setSelectedTimeList}
-              setIsActive={setIsActive}
-            />
-            <BackDrop />
-          </>
+          <TimeSelectModal
+            isSelected={isSelected}
+            setIsSelected={setIsSelected}
+            selectedTimeList={selectedTimeList}
+            setSelectedTimeList={setSelectedTimeList}
+            setIsActive={setIsActive}
+          />
         )}
+        {(isOutPopupOpen || isTimeModalOpen) && <BackDrop />}
 
         <SetChatGuide>
           상담 활동이 가능한 시간대를 설정해주세요. <br />
@@ -238,7 +239,7 @@ const TimeItem = styled.div`
 const NoGuide = styled.div`
   color: ${Grey4};
   margin-left: 4.1rem;
-  margin-top: -0.4rem;
+  margin-top: -0.3rem;
   font-family: Pretendard;
   font-size: 1.6rem;
   font-style: normal;

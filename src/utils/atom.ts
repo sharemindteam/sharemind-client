@@ -34,6 +34,11 @@ export const isTimeModalOpenState = atom({
   default: false,
 });
 
+export const isOutPopupOpenState = atom({
+  key: 'isOutPopupOpenState',
+  default: false,
+});
+
 export const isSuccessUpdateState = atom({
   key: 'isSuccessUpdateState',
   default: false,
