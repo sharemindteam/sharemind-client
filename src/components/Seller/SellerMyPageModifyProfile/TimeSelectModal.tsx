@@ -1,6 +1,6 @@
 import { lightGreen } from '@mui/material/colors';
 import { Space } from 'components/Common/Space';
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import {
@@ -37,6 +37,18 @@ function TimeSelectModal({
   setIsActive,
   setIsSelected,
 }: TimeSelectModalProps) {
+  const [blockRange, setBlockRange] = useState<number[]>();
+  const foundDayKey: any = Object.keys(isSelected).find(
+    (key) => isSelected[key] === true,
+  );
+  useEffect(() => {
+    if (selectedTimeList[foundDayKey][0]) {
+      const [startNumber, endNumber] = selectedTimeList[foundDayKey][0]
+        ?.split('~')
+        ?.map(Number);
+      setBlockRange([startNumber, endNumber]);
+    }
+  }, [foundDayKey]);
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
   const [selectedArray, setSelectedArray] = useState<number[]>([]);
@@ -64,12 +76,10 @@ function TimeSelectModal({
     }
   };
   const handleCompleteTime = () => {
-    const foundDayKey: any = Object.keys(isSelected).find(
-      (key) => isSelected[key] === true,
-    );
     if (foundDayKey) {
       const pushedString = selectedArray[0] + '~' + selectedArray[1];
       setSelectedTimeList((prevSelectedTimeList) => {
+        console.log(prevSelectedTimeList[foundDayKey]);
         return {
           ...prevSelectedTimeList,
           [foundDayKey]: [...prevSelectedTimeList[foundDayKey], pushedString],
@@ -129,7 +139,13 @@ function TimeSelectModal({
                   : false
                 : false
             }
-            isBlock={false}
+            isBlock={
+              !blockRange
+                ? false
+                : hour > blockRange[0] && hour < blockRange[1]
+                ? true
+                : false
+            }
             onClick={() => {
               handleClickHour(hour);
             }}

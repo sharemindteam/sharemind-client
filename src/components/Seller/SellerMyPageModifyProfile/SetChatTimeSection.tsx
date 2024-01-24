@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey4, Grey5 } from 'styles/color';
 import { ReactComponent as CheckIcon2SVG } from 'assets/icons/icon-check2.svg';
-import { ReactComponent as PlusIcon } from 'assets/icons/icon-plus.svg';
-import { ReactComponent as MinusIcon } from 'assets/icons/icon-minus.svg';
+import { ReactComponent as PlusIconSVG } from 'assets/icons/icon-plus.svg';
+import { ReactComponent as MinusIconSVG } from 'assets/icons/icon-minus.svg';
 import { Body1 } from 'styles/font';
 import Input from 'components/Common/Input';
 import TimeSelectModal from './TimeSelectModal';
@@ -115,24 +115,39 @@ function SetChatTimeSection() {
               )
             ) : selectedTimeList[item]?.length === 1 ? (
               <TimeList>
-                {selectedTimeList[item].map((item) => (
+                {selectedTimeList[item].map((str) => (
                   <TimeItem>
-                    <Input alignCenter={true} height="5rem" value={item} />
-                    <PlusIcon />
+                    <Input alignCenter={true} height="5rem" value={str} />
+                    <PlusIcon
+                      onClick={() => {
+                        setIsSelected({ ...isSelected, [item]: true });
+                        setIsTimeModalOpen(true);
+                      }}
+                    />
                   </TimeItem>
                 ))}
               </TimeList>
             ) : selectedTimeList[item]?.length === 2 ? (
               <TimeList>
-                {selectedTimeList[item].map((item) => (
+                {selectedTimeList[item].map((str) => (
                   <TimeItem>
                     <Input
                       width="100%"
                       height="5rem"
                       alignCenter={true}
-                      value={item}
+                      value={str}
                     />
-                    <MinusIcon />
+                    <MinusIcon
+                      onClick={() => {
+                        const copySelectedTimeList = selectedTimeList;
+                        setSelectedTimeList({
+                          ...selectedTimeList,
+                          [item]: copySelectedTimeList[item].filter((item) => {
+                            return item !== str;
+                          }),
+                        });
+                      }}
+                    />
                   </TimeItem>
                 ))}
               </TimeList>
@@ -176,6 +191,13 @@ const TimeList = styled.div`
   gap: 1.6rem;
   margin-top: -1.4rem;
   margin-left: 2rem;
+`;
+
+const PlusIcon = styled(PlusIconSVG)`
+  cursor: pointer;
+`;
+const MinusIcon = styled(MinusIconSVG)`
+  cursor: pointer;
 `;
 
 const TimeItem = styled.div`
