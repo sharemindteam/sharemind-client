@@ -180,7 +180,7 @@ export const LetterWriteMainSection = ({
             beforeMinutes={consultInform?.beforeMinutes}
             counselorprofileStatus={consultInform?.counselorprofileStatus}
             content={consultInform?.content}
-            newMessageCounts={consultInform?.newMessageCounts}
+            newMessageCounts={null}
             onClick={() => {
               setIsViewQuestion(true);
             }}
