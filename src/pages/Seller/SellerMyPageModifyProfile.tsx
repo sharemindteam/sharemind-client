@@ -109,7 +109,7 @@ export const SellerMypageModifyProfile = () => {
           category.setViewValue(data?.consultCategories.join(', '));
           setSelectCategory(
             data?.consultCategories.map((item: any) => categoryList[item]),
-          );
+          );  
           style.setViewValue(data?.consultStyle);
           setSelectStyle(data?.consultStyle);
 

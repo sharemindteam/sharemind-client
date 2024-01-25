@@ -14,6 +14,7 @@ interface ProfileProps {
   profileIdentifier: number | undefined;
   name: string | undefined;
   levelStatus: string | undefined;
+  isPass?: boolean | undefined;
 }
 //일단 프로필 이미지는 한개만 불러왔음!
 export const Profile = ({
@@ -22,6 +23,7 @@ export const Profile = ({
   profileIdentifier,
   name,
   levelStatus,
+  isPass,
 }: ProfileProps) => {
   const navigate = useNavigate();
   return (
@@ -96,12 +98,15 @@ export const Profile = ({
         <VerifyButtonWrapper>
           <VerifyButton
             onClick={() => {
-              navigate('/seller/education/first');
+              if (isPass) {
+                navigate('/seller/education/first');
+              }
             }}
             width="100%"
             backgroundColor={Green}
             height="5.2rem"
             text="마인더 인증하기"
+            isActive={isPass}
           />
         </VerifyButtonWrapper>
       )}

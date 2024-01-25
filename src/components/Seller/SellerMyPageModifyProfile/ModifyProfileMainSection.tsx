@@ -429,7 +429,10 @@ export const ModifyProfileMainSection = ({
             letterPrice.isError ||
             chatPrice.isError ||
             oneLiner.isError ||
-            experience.isError
+            experience.isError ||
+            // 한 줄 소개, 경험 소개 길이가 0일 경우
+            experience.value.length === 0 ||
+            oneLiner.value.length === 0
           )
         }
         text={isNoProfile ? '작성 완료하기' : '저장하기'}
