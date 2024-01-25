@@ -26,12 +26,6 @@ export const LetterBonusQuestionStep = ({
         <ArriveSection>
           <Time>{time}</Time>
           <TextField>{questionMsg}</TextField>
-          <BottomButton
-            text="추가답안 작성하기"
-            onClick={() => {
-              navigate(`/seller/writeLetter/${consultid}`);
-            }}
-          />
         </ArriveSection>
       ) : (
         <NotArriveSection>
