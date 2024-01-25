@@ -31,6 +31,8 @@ export const getCustomerInfo = async (letterId: string | undefined) =>
 export const getCounselorCategories = async (letterId: number) =>
   await getInstance(`/letters/counselor-categories/${letterId}`);
 
+export const getLetterCustomerCategory = async (letterId: string) =>
+  await getInstance(`/letters/customer-category/${letterId}`);
 export const getDraftsLetter = async (
   params: any,
   letterId: string | undefined,

@@ -56,6 +56,7 @@ export const BuyerLetterWrite = () => {
     messageType: null,
     updatedAt: null,
   });
+
   //임시저장 확인후 모달
   const fetchDraftsData = async () => {
     let messageType: string;
@@ -94,6 +95,9 @@ export const BuyerLetterWrite = () => {
       if (res.status === 200) {
         const updatedCategoryList = ['상담 카테고리', ...res.data.categories];
         setCategoryList(updatedCategoryList);
+      } else if (res.response.statue === 404) {
+        alert('존재하지 않는 상담입니다.');
+        navigate('/buyer/consult');
       }
     } catch (e) {
       console.log(e);
@@ -119,8 +123,14 @@ export const BuyerLetterWrite = () => {
       console.log(e);
     }
   };
+
   //먼저 임시저장된거 있는지 api 콜하고 그다음에 카테고리 세팅
   useEffect(() => {
+    const fetchData = async () => {
+      await fetchCategoriesData();
+      await fetchDraftsData();
+      await fetchSavedData();
+    };
     if (
       tagStatus === undefined ||
       Number.isNaN(tagStatus) ||
@@ -129,9 +139,7 @@ export const BuyerLetterWrite = () => {
       alert('유효하지 않은 접근입니다.');
       navigate('/buyer/consult');
     } else {
-      fetchDraftsData();
-      fetchCategoriesData();
-      fetchSavedData();
+      fetchData();
     }
   }, []);
   useEffect(() => {
@@ -238,6 +246,8 @@ export const BuyerLetterWrite = () => {
           setReplyText={setInput}
           setIsActive={setIsActiveLoadModal}
           consultId={id}
+          categoryList={categoryList}
+          setCategoryType={setCategoryType}
         />
       )}
       {isActiveSaveModal && (
