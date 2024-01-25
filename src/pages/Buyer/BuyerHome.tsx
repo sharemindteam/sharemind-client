@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
 import { SearchResultData } from 'utils/type';
 import { useEffect, useState } from 'react';
-import { ConverSortType } from 'utils/convertSortType';
 import { patchCounselors } from 'api/patch';
 export const BuyerHome = () => {
   const navigate = useNavigate();

@@ -8,7 +8,7 @@ import { ReactComponent as NoneBookMark } from 'assets/icons/icon-save1.svg';
 import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { ReactComponent as DownIcon } from 'assets/icons/icon-down-toggle.svg';
 import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultTimes } from 'utils/type';
 import { convertTimeToString } from 'utils/convertTimeToString';
@@ -27,6 +27,7 @@ interface ReadyConsultCardProps {
   consultType: string[];
   letterPrice: number;
   chattingPrice: number;
+  consultStyle: number;
 }
 //일단 toggle파트 제외하고 클릭 시 상담프로필로 navigate하게 구현
 export const ReadyConsultCard = ({
@@ -44,6 +45,7 @@ export const ReadyConsultCard = ({
   consultType,
   letterPrice,
   chattingPrice,
+  consultStyle,
 }: ReadyConsultCardProps) => {
   const navigate = useNavigate();
   //toggle
@@ -53,13 +55,24 @@ export const ReadyConsultCard = ({
     const newStates = [...bookmarkStates];
     newStates[index] = !newStates[index];
     setBookmarkStates(newStates);
+    console.log(consultTimes);
   };
+  const [timeData, setTimeData] = useState<string | null[]>([
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ]);
+  useEffect(() => {}, []);
   return (
     <Wrapper>
       <UpperWrapper
         onClick={() => {
           //마인더 프로필 개발되면 수정
-          navigate('/buyer/profile/0');
+          navigate(`/buyer/profile/${counselorId}`);
         }}
       >
         <TagWrapper>
@@ -71,11 +84,11 @@ export const ReadyConsultCard = ({
       </UpperWrapper>
       <LowerWrapper
         onClick={() => {
-          navigate('/buyer/profile/0');
+          navigate(`/buyer/profile/${counselorId}`);
         }}
       >
         <Characters
-          number={1}
+          number={consultStyle}
           width="6.5rem"
           height="5.4rem"
           margin="1.2rem 0 0 1.6rem"
@@ -115,37 +128,44 @@ export const ReadyConsultCard = ({
           <div className="row2">
             <Body3 color={Grey3}>상담가능 시간</Body3>
             <div>
-              {consultTimes.MON !== undefined ? (
+              {consultTimes.MON !== undefined &&
+              consultTimes.MON.length !== 0 ? (
                 <Body3 color={Grey1}>
                   월 {convertTimeToString(consultTimes.MON)}
                 </Body3>
               ) : null}
-              {consultTimes.TUE !== undefined ? (
+              {consultTimes.TUE !== undefined &&
+              consultTimes.TUE.length !== 0 ? (
                 <Body3 color={Grey1}>
                   화 {convertTimeToString(consultTimes.TUE)}
                 </Body3>
               ) : null}
-              {consultTimes.WED !== undefined ? (
+              {consultTimes.WED !== undefined &&
+              consultTimes.WED.length !== 0 ? (
                 <Body3 color={Grey1}>
                   수 {convertTimeToString(consultTimes.WED)}
                 </Body3>
               ) : null}
-              {consultTimes.THU !== undefined ? (
+              {consultTimes.THU !== undefined &&
+              consultTimes.THU.length !== 0 ? (
                 <Body3 color={Grey1}>
                   목 {convertTimeToString(consultTimes.THU)}
                 </Body3>
               ) : null}
-              {consultTimes.FRI !== undefined ? (
+              {consultTimes.FRI !== undefined &&
+              consultTimes.FRI.length !== 0 ? (
                 <Body3 color={Grey1}>
                   금 {convertTimeToString(consultTimes.FRI)}
                 </Body3>
               ) : null}
-              {consultTimes.SAT !== undefined ? (
+              {consultTimes.SAT !== undefined &&
+              consultTimes.SAT.length !== 0 ? (
                 <Body3 color={Grey1}>
                   토 {convertTimeToString(consultTimes.SAT)}
                 </Body3>
               ) : null}
-              {consultTimes.SUN !== undefined ? (
+              {consultTimes.SUN !== undefined &&
+              consultTimes.SUN.length !== 0 ? (
                 <Body3 color={Grey1}>
                   일 {convertTimeToString(consultTimes.SUN)}
                 </Body3>

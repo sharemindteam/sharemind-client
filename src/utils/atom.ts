@@ -106,6 +106,12 @@ export const searchKeywordState = atom({
   default: '',
   effects_UNSTABLE: [persistAtom],
 });
+//셰어 side searchKeywordState
+export const profileCounselorIdState = atom({
+  key: 'profileCounselorIdState',
+  default: -1,
+  effects_UNSTABLE: [persistAtom],
+});
 //셰어 상대 마인더 nickname
 export const opponentNicknameState = atom({
   key: 'opponentNicknameState',

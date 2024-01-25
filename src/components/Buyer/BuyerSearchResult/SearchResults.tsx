@@ -26,11 +26,12 @@ export const SearchResults = ({ searchData }: SearchResultsProps) => {
             // 나중에 id로 변경
             key={index}
             index={index}
-            counselorId={consultStyleToCharNum(value.consultStyle)}
+            counselorId={value.counselorId}
             tagList={AppendCategoryType(
               value.consultCategories,
               value.consultStyle,
             )}
+            consultStyle={consultStyleToCharNum(value.consultStyle)}
             consultTimes={value.consultTimes}
             introduction={value.introduction}
             nickname={value.nickname}
