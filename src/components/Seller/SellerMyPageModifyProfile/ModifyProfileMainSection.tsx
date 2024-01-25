@@ -144,7 +144,6 @@ export const ModifyProfileMainSection = ({
   useEffect(() => {
     type?.setViewValue(selectType?.join(', '));
   }, [selectType]);
-  console.log(selectAvailableTime);
   return (
     <ModifyProfileMainSectionWrapper>
       {isUpdateModalOpen && (

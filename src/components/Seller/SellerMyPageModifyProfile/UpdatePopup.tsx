@@ -51,9 +51,13 @@ export const UpdatePopup = ({
       experience: experience.value,
     };
     try {
-      await patchProfiles(body);
+      const res: any = await patchProfiles(body);
       setIsUpdateModalOpen(false);
-      setIsSuccess(true);
+      if (res.status !== 200) {
+        alert('판매 정보를 올바르게 입력해주세요!');
+      } else {
+        setIsSuccess(true);
+      }
     } catch (err) {
       alert('오류');
       console.log(err);
