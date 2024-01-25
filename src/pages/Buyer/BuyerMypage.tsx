@@ -8,13 +8,27 @@ import { Characters } from 'utils/Characters';
 import { ReactComponent as PayedIcon } from 'assets/icons/icon-mypage-payed.svg';
 import { ReactComponent as ReviewIcon } from 'assets/icons/icon-mypage-review.svg';
 import { ReactComponent as SavedIcon } from 'assets/icons/icon-mypage-saved.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
+import { getCustomersNickname } from 'api/get';
 export const BuyerMypage = () => {
   const navigate = useNavigate();
   //로그인 여부 temp
-  const [IsLoginTemp, setIsLoginTemp] = useState<boolean>(true);
-
+  const [IsLogin, setIsLogin] = useState<boolean>(true);
+  //회원닉네임
+  const [nickname, setNickname] = useState<string>('');
+  useEffect(() => {
+    const fetchNickname = async () => {
+      const res: any = await getCustomersNickname();
+      if (res.status === 200) {
+        setNickname(res.data);
+        setIsLogin(true);
+      } else if (res.response.status === 401) {
+        setIsLogin(false);
+      }
+    };
+    fetchNickname();
+  }, []);
   return (
     <Wrapper>
       <Header
@@ -24,12 +38,12 @@ export const BuyerMypage = () => {
         }}
       />
       <TabA1 isBuyer={true} initState={3} />
-      {IsLoginTemp ? (
+      {IsLogin ? (
         <>
           <UserCard>
             <div className="profile">
               <Characters number={2} width="7.9rem" height="5.8rem" />
-              <Subtitle>김고민고민</Subtitle>
+              <Subtitle>{nickname}</Subtitle>
             </div>
             <div className="change-button">
               <ChangeButton
@@ -106,7 +120,7 @@ export const BuyerMypage = () => {
       <div className="additional-box">
         <Body2 color={Grey1}>서비스 소개</Body2>
       </div>
-      {IsLoginTemp ? (
+      {IsLogin ? (
         <>
           <div className="additional-box">
             <Body2 color={Grey1}>결제 문의</Body2>
@@ -123,12 +137,6 @@ export const BuyerMypage = () => {
           </div>
         </>
       ) : null}
-      <Button
-        text="로그인 전환"
-        onClick={() => {
-          setIsLoginTemp(!IsLoginTemp);
-        }}
-      />
     </Wrapper>
   );
 };
