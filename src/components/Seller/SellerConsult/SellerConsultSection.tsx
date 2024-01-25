@@ -119,7 +119,11 @@ export const SellerConsultSection = () => {
               counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
               newMessageCounts={item?.unreadMessageCount}
               onClick={() => {
-                navigate(`/seller/letter/${item?.id}`);
+                if (isLetterActive) {
+                  navigate(`/seller/letter/${item?.id}`);
+                } else {
+                  navigate(`/seller/chat/${item?.id}`);
+                }
               }}
             />
           ))
