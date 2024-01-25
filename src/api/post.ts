@@ -1,4 +1,4 @@
-import { postInstance } from './axios';
+import { postInstance, postPublicInstance } from './axios';
 //Auth controller
 //로그인
 export const postLogin = async (body: any) =>
@@ -9,6 +9,9 @@ export const postSingup = async (body: any) =>
 //refresh token 갱신
 export const postReissue = async (body: any) =>
   await postInstance('/auth/reissue', body);
+
+export const postPublicReissue = async (body: any) =>
+  await postPublicInstance('/auth/reissue', body);
 
 //Email controller
 //인증번호 전송
@@ -33,5 +36,5 @@ export const postLetterMessageFirstQustion = async (body: any) =>
 
 //Counselor Controller
 // 퀴즈 통과 여부 수정
-export const postIsPassQuiz = async (body: any,parmas: any) =>
+export const postIsPassQuiz = async (body: any, parmas: any) =>
   await postInstance('counselors/quiz', body, parmas);
