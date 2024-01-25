@@ -14,6 +14,7 @@ import { SearchResultData } from 'utils/type';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 import { patchCounselors } from 'api/patch';
 import { ConverSortType } from 'utils/convertSortType';
+import { AvailCounselorSearchResults } from 'components/Buyer/BuyerAvailCounselor/AvailCounselorSearchResult';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerAvailCounselor = () => {
   //0 : 최신순 1:인기순 2: 별점순
@@ -70,7 +71,7 @@ export const BuyerAvailCounselor = () => {
           <Down />
         </div>
       </div>
-      <SearchResults />
+      <AvailCounselorSearchResults searchData={searchData} />
 
       {isModalOpen ? (
         <>

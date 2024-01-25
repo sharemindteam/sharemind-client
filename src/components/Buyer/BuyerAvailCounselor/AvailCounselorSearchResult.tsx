@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-interface CategorySearchResultsProps {
+interface AvailCounselorSearchResultsProps {
   searchData: SearchResultData[];
 }
 
 //임의로 ConsultInReady 그대로 사용
-export const CategorySearchResults = ({
+export const AvailCounselorSearchResults = ({
   searchData,
-}: CategorySearchResultsProps) => {
+}: AvailCounselorSearchResultsProps) => {
   //찜하기 배열 init
   const initialBookmarkStates = searchData.map(
     (data) => data.isWishList || false,
