@@ -127,7 +127,7 @@ const VerifyMaterialButtonWrapper = styled.div`
   align-items: center;
   text-align: center;
   gap: 0.6rem;
-  margin-bottom: 1.6rem;
+  padding-bottom: 1.6rem;
   background-color: ${White};
   position: fixed;
   bottom: 0;
