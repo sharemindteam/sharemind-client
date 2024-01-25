@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Grey6 } from 'styles/color';
 import { Characters } from 'utils/Characters';
+import { searchKeywordState } from 'utils/atom';
 
 export const CartegorySearch = () => {
   const navigate = useNavigate();
+  const setSearchKeyword = useSetRecoilState(searchKeywordState);
   return (
     <Wrapper>
       <Line>
@@ -12,7 +15,8 @@ export const CartegorySearch = () => {
           <Characters
             number={1}
             onClick={() => {
-              navigate('/buyer/search/1');
+              setSearchKeyword('연애갈등');
+              navigate('/buyer/categorySearch');
             }}
           />
           <Text>연애갈등</Text>
@@ -21,7 +25,8 @@ export const CartegorySearch = () => {
           <Characters
             number={2}
             onClick={() => {
-              navigate('/buyer/search/2');
+              setSearchKeyword('이별/재회');
+              navigate('/buyer/categorySearch');
             }}
           />
           <Text>이별/재회</Text>
@@ -30,7 +35,8 @@ export const CartegorySearch = () => {
           <Characters
             number={3}
             onClick={() => {
-              navigate('/buyer/search/3');
+              setSearchKeyword('여자심리');
+              navigate('/buyer/categorySearch');
             }}
           />
           <Text>여자심리</Text>
@@ -39,7 +45,8 @@ export const CartegorySearch = () => {
           <Characters
             number={4}
             onClick={() => {
-              navigate('/buyer/search/4');
+              setSearchKeyword('남자심리');
+              navigate('/buyer/categorySearch');
             }}
           />
           <Text>남자심리</Text>
@@ -50,7 +57,8 @@ export const CartegorySearch = () => {
           <Characters
             number={5}
             onClick={() => {
-              navigate('/buyer/search/5');
+              setSearchKeyword('썸/연애시작');
+              navigate('/buyer/categorySearch');
             }}
           />
           <Text>썸/연애시작</Text>
@@ -59,7 +67,8 @@ export const CartegorySearch = () => {
           <Characters
             number={6}
             onClick={() => {
-              navigate('/buyer/search/6');
+              setSearchKeyword('짝사랑');
+              navigate('/buyer/categorySearch');
             }}
           />
           <Text>짝사랑</Text>
@@ -68,7 +77,8 @@ export const CartegorySearch = () => {
           <Characters
             number={7}
             onClick={() => {
-              navigate('/buyer/search/7');
+              setSearchKeyword('권태기');
+              navigate('/buyer/categorySearch');
             }}
           />
           <Text>권태기</Text>
@@ -77,7 +87,8 @@ export const CartegorySearch = () => {
           <Characters
             number={8}
             onClick={() => {
-              navigate('/buyer/search/8');
+              setSearchKeyword('기타');
+              navigate('/buyer/categorySearch');
             }}
           />
           <Text>기타</Text>

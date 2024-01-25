@@ -5,12 +5,9 @@ export const getAdminsUnpaidConsults = async () =>
 export const getAdminsPedningProfilse = async () =>
   await getInstance('/admins/pending-profiles');
 
-//Chat Controller
-//채팅 목록 반환
+//밑에 두개 지우기
 export const getChats = async (params: any) =>
   await getInstance('/chats', params);
-
-//Letter Controller
 export const getLetters = async (params: any) =>
   await getInstance('/letters', params);
 
@@ -18,12 +15,24 @@ export const getLetters = async (params: any) =>
 export const getConselorLetters = async (params: any) =>
   await getInstance('/letters/counselors', params);
 
+//Chat Controller
+//채팅 목록 반환
+export const getChatsCustomers = async (params: any) =>
+  await getInstance('/chats/customers', params);
+
+//Letter Controller
+//편지 목록 반환
+export const getLettersCustomers = async (params: any) =>
+  await getInstance('/letters/customers', params);
+
 export const getCustomerInfo = async (letterId: string | undefined) =>
   await getInstance(`/letters/counselors/customer-info/${letterId}`);
 
 export const getCounselorCategories = async (letterId: number) =>
-  await getInstance(`/letters/categories/${letterId}`);
+  await getInstance(`/letters/counselor-categories/${letterId}`);
 
+export const getLetterCustomerCategory = async (letterId: string) =>
+  await getInstance(`/letters/customer-category/${letterId}`);
 export const getDraftsLetter = async (
   params: any,
   letterId: string | undefined,

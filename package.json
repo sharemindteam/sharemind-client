@@ -7,6 +7,8 @@
     "@types/jest": "^29.5.11",
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.46",
+    "@types/sockjs-client": "^1.5.4",
+    "@types/stompjs": "^2.3.9",
     "axios": "^1.6.2",
     "cra-template-typescript": "1.2.0",
     "react": "^18.2.0",

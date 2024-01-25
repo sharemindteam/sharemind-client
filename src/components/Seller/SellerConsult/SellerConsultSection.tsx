@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { getChats, getConselorLetters } from 'api/get';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
+import { ConsultInfoList } from 'utils/type';
 
 interface ConsultTypeProps {
   isActive: boolean;

@@ -42,6 +42,7 @@ import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
 import { Admin } from 'pages/Common/Admin';
+import { BuyerChat } from 'pages/Buyer/BuyerChat';
 const Router = () => {
   const navigate = useNavigate();
   return (
@@ -74,7 +75,7 @@ const Router = () => {
       <Route path="/buyer/consult" element={<BuyerConsult />} />
       <Route path="/buyer/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/buyer/search" element={<BuyerSearch />} />
-      <Route path="/buyer/search/:id" element={<BuyerCategoryResult />} />
+      <Route path="/buyer/categorySearch" element={<BuyerCategoryResult />} />
       <Route path="/buyer/search/result" element={<BuyerSearchResult />} />
       <Route path="/buyer/consultRequest" element={<BuyerConsultRequest />} />
       <Route path="/buyer/paymentDetail" element={<BuyerPaymentDetail />} />
@@ -86,6 +87,7 @@ const Router = () => {
       <Route path="/buyer/saved" element={<BuyerSavedCounselor />} />
       <Route path="/buyer/payment" element={<BuyerPayment />} />
       <Route path="/buyer/letter/:id" element={<BuyerLetter />} />
+      <Route path="/buyer/chat" element={<BuyerChat />} />
       <Route path="/buyer/writeLetter/:id" element={<BuyerLetterWrite />} />
       {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}
       <Route path="/login" element={<BuyerLogin />} />

@@ -5,13 +5,15 @@ import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
 import { useNavigate } from 'react-router-dom';
-import { CartegoryState } from 'utils/type';
-export const ConsultInReady = () => {
+import { SearchResultData } from 'utils/type';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { AppendCategoryType } from 'utils/AppendCategoryType';
+interface HomeConsultInReadyProps {
+  searchData: SearchResultData[];
+}
+export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
   const navigate = useNavigate();
   //consult type은 1이면 편지,2 면 채팅 3이면 둘다
-  //일단 상담시간부분은 확실하지 않으니 추후 구현
-  //dummy data naming이 erd와 맞음
-  //찜하기 array로 state 선언, 받아온 개수만큼 찜하기 array 할당
   const initialBookmarkStates = dummy.map((data) => data.isBookmarked || false);
   const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
     initialBookmarkStates,
@@ -30,25 +32,32 @@ export const ConsultInReady = () => {
         </NavConsult>
         <MoreIcon />
       </div>
-      {dummy.map((value, index) => {
-        const tagListCast: CartegoryState[] = value.tagList as CartegoryState[];
-        return (
-          <ReadyConsultCard
-            index={index}
-            counselorId={value.counselorId}
-            tagList={tagListCast}
-            introduction={value.introduction}
-            nickname={value.nickname}
-            level={value.level}
-            bookmarkStates={bookmarkStates}
-            setBookmarkStates={setBookmarkStates}
-            rating={value.rating}
-            totalReview={value.reviewNumber}
-            consultType={[]}
-            letterPrice={value.letterPrice}
-            chattingPrice={value.chattingPrice}
-          />
-        );
+      {searchData.map((value, index) => {
+        if (index <= 2) {
+          return (
+            <ReadyConsultCard
+              // 나중에 id로 변경
+              key={index}
+              index={index}
+              counselorId={consultStyleToCharNum(value.consultStyle)}
+              tagList={AppendCategoryType(
+                value.consultCategories,
+                value.consultStyle,
+              )}
+              consultTimes={value.consultTimes}
+              introduction={value.introduction}
+              nickname={value.nickname}
+              level={value.level}
+              bookmarkStates={bookmarkStates}
+              setBookmarkStates={setBookmarkStates}
+              rating={value.ratingAverage}
+              totalReview={value.totalReview}
+              consultType={value.consultTypes}
+              letterPrice={value.consultCosts.편지}
+              chattingPrice={value.consultCosts.채팅}
+            />
+          );
+        }
       })}
     </Wrapper>
   );

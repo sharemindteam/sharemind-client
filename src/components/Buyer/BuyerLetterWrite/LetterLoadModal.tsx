@@ -1,6 +1,6 @@
-import { getLetterMessages } from 'api/get';
+import { getLetterCustomerCategory } from 'api/get';
 import { Button } from 'components/Common/Button';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
@@ -10,6 +10,8 @@ interface LetterLoadModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setReplyText: React.Dispatch<React.SetStateAction<string>>;
   consultId: string | undefined;
+  categoryList: string[];
+  setCategoryType: React.Dispatch<React.SetStateAction<number>>;
 }
 // 임시저장할지 여부 모달
 export const LetterLoadModal = ({
@@ -18,13 +20,35 @@ export const LetterLoadModal = ({
   setIsActive,
   setReplyText,
   consultId,
+  categoryList,
+  setCategoryType,
 }: LetterLoadModalProps) => {
+  const [savedCategoryNumber, setSavedCategoryNumber] = useState<number>(0);
   const handleLoadMessageClick = () => {
     if (savedText !== null) {
       setReplyText(savedText);
     }
+    setCategoryType(savedCategoryNumber);
     setIsActive(false);
   };
+
+  useEffect(() => {
+    //임시저장 카테고리 받아오기
+    const fetchSavedCategoryData = async () => {
+      if (consultId !== undefined) {
+        const res: any = await getLetterCustomerCategory(consultId);
+        if (res.status === 200) {
+          const index = categoryList.indexOf(res.data);
+          if (index !== -1) {
+            setSavedCategoryNumber(index);
+          }
+        } else if (res.response.status === 404) {
+          alert('존재하지 않는 편지 아이디로 요청되었습니다.');
+        }
+      }
+    };
+    fetchSavedCategoryData();
+  }, []);
   return (
     <SaveModalBox>
       <ModalBox>

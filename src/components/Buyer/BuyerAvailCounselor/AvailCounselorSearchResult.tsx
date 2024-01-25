@@ -3,12 +3,15 @@ import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
-interface SearchResultsProps {
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+interface AvailCounselorSearchResultsProps {
   searchData: SearchResultData[];
 }
 
 //임의로 ConsultInReady 그대로 사용
-export const SearchResults = ({ searchData }: SearchResultsProps) => {
+export const AvailCounselorSearchResults = ({
+  searchData,
+}: AvailCounselorSearchResultsProps) => {
   //찜하기 배열 init
   const initialBookmarkStates = searchData.map(
     (data) => data.isWishList || false,
@@ -21,12 +24,15 @@ export const SearchResults = ({ searchData }: SearchResultsProps) => {
       {searchData.map((value, index) => {
         return (
           <ReadyConsultCard
+            // 나중에 id로 변경
+            key={index}
             index={index}
-            counselorId={1}
+            counselorId={consultStyleToCharNum(value.consultStyle)}
             tagList={AppendCategoryType(
               value.consultCategories,
               value.consultStyle,
             )}
+            consultTimes={value.consultTimes}
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
