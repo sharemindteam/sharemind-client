@@ -27,38 +27,6 @@ export const BuyerConsultRequest = () => {
   const counselorId: boolean = state?.counselorId;
   const handleNextClick = () => {
     navigate(`/buyer/paymentDetail/${counselorId}`, { state: { letterFocus } });
-    // let consultType = '';
-    // if (letterFocus) {
-    //   consultType = 'Letter';
-    // } else {
-    //   consultType = 'Chat';
-    // }
-    // const body = {
-    //   counselorId: 1,
-    //   consultTypeName: consultType,
-    // };
-    // try {
-    //   const res: any = await postConsults(body);
-
-    //   if (res.status === 201) {
-    //     const consultData: ConsultDataType = {
-    //       consultId: res.data.consultId,
-    //       nickname: res.data.nickname,
-    //       level: res.data.level,
-    //       ratingAverage: res.data.ratingAverage,
-    //       totalReview: res.data.totalReview,
-    //       consultCategories: res.data.consultCategories,
-    //       consultStyle: res.data.consultStyle,
-    //       consultType: res.data.consultType,
-    //       cost: res.data.cost,
-    //     };
-    //     navigate('/buyer/paymentDetail', { state: { consultData } });
-    //   } else if (res.response.status === 404) {
-    //     alert('상담 유형이 존재하지 않습니다.');
-    //   }
-    // } catch (e) {
-    //   alert(e);
-    // }
   };
   useEffect(() => {
     if (!(letterFocus === false && chatFocus === false)) {
