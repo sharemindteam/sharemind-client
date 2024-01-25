@@ -19,39 +19,38 @@ export const BuyerCounselorProfile = () => {
   const [isInfo, setIsInfo] = useState<boolean>(true);
   if (id !== undefined) {
     const counselorId = parseInt(id, 10);
-    const tagListCast: CartegoryState[] = dummy[counselorId]
-      .tagList as CartegoryState[];
+    const tagListCast: CartegoryState[] = dummy[1].tagList as CartegoryState[];
     return (
       <Wrapper>
         <CounselorProfileHeader />
         <Body>
           <CounselorProfileCard
-            nickname={dummy[counselorId].nickname}
-            level={dummy[counselorId].level}
-            rating={dummy[counselorId].rating}
-            reviewNumber={dummy[counselorId].reviewNumber}
+            nickname={dummy[1].nickname}
+            level={dummy[1].level}
+            rating={dummy[1].rating}
+            reviewNumber={dummy[1].reviewNumber}
             tagList={tagListCast}
-            iconNumber={dummy[counselorId].iconNumber}
+            iconNumber={dummy[1].iconNumber}
           />
           <CounselorProfileNav
             isInfo={isInfo}
             setIsInfo={setIsInfo}
-            reviewNumber={dummy[counselorId].reviewNumber}
+            reviewNumber={dummy[1].reviewNumber}
           />
           {isInfo ? (
             <>
               <CounselorInfo
-                consultType={dummy[counselorId].consultType}
-                letterPrice={dummy[counselorId].letterPrice}
-                chattingPrice={dummy[counselorId].chattingPrice}
+                consultType={dummy[1].consultType}
+                letterPrice={dummy[1].letterPrice}
+                chattingPrice={dummy[1].chattingPrice}
               />
-              <CounselorExp experience={dummy[counselorId].experience} />
+              <CounselorExp experience={dummy[1].experience} />
             </>
           ) : (
             <CounselorReview reviewList={reviewDummy} />
           )}
         </Body>
-        <CounselorFooter isBookmarked={dummy[counselorId].isBookmarked} />
+        <CounselorFooter isBookmarked={dummy[1].isBookmarked} />
       </Wrapper>
     );
   } else {
