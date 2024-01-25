@@ -36,10 +36,9 @@ export const BuyerAvailCounselor = () => {
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchCounselors(sortTypeString, body);
       if (res.status === 200) {
-        console.log(res.data);
         setSearchData(res.data);
       } else if (res.response.status === 404) {
-        alert('카테고리 유형이 유효하지 않습니다.');
+        alert('유효하지 않은 정렬 방식입니다.');
         navigate('/buyer/home');
       }
     } catch (e) {
