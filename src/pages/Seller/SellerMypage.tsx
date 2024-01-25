@@ -3,7 +3,7 @@ import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
 import { Profile } from 'components/Common/Profile';
 import { useEffect, useState } from 'react';
-import { getMyInfo } from 'api/get';
+import { getIsPassQuiz, getMyInfo } from 'api/get';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 interface UserInfo {
   nickname: string;
@@ -15,10 +15,15 @@ interface UserInfo {
 export const SellerMypage = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [isPass, setIsPass] = useState(undefined);
   useEffect(() => {
     const fetchMyInfo = async () => {
       const res: any = await getMyInfo();
-      setUserInfo(res.data);
+      if (!res?.data?.isEducated) {
+        const isPassRes: any = await getIsPassQuiz();
+        setIsPass(isPassRes?.data);
+      }
+      setUserInfo(res?.data);
     };
     fetchMyInfo();
   }, []);
@@ -38,6 +43,7 @@ export const SellerMypage = () => {
         isVerified={userInfo?.isEducated}
         profileIdentifier={consultStyleToCharNum(userInfo?.consultStyle)}
         isBuyer={false}
+        isPass={isPass}
       />
     </>
   );
