@@ -20,6 +20,9 @@ export const getConselorLetters = async (params: any) =>
 export const getChatsCustomers = async (params: any) =>
   await getInstance('/chats/customers', params);
 
+export const getChatsMinder = async (params: any) =>
+  await getInstance('/chats/counselors', params);
+
 //Letter Controller
 //편지 목록 반환
 export const getLettersCustomers = async (params: any) =>
