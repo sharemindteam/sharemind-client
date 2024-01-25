@@ -57,7 +57,7 @@ type SellerLetterLevelTypes = {};
 
 type LetterInfo = {};
 
-type ConsultInfoList = ConsultInfoItem[];
+export type ConsultInfoList = ConsultInfoItem[];
 
 ///buyer search result 페이지
 
