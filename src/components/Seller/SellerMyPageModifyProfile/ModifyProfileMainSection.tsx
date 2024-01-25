@@ -278,27 +278,37 @@ export const ModifyProfileMainSection = ({
         </div>
         <div className="price">
           <ProfileInformTag>상담 가격</ProfileInformTag>
-          <div className="letter-price">
-            <PriceInformTag>편지</PriceInformTag>
-            <PriceInput
-              value={letterPrice.value}
-              onChange={letterPrice.onChangePrice}
-              placeholder="1건 당 5,000~50,000"
-              maxLength={6}
-            />
 
-            <Body1>원</Body1>
-          </div>
-          <div className="chat-price">
-            <PriceInformTag>채팅</PriceInformTag>
-            <PriceInput
-              value={chatPrice?.value}
-              onChange={chatPrice.onChangePrice}
-              placeholder="1건 당 5,000~50,000"
-              maxLength={6}
-            />
-            <Body1>원</Body1>
-          </div>
+          {selectType?.includes('편지') && (
+            <div className="letter-price">
+              <PriceInformTag>편지</PriceInformTag>
+              <PriceInput
+                value={letterPrice.value}
+                onChange={letterPrice.onChangePrice}
+                placeholder="1건 당 5,000~50,000"
+                maxLength={6}
+                isError={
+                  letterPrice.value < 5000 || letterPrice.value > 50000
+                    ? true
+                    : false
+                }
+              />
+
+              <Body1>원</Body1>
+            </div>
+          )}
+          {selectType?.includes('채팅') && (
+            <div className="chat-price">
+              <PriceInformTag>채팅</PriceInformTag>
+              <PriceInput
+                value={chatPrice?.value}
+                onChange={chatPrice.onChangePrice}
+                placeholder="1건 당 5,000~50,000"
+                maxLength={6}
+              />
+              <Body1>원</Body1>
+            </div>
+          )}
         </div>
       </ModifyProfileBox>
       <ModifyProfileBox>
@@ -494,7 +504,7 @@ const PriceInformTag = styled(Body1)`
   margin-right: auto;
 `;
 
-const PriceInput = styled.input`
+const PriceInput = styled.input<{ isError: boolean }>`
   width: calc(100% - 7rem);
   height: 4.8rem;
   padding: 1.2rem 1.6rem;
@@ -520,7 +530,7 @@ const PriceInput = styled.input`
 
 const ExperienceTextArea = styled.textarea`
   height: 44rem;
-  border: none;
+  border: ${({ isError }) => (isError ? '1px solid red' : 'none')};
   resize: none;
   background-color: ${Grey6};
   box-sizing: border-box;

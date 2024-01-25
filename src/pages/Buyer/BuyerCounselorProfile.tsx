@@ -9,15 +9,15 @@ import {
 } from 'components/Buyer/BuyerCounselorProfile';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { profileCounselorIdState } from 'utils/atom';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
 import { reviewDummy } from 'utils/buyerDummy';
 import { CartegoryState } from 'utils/type';
 export const BuyerCounselorProfile = () => {
   const { id } = useParams();
-
+  useEffect(() => {
+    const fetchData = async () => {};
+  }, []);
   //Nav 버튼 toggle
   const [isInfo, setIsInfo] = useState<boolean>(true);
   if (id !== undefined) {

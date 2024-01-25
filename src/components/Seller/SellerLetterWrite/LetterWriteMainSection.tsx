@@ -130,6 +130,8 @@ export const LetterWriteMainSection = ({
         content: letterResponse?.data?.content,
         date: letterResponse?.data?.updatedAt,
       });
+      console.log(letterResponse);
+      console.log(customerInfoResponse);
     };
     fetchData();
   }, [isSave]);
