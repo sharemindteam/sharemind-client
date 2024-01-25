@@ -49,7 +49,7 @@ export const SellerLetter = () => {
       질문: 1,
       답장: 2,
       '추가 질문': 3,
-      '추가 답변': 4,
+      '추가 답장': 4,
     };
   }, []);
   // 처음 마운트될 떄 호출하는 API
@@ -105,7 +105,6 @@ export const SellerLetter = () => {
     };
     fetchMessages();
   }, [tagStatus]);
-
   return (
     <>
       <LetterHeader />
