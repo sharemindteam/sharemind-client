@@ -31,6 +31,7 @@ export const UpdatePopup = ({
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
   const setIsSuccess = useSetRecoilState(isSuccessUpdateState);
   console.log(selectAvailableTime);
+  console.log(type);
   const handlePostUpdate = async () => {
     // 여기서 서버로 모든 데이터를 POST
 
@@ -40,8 +41,12 @@ export const UpdatePopup = ({
       consultStyle: style.serverValue,
       consultTypes: type.serverValue,
       consultTimes: selectAvailableTime,
-      letterCost: letterPrice.value.replace(',', ''),
-      chatCost: chatPrice.value.replace(',', ''),
+      letterCost: type.viewValue.includes('편지')
+        ? letterPrice.value.replace(',', '')
+        : null,
+      chatCost: type.viewValue.includes('채팅')
+        ? chatPrice.value.replace(',', '')
+        : null,
       introduction: oneLiner.value,
       experience: experience.value,
     };
