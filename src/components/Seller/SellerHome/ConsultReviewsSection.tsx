@@ -1,13 +1,32 @@
 import { ContentTag } from 'pages/Seller/SellerHome';
 import styled from 'styled-components';
-import { Black, Grey6 } from 'styles/color';
-import { Body1, Body2, Body3, Heading } from 'styles/font';
+import { Black, Grey3, Grey6, Red } from 'styles/color';
+import { Body1, Body2, Body3, Body4, Heading } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { ReactComponent as ReviewHeart } from 'assets/icons/review-heart.svg';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getMinderReviewsHome } from 'api/get';
+import { HeartRate } from 'utils/HeartRate';
 // 섹션 안에서 axios 요청
+
+interface ReviewData {
+  comment: string;
+  nickname: string;
+  rating: number;
+  reviewId: string;
+  updatedAt: string;
+}
 export const ConsultReviewSection = () => {
   const navigate = useNavigate();
+  const [reviewData, setReviewData] = useState<ReviewData[]>();
+  useEffect(() => {
+    const fetchHomeReview = async () => {
+      const reviweRes: any = await getMinderReviewsHome();
+      setReviewData(reviweRes.data);
+    };
+    fetchHomeReview();
+  }, []);
   return (
     <>
       <ContentTag
@@ -15,52 +34,38 @@ export const ConsultReviewSection = () => {
           navigate('/seller/mypage/review');
         }}
       >
-        <Heading color={Black} margin="0px auto 0px 0px">
-          상담 후기
-        </Heading>
+        {reviewData?.length === 0 ? (
+          <>
+            <Heading color={Black}>받은 리뷰</Heading>
+            <Body1 color={Red} margin="0px auto 0px 0px">
+              0
+            </Body1>
+          </>
+        ) : (
+          <Heading color={Black}>받은 리뷰</Heading>
+        )}
         <RightArrow />
       </ContentTag>
       <ConsultReviewList>
         {/* 1번째 상담 리뷰 */}
-        <ConsultReview>
-          <div className="flex-1">
-            <Body1>김**</Body1>
-            <Body3 margin="0 0 0 auto">12월 08일</Body3>
-          </div>
-          <div className="flex-2">
-            <ReviewHeart />
-            <ReviewHeart />
-            <ReviewHeart />
-            <ReviewHeart />
-            <ReviewHeart />
-          </div>
-          <div className="content">
-            <Body2>매번 친절한 상담 감사드립니다 ㅎㅎ 다음에 또 올게요</Body2>
-          </div>
-        </ConsultReview>
-        {/* 2번째 상담 리뷰 */}
-        <ConsultReview>
-          <div className="flex-1">
-            <Body1>김**</Body1>
-            <Body3 margin="0 0 0 auto">12월 08일</Body3>
-          </div>
-          <div className="flex-2">
-            <ReviewHeart />
-            <ReviewHeart />
-            <ReviewHeart />
-            <ReviewHeart />
-            <ReviewHeart />
-          </div>
-          <div className="content">
-            <Body2>
-              {' '}
-              부정적인 표현을 하더라도 상담자의 기분을 생각해서 배려하는
-              대화방식인데 대화하는 도중에 짜증나지 않는 타입입니다. 대화하는
-              방식이 매우 적절하고 넘은 시간이 있어 차감하고 한번 더 상담할
-              예정입니다.
-            </Body2>
-          </div>
-        </ConsultReview>
+        {reviewData?.length === 0 ? (
+          <Body3 color={Grey3}>아직 받은 리뷰가 없어요</Body3>
+        ) : (
+          reviewData?.map((item) => (
+            <ConsultReview>
+              <div className="flex-1">
+                <Body1>{item.nickname}</Body1>
+                <Body3 margin="0 0 0 auto">{item.updatedAt}</Body3>
+              </div>
+              <div className="flex-2">
+                <HeartRate rating={item.rating} />
+              </div>
+              <div className="content">
+                <Body2>{item.comment}</Body2>
+              </div>
+            </ConsultReview>
+          ))
+        )}
       </ConsultReviewList>
     </>
   );

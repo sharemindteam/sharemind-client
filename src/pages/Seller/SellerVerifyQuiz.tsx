@@ -26,9 +26,8 @@ export const SellerVerifyQuiz = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchIsPassQuiz = async () => {
-      const isPassResult: any = await getIsPassQuiz();
-      // 상담 퀴즈를 통과했으면 내 정보탭으로 리다이렉트
-      if (isPassResult?.data) {
+      const isPassRes: any = await getIsPassQuiz();
+      if (!isPassRes?.data) {
         alert('이미 퀴즈를 통과했습니다.');
         navigate('/seller/mypage');
       }

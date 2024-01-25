@@ -26,16 +26,15 @@ import {
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
-import { BankIcon } from 'utils/BankIcon';
-import { getProfiles } from 'api/get';
-import { ProfileData } from 'pages/Seller/SellerMyPageViewProfile';
 import { UpdatePopup } from './UpdatePopup';
+import { SelectedTimeList } from './SetChatTimeSection';
+import { convertTimeRange } from 'utils/convertTimeToString';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
   selectStyle: string;
   selectType: string[];
-  selectAvailableTime: any;
+  selectAvailableTime: SelectedTimeList;
   setIsSetChatTime: React.Dispatch<SetStateAction<boolean>>;
   nickname: any;
   category: any;
@@ -46,6 +45,52 @@ interface ModifyProfileMainSectionProps {
   chatPrice: any;
   oneLiner: any;
   experience: any;
+  isNoProfile: boolean;
+}
+const dayEngtoKor: Record<string, string> = {
+  MON: '월',
+  TUE: '화',
+  WED: '수',
+  THU: '목',
+  FRI: '금',
+  SAT: '토',
+  SUN: '일',
+};
+const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+
+function convertObjectToString(schedule: any) {
+  const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  let result = '';
+
+  // 각 요일에 대해 반복
+  daysOfWeek.forEach((day) => {
+    const timeRanges = schedule[day];
+
+    if (timeRanges && timeRanges.length > 0) {
+      // 각 시간 범위를 형식에 맞게 조합
+      const formattedTimeRanges = timeRanges.map((range: any) =>
+        convertTimeRange2(range),
+      );
+      const daySchedule = `${dayEngtoKor[day]} ${formattedTimeRanges.join(
+        ', ',
+      )}\n`;
+      result += daySchedule;
+    }
+  });
+  return result.trim();
+}
+
+function convertTimeRange2(input: string) {
+  const numbers = input.match(/\d+/g);
+
+  if (numbers && numbers.length === 2) {
+    const startTime = numbers[0].padStart(2, '0') + ':00';
+    const endTime = numbers[1].padStart(2, '0') + ':00';
+
+    return `${startTime}-${endTime} `;
+  } else {
+    return input; // 유효하지 않은 형식은 그대로 반환
+  }
 }
 
 export const ModifyProfileMainSection = ({
@@ -62,6 +107,8 @@ export const ModifyProfileMainSection = ({
   chatPrice,
   oneLiner,
   experience,
+  isNoProfile,
+  selectAvailableTime,
 }: ModifyProfileMainSectionProps) => {
   const navigate = useNavigate();
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
@@ -77,21 +124,27 @@ export const ModifyProfileMainSection = ({
     isUpdateModalOpenState,
   );
   useEffect(() => {
-    category.setViewValue(categoryInputMaker(selectCategory));
-    console.log('!');
+    try {
+      category?.setViewValue(categoryInputMaker(selectCategory ?? ['']));
+    } catch (err) {
+      alert('판매 정보를 제대로 가져오지 못했어요.');
+      navigate('/seller/mypage');
+    }
   }, [selectCategory]);
 
   useEffect(() => {
-    style.setViewValue(selectStyle);
+    try {
+      style?.setViewValue(selectStyle);
+    } catch (err) {
+      alert('판매 정보를 제대로 가져오지 못했어요.');
+      navigate('/seller/mypage');
+    }
   }, [selectStyle]);
 
   useEffect(() => {
-    type.setViewValue(selectType.join(', '));
+    type?.setViewValue(selectType?.join(', '));
   }, [selectType]);
-  // useEffect(() => {
-  //   bankType.setValue(selectBankType);
-  // }, [selectBankType]);
-
+  console.log(selectAvailableTime);
   return (
     <ModifyProfileMainSectionWrapper>
       {isUpdateModalOpen && (
@@ -105,6 +158,7 @@ export const ModifyProfileMainSection = ({
           chatPrice={chatPrice}
           oneLiner={oneLiner}
           experience={experience}
+          selectAvailableTime={selectAvailableTime}
         />
       )}
       <ModifyProfileBox>
@@ -114,6 +168,7 @@ export const ModifyProfileMainSection = ({
             width="100%"
             height="4.8rem"
             isError={nickname.isError}
+            placeholder="닉네임을 입력해주세요"
             value={nickname.value}
             onChange={(e) => {
               nickname.handleCheckSpecialLetter(e.target.value);
@@ -156,6 +211,7 @@ export const ModifyProfileMainSection = ({
               height="4.8rem"
               value={category.viewValue}
               readOnly={true}
+              placeholder="상담 카테고리를 선택해주세요"
               isCursorPointer={true}
               padding="1.2rem 1.6rem"
               isBoxSizing={true}
@@ -172,6 +228,7 @@ export const ModifyProfileMainSection = ({
           >
             <Input
               width="100%"
+              placeholder="상담 스타일을 선택해주세요"
               height="4.8rem"
               value={style.viewValue}
               readOnly={true}
@@ -194,6 +251,7 @@ export const ModifyProfileMainSection = ({
             <Input
               width="100%"
               height="4.8rem"
+              placeholder="상담 방식을 선택해주세요"
               value={type.viewValue}
               readOnly={true}
               isCursorPointer={true}
@@ -208,7 +266,7 @@ export const ModifyProfileMainSection = ({
           <Input
             width="100%"
             height="4.8rem"
-            value={availableTime.viewValue.slice(0, 26) + '...'}
+            value={convertObjectToString(selectAvailableTime)}
             readOnly={true}
             padding="1.2rem 1.6rem"
             isBoxSizing={true}
@@ -225,7 +283,7 @@ export const ModifyProfileMainSection = ({
             <PriceInput
               value={letterPrice.value}
               onChange={letterPrice.onChangePrice}
-              placeholder="1회당 최소 5,000원~최대 50,000원"
+              placeholder="1건 당 5,000~50,000"
               maxLength={6}
             />
 
@@ -236,7 +294,7 @@ export const ModifyProfileMainSection = ({
             <PriceInput
               value={chatPrice?.value}
               onChange={chatPrice.onChangePrice}
-              placeholder="30분당 최소 5,000원~최대 50,000원"
+              placeholder="1건 당 5,000~50,000"
               maxLength={6}
             />
             <Body1>원</Body1>
@@ -251,6 +309,7 @@ export const ModifyProfileMainSection = ({
             height="4.8rem"
             maxLength={50}
             value={oneLiner.value}
+            placeholder="내 경험을 한 줄로 요약해주세요"
             onChange={(e) => {
               oneLiner.handleCheckOneLiner(e.target.value);
               oneLiner.onChange(e);
@@ -283,6 +342,7 @@ export const ModifyProfileMainSection = ({
           <ProfileInformTag>경험 소개</ProfileInformTag>
           <ExperienceTextArea
             maxLength={20000}
+            placeholder="내 경험을 셰어에게 소개해주세요"
             value={experience.value}
             onChange={(e) => {
               experience.handleCheckExperience(e.target.value);
@@ -359,7 +419,20 @@ export const ModifyProfileMainSection = ({
         <Space height="9.2rem" />
       </ModifyProfileBox>
       <BottomButton
-        text="저장하기"
+        // 폼 입력이 있으면서 에러가 없어야 저장하기 버튼 활성화
+        isActive={
+          !(
+            nickname.isError ||
+            !category.serverValue ||
+            !style.serverValue ||
+            !type.serverValue ||
+            letterPrice.isError ||
+            chatPrice.isError ||
+            oneLiner.isError ||
+            experience.isError
+          )
+        }
+        text={isNoProfile ? '작성 완료하기' : '저장하기'}
         onClick={() => {
           setIsUpdateModalOpen(true);
           // navigate('/seller/mypage/modifyProfile');
@@ -436,7 +509,9 @@ const PriceInput = styled.input`
   font-weight: 600;
   line-height: 150%;
   &::placeholder {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: ${Grey3};
   }
 `;
 
@@ -453,6 +528,15 @@ const ExperienceTextArea = styled.textarea`
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 150%;
+  &::placeholder {
+    color: var(--Greyscale-Grey-3, #95959b);
+    text-overflow: ellipsis;
+    font-family: Pretendard;
+    font-size: 1.6rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 2.4rem */
+  }
   &:focus {
     outline: none;
   }

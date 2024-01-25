@@ -28,6 +28,16 @@ export const isUpdateModalOpenState = atom({
   key: 'isUpdateModalOpenState',
   default: false,
 });
+// 판매 정보 수정 페이지: 시간 선택 모달 여부
+export const isTimeModalOpenState = atom({
+  key: 'isTimeModalOpenState',
+  default: false,
+});
+
+export const isOutPopupOpenState = atom({
+  key: 'isOutPopupOpenState',
+  default: false,
+});
 
 export const isSuccessUpdateState = atom({
   key: 'isSuccessUpdateState',

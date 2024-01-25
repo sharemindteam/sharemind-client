@@ -11,6 +11,10 @@ export const getChats = async (params: any) =>
 export const getLetters = async (params: any) =>
   await getInstance('/letters', params);
 
+// 판매자 사이드 letter list
+export const getConselorLetters = async (params: any) =>
+  await getInstance('/letters/counselors', params);
+
 //Chat Controller
 //채팅 목록 반환
 export const getChatsCustomers = async (params: any) =>
@@ -22,7 +26,7 @@ export const getLettersCustomers = async (params: any) =>
   await getInstance('/letters/customers', params);
 
 export const getCustomerInfo = async (letterId: string | undefined) =>
-  await getInstance(`/letters/customer-info/${letterId}`);
+  await getInstance(`/letters/counselors/customer-info/${letterId}`);
 
 export const getCounselorCategories = async (letterId: number) =>
   await getInstance(`/letters/counselor-categories/${letterId}`);
@@ -59,3 +63,10 @@ export const getCounselorConsults = async (
 
 // SearchWord Controller
 export const getSearchWords = async () => await getInstance('/searchWords');
+
+//Review Controller
+
+export const getMinderReviews = async (params: any) =>
+  await getInstance('/reviews/counselors', params);
+export const getMinderReviewsHome = async () =>
+  await getInstance('/reviews/counselors/home');

@@ -22,26 +22,27 @@ const TypeMap: Record<string, string> = {
   편지: 'LETTER',
 };
 
-export const useCustomSelect = (type: 'category' | 'style' | 'type') => {
+export const useCustomSelect = (type: 'category' | 'style' | 'type' | "time")  => {
   // 서버로 전달해야 될 값
-  const [serverValue, setServerValue] = useState<string | string[] | undefined>(undefined);
+  const [serverValue, setServerValue] = useState<string | string[] | undefined>(
+    undefined,
+  );
   // 화면에 띄울 값
   const [viewValue, setViewValue] = useState<string>(''); // 적절한 초기값으로 변경
 
   useEffect(() => {
     switch (type) {
       case 'category':
-        setServerValue(viewValue.split(', ').map((item) => CategoryMap[item]));
+        setServerValue(viewValue?.split(', ').map((item) => CategoryMap[item]));
         break;
       case 'style':
         setServerValue(StyleMap[viewValue]);
         break;
       case 'type':
-        setServerValue(viewValue.split(', ').map((item) => TypeMap[item]));
+        setServerValue(viewValue?.split(', ').map((item) => TypeMap[item]));
         break;
     }
   }, [viewValue, type]); // type을 의존성 배열에 추가
 
-  console.log(serverValue);
   return { serverValue, setServerValue, viewValue, setViewValue };
 };

@@ -43,7 +43,6 @@ import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
 import { Admin } from 'pages/Common/Admin';
 import { BuyerChat } from 'pages/Buyer/BuyerChat';
-
 const Router = () => {
   const navigate = useNavigate();
   return (
