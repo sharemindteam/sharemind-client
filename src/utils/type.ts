@@ -81,6 +81,7 @@ export type SearchResultData = {
   consultStyle: '조언';
   consultTimes: ConsultTimes;
   consultTypes: string[];
+  counselorId: number;
   introduction: string;
   isWishList: boolean;
   level: number;

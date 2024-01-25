@@ -26,7 +26,7 @@ export const SearchHeader = () => {
     <Wrapper>
       <BackIcon
         onClick={() => {
-          navigate(-1);
+          navigate('/buyer');
         }}
       />
       <FormWrapper onSubmit={handleSubmit}>

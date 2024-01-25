@@ -2,7 +2,7 @@ import { postConsults } from 'api/post';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey6, LightGreen } from 'styles/color';
 import { Body2, Heading } from 'styles/font';
@@ -22,40 +22,11 @@ export const BuyerConsultRequest = () => {
   const [letterFocus, setLetterFocus] = useState<boolean>(false);
   const [chatFocus, setChatFocus] = useState<boolean>(false);
   const [buttonAcitve, setButtonAcitve] = useState<boolean>(false);
+  const location = useLocation();
+  const { state } = location;
+  const counselorId: boolean = state?.counselorId;
   const handleNextClick = () => {
-    navigate('/buyer/paymentDetail', { state: { letterFocus } });
-    // let consultType = '';
-    // if (letterFocus) {
-    //   consultType = 'Letter';
-    // } else {
-    //   consultType = 'Chat';
-    // }
-    // const body = {
-    //   counselorId: 1,
-    //   consultTypeName: consultType,
-    // };
-    // try {
-    //   const res: any = await postConsults(body);
-
-    //   if (res.status === 201) {
-    //     const consultData: ConsultDataType = {
-    //       consultId: res.data.consultId,
-    //       nickname: res.data.nickname,
-    //       level: res.data.level,
-    //       ratingAverage: res.data.ratingAverage,
-    //       totalReview: res.data.totalReview,
-    //       consultCategories: res.data.consultCategories,
-    //       consultStyle: res.data.consultStyle,
-    //       consultType: res.data.consultType,
-    //       cost: res.data.cost,
-    //     };
-    //     navigate('/buyer/paymentDetail', { state: { consultData } });
-    //   } else if (res.response.status === 404) {
-    //     alert('상담 유형이 존재하지 않습니다.');
-    //   }
-    // } catch (e) {
-    //   alert(e);
-    // }
+    navigate(`/buyer/paymentDetail/${counselorId}`, { state: { letterFocus } });
   };
   useEffect(() => {
     if (!(letterFocus === false && chatFocus === false)) {
