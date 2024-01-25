@@ -8,7 +8,7 @@ interface SearchResultsProps {
 }
 
 //임의로 ConsultInReady 그대로 사용
-export const SearchResults = ({ searchData }: SearchResultsProps) => {
+export const CategorySearchResults = ({ searchData }: SearchResultsProps) => {
   //찜하기 배열 init
   const initialBookmarkStates = searchData.map(
     (data) => data.isWishList || false,

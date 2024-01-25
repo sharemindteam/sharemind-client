@@ -14,10 +14,10 @@ import {
   searchKeywordState,
 } from 'utils/atom';
 import { ConverSortType } from 'utils/convertSortType';
-import { patchCounselors, patchSearchWordsResults } from 'api/patch';
+import { patchCounselors } from 'api/patch';
 import { SearchResultData } from 'utils/type';
-import { convertNumToCategory } from 'utils/convertNumToCategory';
-import { SearchResults } from 'components/Buyer/BuyerCategoryResult/SearchResult';
+
+import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/CategorySearchResult';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerCategoryResult = () => {
@@ -25,7 +25,6 @@ export const BuyerCategoryResult = () => {
   //0 : 최신순 1:인기순 2: 별점순
   // 바뀔 때마다 useEffect로 request
   const [sortType, setSortType] = useState<number>(0);
-  const { id } = useParams();
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isSortModalOpenState);
@@ -44,10 +43,9 @@ export const BuyerCategoryResult = () => {
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchCounselors(sortTypeString, body);
       if (res.status === 200) {
-        console.log(res.data);
         setSearchData(res.data);
-      } else if (res.response.status === 400) {
-        alert('검색어는 2~20자 사이여야 합니다.');
+      } else if (res.response.status === 404) {
+        alert('카테고리 유형이 유효하지 않습니다.');
         navigate('/buyer/home');
       }
     } catch (e) {
@@ -56,8 +54,7 @@ export const BuyerCategoryResult = () => {
   };
   useEffect(() => {
     fectchSearchResults();
-    // convertNumToCategory()
-  }, []);
+  }, [sortType]);
 
   return (
     <Wrapper>
@@ -74,7 +71,7 @@ export const BuyerCategoryResult = () => {
           <Down />
         </div>
       </div>
-      <SearchResults searchData={searchData} />
+      <CategorySearchResults searchData={searchData} />
       {isModalOpen ? (
         <>
           <BackDrop
