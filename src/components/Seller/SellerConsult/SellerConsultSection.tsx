@@ -9,7 +9,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { useNavigate } from 'react-router-dom';
-import { getChats, getLetters } from 'api/get';
+import { getChats, getConselorLetters } from 'api/get';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
 
@@ -39,10 +39,8 @@ export const SellerConsultSection = () => {
     let res: any;
     try {
       res = isLetterActive
-        ? await getLetters({ params })
+        ? await getConselorLetters({ params })
         : await getChats({ params });
-      console.log(res);
-
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);

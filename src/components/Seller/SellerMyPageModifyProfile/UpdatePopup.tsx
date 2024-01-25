@@ -14,6 +14,7 @@ interface UpdatePopupProps {
   chatPrice: any;
   oneLiner: any;
   experience: any;
+  selectAvailableTime: any;
 }
 export const UpdatePopup = ({
   nickname,
@@ -25,20 +26,20 @@ export const UpdatePopup = ({
   chatPrice,
   oneLiner,
   experience,
+  selectAvailableTime,
 }: UpdatePopupProps) => {
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
   const setIsSuccess = useSetRecoilState(isSuccessUpdateState);
+  console.log(selectAvailableTime);
   const handlePostUpdate = async () => {
     // 여기서 서버로 모든 데이터를 POST
+
     const body = {
       nickname: nickname.value,
       consultCategories: category.serverValue,
       consultStyle: style.serverValue,
       consultTypes: type.serverValue,
-      consultTimes: {
-        MON: ['14~15', '15~20'],
-        WED: ['11~13'],
-      },
+      consultTimes: selectAvailableTime,
       letterCost: letterPrice.value.replace(',', ''),
       chatCost: chatPrice.value.replace(',', ''),
       introduction: oneLiner.value,
@@ -49,6 +50,7 @@ export const UpdatePopup = ({
       setIsUpdateModalOpen(false);
       setIsSuccess(true);
     } catch (err) {
+      alert('오류');
       console.log(err);
     }
   };

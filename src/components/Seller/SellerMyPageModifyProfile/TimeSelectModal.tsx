@@ -1,6 +1,6 @@
 import { lightGreen } from '@mui/material/colors';
 import { Space } from 'components/Common/Space';
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import {
@@ -37,10 +37,26 @@ function TimeSelectModal({
   setIsActive,
   setIsSelected,
 }: TimeSelectModalProps) {
+  // 이미 선택한 시간의 범위
+  const [blockRange, setBlockRange] = useState<number[]>();
+  // 어떤 요일에 대한 시간 설정인지
+  const foundDayKey: any = Object.keys(isSelected).find(
+    (key) => isSelected[key] === true,
+  );
+  useEffect(() => {
+    if (selectedTimeList[foundDayKey][0]) {
+      const [startNumber, endNumber] = selectedTimeList[foundDayKey][0]
+        ?.split('~')
+        ?.map(Number);
+      setBlockRange([startNumber, endNumber]);
+    }
+  }, [foundDayKey]);
+  // 모달 오픈 여부
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
+  // 모달에서 선택한 시간
   const [selectedArray, setSelectedArray] = useState<number[]>([]);
-  console.log(selectedArray);
+  // 모달에서 시간을 클릭했을 때 trigger되는 함수
   const handleClickHour = (hour: number) => {
     if (selectedArray.length === 0) {
       setSelectedArray([hour]);
@@ -49,6 +65,29 @@ function TimeSelectModal({
         const copyArray = [...selectedArray];
         setSelectedArray(copyArray.filter((item) => item !== hour));
       } else {
+        if (blockRange) {
+          if (selectedArray[0] < blockRange[0]) {
+            if (hour < blockRange[0]) {
+              const copyArray = [...selectedArray];
+              copyArray.push(hour);
+              copyArray.sort((a, b) => a - b);
+              setSelectedArray([...copyArray]);
+            } else {
+              return;
+            }
+          } else if (selectedArray[0] > blockRange[0]) {
+            if (hour > blockRange[0]) {
+              const copyArray = [...selectedArray];
+              copyArray.push(hour);
+              copyArray.sort((a, b) => a - b);
+              setSelectedArray([...copyArray]);
+            } else {
+              return;
+            }
+          }
+          return;
+        }
+
         const copyArray = [...selectedArray];
         copyArray.push(hour);
         copyArray.sort((a, b) => a - b);
@@ -63,13 +102,13 @@ function TimeSelectModal({
       }
     }
   };
+
+  // 모달에서 완료버튼을 눌렀을 때 trigger되는 함수
   const handleCompleteTime = () => {
-    const foundDayKey: any = Object.keys(isSelected).find(
-      (key) => isSelected[key] === true,
-    );
     if (foundDayKey) {
       const pushedString = selectedArray[0] + '~' + selectedArray[1];
       setSelectedTimeList((prevSelectedTimeList) => {
+        console.log(prevSelectedTimeList[foundDayKey]);
         return {
           ...prevSelectedTimeList,
           [foundDayKey]: [...prevSelectedTimeList[foundDayKey], pushedString],
@@ -104,8 +143,22 @@ function TimeSelectModal({
       <div className="row1">
         <Body1>상담 시간</Body1>
         <CompleteButton
+          color={selectedArray.length === 2 ? Green : Grey3}
           onClick={() => {
-            handleCompleteTime();
+            if (selectedArray.length === 2) {
+              handleCompleteTime();
+            } else {
+              setIsSelected({
+                MON: false,
+                TUE: false,
+                WED: false,
+                THU: false,
+                FRI: false,
+                SAT: false,
+                SUN: false,
+              });
+              setIsTimeModalOpen(false);
+            }
           }}
         >
           완료
@@ -129,8 +182,19 @@ function TimeSelectModal({
                   : false
                 : false
             }
-            isBlock={false}
+            isBlock={
+              !blockRange
+                ? false
+                : hour >= blockRange[0] - 1 && hour <= blockRange[1] + 1
+                ? true
+                : false
+            }
             onClick={() => {
+              if (blockRange) {
+                if (hour >= blockRange[0] - 1 && hour <= blockRange[1] + 1) {
+                  return;
+                }
+              }
               handleClickHour(hour);
             }}
           >
@@ -188,7 +252,6 @@ const slideOut = keyframes`
   }
 `;
 const CompleteButton = styled(Button2)`
-  color: ${Green};
   cursor: pointer;
 `;
 

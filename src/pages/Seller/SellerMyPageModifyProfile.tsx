@@ -1,8 +1,11 @@
 import { getMyInfo, getProfiles } from 'api/get';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
+import IsOutPopup from 'components/Seller/SellerMyPageModifyProfile/IsOutPopup';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
 import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
-import SetChatTimeSection from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';
+import SetChatTimeSection, {
+  SelectedTimeList,
+} from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';
 import { StyleModal } from 'components/Seller/SellerMyPageModifyProfile/StyleModal';
 import { TypeModal } from 'components/Seller/SellerMyPageModifyProfile/TypeModal';
 import { UpdateSuccess } from 'components/Seller/SellerMyPageModifyProfile/UpdateSuccess';
@@ -15,6 +18,7 @@ import styled from 'styled-components';
 import {
   isBankModalOpenState,
   isCategoryModalOpenState,
+  isOutPopupOpenState,
   isStyleModalOpenState,
   isSuccessUpdateState,
   isTypeOpenModalState,
@@ -30,6 +34,7 @@ const categoryList = {
   권태기: 7,
   기타: 8,
 };
+
 export const SellerMypageModifyProfile = () => {
   // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
   const [selectCategory, setSelectCategory] = useState<number[]>([]);
@@ -37,7 +42,15 @@ export const SellerMypageModifyProfile = () => {
   const [selectStyle, setSelectStyle] = useState<string>('');
   // 상담 방식 enum List
   const [selectType, setSelectType] = useState<string[]>([]);
-
+  const [selectedTimeList, setSelectedTimeList] = useState<SelectedTimeList>({
+    MON: [],
+    TUE: [],
+    WED: [],
+    THU: [],
+    FRI: [],
+    SAT: [],
+    SUN: [],
+  });
   // 모달 띄워주는 여부
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState<boolean>(
     isCategoryModalOpenState,
@@ -56,7 +69,8 @@ export const SellerMypageModifyProfile = () => {
 
   const [isSucessUpdate, setIsUpdateSuccess] =
     useRecoilState<boolean>(isSuccessUpdateState);
-
+  const [isOutPopupOpen, setIsOutPopupOpen] =
+    useRecoilState(isOutPopupOpenState);
   // 채팅 상담시간 페이지로 이동할지여부
   const [isSetChatTime, setIsSetChatTime] = useState<boolean>(false);
 
@@ -116,7 +130,7 @@ export const SellerMypageModifyProfile = () => {
                 ',',
               ),
             );
-
+          setSelectedTimeList({ ...selectedTimeList, ...data?.consultTimes });
           oneLiner.setValue(data?.introduction);
           experience.setValue(data?.experience);
         }
@@ -130,7 +144,7 @@ export const SellerMypageModifyProfile = () => {
     };
     fetchProfile();
   }, []);
-  console.log(selectCategory);
+  console.log(selectedTimeList);
   return (
     <>
       <ModifyProfileHeader
@@ -141,7 +155,11 @@ export const SellerMypageModifyProfile = () => {
       {isSucessUpdate ? (
         <UpdateSuccess />
       ) : isSetChatTime ? (
-        <SetChatTimeSection />
+        <SetChatTimeSection
+          setSelectedList={setSelectedTimeList}
+          setIsSetChatTime={setIsSetChatTime}
+          selectedList={selectedTimeList}
+        />
       ) : (
         <ModifyProfileMainSection
           isNoProfile={isNoProfile}
@@ -158,12 +176,12 @@ export const SellerMypageModifyProfile = () => {
           selectStyle={selectStyle}
           selectType={selectType}
           setIsSetChatTime={setIsSetChatTime}
-          selectAvailableTime={undefined}
+          selectAvailableTime={selectedTimeList}
         />
       )}
-
       {/* 모달 여부 True면.. */}
       {isCategoryModalOpen ||
+      isOutPopupOpen ||
       isStyleModalOpen ||
       isTypeModalOpen ||
       isBankModalOpen ||
@@ -181,8 +199,8 @@ export const SellerMypageModifyProfile = () => {
       )}
       {isTypeModalOpen && (
         <TypeModal selectType={selectType} setSelectType={setSelectType} />
-      )}
-
+      )}{' '}
+      {isOutPopupOpen && <IsOutPopup />}
       {/* {isBankModalOpen && (
         <BankSelectModal setSelectBankType={setSelectBankType} />
       )} */}
