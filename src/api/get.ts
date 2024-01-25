@@ -1,4 +1,4 @@
-import { getInstance } from './axios';
+import { getInstance, getPublicInstance } from './axios';
 //admin
 export const getAdminsUnpaidConsults = async () =>
   await getInstance('/admins/unpaid-consults');
@@ -40,7 +40,9 @@ export const getDraftsLetter = async (
 
 export const getLetterDeadline = async (letterId: string | undefined) =>
   await getInstance(`/letters/deadline/${letterId}`);
-
+//Customer Controller
+export const getCustomersNickname = async () =>
+  await getPublicInstance('/customers/nickname');
 //LetterMessage Controller
 
 export const getLetterMessages = async (
