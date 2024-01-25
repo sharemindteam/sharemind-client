@@ -6,9 +6,13 @@ import { useEffect, useState } from 'react';
 import { White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 interface CounselorFooterProps {
+  counselorId: number;
   isBookmarked: boolean;
 }
-export const CounselorFooter = ({ isBookmarked }: CounselorFooterProps) => {
+export const CounselorFooter = ({
+  isBookmarked,
+  counselorId,
+}: CounselorFooterProps) => {
   const navigate = useNavigate();
   const [bookmarkToggle, setBookmarkToggle] = useState<boolean>();
   useEffect(() => {
@@ -33,7 +37,9 @@ export const CounselorFooter = ({ isBookmarked }: CounselorFooterProps) => {
         text="상담 신청하기"
         width="26rem"
         height="5.2rem"
-        onClick={() => navigate('/buyer/consultRequest')}
+        onClick={() =>
+          navigate('/buyer/consultRequest', { state: { counselorId } })
+        }
       />
     </Wrapper>
   );
