@@ -190,7 +190,7 @@ export const SignupVerifyEmail = ({
                 width="33.5rem"
                 height="4.8rem"
                 isBoxSizing={true}
-                maxLength={23}
+                maxLength={27}
                 textIndent="1rem"
               />
               <VerifyButton

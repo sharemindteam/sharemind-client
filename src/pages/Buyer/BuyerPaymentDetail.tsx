@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { Body1, Body3, Heading } from 'styles/font';
 import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getCounselorConsults } from 'api/get';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
@@ -25,6 +25,7 @@ interface ConsultInfo {
 export const BuyerPaymentDetail = () => {
   const navigate = useNavigate();
   const [buttonSelect, setButtonSelect] = useState<number>(0);
+  const { id } = useParams();
   const location = useLocation();
   const { state } = location;
   const letterFocus: boolean = state?.letterFocus;
@@ -48,9 +49,10 @@ export const BuyerPaymentDetail = () => {
     }
     const body = {
       //나중에 recoil로 관리// persist
-      counselorId: 2,
+      counselorId: id,
       consultTypeName: consultType,
     };
+
     try {
       const res: any = await postConsults(body);
       if (res.status === 201) {
@@ -83,7 +85,7 @@ export const BuyerPaymentDetail = () => {
         consultType: consultType,
       };
       // 나중에 counselor Id 로 변경
-      const res: any = await getCounselorConsults('2', { params });
+      const res: any = await getCounselorConsults(id, { params });
       if (res.status === 200) {
         setConsultData(res.data);
       } else if (res.responsen.status === 400) {
