@@ -16,7 +16,7 @@ import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.sv
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
-import { getChats, getLetters } from 'api/get';
+import { getChatsCustomers, getLettersCustomers } from 'api/get';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 interface consultApiObject {
@@ -64,10 +64,9 @@ export const BuyerConsult = () => {
           }
           const params = {
             filter: isChecked,
-            isCustomer: true,
             sortType: sortTypeText,
           };
-          const res: any = await getLetters({ params });
+          const res: any = await getLettersCustomers({ params });
           if (res.status === 200) {
             setCardData(res.data);
           } else if (res.response.status === 404) {
@@ -83,10 +82,17 @@ export const BuyerConsult = () => {
         }
       } else {
         try {
+          let sortTypeText: string;
+          if (sortType === 0) {
+            sortTypeText = 'latest';
+          } else {
+            sortTypeText = 'unread';
+          }
           const params = {
-            isCustomer: true,
+            filter: isChecked,
+            sortType: sortTypeText,
           };
-          const res: any = await getChats({ params });
+          const res: any = await getChatsCustomers({ params });
           if (res.status === 200) {
             setCardData(res.data);
           } else if (res.response.status === 404) {
