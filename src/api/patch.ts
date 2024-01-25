@@ -13,7 +13,10 @@ export const patchAdminsPendingProfiles = async (
     undefined,
     params,
   );
-
+//Counselor Controller
+//카테고리/들준마 상담사 리스트 반환
+export const patchCounselors = async (sortType: string, body: any) =>
+  await patchInstance(`/counselors?sortType=${sortType}`, body);
 //LetterMessage Controller
 //Message 최초 생성
 export const patchLetterMessage = async (body: any) =>
@@ -24,3 +27,12 @@ export const patchLetterMessageFirstQustion = async (body: any) =>
 
 export const patchProfiles = async (body: any) =>
   await patchInstance('counselors/profiles', body);
+
+//Review Controller
+export const patchReviews = async (body: any) =>
+  await patchInstance('/reviews', body);
+
+//SearchWord Controller
+//검색 결과 반환
+export const patchSearchWordsResults = async (sortType: string, body: any) =>
+  await patchInstance(`/searchWords/results?sortType=${sortType}`, body);

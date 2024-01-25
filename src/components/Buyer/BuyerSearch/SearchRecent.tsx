@@ -5,19 +5,31 @@ import { Button2, Subtitle } from 'styles/font';
 import { Grey1, Grey4 } from 'styles/color';
 import { ReactComponent as XIcon } from 'assets/icons/icon-grey-x.svg';
 import { getSearchWords } from 'api/get';
+import { deleteSearchWords } from 'api/delete';
+import { useSetRecoilState } from 'recoil';
+import { searchKeywordState } from 'utils/atom';
+import { useNavigate } from 'react-router-dom';
 export const SearchRecent = () => {
-  const [recentSearch, setRecentSearch] = useState<string[]>([
-    '어쩌구',
-    '어쩌구',
-    '어쩌구',
-    '어쩌구',
-    '어쩌구',
-    '어쩌구',
-    '어쩌구',
-  ]);
-  const handleXonClick = (targetIndex: number) => {
-    const update = recentSearch.filter((_, index) => index !== targetIndex);
-    setRecentSearch(update);
+  const navigate = useNavigate();
+  const [recentSearch, setRecentSearch] = useState<string[]>([]);
+  const setKeyword = useSetRecoilState(searchKeywordState);
+  const handleXonClick = async (
+    targetIndex: number,
+    event: React.MouseEvent,
+  ) => {
+    event.stopPropagation();
+    const body = {
+      word: recentSearch[targetIndex],
+    };
+    const res: any = await deleteSearchWords(body);
+    if (res.status === 200) {
+      const update = recentSearch.filter((_, index) => index !== targetIndex);
+      setRecentSearch(update);
+    }
+  };
+  const handleRecentClick = (index: number) => {
+    setKeyword(recentSearch[index]);
+    navigate('/buyer/search/result');
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -26,8 +38,7 @@ export const SearchRecent = () => {
         if (res.status === 200) {
           setRecentSearch(res.data);
         } else if (res.response.status === 404) {
-          // 스웨거 문서 잘못된거 같아서 추후 수정
-          // 지금 검색할 수 있는 로직이 없어서 나중에 연결
+          alert('최근  검색어를 불러올 수 없습니다');
         }
       } catch (e) {
         alert(e);
@@ -42,23 +53,50 @@ export const SearchRecent = () => {
         {recentSearch.map((value, index) => {
           if (index === 0) {
             return (
-              <RecentTag style={{ marginLeft: '2rem' }}>
+              <RecentTag
+                onClick={() => {
+                  handleRecentClick(index);
+                }}
+                style={{ marginLeft: '2rem' }}
+              >
                 <Button2 color={Grey1}>{value}</Button2>
-                <XIcon onClick={() => handleXonClick(index)} />
+                <XIcon
+                  onClick={(event: React.MouseEvent) =>
+                    handleXonClick(index, event)
+                  }
+                />
               </RecentTag>
             );
           } else if (index === recentSearch.length - 1) {
             return (
-              <RecentTag style={{ marginRight: '2rem' }}>
+              <RecentTag
+                onClick={() => {
+                  handleRecentClick(index);
+                }}
+                style={{ marginRight: '2rem' }}
+              >
                 <Button2 color={Grey1}>{value}</Button2>
-                <XIcon onClick={() => handleXonClick(index)} />
+                <XIcon
+                  onClick={(event: React.MouseEvent) =>
+                    handleXonClick(index, event)
+                  }
+                  style={{ padding: '0.1rem' }}
+                />
               </RecentTag>
             );
           } else {
             return (
-              <RecentTag>
+              <RecentTag
+                onClick={() => {
+                  handleRecentClick(index);
+                }}
+              >
                 <Button2 color={Grey1}>{value}</Button2>
-                <XIcon onClick={() => handleXonClick(index)} />
+                <XIcon
+                  onClick={(event: React.MouseEvent) =>
+                    handleXonClick(index, event)
+                  }
+                />
               </RecentTag>
             );
           }
@@ -89,5 +127,4 @@ const TagWrapper = styled.div`
   gap: 1.2rem;
   padding-top: 0.7rem;
   overflow-x: scroll;
-  height: 3.4rem;
 `;

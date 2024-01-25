@@ -56,6 +56,7 @@ export const BuyerLetterWrite = () => {
     messageType: null,
     updatedAt: null,
   });
+
   //임시저장 확인후 모달
   const fetchDraftsData = async () => {
     let messageType: string;
@@ -94,6 +95,9 @@ export const BuyerLetterWrite = () => {
       if (res.status === 200) {
         const updatedCategoryList = ['상담 카테고리', ...res.data.categories];
         setCategoryList(updatedCategoryList);
+      } else if (res.response.statue === 404) {
+        alert('존재하지 않는 상담입니다.');
+        navigate('/buyer/consult');
       }
     } catch (e) {
       console.log(e);
@@ -119,8 +123,14 @@ export const BuyerLetterWrite = () => {
       console.log(e);
     }
   };
+
   //먼저 임시저장된거 있는지 api 콜하고 그다음에 카테고리 세팅
   useEffect(() => {
+    const fetchData = async () => {
+      await fetchCategoriesData();
+      await fetchDraftsData();
+      await fetchSavedData();
+    };
     if (
       tagStatus === undefined ||
       Number.isNaN(tagStatus) ||
@@ -129,9 +139,7 @@ export const BuyerLetterWrite = () => {
       alert('유효하지 않은 접근입니다.');
       navigate('/buyer/consult');
     } else {
-      fetchDraftsData();
-      fetchCategoriesData();
-      fetchSavedData();
+      fetchData();
     }
   }, []);
   useEffect(() => {
@@ -154,23 +162,30 @@ export const BuyerLetterWrite = () => {
             navigate(`/buyer/letter/${id}`);
           }}
         />
-        <Heading color={Grey1}>질문</Heading>
+        {tagStatus === 0 ? (
+          <Heading color={Grey1}>질문</Heading>
+        ) : (
+          <Heading color={Grey1}>추가질문</Heading>
+        )}
       </HeaderWrapper>
       <div className="body">
-        <CategoryDropDown
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
-          <Body3 color={Green}>{categoryList[categoryType]}</Body3>
-          <DownIcon />
-        </CategoryDropDown>
+        {tagStatus === 0 ? (
+          <CategoryDropDown
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            <Body3 color={Green}>{categoryList[categoryType]}</Body3>
+            <DownIcon />
+          </CategoryDropDown>
+        ) : null}
         <TextArea
           value={input}
           placeholder="고민 내용을 남겨주세요."
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
             setInput(e.target.value);
           }}
+          tagStatus={tagStatus}
         />
         <ButtonWrapper>
           <Button
@@ -231,6 +246,8 @@ export const BuyerLetterWrite = () => {
           setReplyText={setInput}
           setIsActive={setIsActiveLoadModal}
           consultId={id}
+          categoryList={categoryList}
+          setCategoryType={setCategoryType}
         />
       )}
       {isActiveSaveModal && (
@@ -280,7 +297,7 @@ const CategoryDropDown = styled.div`
   margin-bottom: 0.8rem;
   cursor: pointer;
 `;
-const TextArea = styled.textarea`
+const TextArea = styled.textarea<{ tagStatus: number }>`
   resize: none;
   width: 89.33%;
   min-height: 60vh;
@@ -302,6 +319,7 @@ const TextArea = styled.textarea`
   rgba(242, 241, 248, 0.8);
   background: ${Grey6};
   box-sizing: border-box;
+  ${(props) => (props.tagStatus === 2 ? 'margin-top:1.2rem' : null)};
 `;
 const ButtonWrapper = styled.div`
   @media (max-width: 767px) {

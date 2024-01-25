@@ -1,14 +1,38 @@
 import { CartegorySearch } from 'components/Buyer/Common/CartegorySearch';
-import { ConsultInProgress } from 'components/Buyer/BuyerHome/ConsultInProgress';
-import { ConsultInReady } from 'components/Buyer/BuyerHome/ConsultInReady';
+import { HomeConsultInProgress } from 'components/Buyer/BuyerHome/HomeConsultInProgress';
+import { HomeConsultInReady } from 'components/Buyer/BuyerHome/HomeConsultInReady';
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
-import { getChats } from 'api/get';
+import { SearchResultData } from 'utils/type';
+import { useEffect, useState } from 'react';
+import { ConverSortType } from 'utils/convertSortType';
+import { patchCounselors } from 'api/patch';
 export const BuyerHome = () => {
   const navigate = useNavigate();
+  //결과저장
+  const [searchData, setSearchData] = useState<SearchResultData[]>([]);
+  const fectchSearchResults = async () => {
+    try {
+      const body = {
+        index: 0,
+      };
+      const res: any = await patchCounselors('POPULARITY', body);
+      if (res.status === 200) {
+        setSearchData(res.data);
+      } else if (res.response.status === 404) {
+        alert('유효하지 않은 정렬 방식입니다.');
+        navigate('/buyer/home');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    fectchSearchResults();
+  }, []);
   return (
     <Wrapper>
       <Header
@@ -19,8 +43,8 @@ export const BuyerHome = () => {
       />
       <TabA1 isBuyer={true} initState={1} />
       <CartegorySearch />
-      <ConsultInProgress />
-      <ConsultInReady />
+      <HomeConsultInProgress />
+      <HomeConsultInReady searchData={searchData} />
       <HomeAboutFooterSection isBuyer={true} />
     </Wrapper>
   );

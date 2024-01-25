@@ -8,6 +8,7 @@ import { Space } from 'components/Common/Space';
 import Input from 'components/Common/Input';
 import { Button } from 'components/Common/Button';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { convertTimeRange } from 'utils/convertTimeToString';
 
 interface ViewProfileMainSectionProps {
   profileIdentifier: number;
@@ -15,15 +16,26 @@ interface ViewProfileMainSectionProps {
   category: string[] | undefined;
   chatStyle: string | undefined;
   type: string[] | undefined;
-  chatTime: string | undefined;
+  chatTime: any;
   letterFee: number;
   chatFee: number;
   oneLiner: string | undefined;
   experience: string | undefined;
+  isEvaluationPending: boolean;
   // accountNum: string;
   // bankType: string;
   // bankOwner: string;
 }
+const dayEngtoKor: Record<string, string> = {
+  MON: '월',
+  TUE: '화',
+  WED: '수',
+  THU: '목',
+  FRI: '금',
+  SAT: '토',
+  SUN: '일',
+};
+const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 export const ViewProfileMainSection = ({
   profileIdentifier,
@@ -36,6 +48,7 @@ export const ViewProfileMainSection = ({
   chatFee,
   oneLiner,
   experience,
+  isEvaluationPending,
 }: // accountNum,
 // bankType,
 // bankOwner,
@@ -75,12 +88,25 @@ ViewProfileMainSectionProps) => {
           <ProfileInform>{type?.join()}</ProfileInform>
         </div>
         <div className="chat-time">
-          {' '}
-          <ProfileInformTag>채팅 상담시간</ProfileInformTag>
-          <ProfileInform>{chatTime}</ProfileInform>
+          <ProfileInformTag>상담시간</ProfileInformTag>
+          <ChatTimeList>
+            {daysOfWeek?.map(
+              (day: string) =>
+                chatTime?.[day]?.length > 0 && (
+                  <ProfileInform>
+                    {dayEngtoKor[day] +
+                      (chatTime?.[day]?.length === 1
+                        ? ' ' + convertTimeRange(chatTime?.[day][0])
+                        : ' ' +
+                          convertTimeRange(chatTime?.[day][0]) +
+                          ', ' +
+                          convertTimeRange(chatTime?.[day][1]))}
+                  </ProfileInform>
+                ),
+            )}
+          </ChatTimeList>
         </div>
         <div className="consult-fee">
-          {' '}
           <ProfileInformTag>
             상담료 <br />
             (1건 기준)
@@ -104,7 +130,16 @@ ViewProfileMainSectionProps) => {
         </div>
         <div className="experience">
           <ProfileInformTag>경험 소개</ProfileInformTag>
-          <Body1>{experience}</Body1>
+          <Body1>
+            {experience?.split('\n').map((item, key) => {
+              return (
+                <span key={key}>
+                  {item}
+                  <br />
+                </span>
+              );
+            })}
+          </Body1>
         </div>
       </IntroduceWhiteBox>
       {/* <AccountWhiteBox>
@@ -146,7 +181,8 @@ ViewProfileMainSectionProps) => {
       <Space height="9.2rem" />
       <BottomButtonWrapper style={{ display: 'block' }}>
         <Button
-          text="수정하기"
+          text={isEvaluationPending ? '판매정보 검토 중' : '수정하기'}
+          isActive={!isEvaluationPending}
           height="5.2rem"
           width="calc(100% - 4rem)"
           onClick={() => {
@@ -174,7 +210,10 @@ const ProfileInformTag = styled(Body1)`
   width: 8.7rem;
 `;
 
-const ProfileInform = styled(Body1)``;
+const ChatTimeList = styled.div``;
+const ProfileInform = styled(Body1)`
+  white-space: nowrap;
+`;
 
 const WhiteBox = styled.div`
   padding: 1.9rem 2rem;

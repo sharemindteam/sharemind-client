@@ -5,7 +5,7 @@ import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { useNavigate } from 'react-router-dom';
 import { categories } from 'utils/constant';
 interface ResultHeaderProps {
-  categoryType: number;
+  categoryType: string;
 }
 export const CategoryResultHeader = ({ categoryType }: ResultHeaderProps) => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const CategoryResultHeader = ({ categoryType }: ResultHeaderProps) => {
           navigate(-1);
         }}
       />
-      <Heading color={Grey1}>{categories[categoryType - 1]}</Heading>
+      <Heading color={Grey1}>{categoryType}</Heading>
     </Wrapper>
   );
 };

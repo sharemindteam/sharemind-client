@@ -1,21 +1,24 @@
-import { getProfiles } from 'api/get';
-import BankSelectModal from 'components/Seller/Common/BankSelectModal';
+import { getMyInfo, getProfiles } from 'api/get';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
+import IsOutPopup from 'components/Seller/SellerMyPageModifyProfile/IsOutPopup';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
 import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
-import SetChatTimeSection from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';
+import SetChatTimeSection, {
+  SelectedTimeList,
+} from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';
 import { StyleModal } from 'components/Seller/SellerMyPageModifyProfile/StyleModal';
 import { TypeModal } from 'components/Seller/SellerMyPageModifyProfile/TypeModal';
-import { UpdatePopup } from 'components/Seller/SellerMyPageModifyProfile/UpdatePopup';
 import { UpdateSuccess } from 'components/Seller/SellerMyPageModifyProfile/UpdateSuccess';
 import { useCustomSelect } from 'hooks/useCustomSelect';
 import { useInput } from 'hooks/useInput';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import {
   isBankModalOpenState,
   isCategoryModalOpenState,
+  isOutPopupOpenState,
   isStyleModalOpenState,
   isSuccessUpdateState,
   isTypeOpenModalState,
@@ -31,6 +34,7 @@ const categoryList = {
   권태기: 7,
   기타: 8,
 };
+
 export const SellerMypageModifyProfile = () => {
   // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
   const [selectCategory, setSelectCategory] = useState<number[]>([]);
@@ -38,7 +42,15 @@ export const SellerMypageModifyProfile = () => {
   const [selectStyle, setSelectStyle] = useState<string>('');
   // 상담 방식 enum List
   const [selectType, setSelectType] = useState<string[]>([]);
-
+  const [selectedTimeList, setSelectedTimeList] = useState<SelectedTimeList>({
+    MON: [],
+    TUE: [],
+    WED: [],
+    THU: [],
+    FRI: [],
+    SAT: [],
+    SUN: [],
+  });
   // 모달 띄워주는 여부
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState<boolean>(
     isCategoryModalOpenState,
@@ -57,7 +69,8 @@ export const SellerMypageModifyProfile = () => {
 
   const [isSucessUpdate, setIsUpdateSuccess] =
     useRecoilState<boolean>(isSuccessUpdateState);
-
+  const [isOutPopupOpen, setIsOutPopupOpen] =
+    useRecoilState(isOutPopupOpenState);
   // 채팅 상담시간 페이지로 이동할지여부
   const [isSetChatTime, setIsSetChatTime] = useState<boolean>(false);
 
@@ -66,63 +79,90 @@ export const SellerMypageModifyProfile = () => {
   const style = useCustomSelect('style');
   const type = useCustomSelect('type');
   // 시간 설정은 나중에....ㅠㅠ
-  const availableTime = useCustomSelect();
+  const availableTime = useCustomSelect('time');
 
   const letterPrice = useInput('');
   const chatPrice = useInput('');
 
   const oneLiner = useInput('');
   const experience = useInput('');
+  const [isNoProfile, setIsNoProfile] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data }: any = await getProfiles();
-      console.log(data);
-      nickname.setValue(data?.nickname);
-      category.setViewValue(data?.consultCategories.join(', '));
-      setSelectCategory(
-        data?.consultCategories.map((item) => categoryList[item]),
-      );
-      style.setViewValue(data?.consultStyle);
-      setSelectStyle(data?.consultStyle);
+      try {
+        const profileLevel: any = await getMyInfo();
+        if (profileLevel?.data?.profileStatus === 'NO_PROFILE') {
+          setIsNoProfile(true);
+        } else if (profileLevel?.data?.profileStatus === 'EVALUATION_PENDING') {
+          alert('판매 정보 검토 중이니 조금만 기다려주세요!');
+          navigate('/seller/mypage/viewProfile');
+        } else {
+          const profileRes: any = await getProfiles();
+          console.log(profileRes);
+          const data = profileRes.data;
+          if (profileRes?.response?.status === 404) {
+            alert('판매 정보가 등록되어 있지 않습니다.');
+            navigate('/seller/mypage');
+          }
+          nickname.setValue(data?.nickname);
+          category.setViewValue(data?.consultCategories.join(', '));
+          setSelectCategory(
+            data?.consultCategories.map((item: any) => categoryList[item]),
+          );
+          style.setViewValue(data?.consultStyle);
+          setSelectStyle(data?.consultStyle);
 
-      type.setViewValue(data?.consultTypes.join(', '));
-      setSelectType(data?.consultTypes);
-      // availableTime.setViewValue(data?.consultTimes);
-      data?.consultCosts?.편지 &&
-        letterPrice.setValue(
-          String(data?.consultCosts?.편지)?.replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ',',
-          ),
-        );
-      data?.consultCosts?.채팅 &&
-        chatPrice.setValue(
-          String(data?.consultCosts?.채팅)?.replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ',',
-          ),
-        );
-
-      oneLiner.setValue(data?.introduction);
-      experience.setValue(data?.experience);
+          type.setViewValue(data?.consultTypes.join(', '));
+          setSelectType(data?.consultTypes);
+          // availableTime.setViewValue(data?.consultTimes);
+          data?.consultCosts?.편지 &&
+            letterPrice.setValue(
+              String(data?.consultCosts?.편지)?.replace(
+                /\B(?=(\d{3})+(?!\d))/g,
+                ',',
+              ),
+            );
+          data?.consultCosts?.채팅 &&
+            chatPrice.setValue(
+              String(data?.consultCosts?.채팅)?.replace(
+                /\B(?=(\d{3})+(?!\d))/g,
+                ',',
+              ),
+            );
+          setSelectedTimeList({ ...selectedTimeList, ...data?.consultTimes });
+          oneLiner.setValue(data?.introduction);
+          experience.setValue(data?.experience);
+        }
+      } catch (err) {
+        navigate('/seller/mypage');
+        alert(err);
+      }
       // accountNum.setValue(profileDummyData.accountNum);
       // bankType.setValue(profileDummyData.bankType);
       // bankOwner.setValue(profileDummyData.bankOwner);
     };
     fetchProfile();
   }, []);
+  console.log(selectedTimeList);
   return (
     <>
       <ModifyProfileHeader
+        isNoProfile={isNoProfile}
         isSetChatTime={isSetChatTime}
         setIsSetChatTime={setIsSetChatTime}
       />
       {isSucessUpdate ? (
         <UpdateSuccess />
       ) : isSetChatTime ? (
-        <SetChatTimeSection />
+        <SetChatTimeSection
+          setSelectedList={setSelectedTimeList}
+          setIsSetChatTime={setIsSetChatTime}
+          selectedList={selectedTimeList}
+        />
       ) : (
         <ModifyProfileMainSection
+          isNoProfile={isNoProfile}
           nickname={nickname}
           category={category}
           style={style}
@@ -136,12 +176,12 @@ export const SellerMypageModifyProfile = () => {
           selectStyle={selectStyle}
           selectType={selectType}
           setIsSetChatTime={setIsSetChatTime}
-          selectAvailableTime={undefined}
+          selectAvailableTime={selectedTimeList}
         />
       )}
-
       {/* 모달 여부 True면.. */}
       {isCategoryModalOpen ||
+      isOutPopupOpen ||
       isStyleModalOpen ||
       isTypeModalOpen ||
       isBankModalOpen ||
@@ -159,8 +199,8 @@ export const SellerMypageModifyProfile = () => {
       )}
       {isTypeModalOpen && (
         <TypeModal selectType={selectType} setSelectType={setSelectType} />
-      )}
-
+      )}{' '}
+      {isOutPopupOpen && <IsOutPopup />}
       {/* {isBankModalOpen && (
         <BankSelectModal setSelectBankType={setSelectBankType} />
       )} */}

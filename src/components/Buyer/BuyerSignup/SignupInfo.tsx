@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { UseInputResult } from 'hooks/useInput';
 import { postSingup } from 'api/post';
@@ -25,8 +25,6 @@ export const SignupInfo = ({
   phoneNumber,
   setSignupState,
 }: SignupInfoProps) => {
-  //첫렌더 시 예외처리
-  //   const isInitialRender = useRef(true);
   const navigate = useNavigate();
   // email error state
   const [emailErrorState, setEmailErrorState] = useState<boolean>(false);
@@ -91,7 +89,12 @@ export const SignupInfo = ({
     const formattedPhoneNumber = formatPhoneNumber(phoneNumber.value);
     phoneNumber.setValue(formattedPhoneNumber);
 
-    if (checkPhoneNumberFormat(formattedPhoneNumber)) {
+    if (phoneNumber.value.trim() === '') {
+      setPhoneIconState('common');
+      setPhoneCaptionColor(Grey4);
+      setPhoneErrorState(false);
+      phoneNumber.setIsValid(false);
+    } else if (checkPhoneNumberFormat(formattedPhoneNumber)) {
       setPhoneIconState('valid');
       setPhoneCaptionColor(SafeColor);
       setPhoneErrorState(false);

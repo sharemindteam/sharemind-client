@@ -4,12 +4,13 @@ import { Body1, Body3, Caption2, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as Heart } from 'assets/icons/icon-heart2.svg';
 import { TagA2Cartegory } from '../../Common/TagA2Cartegory';
+import { CartegoryState } from 'utils/type';
 interface PaymentDetailInfoProps {
   nickname: string;
   level: number;
   rating: number;
   reviewNumber: number;
-  tagList: CartegoryStateArray;
+  tagList: CartegoryState[];
   iconNumber: number;
 }
 export const PaymentDetailInfo = ({
@@ -68,10 +69,10 @@ const Wrapper = styled.div`
 `;
 const CardWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
   box-sizing: border-box;
   padding: 1.6rem 0 2.4rem 0;
   width: 33.5rem;
-  gap: 7.7rem;
   .col1 {
     display: flex;
     flex-direction: column;

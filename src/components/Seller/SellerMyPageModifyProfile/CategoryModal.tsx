@@ -44,7 +44,7 @@ export const CategoryModal = ({
     setSelectCategory(modalCategory);
     setIsCategoryModalOpen(false);
   };
-
+ 
   return (
     <Wrapper visible={isCategoryModalOpen}>
       <div className="bar-wrapper">

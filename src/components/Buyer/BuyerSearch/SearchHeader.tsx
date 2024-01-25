@@ -7,6 +7,7 @@ import Input from 'components/Common/Input';
 import { ChangeEvent, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { searchKeywordState } from 'utils/atom';
+
 export const SearchHeader = () => {
   const navigate = useNavigate();
   const setKeyword = useSetRecoilState(searchKeywordState);

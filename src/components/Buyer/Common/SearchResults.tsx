@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
+import { CartegoryState } from 'utils/type';
 
 //임의로 ConsultInReady 그대로 사용
 export const SearchResults = () => {
@@ -14,8 +15,7 @@ export const SearchResults = () => {
   return (
     <Wrapper>
       {dummy.map((value, index) => {
-        const tagListCast: CartegoryStateArray =
-          value.tagList as CartegoryStateArray;
+        const tagListCast: CartegoryState[] = value.tagList as CartegoryState[];
         return (
           <ReadyConsultCard
             index={index}

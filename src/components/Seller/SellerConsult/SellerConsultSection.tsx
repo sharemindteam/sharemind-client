@@ -9,8 +9,10 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { useNavigate } from 'react-router-dom';
-import { getChats, getLetters } from 'api/get';
+import { getChats, getChatsMinder, getConselorLetters } from 'api/get';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
+import { ConsultInfoList } from 'utils/type';
 
 interface ConsultTypeProps {
   isActive: boolean;
@@ -38,10 +40,8 @@ export const SellerConsultSection = () => {
     let res: any;
     try {
       res = isLetterActive
-        ? await getLetters({ params })
-        : await getChats({ params });
-      console.log(res);
-
+        ? await getConselorLetters({ params })
+        : await getChatsMinder({ params });
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);
@@ -55,6 +55,7 @@ export const SellerConsultSection = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+  console.log(consultInfo);
   return (
     <>
       <ConsultSortingMenu>
@@ -86,34 +87,43 @@ export const SellerConsultSection = () => {
             <DownArrowIcon />
           </SortingType>
         </div>
-        <div className="row2">
-          <div
-            className="row2-1"
-            onClick={() => {
-              setIsIncludeCompleteConsult(!isInclueCompleteConsult);
-            }}
-          >
-            <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Green} />
-            <Button2 color={Grey3}>완료된 상담 제외</Button2>
+        {consultInfo?.length !== 0 && (
+          <div className="row2">
+            <div
+              className="row2-1"
+              onClick={() => {
+                setIsIncludeCompleteConsult(!isInclueCompleteConsult);
+              }}
+            >
+              <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Green} />
+              <Button2 color={Grey3}>완료된 상담 제외</Button2>
+            </div>
           </div>
-        </div>
+        )}
       </ConsultSortingMenu>
 
       <ConsultBoxList>
-        {consultInfo?.map((item) => (
-          <OngoingCounsultBox
-            consultStatus={item?.status}
-            counselorName={item?.opponentNickname}
-            beforeMinutes={item?.latestMessageUpdatedAt}
-            content={item?.latestMessageContent}
-            key={item?.id}
-            counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
-            newMessageCounts={item?.unreadMessageCount}
-            onClick={() => {
-              navigate(`/seller/letter/${item?.id}`);
-            }}
-          />
-        ))}
+        {consultInfo?.length === 0 ? (
+          <NoConsultSection>
+            <NoConsultGraphicIcon />
+            <NoConsultText>아직 진행한 상담이 없어요</NoConsultText>
+          </NoConsultSection>
+        ) : (
+          consultInfo?.map((item: any) => (
+            <OngoingCounsultBox
+              consultStatus={item?.status}
+              counselorName={item?.opponentNickname}
+              beforeMinutes={item?.latestMessageUpdatedAt}
+              content={item?.latestMessageContent}
+              key={item?.id}
+              counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
+              newMessageCounts={item?.unreadMessageCount}
+              onClick={() => {
+                navigate(`/seller/letter/${item?.id}`);
+              }}
+            />
+          ))
+        )}
 
         {isModalOpen ? (
           <>
@@ -131,6 +141,23 @@ export const SellerConsultSection = () => {
     </>
   );
 };
+
+const NoConsultSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4.6rem;
+  margin-top: 17.8rem;
+`;
+
+const NoConsultText = styled.div`
+  color: #000;
+  text-align: center;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 3rem;
+`;
 
 const ConsultSortingMenu = styled.div`
   display: flex;

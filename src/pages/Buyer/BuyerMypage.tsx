@@ -106,19 +106,23 @@ export const BuyerMypage = () => {
       <div className="additional-box">
         <Body2 color={Grey1}>서비스 소개</Body2>
       </div>
-      <div className="additional-box">
-        <Body2 color={Grey1}>결제 문의</Body2>
-      </div>
-      <div className="additional-box">
-        <Body2
-          color={Grey1}
-          onClick={() => {
-            navigate('/setting');
-          }}
-        >
-          계정 설정
-        </Body2>
-      </div>
+      {IsLoginTemp ? (
+        <>
+          <div className="additional-box">
+            <Body2 color={Grey1}>결제 문의</Body2>
+          </div>
+          <div className="additional-box">
+            <Body2
+              color={Grey1}
+              onClick={() => {
+                navigate('/buyer/setting');
+              }}
+            >
+              계정 설정
+            </Body2>
+          </div>
+        </>
+      ) : null}
       <Button
         text="로그인 전환"
         onClick={() => {

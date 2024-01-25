@@ -5,48 +5,32 @@ import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as Heart } from 'assets/icons/icon-review-empty-heart.svg';
 import { Button } from 'components/Common/Button';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { BuyerReview } from 'utils/type';
 interface ReviewManageCardProps {
-  counselorId: number;
-  nickname: string;
-  level: number;
-  ratingAverage: number;
-  reviewNumber: number;
-  iconNumber: number;
-  consultType: string;
-  price: number;
-  date: string;
+  reviewData: BuyerReview;
 }
 //캐릭터 넘버 레벨 별점 후기개수 상담유형 상담일자 상담가격 (남긴리뷰) 리뷰내용
-export const ReviewManageCard = ({
-  counselorId,
-  nickname,
-  level,
-  ratingAverage,
-  reviewNumber,
-  iconNumber,
-  consultType,
-  price,
-  date,
-}: ReviewManageCardProps) => {
+export const ReviewManageCard = ({ reviewData }: ReviewManageCardProps) => {
   const navigate = useNavigate();
   return (
     <Wrapper>
       <UpperWrapper>
         <Characters
-          number={iconNumber}
+          number={consultStyleToCharNum(reviewData.consultStyle)}
           width="6.1rem"
           height="5.4rem"
           margin="1.2rem 0 0 1.6rem"
         />
         <div>
           <div className="row1">
-            <Body1>{nickname}</Body1>
-            <Caption2 color={Grey1}>{'Lv. ' + level}</Caption2>
+            <Body1>{reviewData.nickname}</Body1>
+            <Caption2 color={Grey1}>{'Lv. ' + reviewData.level}</Caption2>
           </div>
           <div className="row2">
             <HeartIcon />
             <Body3 color={Grey2}>
-              {ratingAverage + ' (' + reviewNumber + ')'}
+              {reviewData.ratingAverage + ' (' + reviewData.totalReview + ')'}
             </Body3>
           </div>
         </div>
@@ -54,15 +38,17 @@ export const ReviewManageCard = ({
       <LowerWrapper>
         <div className="row">
           <Body3 color={Grey3}>상담유형</Body3>
-          <Body3 color={Grey1}>{consultType}</Body3>
+          <Body3 color={Grey1}>{reviewData.consultType}</Body3>
         </div>
         <div className="row">
           <Body3 color={Grey3}>상담일자</Body3>
-          <Body3 color={Grey1}>{date}</Body3>
+          <Body3 color={Grey1}>{reviewData.consultedAt}</Body3>
         </div>
         <div className="row3">
           <Body3 color={Grey3}>상담가격</Body3>
-          <Body3 color={Grey1}>{price}원</Body3>
+          <Body3 color={Grey1}>
+            {reviewData.consultCost.toLocaleString()}원
+          </Body3>
         </div>
         <Button
           text="리뷰 작성하기"
@@ -71,7 +57,7 @@ export const ReviewManageCard = ({
           borderRadius="0.8rem"
           onClick={() => {
             //추후 해당하는 consult id에 해당하는 review로 넘어감
-            navigate('/buyer/review/0');
+            navigate('/buyer/review', { state: { reviewData: reviewData } });
           }}
         />
       </LowerWrapper>

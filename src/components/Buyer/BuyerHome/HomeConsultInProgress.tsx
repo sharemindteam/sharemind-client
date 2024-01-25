@@ -4,7 +4,8 @@ import { Body1, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ConsultCard } from '../Common/ConsultCard';
 import { useNavigate } from 'react-router-dom';
-export const ConsultInProgress = () => {
+import { ConsultState } from 'utils/type';
+export const HomeConsultInProgress = () => {
   //얘네 props로 넘겨준다, 나중에 api
   const CounselorName = '연애상담마스터';
   const ConsultState: ConsultState = '답변 도착';
