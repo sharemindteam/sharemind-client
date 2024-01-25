@@ -3,18 +3,11 @@ import PwInput from 'components/Buyer/Common/PwInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { Button } from 'components/Common/Button';
 import { useInput } from 'hooks/useInput';
-import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  ErrorColor,
-  Grey1,
-  Grey3,
-  Grey4,
-  Grey6,
-  SafeColor,
-} from 'styles/color';
-import { Body1, Body2, Caption2, Heading } from 'styles/font';
+import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
+import { Body1, Caption2, Heading } from 'styles/font';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 
 export const SellerPwChange = () => {

@@ -7,14 +7,17 @@ import {
   CounselorProfileNav,
   CounselorReview,
 } from 'components/Buyer/BuyerCounselorProfile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { profileCounselorIdState } from 'utils/atom';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
 import { reviewDummy } from 'utils/buyerDummy';
 import { CartegoryState } from 'utils/type';
 export const BuyerCounselorProfile = () => {
   const { id } = useParams();
+
   //Nav 버튼 toggle
   const [isInfo, setIsInfo] = useState<boolean>(true);
   if (id !== undefined) {
@@ -50,7 +53,10 @@ export const BuyerCounselorProfile = () => {
             <CounselorReview reviewList={reviewDummy} />
           )}
         </Body>
-        <CounselorFooter isBookmarked={dummy[1].isBookmarked} />
+        <CounselorFooter
+          counselorId={counselorId}
+          isBookmarked={dummy[1].isBookmarked}
+        />
       </Wrapper>
     );
   } else {
