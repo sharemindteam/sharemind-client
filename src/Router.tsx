@@ -75,7 +75,7 @@ const Router = () => {
       <Route path="/buyer/consult" element={<BuyerConsult />} />
       <Route path="/buyer/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/buyer/search" element={<BuyerSearch />} />
-      <Route path="/buyer/search/:id" element={<BuyerCategoryResult />} />
+      <Route path="/buyer/categorySearch" element={<BuyerCategoryResult />} />
       <Route path="/buyer/search/result" element={<BuyerSearchResult />} />
       <Route path="/buyer/consultRequest" element={<BuyerConsultRequest />} />
       <Route path="/buyer/paymentDetail" element={<BuyerPaymentDetail />} />

@@ -7,13 +7,18 @@ import { Button2 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { useEffect, useState } from 'react';
 import { sortList } from 'utils/constant';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { isSortModalOpenState, scrollLockState } from 'utils/atom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  isSortModalOpenState,
+  scrollLockState,
+  searchKeywordState,
+} from 'utils/atom';
 import { ConverSortType } from 'utils/convertSortType';
-import { patchSearchWordsResults } from 'api/patch';
+import { patchCounselors, patchSearchWordsResults } from 'api/patch';
 import { SearchResultData } from 'utils/type';
 import { convertNumToCategory } from 'utils/convertNumToCategory';
 import { SearchResults } from 'components/Buyer/BuyerCategoryResult/SearchResult';
+import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerCategoryResult = () => {
   const navigate = useNavigate();
@@ -26,17 +31,20 @@ export const BuyerCategoryResult = () => {
     useRecoilState<boolean>(isSortModalOpenState);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+  //const 카테고리 정보, 검색과 동일하게 searchKeyword로 넘겨줌
+  const searchKeyword = useRecoilValue(searchKeywordState);
   //결과저장
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
-  const fectchSearchResults = async (searchWord: string) => {
+  const fectchSearchResults = async () => {
     try {
       const body = {
-        word: searchWord,
+        consultCategory: convertCategoryEnum(searchKeyword),
         index: 0,
       };
       const sortTypeString: string = ConverSortType(sortType);
-      const res: any = await patchSearchWordsResults(sortTypeString, body);
+      const res: any = await patchCounselors(sortTypeString, body);
       if (res.status === 200) {
+        console.log(res.data);
         setSearchData(res.data);
       } else if (res.response.status === 400) {
         alert('검색어는 2~20자 사이여야 합니다.');
@@ -47,47 +55,40 @@ export const BuyerCategoryResult = () => {
     }
   };
   useEffect(() => {
-    if (id !== undefined) {
-      fectchSearchResults(convertNumToCategory(parseInt(id, 10)));
-    } else {
-      alert('잘못된 접근입니다');
-      navigate('/buyer/home');
-    }
+    fectchSearchResults();
+    // convertNumToCategory()
   }, []);
-  if (id !== undefined) {
-    return (
-      <Wrapper>
-        <CategoryResultHeader categoryType={parseInt(id, 10)} />
-        <div className="select">
-          <div
-            className="select-wrapper"
-            onClick={() => {
-              setIsModalOpen(true);
-              setScrollLock(true);
-            }}
-          >
-            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-            <Down />
-          </div>
+
+  return (
+    <Wrapper>
+      <CategoryResultHeader categoryType={searchKeyword} />
+      <div className="select">
+        <div
+          className="select-wrapper"
+          onClick={() => {
+            setIsModalOpen(true);
+            setScrollLock(true);
+          }}
+        >
+          <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+          <Down />
         </div>
-        <SearchResults searchData={searchData} />
-        {isModalOpen ? (
-          <>
-            <BackDrop
-              onClick={() => {
-                //여기서 api
-                setIsModalOpen(false);
-                setScrollLock(false);
-              }}
-            />
-            <SortModal sortType={sortType} setSortType={setSortType} />
-          </>
-        ) : null}
-      </Wrapper>
-    );
-  } else {
-    return <>404 error</>;
-  }
+      </div>
+      <SearchResults searchData={searchData} />
+      {isModalOpen ? (
+        <>
+          <BackDrop
+            onClick={() => {
+              //여기서 api
+              setIsModalOpen(false);
+              setScrollLock(false);
+            }}
+          />
+          <SortModal sortType={sortType} setSortType={setSortType} />
+        </>
+      ) : null}
+    </Wrapper>
+  );
 };
 const Wrapper = styled.div`
   .select {
