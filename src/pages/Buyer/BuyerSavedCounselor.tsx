@@ -33,13 +33,16 @@ export const BuyerSavedCounselor = () => {
         console.log(res.response.data.message);
         navigate('/buyer/mypage');
       }
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1);
     };
     fetchReviewData();
   }, []);
   if (isLoading) {
     return (
       <>
+        <Space height="30vh" />
         <LoadingSpinner />
       </>
     );

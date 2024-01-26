@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { WishlistDataType } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { counselorDummyData as dummy } from 'utils/buyerDummy';
+import { SavedCounselorCard } from './SavedCounselorCard';
 interface SavedCounselorResultsProps {
   wishlistData: WishlistDataType[];
 }
@@ -13,33 +15,35 @@ interface SavedCounselorResultsProps {
 export const SavedCounselorResults = ({
   wishlistData,
 }: SavedCounselorResultsProps) => {
+  const initialBookmarkStates = dummy.map((data) => data.isBookmarked || false);
+  const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
+    initialBookmarkStates,
+  );
   return (
     <Wrapper>
       {wishlistData.map((value, index) => {
         return (
-          <></>
-          //   <ReadyConsultCard
-          //     // 나중에 id로 변경
-          //     key={index}
-          //     index={index}
-          //     counselorId={value.counselorId}
-          //     tagList={AppendCategoryType(
-          //       value.consultCategories,
-          //       value.consultStyle,
-          //     )}
-          //     consultStyle={consultStyleToCharNum(value.consultStyle)}
-          //     consultTimes={value.consultTimes}
-          //     introduction={value.introduction}
-          //     nickname={value.nickname}
-          //     level={value.level}
-          //     bookmarkStates={bookmarkStates}
-          //     setBookmarkStates={setBookmarkStates}
-          //     rating={value.ratingAverage}
-          //     totalReview={value.totalReview}
-          //     consultType={value.consultTypes}
-          //     letterPrice={value.consultCosts.편지}
-          //     chattingPrice={value.consultCosts.채팅}
-          //   />
+          <SavedCounselorCard
+            // 나중에 id로 변경
+            key={index}
+            index={index}
+            counselorId={value.counselorId}
+            tagList={AppendCategoryType(
+              value.consultCategories,
+              value.consultStyle,
+            )}
+            consultStyle={consultStyleToCharNum(value.consultStyle)}
+            consultTimes={value.consultTimes}
+            introduction={value.introduction}
+            nickname={value.nickname}
+            level={value.level}
+            wishlistId={value.wishlistId}
+            rating={value.ratingAverage}
+            totalReview={value.totalReview}
+            consultType={value.consultTypes}
+            letterPrice={value.consultCosts.편지}
+            chattingPrice={value.consultCosts.채팅}
+          />
         );
       })}
     </Wrapper>
