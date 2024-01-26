@@ -9,21 +9,16 @@ import { useSetRecoilState } from 'recoil';
 
 export const LetterHeader = ({ name = '김고민' }) => {
   const navigate = useNavigate();
-  const setIsModalOpen = useSetRecoilState(isConsultModalOpenState);
 
   return (
     <LetterHeaderWrapper>
       <LeftArrow
         onClick={() => {
-          navigate('/seller/mypage');
+          navigate('/seller/consult');
         }}
       />
       <Heading>{name}</Heading>
-      <Option
-        onClick={() => {
-          setIsModalOpen(true);
-        }}
-      />
+      <Option onClick={() => {}} />
     </LetterHeaderWrapper>
   );
 };
