@@ -113,7 +113,7 @@ export const ReadyConsultCard = ({
         <ToggleWrapper>
           <div className="row1">
             <Body3 color={Grey3}>상담 방식</Body3>
-            <Body3 color={Grey1}>{consultType}</Body3>
+            <Body3 color={Grey1}>{consultType.join(', ')}</Body3>
           </div>
           <div className="row2">
             <Body3 color={Grey3}>상담가능 시간</Body3>
@@ -164,7 +164,7 @@ export const ReadyConsultCard = ({
           </div>
           <div className="row3">
             <Body3 color={Grey3}>상담료</Body3>
-            <div className="price-col">
+            <div>
               {letterPrice !== undefined ? (
                 <Body3 color={Grey1}>
                   편지 1건 {letterPrice.toLocaleString()}원

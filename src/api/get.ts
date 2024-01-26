@@ -56,6 +56,9 @@ export const getLetterRecentType = async (letterId: string | undefined) =>
 export const getReviewsCustomer = async (params: any) =>
   await getInstance('/reviews/customers', params);
 
+export const getReviews = async (counselorId: number, params: any) =>
+  await getPublicInstance(`/reviews/${counselorId}`, params);
+
 // Conuselor Controller
 export const getMyInfo = async () => await getInstance('counselors/my-info');
 export const getProfiles = async () => await getInstance('counselors/profiles');

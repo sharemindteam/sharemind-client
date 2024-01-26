@@ -33,6 +33,7 @@ export const BuyerCounselorProfile = () => {
     counselorId: -1,
     introduction: '',
     // isWishList: boolean,
+    experience: '',
     level: 0,
     nickname: '',
     ratingAverage: 0,
@@ -78,13 +79,14 @@ export const BuyerCounselorProfile = () => {
             <>
               <CounselorInfo
                 consultType={profileData.consultTypes}
+                consultTimes={profileData.consultTimes}
                 letterPrice={profileData.consultCosts.편지}
                 chattingPrice={profileData.consultCosts.채팅}
               />
-              <CounselorExp experience={dummy[1].experience} />
+              <CounselorExp experience={profileData.experience} />
             </>
           ) : (
-            <CounselorReview reviewList={reviewDummy} />
+            <CounselorReview counselorId={counselorId} />
           )}
         </Body>
         <CounselorFooter
