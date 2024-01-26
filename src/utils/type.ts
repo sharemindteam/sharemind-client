@@ -28,11 +28,12 @@ type LetterState = '질문' | '답장' | '추가질문' | '추가답장';
 
 type CartegoryStateArray = CartegoryState[];
 
-type Review = {
-  name: string;
+export type Review = {
+  nickname: string;
   rating: number;
   comment: string;
-  time: string;
+  updateAt: string;
+  reviewId: number;
 };
 
 type ConsultInfoItem = {
@@ -78,7 +79,7 @@ export type ConsultTimes = {
 export type SearchResultData = {
   consultCategories: CartegoryState[];
   consultCosts: ConsultCosts;
-  consultStyle: '조언';
+  consultStyle: string;
   consultTimes: ConsultTimes;
   consultTypes: string[];
   counselorId: number;
@@ -102,4 +103,19 @@ export interface BuyerReview {
   consultCost: number;
   rating: number;
   comment: string;
+}
+export interface MinderProfile {
+  consultCategories: CartegoryState[];
+  consultCosts: ConsultCosts;
+  consultStyle: string;
+  consultTimes: ConsultTimes;
+  consultTypes: string[];
+  counselorId: number;
+  introduction: string;
+  // isWishList: boolean;
+  experience: string;
+  level: number;
+  nickname: string;
+  ratingAverage: number;
+  totalReview: number;
 }
