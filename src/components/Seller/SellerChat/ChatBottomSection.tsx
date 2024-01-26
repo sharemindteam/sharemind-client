@@ -11,7 +11,7 @@ function ChatBottomSection() {
   // 상담 시작 요청했는지여부
   const [isPostStart, setIsPostStart] = useState(true);
   // 상담이 시작되었는지 (셰어가 시작 요청을 확인했는지)
-  const [isStart, setIsStart] = useState(true);
+  const [isStart, setIsStart] = useState(false);
   const [text, setText] = useState('');
 
   return (
@@ -20,21 +20,28 @@ function ChatBottomSection() {
         <TopBar />
       </TopBarSection>
       <Space height="0.4rem" />
-      <GuideSection>
-        시작 전에도 메시지를 주고 받을 수 있어요. 시작 요청은 10분 간 유효하며,
-        셰어가 요청에 응한 후 30분간 상담이 진행되어요. 30분이 지나면 상담종료
-        버튼을 눌러 종료하세요.
-      </GuideSection>
-      <Space height="1.2rem" />
-      <ConsultStartButton
-        text={
-          isPostStart ? '셰어가 시작 요청을 확인중이에요' : '상담시작 요청하기'
-        }
-        isActive={!isPostStart}
-        width="calc(100% - 4rem)"
-        height="5.2rem"
-      />
-      <Space height="1.5rem" />
+      {isStart && (
+        <>
+          <GuideSection>
+            시작 전에도 메시지를 주고 받을 수 있어요. 시작 요청은 10분 간
+            유효하며, 셰어가 요청에 응한 후 30분간 상담이 진행되어요. 30분이
+            지나면 상담종료 버튼을 눌러 종료하세요.
+          </GuideSection>
+          <Space height="1.2rem" />
+          <ConsultStartButton
+            text={
+              isPostStart
+                ? '셰어가 시작 요청을 확인중이에요'
+                : '상담시작 요청하기'
+            }
+            isActive={!isPostStart}
+            width="calc(100% - 4rem)"
+            height="5.2rem"
+          />
+          <Space height="1.5rem" />
+        </>
+      )}
+
       <MessageSection>
         <MessageTextArea
           value={text}
