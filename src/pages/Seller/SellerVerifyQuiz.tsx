@@ -27,8 +27,9 @@ export const SellerVerifyQuiz = () => {
   useEffect(() => {
     const fetchIsPassQuiz = async () => {
       const isPassRes: any = await getIsPassQuiz();
+      // isPassRes
       if (!isPassRes?.data) {
-        alert('이미 퀴즈를 통과했습니다.');
+        alert('접근 권한이 없습니다.');
         navigate('/seller/mypage');
       }
     };

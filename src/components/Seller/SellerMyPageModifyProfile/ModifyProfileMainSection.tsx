@@ -144,7 +144,6 @@ export const ModifyProfileMainSection = ({
   useEffect(() => {
     type?.setViewValue(selectType?.join(', '));
   }, [selectType]);
-  console.log(selectAvailableTime);
   return (
     <ModifyProfileMainSectionWrapper>
       {isUpdateModalOpen && (
@@ -278,27 +277,44 @@ export const ModifyProfileMainSection = ({
         </div>
         <div className="price">
           <ProfileInformTag>상담 가격</ProfileInformTag>
-          <div className="letter-price">
-            <PriceInformTag>편지</PriceInformTag>
-            <PriceInput
-              value={letterPrice.value}
-              onChange={letterPrice.onChangePrice}
-              placeholder="1건 당 5,000~50,000"
-              maxLength={6}
-            />
 
-            <Body1>원</Body1>
-          </div>
-          <div className="chat-price">
-            <PriceInformTag>채팅</PriceInformTag>
-            <PriceInput
-              value={chatPrice?.value}
-              onChange={chatPrice.onChangePrice}
-              placeholder="1건 당 5,000~50,000"
-              maxLength={6}
-            />
-            <Body1>원</Body1>
-          </div>
+          {selectType?.includes('편지') && (
+            <div className="letter-price">
+              <PriceInformTag>편지</PriceInformTag>
+              <PriceInput
+                value={letterPrice.value}
+                onChange={letterPrice.onChangePrice}
+                placeholder="1건 당 5,000~50,000"
+                maxLength={6}
+                isError={
+                  parseFloat(letterPrice?.value?.replace(/,/g, '')) < 5000 ||
+                  parseFloat(letterPrice?.value?.replace(/,/g, '')) > 50000
+                    ? true
+                    : false
+                }
+              />
+
+              <Body1>원</Body1>
+            </div>
+          )}
+          {selectType?.includes('채팅') && (
+            <div className="chat-price">
+              <PriceInformTag>채팅</PriceInformTag>
+              <PriceInput
+                value={chatPrice?.value}
+                onChange={chatPrice.onChangePrice}
+                placeholder="1건 당 5,000~50,000"
+                maxLength={6}
+                isError={
+                  parseFloat(chatPrice?.value?.replace(/,/g, '')) < 5000 ||
+                  parseFloat(chatPrice?.value?.replace(/,/g, '')) > 50000
+                    ? true
+                    : false
+                }
+              />
+              <Body1>원</Body1>
+            </div>
+          )}
         </div>
       </ModifyProfileBox>
       <ModifyProfileBox>
@@ -422,14 +438,37 @@ export const ModifyProfileMainSection = ({
         // 폼 입력이 있으면서 에러가 없어야 저장하기 버튼 활성화
         isActive={
           !(
-            nickname.isError ||
-            !category.serverValue ||
-            !style.serverValue ||
-            !type.serverValue ||
-            letterPrice.isError ||
-            chatPrice.isError ||
-            oneLiner.isError ||
-            experience.isError
+            (
+              nickname.isError ||
+              !category.serverValue ||
+              !style.serverValue ||
+              !type.serverValue ||
+              letterPrice.isError ||
+              (selectType?.includes('채팅') &&
+                chatPrice?.value?.length === 0) ||
+              (selectType?.includes('편지') &&
+                letterPrice?.value?.length === 0) ||
+              oneLiner.isError ||
+              experience.isError ||
+              // 한 줄 소개, 경험 소개 길이가 0일 경우
+              experience.value.length === 0 ||
+              oneLiner.value.length === 0 ||
+              ((selectType?.includes('채팅') &&
+                parseFloat(chatPrice?.value?.replace(/,/g, '')) < 5000) ||
+              parseFloat(chatPrice?.value?.replace(/,/g, '')) > 50000
+                ? true
+                : false) ||
+              ((selectType?.includes('편지') &&
+                parseFloat(letterPrice?.value?.replace(/,/g, '')) < 5000) ||
+              parseFloat(letterPrice?.value?.replace(/,/g, '')) > 50000
+                ? true
+                : false)
+            )
+            // (selectType.includes('채팅') &&
+            //   (parseFloat(chatPrice?.replace(/,/g, '')) > 50000 ||
+            //     parseFloat(chatPrice?.replace(/,/g, '')) < 5000)) ||
+            // (selectType.includes('편지') &&
+            //   (letterPrice > 50000 || letterPrice < 5000))
           )
         }
         text={isNoProfile ? '작성 완료하기' : '저장하기'}
@@ -491,10 +530,11 @@ const PriceInformTag = styled(Body1)`
   margin-right: auto;
 `;
 
-const PriceInput = styled.input`
+const PriceInput = styled.input<{ isError: boolean }>`
   width: calc(100% - 7rem);
   height: 4.8rem;
   padding: 1.2rem 1.6rem;
+  border: ${({ isError }) => (isError ? '1px solid red' : 'none')};
   box-sizing: border-box;
   text-align: right;
   border-radius: 1.2rem;

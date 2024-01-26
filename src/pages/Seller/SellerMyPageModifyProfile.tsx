@@ -144,7 +144,7 @@ export const SellerMypageModifyProfile = () => {
     };
     fetchProfile();
   }, []);
-  console.log(selectedTimeList);
+  console.log(selectType);
   return (
     <>
       <ModifyProfileHeader

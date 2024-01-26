@@ -31,6 +31,7 @@ export const UpdatePopup = ({
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
   const setIsSuccess = useSetRecoilState(isSuccessUpdateState);
   console.log(selectAvailableTime);
+  console.log(type);
   const handlePostUpdate = async () => {
     // 여기서 서버로 모든 데이터를 POST
 
@@ -40,15 +41,23 @@ export const UpdatePopup = ({
       consultStyle: style.serverValue,
       consultTypes: type.serverValue,
       consultTimes: selectAvailableTime,
-      letterCost: letterPrice.value.replace(',', ''),
-      chatCost: chatPrice.value.replace(',', ''),
+      letterCost: type.viewValue.includes('편지')
+        ? letterPrice.value.replace(',', '')
+        : null,
+      chatCost: type.viewValue.includes('채팅')
+        ? chatPrice.value.replace(',', '')
+        : null,
       introduction: oneLiner.value,
       experience: experience.value,
     };
     try {
-      await patchProfiles(body);
+      const res: any = await patchProfiles(body);
       setIsUpdateModalOpen(false);
-      setIsSuccess(true);
+      if (res.status !== 200) {
+        alert('판매 정보를 올바르게 입력해주세요!');
+      } else {
+        setIsSuccess(true);
+      }
     } catch (err) {
       alert('오류');
       console.log(err);
