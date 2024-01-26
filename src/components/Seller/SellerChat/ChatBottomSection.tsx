@@ -1,18 +1,19 @@
 import { Button } from 'components/Common/Button';
 import Input from 'components/Common/Input';
 import { Space } from 'components/Common/Space';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Grey3, Grey5, Grey6 } from 'styles/color';
+import { Green, Grey3, Grey5, Grey6 } from 'styles/color';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
 import TextareaAutosize from 'react-textarea-autosize';
 
 function ChatBottomSection() {
-  const textRef: any = useRef(null);
-  const handleTextHeight = () => {
-    textRef.current.style.height = 'auto';
-    textRef.current.style.height = textRef.current.scrollHeight + 'px';
-  };
+  // 상담 시작 요청했는지여부
+  const [isPostStart, setIsPostStart] = useState(true);
+  // 상담이 시작되었는지 (셰어가 시작 요청을 확인했는지)
+  const [isStart, setIsStart] = useState(true);
+  const [text, setText] = useState('');
+
   return (
     <ChatBottomWrapper>
       <TopBarSection>
@@ -26,19 +27,25 @@ function ChatBottomSection() {
       </GuideSection>
       <Space height="1.2rem" />
       <ConsultStartButton
-        text="상담시작 요청하기"
+        text={
+          isPostStart ? '셰어가 시작 요청을 확인중이에요' : '상담시작 요청하기'
+        }
+        isActive={!isPostStart}
         width="calc(100% - 4rem)"
         height="5.2rem"
       />
       <Space height="1.5rem" />
       <MessageSection>
         <MessageTextArea
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
           placeholder="메시지"
-          ref={textRef}
           rows={1}
           maxRows={4}
         />
-        <SendIcon />
+        <SendIconSVG fill={text.length > 0 ? Green : Grey3} />
       </MessageSection>
     </ChatBottomWrapper>
   );
@@ -95,6 +102,10 @@ const MessageSection = styled.div`
   margin: 0 2rem;
   align-items: center;
   gap: 0.8rem;
+`;
+
+const SendIconSVG = styled(SendIcon)`
+  cursor: pointer;
 `;
 
 const MessageTextArea = styled(TextareaAutosize)`
