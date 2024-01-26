@@ -3,7 +3,7 @@ import { Grey1, Grey3, Grey6 } from 'styles/color';
 import { Body3 } from 'styles/font';
 import { consultTypeList } from 'utils/constant';
 interface CounselorInfoProps {
-  consultType: number;
+  consultType: string[];
   letterPrice: number;
   chattingPrice: number;
 }
@@ -12,12 +12,11 @@ export const CounselorInfo = ({
   letterPrice,
   chattingPrice,
 }: CounselorInfoProps) => {
-  const availableConsult = consultTypeList[consultType];
   return (
     <Wrapper>
       <div className="row1">
         <Body3 color={Grey3}>상담 방식</Body3>
-        <Body3 color={Grey1}>{availableConsult}</Body3>
+        <Body3 color={Grey1}>{consultType}</Body3>
       </div>
       <div className="row2">
         <Body3 color={Grey3}>상담 시간</Body3>

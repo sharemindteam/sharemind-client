@@ -78,7 +78,7 @@ export type ConsultTimes = {
 export type SearchResultData = {
   consultCategories: CartegoryState[];
   consultCosts: ConsultCosts;
-  consultStyle: '조언';
+  consultStyle: string;
   consultTimes: ConsultTimes;
   consultTypes: string[];
   counselorId: number;
@@ -102,4 +102,18 @@ export interface BuyerReview {
   consultCost: number;
   rating: number;
   comment: string;
+}
+export interface MinderProfile {
+  consultCategories: CartegoryState[];
+  consultCosts: ConsultCosts;
+  consultStyle: string;
+  consultTimes: ConsultTimes;
+  consultTypes: string[];
+  counselorId: number;
+  introduction: string;
+  // isWishList: boolean;
+  level: number;
+  nickname: string;
+  ratingAverage: number;
+  totalReview: number;
 }

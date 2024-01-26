@@ -1,3 +1,4 @@
+import { getCounselors } from 'api/get';
 import {
   CounselorExp,
   CounselorFooter,
@@ -8,44 +9,77 @@ import {
   CounselorReview,
 } from 'components/Buyer/BuyerCounselorProfile';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
 import { reviewDummy } from 'utils/buyerDummy';
-import { CartegoryState } from 'utils/type';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import {
+  CartegoryState,
+  ConsultCosts,
+  ConsultTimes,
+  MinderProfile,
+} from 'utils/type';
 export const BuyerCounselorProfile = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
+  const [profileData, setProfileData] = useState<MinderProfile>({
+    consultCategories: [],
+    consultCosts: {} as ConsultCosts,
+    consultStyle: '',
+    consultTimes: {} as ConsultTimes,
+    consultTypes: [],
+    counselorId: -1,
+    introduction: '',
+    // isWishList: boolean,
+    level: 0,
+    nickname: '',
+    ratingAverage: 0,
+    totalReview: 0,
+  });
   useEffect(() => {
-    const fetchData = async () => {};
+    const fetchData = async () => {
+      const res: any = await getCounselors(id);
+      if (res.status === 200) {
+        setProfileData(res.data);
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 상담 아이디입니다.');
+        navigate('/buyer');
+      }
+    };
+    fetchData();
   }, []);
   //Nav 버튼 toggle
   const [isInfo, setIsInfo] = useState<boolean>(true);
   if (id !== undefined) {
     const counselorId = parseInt(id, 10);
-    const tagListCast: CartegoryState[] = dummy[1].tagList as CartegoryState[];
     return (
       <Wrapper>
         <CounselorProfileHeader />
         <Body>
           <CounselorProfileCard
-            nickname={dummy[1].nickname}
-            level={dummy[1].level}
-            rating={dummy[1].rating}
-            reviewNumber={dummy[1].reviewNumber}
-            tagList={tagListCast}
-            iconNumber={dummy[1].iconNumber}
+            nickname={profileData.nickname}
+            level={profileData.level}
+            rating={profileData.ratingAverage}
+            reviewNumber={profileData.totalReview}
+            tagList={AppendCategoryType(
+              profileData.consultCategories,
+              profileData.consultStyle,
+            )}
+            consultStyle={consultStyleToCharNum(profileData.consultStyle)}
           />
           <CounselorProfileNav
             isInfo={isInfo}
             setIsInfo={setIsInfo}
-            reviewNumber={dummy[1].reviewNumber}
+            reviewNumber={profileData.totalReview}
           />
           {isInfo ? (
             <>
               <CounselorInfo
-                consultType={dummy[1].consultType}
-                letterPrice={dummy[1].letterPrice}
-                chattingPrice={dummy[1].chattingPrice}
+                consultType={profileData.consultTypes}
+                letterPrice={profileData.consultCosts.편지}
+                chattingPrice={profileData.consultCosts.채팅}
               />
               <CounselorExp experience={dummy[1].experience} />
             </>

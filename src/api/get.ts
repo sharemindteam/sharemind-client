@@ -64,7 +64,9 @@ export const getCounselorConsults = async (
   counselorId: string | undefined,
   params: any,
 ) => await getInstance(`/counselors/consults/${counselorId}`, params);
-
+//마인더 프로필 페이지 마인더 프로필 조회
+export const getCounselors = async (counselorId: string | undefined) =>
+  await getPublicInstance(`/counselors/${counselorId}`);
 // SearchWord Controller
 export const getSearchWords = async () => await getInstance('/searchWords');
 

@@ -4,13 +4,14 @@ import { Body3, Caption2, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as Heart } from 'assets/icons/icon-heart2.svg';
 import { TagA2Cartegory } from '../../Common/TagA2Cartegory';
+import { CartegoryState } from 'utils/type';
 interface CounselorProfileCardProps {
   nickname: string;
   level: number;
   rating: number;
   reviewNumber: number;
-  tagList: CartegoryStateArray;
-  iconNumber: number;
+  tagList: CartegoryState[];
+  consultStyle: number;
 }
 export const CounselorProfileCard = ({
   nickname,
@@ -18,44 +19,49 @@ export const CounselorProfileCard = ({
   rating,
   reviewNumber,
   tagList,
-  iconNumber,
+  consultStyle,
 }: CounselorProfileCardProps) => {
   //여기 dummy data 나중에는 page에서 props로 뿌리는게 나을듯함
 
   return (
     <Wrapper>
-      <div className="col1">
-        <div className="row1">
-          <Heading>{nickname}</Heading>
-          <LevelTag>
-            <Caption2 color={White}>Lv {level}</Caption2>
-          </LevelTag>
+      <CardWrapper>
+        <div className="col1">
+          <div className="row1">
+            <Heading>{nickname}</Heading>
+            <LevelTag>
+              <Caption2 color={White}>Lv {level}</Caption2>
+            </LevelTag>
+          </div>
+          <div className="row2">
+            <HeartIcon />
+            <Body3 color={Grey2} padding="0.04rem 0 0 0">
+              {rating + ' (' + reviewNumber + ')'}
+            </Body3>
+          </div>
+          <div className="row3">
+            {tagList.map((value) => {
+              return <TagA2Cartegory tagType={value} bgColorType={3} />;
+            })}
+          </div>
         </div>
-        <div className="row2">
-          <HeartIcon />
-          <Body3 color={Grey2} padding="0.04rem 0 0 0">
-            {rating + ' (' + reviewNumber + ')'}
-          </Body3>
+        <div className="col2">
+          <Characters number={consultStyle} width="7.6rem" height="7rem" />
         </div>
-        <div className="row3">
-          {tagList.map((value) => {
-            return <TagA2Cartegory tagType={value} bgColorType={3} />;
-          })}
-        </div>
-      </div>
-      <div className="col2">
-        <Characters number={iconNumber} width="7.6rem" height="7rem" />
-      </div>
+      </CardWrapper>
     </Wrapper>
   );
 };
-
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
-  gap: 6.8rem;
+  flex-direction: column;
+  align-items: center;
+`;
+const CardWrapper = styled.div`
+  display: flex;
+  width: 33.5rem;
+  justify-content: space-between;
   padding: 1.6rem 2rem;
-  padding-bottom: 1.6rem;
   border-bottom: 1px solid ${Grey6};
   .col1 {
     display: flex;
