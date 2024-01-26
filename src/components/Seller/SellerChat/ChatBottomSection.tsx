@@ -12,6 +12,8 @@ function ChatBottomSection() {
   const [isPostStart, setIsPostStart] = useState(true);
   // 상담이 시작되었는지 (셰어가 시작 요청을 확인했는지)
   const [isStart, setIsStart] = useState(false);
+  // 상담이 종료 요청했는지 여부
+  const [isEnd, setIsEnd] = useState(false);
   const [text, setText] = useState('');
 
   return (
@@ -113,6 +115,8 @@ const MessageSection = styled.div`
 
 const SendIconSVG = styled(SendIcon)`
   cursor: pointer;
+  align-self: flex-end;
+  padding-bottom: 0.7rem;
 `;
 
 const MessageTextArea = styled(TextareaAutosize)`
