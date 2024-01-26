@@ -1,16 +1,15 @@
-import { patchWishLists } from 'api/patch';
 import { postWishLists } from 'api/post';
 import { SavedCounselorResults } from 'components/Buyer/BuyerSavedCounselor.tsx/SavedCounselorResults';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Space } from 'components/Common/Space';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isLoadingState } from 'utils/atom';
-import { SearchResultData, WishlistDataType } from 'utils/type';
+import { WishlistDataType } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import styled from 'styled-components';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현

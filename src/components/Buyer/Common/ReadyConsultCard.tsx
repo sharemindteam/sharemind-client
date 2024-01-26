@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultTimes } from 'utils/type';
 import { convertTimeToString } from 'utils/convertTimeToString';
+import { deleteWishLists } from 'api/delete';
+import { patchWishLists } from 'api/patch';
 interface ReadyConsultCardProps {
   index: number;
   counselorId: number;
@@ -22,6 +24,7 @@ interface ReadyConsultCardProps {
   level: number;
   bookmarkStates: boolean[];
   setBookmarkStates: React.Dispatch<React.SetStateAction<boolean[]>>;
+  isWishList: boolean;
   rating: number;
   totalReview: number;
   consultType: string[];
@@ -40,6 +43,7 @@ export const ReadyConsultCard = ({
   level,
   bookmarkStates,
   setBookmarkStates,
+  isWishList,
   rating,
   totalReview,
   consultType,
@@ -50,11 +54,50 @@ export const ReadyConsultCard = ({
   const navigate = useNavigate();
   //toggle
   const [toggle, setToggle] = useState<boolean>(false);
+  //찜하기 여부
+  const [isSaved, setIsSaved] = useState<boolean>(isWishList);
+  //보내는 동안 중복 클릭 방지
+  const [isSending, setIsSending] = useState<boolean>(false);
   //찜하기 업데이트
-  const handleBookmark = () => {
-    const newStates = [...bookmarkStates];
-    newStates[index] = !newStates[index];
-    setBookmarkStates(newStates);
+  const handleBookmark = async (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    if (isSending) {
+      return;
+    }
+    try {
+      setIsSending(true);
+      const res: any = await patchWishLists(counselorId);
+      if (res.response?.status === 400) {
+        alert('이미 찜하기 처리된 상담사입니다.');
+      } else if (res.response?.status === 404) {
+        alert('존재하지 않는 상담사입니다.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsSending(false);
+      setIsSaved(true);
+    }
+  };
+  const handleUnBookmark = async (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    if (isSending) {
+      return;
+    }
+    try {
+      setIsSending(true);
+      const res: any = await deleteWishLists(counselorId);
+      if (res.response?.status === 400) {
+        alert('이미 찜하기 취소된 상담사입니다.');
+      } else if (res.response?.status === 404) {
+        alert('존재하지 않는 상담사입니다.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsSending(false);
+      setIsSaved(false);
+    }
   };
 
   return (
@@ -93,20 +136,10 @@ export const ReadyConsultCard = ({
             <Body3 color={Grey2}>{rating + ' (' + totalReview + ')'}</Body3>
           </div>
         </div>
-        {bookmarkStates[index] ? (
-          <BookMarkIcon
-            onClick={(e: React.MouseEvent<HTMLElement>) => {
-              e.stopPropagation();
-              handleBookmark();
-            }}
-          />
+        {isSaved ? (
+          <BookMarkIcon onClick={handleUnBookmark} />
         ) : (
-          <NoneBookMarkIcon
-            onClick={(e: React.MouseEvent<HTMLElement>) => {
-              e.stopPropagation();
-              handleBookmark();
-            }}
-          />
+          <NoneBookMarkIcon onClick={handleBookmark} />
         )}
       </LowerWrapper>
       {toggle ? (

@@ -51,6 +51,7 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
               level={value.level}
               bookmarkStates={bookmarkStates}
               setBookmarkStates={setBookmarkStates}
+              isWishList={value.isWishList}
               rating={value.ratingAverage}
               totalReview={value.totalReview}
               consultType={value.consultTypes}

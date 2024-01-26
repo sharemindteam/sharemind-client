@@ -39,5 +39,5 @@ export const patchSearchWordsResults = async (sortType: string, body: any) =>
 
 //Wishlist Controlloer
 //찜하기 추가
-export const patchWishLists = async (counselorId: string) =>
+export const patchWishLists = async (counselorId: number) =>
   await patchInstance(`/wishLists?counselorId=${counselorId}`);
