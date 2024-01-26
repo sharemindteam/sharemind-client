@@ -7,6 +7,7 @@ import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { counselorDummyData as dummy } from 'utils/buyerDummy';
 import { SavedCounselorCard } from './SavedCounselorCard';
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 interface SavedCounselorResultsProps {
   wishlistData: WishlistDataType[];
 }
@@ -19,6 +20,7 @@ export const SavedCounselorResults = ({
   const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
     initialBookmarkStates,
   );
+
   return (
     <Wrapper>
       {wishlistData.map((value, index) => {
@@ -26,7 +28,6 @@ export const SavedCounselorResults = ({
           <SavedCounselorCard
             // 나중에 id로 변경
             key={index}
-            index={index}
             counselorId={value.counselorId}
             tagList={AppendCategoryType(
               value.consultCategories,

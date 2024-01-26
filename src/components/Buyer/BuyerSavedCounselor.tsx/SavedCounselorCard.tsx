@@ -14,7 +14,6 @@ import { CartegoryState, ConsultTimes } from 'utils/type';
 import { convertTimeToString } from 'utils/convertTimeToString';
 import { deleteWishLists } from 'api/delete';
 interface SavedCounselorCardProps {
-  index: number;
   counselorId: number;
   tagList: CartegoryState[];
   consultTimes: ConsultTimes;
@@ -31,7 +30,6 @@ interface SavedCounselorCardProps {
 }
 //일단 toggle파트 제외하고 클릭 시 상담프로필로 navigate하게 구현
 export const SavedCounselorCard = ({
-  index,
   counselorId,
   tagList,
   consultTimes,
@@ -49,19 +47,31 @@ export const SavedCounselorCard = ({
   const navigate = useNavigate();
   //toggle
   const [toggle, setToggle] = useState<boolean>(false);
-
+  const [isSending, setIsSending] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(true);
   const handleBookmark = async (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
-
-    const res: any = await deleteWishLists(counselorId);
-    if (res.status === 200) {
-    } else if (res.response.status === 400) {
-      alert('이미 찜하기 취소된 상담사입니다.');
-    } else if (res.response.status === 404) {
-      alert('존재하지 않는 상담사입니다.');
+    if (isSending) {
+      return;
     }
-    setIsSaved(false);
+    try {
+      setIsSending(true);
+      const res: any = await deleteWishLists(counselorId);
+
+      if (res.status === 200) {
+        // Handle success
+      } else if (res.response?.status === 400) {
+        alert('이미 찜하기 취소된 상담사입니다.');
+      } else if (res.response?.status === 404) {
+        alert('존재하지 않는 상담사입니다.');
+      }
+    } catch (error) {
+      // Handle error
+      console.error('Error:', error);
+    } finally {
+      setIsSending(false);
+      setIsSaved(false);
+    }
   };
   if (isSaved) {
     return (
