@@ -38,3 +38,8 @@ export const postLetterMessageFirstQustion = async (body: any) =>
 // 퀴즈 통과 여부 수정
 export const postIsPassQuiz = async (body: any, parmas: any) =>
   await postInstance('counselors/quiz', body, parmas);
+
+//Wishlist Controlloer
+//찜하기 목록 가져오기
+export const postWishLists = async (body: any) =>
+  await postInstance('/wishLists', body);
