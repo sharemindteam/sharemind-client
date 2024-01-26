@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { isPaymentModalOpenState } from 'utils/atom';
+import { ConsultState } from 'utils/type';
 interface PaymentCardProps {
   counselorId: number;
   nickname: string;
@@ -80,6 +81,7 @@ export const PaymentCard = ({
                 onClick={() => {
                   setIsModalOpen(true);
                 }}
+                buttonTextType={2}
               />
             </div>
             <Space height="1.6rem" />

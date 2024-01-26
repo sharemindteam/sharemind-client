@@ -1,8 +1,8 @@
 import { getReviews } from 'api/get';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Grey1, Grey4, Grey6 } from 'styles/color';
+import { Grey1, Grey6 } from 'styles/color';
 import { Body1, Body2, Body3, Heading } from 'styles/font';
 import { HeartRate } from 'utils/HeartRate';
 import { Review } from 'utils/type';
@@ -17,7 +17,8 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     const fetchReviewData = async () => {
       setIsLoading(true);
       const params = {
@@ -30,8 +31,9 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
         alert('존재하지 않는 상담사의 리뷰 요청입니다.');
         navigate('/buyer');
       }
-      console.log(isLoading);
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1);
     };
     fetchReviewData();
   }, []);

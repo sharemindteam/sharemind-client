@@ -12,13 +12,6 @@ interface AvailCounselorSearchResultsProps {
 export const AvailCounselorSearchResults = ({
   searchData,
 }: AvailCounselorSearchResultsProps) => {
-  //찜하기 배열 init
-  const initialBookmarkStates = searchData.map(
-    (data) => data.isWishList || false,
-  );
-  const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
-    initialBookmarkStates,
-  );
   return (
     <Wrapper>
       {searchData.map((value, index) => {
@@ -26,7 +19,6 @@ export const AvailCounselorSearchResults = ({
           <ReadyConsultCard
             // 나중에 id로 변경
             key={index}
-            index={index}
             counselorId={value.counselorId}
             tagList={AppendCategoryType(
               value.consultCategories,
@@ -37,8 +29,7 @@ export const AvailCounselorSearchResults = ({
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
-            bookmarkStates={bookmarkStates}
-            setBookmarkStates={setBookmarkStates}
+            isWishList={value.isWishList}
             rating={value.ratingAverage}
             totalReview={value.totalReview}
             consultType={value.consultTypes}
