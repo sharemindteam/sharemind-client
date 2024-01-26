@@ -2,28 +2,32 @@
 import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { useState } from 'react';
-import { SearchResultData } from 'utils/type';
+import { WishlistDataType } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-interface SearchResultsProps {
-  searchData: SearchResultData[];
+import { counselorDummyData as dummy } from 'utils/buyerDummy';
+import { SavedCounselorCard } from './SavedCounselorCard';
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
+interface SavedCounselorResultsProps {
+  wishlistData: WishlistDataType[];
 }
 
 //임의로 ConsultInReady 그대로 사용
-export const SearchResults = ({ searchData }: SearchResultsProps) => {
-  //찜하기 배열 init
-  const initialBookmarkStates = searchData.map(
-    (data) => data.isWishList || false,
-  );
+export const SavedCounselorResults = ({
+  wishlistData,
+}: SavedCounselorResultsProps) => {
+  const initialBookmarkStates = dummy.map((data) => data.isBookmarked || false);
   const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
     initialBookmarkStates,
   );
+
   return (
     <Wrapper>
-      {searchData.map((value, index) => {
+      {wishlistData.map((value, index) => {
         return (
-          <ReadyConsultCard
-            key={value.counselorId}
+          <SavedCounselorCard
+            // 나중에 id로 변경
+            key={index}
             counselorId={value.counselorId}
             tagList={AppendCategoryType(
               value.consultCategories,
@@ -34,7 +38,7 @@ export const SearchResults = ({ searchData }: SearchResultsProps) => {
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
-            isWishList={value.isWishList}
+            wishlistId={value.wishlistId}
             rating={value.ratingAverage}
             totalReview={value.totalReview}
             consultType={value.consultTypes}

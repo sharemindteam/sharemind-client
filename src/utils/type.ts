@@ -119,3 +119,19 @@ export interface MinderProfile {
   ratingAverage: number;
   totalReview: number;
 }
+
+export type WishlistDataType = {
+  consultCategories: CartegoryState[];
+  consultCosts: ConsultCosts;
+  consultStyle: string;
+  consultTimes: ConsultTimes;
+  consultTypes: string[];
+  updateAt: string;
+  introduction: string;
+  counselorId: number;
+  wishlistId: number;
+  level: number;
+  nickname: string;
+  ratingAverage: number;
+  totalReview: number;
+};
