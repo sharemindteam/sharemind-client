@@ -55,18 +55,8 @@ export const ReadyConsultCard = ({
     const newStates = [...bookmarkStates];
     newStates[index] = !newStates[index];
     setBookmarkStates(newStates);
-    console.log(consultTimes);
   };
-  const [timeData, setTimeData] = useState<string | null[]>([
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-  ]);
-  useEffect(() => {}, []);
+
   return (
     <Wrapper>
       <UpperWrapper
@@ -123,7 +113,7 @@ export const ReadyConsultCard = ({
         <ToggleWrapper>
           <div className="row1">
             <Body3 color={Grey3}>상담 방식</Body3>
-            <Body3 color={Grey1}>{consultType}</Body3>
+            <Body3 color={Grey1}>{consultType.join(', ')}</Body3>
           </div>
           <div className="row2">
             <Body3 color={Grey3}>상담가능 시간</Body3>
@@ -174,10 +164,18 @@ export const ReadyConsultCard = ({
           </div>
           <div className="row3">
             <Body3 color={Grey3}>상담료</Body3>
-            <Body3 color={Grey1}>
-              편지 1건 {letterPrice.toLocaleString()}원<br />
-              실시간 30분당 {chattingPrice.toLocaleString()}원
-            </Body3>
+            <div>
+              {letterPrice !== undefined ? (
+                <Body3 color={Grey1}>
+                  편지 1건 {letterPrice.toLocaleString()}원
+                </Body3>
+              ) : null}
+              {chattingPrice !== undefined ? (
+                <Body3 color={Grey1}>
+                  채팅 30분당 {chattingPrice.toLocaleString()}원
+                </Body3>
+              ) : null}
+            </div>
           </div>
         </ToggleWrapper>
       ) : null}

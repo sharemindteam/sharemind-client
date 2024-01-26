@@ -1,4 +1,4 @@
-import { patchInstance } from './axios';
+import { patchInstance, patchPublicInstance } from './axios';
 //Admin Controller
 //admin 미결제 상담 승인
 export const patchAdminsUnpaidConsults = async (consultId: number) =>
@@ -16,7 +16,7 @@ export const patchAdminsPendingProfiles = async (
 //Counselor Controller
 //카테고리/들준마 상담사 리스트 반환
 export const patchCounselors = async (sortType: string, body: any) =>
-  await patchInstance(`/counselors?sortType=${sortType}`, body);
+  await patchPublicInstance(`/counselors?sortType=${sortType}`, body);
 //LetterMessage Controller
 //Message 최초 생성
 export const patchLetterMessage = async (body: any) =>

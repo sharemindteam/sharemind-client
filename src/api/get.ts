@@ -59,6 +59,9 @@ export const getLetterRecentType = async (letterId: string | undefined) =>
 export const getReviewsCustomer = async (params: any) =>
   await getInstance('/reviews/customers', params);
 
+export const getReviews = async (counselorId: number, params: any) =>
+  await getPublicInstance(`/reviews/${counselorId}`, params);
+
 // Conuselor Controller
 export const getMyInfo = async () => await getInstance('counselors/my-info');
 export const getProfiles = async () => await getInstance('counselors/profiles');
@@ -67,7 +70,9 @@ export const getCounselorConsults = async (
   counselorId: string | undefined,
   params: any,
 ) => await getInstance(`/counselors/consults/${counselorId}`, params);
-
+//마인더 프로필 페이지 마인더 프로필 조회
+export const getCounselors = async (counselorId: string | undefined) =>
+  await getPublicInstance(`/counselors/${counselorId}`);
 // SearchWord Controller
 export const getSearchWords = async () => await getInstance('/searchWords');
 
