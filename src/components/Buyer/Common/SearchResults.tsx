@@ -17,22 +17,23 @@ export const SearchResults = () => {
       {dummy.map((value, index) => {
         const tagListCast: CartegoryState[] = value.tagList as CartegoryState[];
         return (
-          <ReadyConsultCard
-            index={index}
-            counselorId={value.counselorId}
-            tagList={tagListCast}
-            introduction={value.introduction}
-            nickname={value.nickname}
-            level={value.level}
-            bookmarkStates={bookmarkStates}
-            setBookmarkStates={setBookmarkStates}
-            rating={value.rating}
-            reviewNumber={value.reviewNumber}
-            iconNumber={value.iconNumber}
-            consultType={value.consultType}
-            letterPrice={value.letterPrice}
-            chattingPrice={value.chattingPrice}
-          />
+          <></>
+          // <ReadyConsultCard
+          //   index={index}
+          //   counselorId={value.counselorId}
+          //   tagList={tagListCast}
+          //   introduction={value.introduction}
+          //   nickname={value.nickname}
+          //   level={value.level}
+          //   bookmarkStates={bookmarkStates}
+          //   setBookmarkStates={setBookmarkStates}
+          //   rating={value.rating}
+          //   reviewNumber={value.reviewNumber}
+          //   iconNumber={value.iconNumber}
+          //   consultType={value.consultType}
+          //   letterPrice={value.letterPrice}
+          //   chattingPrice={value.chattingPrice}
+          // />
         );
       })}
     </Wrapper>
