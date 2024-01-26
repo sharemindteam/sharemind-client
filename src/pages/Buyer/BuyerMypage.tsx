@@ -2,7 +2,7 @@ import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Green, Grey1, Grey4, Grey6, White } from 'styles/color';
+import { Green, Grey1, Grey4, Grey6, LightGreen, White } from 'styles/color';
 import { Body2, Body3, Button2, Subtitle } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as PayedIcon } from 'assets/icons/icon-mypage-payed.svg';
@@ -205,4 +205,5 @@ const ChangeButton = styled.div`
   border: 1px solid ${Green};
   border-radius: 1.2rem;
   cursor: pointer;
+  background-color: ${LightGreen};
 `;
