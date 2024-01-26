@@ -1,11 +1,16 @@
 import { Button } from 'components/Common/Button';
 import Input from 'components/Common/Input';
 import { Space } from 'components/Common/Space';
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { Grey3, Grey5 } from 'styles/color';
+import { Grey3, Grey5, Grey6 } from 'styles/color';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
 function ChatBottomSection() {
+  const textRef: any = useRef(null);
+  const handleTextHeight = () => {
+    textRef.current.style.height = 'auto';
+    textRef.current.style.height = textRef.current.scrollHeight + 'px';
+  };
   return (
     <ChatBottomWrapper>
       <TopBarSection>
@@ -25,7 +30,7 @@ function ChatBottomSection() {
       />
       <Space height="1.5rem" />
       <MessageSection>
-        <Input placeholder="메시지" width="100%" padding="1.2rem 1.5rem" />
+        <MessageTextArea placeholder="메시지" ref={textRef} rows={1} />
         <SendIcon />
       </MessageSection>
     </ChatBottomWrapper>
@@ -83,5 +88,24 @@ const MessageSection = styled.div`
   margin: 0 2rem;
   align-items: center;
   gap: 0.8rem;
+`;
+
+const MessageTextArea = styled.textarea`
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  outline: none;
+  border: none;
+  resize: none;
+  border-radius: 1.2rem;
+  background-color: ${Grey6};
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%; /* 1.76rem */
+  &:focus {
+    border: none;
+    outline: none;
+  }
 `;
 export default ChatBottomSection;
