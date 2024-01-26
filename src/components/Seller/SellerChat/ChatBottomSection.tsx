@@ -5,6 +5,8 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { Grey3, Grey5, Grey6 } from 'styles/color';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
+import TextareaAutosize from 'react-textarea-autosize';
+
 function ChatBottomSection() {
   const textRef: any = useRef(null);
   const handleTextHeight = () => {
@@ -30,7 +32,12 @@ function ChatBottomSection() {
       />
       <Space height="1.5rem" />
       <MessageSection>
-        <MessageTextArea placeholder="메시지" ref={textRef} rows={1} />
+        <MessageTextArea
+          placeholder="메시지"
+          ref={textRef}
+          rows={1}
+          maxRows={4}
+        />
         <SendIcon />
       </MessageSection>
     </ChatBottomWrapper>
@@ -44,10 +51,10 @@ const ChatBottomWrapper = styled.div`
   @media (min-width: 768px) {
     width: 37.5rem;
   }
-  height: 25.7rem;
   border-radius: 2rem 2rem 0rem 0rem;
   background-color: white;
   box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.1);
+  padding-bottom: 3.2rem;
   position: fixed;
   bottom: 0;
   display: flex;
@@ -90,7 +97,7 @@ const MessageSection = styled.div`
   gap: 0.8rem;
 `;
 
-const MessageTextArea = styled.textarea`
+const MessageTextArea = styled(TextareaAutosize)`
   width: 100%;
   padding: 1.2rem 1.5rem;
   outline: none;
