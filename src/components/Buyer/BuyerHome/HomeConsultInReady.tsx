@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
-import { useState } from 'react';
-import { counselorDummyData as dummy } from 'utils/buyerDummy';
+
 import { useNavigate } from 'react-router-dom';
 import { SearchResultData } from 'utils/type';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
@@ -13,11 +12,6 @@ interface HomeConsultInReadyProps {
 }
 export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
   const navigate = useNavigate();
-  //consult type은 1이면 편지,2 면 채팅 3이면 둘다
-  const initialBookmarkStates = dummy.map((data) => data.isBookmarked || false);
-  const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
-    initialBookmarkStates,
-  );
 
   return (
     <Wrapper>
@@ -36,9 +30,7 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
         if (index <= 2) {
           return (
             <ReadyConsultCard
-              // 나중에 id로 변경
-              key={index}
-              index={index}
+              key={value.counselorId}
               counselorId={value.counselorId}
               tagList={AppendCategoryType(
                 value.consultCategories,
@@ -49,8 +41,6 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
               introduction={value.introduction}
               nickname={value.nickname}
               level={value.level}
-              bookmarkStates={bookmarkStates}
-              setBookmarkStates={setBookmarkStates}
               isWishList={value.isWishList}
               rating={value.ratingAverage}
               totalReview={value.totalReview}

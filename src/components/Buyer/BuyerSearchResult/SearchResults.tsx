@@ -23,9 +23,7 @@ export const SearchResults = ({ searchData }: SearchResultsProps) => {
       {searchData.map((value, index) => {
         return (
           <ReadyConsultCard
-            // 나중에 id로 변경
-            key={index}
-            index={index}
+            key={value.counselorId}
             counselorId={value.counselorId}
             tagList={AppendCategoryType(
               value.consultCategories,
@@ -36,8 +34,7 @@ export const SearchResults = ({ searchData }: SearchResultsProps) => {
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
-            bookmarkStates={bookmarkStates}
-            setBookmarkStates={setBookmarkStates}
+            isWishList={value.isWishList}
             rating={value.ratingAverage}
             totalReview={value.totalReview}
             consultType={value.consultTypes}

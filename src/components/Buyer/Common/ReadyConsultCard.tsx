@@ -15,15 +15,12 @@ import { convertTimeToString } from 'utils/convertTimeToString';
 import { deleteWishLists } from 'api/delete';
 import { patchWishLists } from 'api/patch';
 interface ReadyConsultCardProps {
-  index: number;
   counselorId: number;
   tagList: CartegoryState[];
   consultTimes: ConsultTimes;
   introduction: string;
   nickname: string;
   level: number;
-  bookmarkStates: boolean[];
-  setBookmarkStates: React.Dispatch<React.SetStateAction<boolean[]>>;
   isWishList: boolean;
   rating: number;
   totalReview: number;
@@ -34,15 +31,12 @@ interface ReadyConsultCardProps {
 }
 //일단 toggle파트 제외하고 클릭 시 상담프로필로 navigate하게 구현
 export const ReadyConsultCard = ({
-  index,
   counselorId,
   tagList,
   consultTimes,
   introduction,
   nickname,
   level,
-  bookmarkStates,
-  setBookmarkStates,
   isWishList,
   rating,
   totalReview,
