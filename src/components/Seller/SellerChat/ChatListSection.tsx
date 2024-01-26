@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react'; 
+import styled from 'styled-components';
+import { Grey6 } from 'styles/color';
 
 function ChatListSection() {
-  return (
-    <div>ChatListSection</div>
-  )
+  return <ChatListWrapper>ChatListSection</ChatListWrapper>;
 }
 
-export default ChatListSection
+const ChatListWrapper = styled.div`
+  background: ${Grey6};
+  height: 100vh;
+`;
+
+export default ChatListSection;

@@ -1,11 +1,18 @@
 import { Button } from 'components/Common/Button';
 import Input from 'components/Common/Input';
 import { Space } from 'components/Common/Space';
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { Grey3, Grey5 } from 'styles/color';
+import { Grey3, Grey5, Grey6 } from 'styles/color';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
+import TextareaAutosize from 'react-textarea-autosize';
+
 function ChatBottomSection() {
+  const textRef: any = useRef(null);
+  const handleTextHeight = () => {
+    textRef.current.style.height = 'auto';
+    textRef.current.style.height = textRef.current.scrollHeight + 'px';
+  };
   return (
     <ChatBottomWrapper>
       <TopBarSection>
@@ -25,7 +32,12 @@ function ChatBottomSection() {
       />
       <Space height="1.5rem" />
       <MessageSection>
-        <Input placeholder="메시지" width="100%" padding="1.2rem 1.5rem" />
+        <MessageTextArea
+          placeholder="메시지"
+          ref={textRef}
+          rows={1}
+          maxRows={4}
+        />
         <SendIcon />
       </MessageSection>
     </ChatBottomWrapper>
@@ -39,10 +51,10 @@ const ChatBottomWrapper = styled.div`
   @media (min-width: 768px) {
     width: 37.5rem;
   }
-  height: 25.7rem;
   border-radius: 2rem 2rem 0rem 0rem;
   background-color: white;
   box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.1);
+  padding-bottom: 3.2rem;
   position: fixed;
   bottom: 0;
   display: flex;
@@ -83,5 +95,24 @@ const MessageSection = styled.div`
   margin: 0 2rem;
   align-items: center;
   gap: 0.8rem;
+`;
+
+const MessageTextArea = styled(TextareaAutosize)`
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  outline: none;
+  border: none;
+  resize: none;
+  border-radius: 1.2rem;
+  background-color: ${Grey6};
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%; /* 1.76rem */
+  &:focus {
+    border: none;
+    outline: none;
+  }
 `;
 export default ChatBottomSection;
