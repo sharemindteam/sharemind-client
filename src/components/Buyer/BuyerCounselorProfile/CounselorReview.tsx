@@ -1,5 +1,5 @@
 import { getReviews } from 'api/get';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey6 } from 'styles/color';
@@ -18,7 +18,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchReviewData = async () => {
       setIsLoading(true);
       const params = {
@@ -31,7 +31,9 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
         alert('존재하지 않는 상담사의 리뷰 요청입니다.');
         navigate('/buyer');
       }
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1);
     };
     fetchReviewData();
   }, []);
