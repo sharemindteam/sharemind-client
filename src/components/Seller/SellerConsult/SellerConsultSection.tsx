@@ -33,7 +33,6 @@ export const SellerConsultSection = () => {
   const fetchData = useCallback(async () => {
     const params = {
       filter: !isInclueCompleteConsult,
-      isCustomer: false,
       sortType: sortType === 0 ? 'latest' : 'unread',
     };
 
@@ -41,7 +40,9 @@ export const SellerConsultSection = () => {
     try {
       res = isLetterActive
         ? await getConselorLetters({ params })
-        : await getChatsMinder({ params });
+        : await getChatsMinder({
+            params,
+          });
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);

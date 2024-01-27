@@ -1,44 +1,60 @@
 import { Button } from 'components/Common/Button';
 import Input from 'components/Common/Input';
 import { Space } from 'components/Common/Space';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Grey3, Grey5, Grey6 } from 'styles/color';
+import { Green, Grey3, Grey5, Grey6 } from 'styles/color';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
 import TextareaAutosize from 'react-textarea-autosize';
 
 function ChatBottomSection() {
-  const textRef: any = useRef(null);
-  const handleTextHeight = () => {
-    textRef.current.style.height = 'auto';
-    textRef.current.style.height = textRef.current.scrollHeight + 'px';
-  };
+  // 상담 시작 요청했는지여부
+  const [isPostStart, setIsPostStart] = useState(true);
+  // 상담이 시작되었는지 (셰어가 시작 요청을 확인했는지)
+  const [isStart, setIsStart] = useState(false);
+  // 상담이 종료 요청했는지 여부
+  const [isEnd, setIsEnd] = useState(false);
+  const [text, setText] = useState('');
+  
   return (
     <ChatBottomWrapper>
       <TopBarSection>
         <TopBar />
       </TopBarSection>
       <Space height="0.4rem" />
-      <GuideSection>
-        시작 전에도 메시지를 주고 받을 수 있어요. 시작 요청은 10분 간 유효하며,
-        셰어가 요청에 응한 후 30분간 상담이 진행되어요. 30분이 지나면 상담종료
-        버튼을 눌러 종료하세요.
-      </GuideSection>
-      <Space height="1.2rem" />
-      <ConsultStartButton
-        text="상담시작 요청하기"
-        width="calc(100% - 4rem)"
-        height="5.2rem"
-      />
-      <Space height="1.5rem" />
+      {isStart && (
+        <>
+          <GuideSection>
+            시작 전에도 메시지를 주고 받을 수 있어요. 시작 요청은 10분 간
+            유효하며, 셰어가 요청에 응한 후 30분간 상담이 진행되어요. 30분이
+            지나면 상담종료 버튼을 눌러 종료하세요.
+          </GuideSection>
+          <Space height="1.2rem" />
+          <ConsultStartButton
+            text={
+              isPostStart
+                ? '셰어가 시작 요청을 확인중이에요'
+                : '상담시작 요청하기'
+            }
+            isActive={!isPostStart}
+            width="calc(100% - 4rem)"
+            height="5.2rem"
+          />
+          <Space height="1.5rem" />
+        </>
+      )}
+
       <MessageSection>
         <MessageTextArea
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
           placeholder="메시지"
-          ref={textRef}
           rows={1}
           maxRows={4}
         />
-        <SendIcon />
+        <SendIconSVG fill={text.length > 0 ? Green : Grey3} />
       </MessageSection>
     </ChatBottomWrapper>
   );
@@ -95,6 +111,12 @@ const MessageSection = styled.div`
   margin: 0 2rem;
   align-items: center;
   gap: 0.8rem;
+`;
+
+const SendIconSVG = styled(SendIcon)`
+  cursor: pointer;
+  align-self: flex-end;
+  padding-bottom: 0.7rem;
 `;
 
 const MessageTextArea = styled(TextareaAutosize)`
