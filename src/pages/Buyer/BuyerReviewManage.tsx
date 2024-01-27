@@ -26,10 +26,9 @@ export const BuyerReviewManage = () => {
   const setScrollLock = useSetRecoilState(scrollLockState);
   useLayoutEffect(() => {
     const fetchReviewData = async () => {
-      const params = { isCompleted: !isReviewWrite, cursorId: 0 };
+      const params = { isCompleted: !isReviewWrite, reviewId: 0 };
       const res: any = await getReviewsCustomer({ params });
       if (res.status === 200) {
-        console.log(res.data);
         setReviewData(res.data);
       } else if (res.response.status === 404) {
         alert('존재하지 않는 회원입니다.');

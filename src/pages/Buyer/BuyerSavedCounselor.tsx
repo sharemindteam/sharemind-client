@@ -29,6 +29,7 @@ export const BuyerSavedCounselor = () => {
       const res: any = await postWishLists(body);
       if (res.status === 200) {
         setWishlistData(res.data);
+        console.log(res.data[res.data.length]);
       } else if (res.response.status !== 401) {
         navigate('/buyer/mypage');
       }
