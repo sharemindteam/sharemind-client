@@ -15,7 +15,7 @@ function ChatBottomSection() {
   // 상담이 종료 요청했는지 여부
   const [isEnd, setIsEnd] = useState(false);
   const [text, setText] = useState('');
-
+  
   return (
     <ChatBottomWrapper>
       <TopBarSection>
