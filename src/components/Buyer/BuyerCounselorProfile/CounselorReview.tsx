@@ -22,7 +22,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
     const fetchReviewData = async () => {
       setIsLoading(true);
       const params = {
-        cursorId: 0,
+        reviewId: 0,
       };
       const res: any = await getReviews(counselorId, { params });
       if (res.status === 200) {
