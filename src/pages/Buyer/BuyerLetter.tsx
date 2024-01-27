@@ -44,6 +44,7 @@ export const BuyerLetter = () => {
     try {
       const res: any = await getLetterRecentType(id);
       if (res.status === 200) {
+        console.log(res);
         if (
           res.data.recentType === '해당 편지에 대해 작성된 메시지가 없습니다.'
         ) {
@@ -55,6 +56,9 @@ export const BuyerLetter = () => {
           await fetchDeadline();
           setActive(2);
         } else if (res.data.recentType === '추가 질문') {
+          await fetchDeadline();
+          setActive(3);
+        } else if (res.data.recentType === '추가 답장') {
           await fetchDeadline();
           setActive(3);
         }

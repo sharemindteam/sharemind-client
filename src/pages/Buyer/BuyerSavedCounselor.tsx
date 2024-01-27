@@ -42,6 +42,14 @@ export const BuyerSavedCounselor = () => {
   if (isLoading) {
     return (
       <>
+        <HeaderWrapper>
+          <BackIcon
+            onClick={() => {
+              navigate('/buyer/mypage');
+            }}
+          />
+          <Heading color={Grey1}>찜 목록</Heading>
+        </HeaderWrapper>
         <Space height="30vh" />
         <LoadingSpinner />
       </>

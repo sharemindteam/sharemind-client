@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
 import { scrollLockState } from 'utils/atom';
-import { useTokenRefresh } from 'hooks/useTokenRefresh';
 interface AppContainerProps {
   children: React.ReactNode;
 }
