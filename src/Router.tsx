@@ -43,6 +43,7 @@ import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
 import { Admin } from 'pages/Common/Admin';
 import { BuyerChat } from 'pages/Buyer/BuyerChat';
+import Service from 'pages/Common/Service';
 const Router = () => {
   const navigate = useNavigate();
   return (
@@ -115,7 +116,7 @@ const Router = () => {
 
       {/* 판매자 : 상담 */}
       {/* 판매자 : 채팅 */}
-      <Route path="/seller/chat/:consultid" element={<SellerChat />} />
+      <Route path="/seller/chat/:chatid" element={<SellerChat />} />
 
       {/* 판매자 : 편지 */}
       {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}
@@ -148,6 +149,9 @@ const Router = () => {
       {/* 판매자 : 마인더 인증 */}
       <Route path="/seller/education/*" element={<SellerVerifyMaterial />} />
       <Route path="/seller/quiz/*" element={<SellerVerifyQuiz />} />
+
+      {/* 서비스 소개 */}
+      <Route path="/service" element={<Service />} />
     </Routes>
   );
 };
