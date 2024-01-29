@@ -88,19 +88,21 @@ export const SellerConsultSection = () => {
             <DownArrowIcon />
           </SortingType>
         </div>
-        {consultInfo?.length !== 0 && (
-          <div className="row2">
-            <div
-              className="row2-1"
-              onClick={() => {
-                setIsIncludeCompleteConsult(!isInclueCompleteConsult);
-              }}
-            >
-              <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Green} />
-              <Button2 color={Grey3}>완료된 상담 제외</Button2>
-            </div>
+
+        <div className="row2">
+          <div
+            className="row2-1"
+            onClick={() => {
+              setIsIncludeCompleteConsult(!isInclueCompleteConsult);
+            }}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Green} />
+            <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
           </div>
-        )}
+        </div>
       </ConsultSortingMenu>
 
       <ConsultBoxList>
