@@ -24,7 +24,7 @@ function VerifyQuizHeader({
               if (verifyStatus === '인증 전') {
                 setIsStopModalOpen(true);
               } else {
-                navigate('/seller/mypage');
+                navigate('/minder/mypage');
               }
             }}
           />

@@ -1,11 +1,14 @@
 import { Button } from 'components/Common/Button';
 import Input from 'components/Common/Input';
 import { Space } from 'components/Common/Space';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Green, Grey3, Grey5, Grey6 } from 'styles/color';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
 import TextareaAutosize from 'react-textarea-autosize';
+import SockJS from 'sockjs-client';
+import * as StompJs from '@stomp/stompjs';
+import { useParams } from 'react-router-dom';
 
 function ChatBottomSection() {
   // 상담 시작 요청했는지여부
@@ -14,8 +17,91 @@ function ChatBottomSection() {
   const [isStart, setIsStart] = useState(false);
   // 상담이 종료 요청했는지 여부
   const [isEnd, setIsEnd] = useState(false);
-  const [text, setText] = useState('');
+  // 내가 보낼 텍스트
+
   
+  const [counselorStomp, setCounselorStomp] = useState();
+  const [text, setText] = useState('');
+  const { chatid } = useParams();
+
+  const connect = () => {
+    const socket = new SockJS('https://sharemindapp.com/chat');
+    const stomp = StompJs.Stomp.over(socket);
+    setCounselorStomp(stomp);
+    stomp.connect(
+      { Authorization: localStorage.accessToken, isCustomer: false },
+      (frame: any) => {
+        console.log('Connected: ' + frame);
+        stomp.subscribe(
+          `/queue/chattings/notifications/counselors/${chatid}`,
+          (notification: any) => {
+            console.log('Notification: ', notification.body);
+          },
+        );
+        stomp.subscribe(
+          `/queue/chattings/counselors/${chatid}`,
+          (statusUpdate: any) => {
+            console.log('Status Update: ', statusUpdate.body);
+          },
+        );
+        stomp.subscribe(
+          `/queue/chattings/status/counselors/${chatid}`,
+          (statusAutoUpdate: any) => {
+            console.log('Status Auto Update: ', statusAutoUpdate.body);
+          },
+        );
+        stomp.subscribe(
+          `/queue/chattings/exception/counselors/${chatid}`,
+          (error: any) => {
+            console.log('Error: ', error.body);
+          },
+        );
+        stomp.subscribe(
+          `/queue/chatMessages/counselors/${chatid}`,
+          (receivedMessage: any) => {
+            console.log('Message: ', receivedMessage.body);
+          },
+        );
+      },
+    );
+  };
+
+  useEffect(() => {
+    connect();
+  }, []);
+
+  const sendMessage = () => {
+    counselorStomp?.send(
+      '/app/api/v1/chatMessages/counselors/' + 20,
+      {},
+      JSON.stringify({ content: text }),
+    );
+  };
+
+  const sendChatStartRequest = () => {
+    counselorStomp?.send(
+      `/app/api/v1/chat/counselors/${chatid}`,
+      {},
+      JSON.stringify({ chatWebsocketStatus: 'COUNSELOR_CHAT_START_REQUEST' }),
+    );
+  };
+
+  const sendChatStartResponse = () => {
+    counselorStomp?.send(
+      `/app/api/v1/chat/counselors/${chatid}`,
+      {},
+      JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_START_RESPONSE' }),
+    );
+  };
+
+  const sendChatFinishRequest = () => {
+    counselorStomp?.send(
+      `/app/api/v1/chat/counselors/${chatid}`,
+      {},
+      JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_FINISH_REQUEST' }),
+    );
+  };
+
   return (
     <ChatBottomWrapper>
       <TopBarSection>
@@ -54,7 +140,12 @@ function ChatBottomSection() {
           rows={1}
           maxRows={4}
         />
-        <SendIconSVG fill={text.length > 0 ? Green : Grey3} />
+        <SendIconSVG
+          fill={text.length > 0 ? Green : Grey3}
+          onClick={() => {
+            sendMessage();
+          }}
+        />
       </MessageSection>
     </ChatBottomWrapper>
   );

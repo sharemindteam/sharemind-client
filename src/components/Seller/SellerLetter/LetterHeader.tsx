@@ -14,7 +14,7 @@ export const LetterHeader = ({ name = '김고민' }) => {
     <LetterHeaderWrapper>
       <LeftArrow
         onClick={() => {
-          navigate('/seller/consult');
+          navigate('/minder/consult');
         }}
       />
       <Heading>{name}</Heading>

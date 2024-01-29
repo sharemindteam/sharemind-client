@@ -48,7 +48,7 @@ export const BuyerMypage = () => {
             <div className="change-button">
               <ChangeButton
                 onClick={() => {
-                  navigate('/seller/mypage');
+                  navigate('/minder/mypage');
                 }}
               >
                 <Button2 color={Grey1}>마인더로 전환</Button2>

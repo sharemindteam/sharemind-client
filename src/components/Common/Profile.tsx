@@ -44,7 +44,7 @@ export const Profile = ({
         <Button
           onClick={(event) => {
             if (isBuyer) {
-              navigate('/seller/mypage');
+              navigate('/minder/mypage');
             } else {
               navigate('/buyer/mypage');
             }
@@ -79,7 +79,7 @@ export const Profile = ({
         <SelectInfoList>
           <SelectItem
             onClick={() => {
-              navigate('/seller/mypage/viewProfile');
+              navigate('/minder/mypage/viewProfile');
             }}
           >
             <InfoIcon />
@@ -87,7 +87,7 @@ export const Profile = ({
           </SelectItem>
           <SelectItem
             onClick={() => {
-              navigate('/seller/mypage/review');
+              navigate('/minder/mypage/review');
             }}
           >
             <ReviewIcon />
@@ -99,7 +99,7 @@ export const Profile = ({
           <VerifyButton
             onClick={() => {
               if (isPass) {
-                navigate('/seller/education/first');
+                navigate('/minder/education/first');
               }
             }}
             width="100%"
@@ -123,7 +123,7 @@ export const Profile = ({
           <ServiceItem>정산 문의</ServiceItem>
           <ServiceItem
             onClick={() => {
-              navigate('/seller/setting');
+              navigate('/minder/setting');
             }}
           >
             계정 설정

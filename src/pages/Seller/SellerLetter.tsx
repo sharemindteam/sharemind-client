@@ -52,6 +52,7 @@ export const SellerLetter = () => {
       '추가 답장': 4,
     };
   }, []);
+
   // 처음 마운트될 떄 호출하는 API
   useEffect(() => {
     const fetchLetterInfo = async () => {
@@ -64,15 +65,16 @@ export const SellerLetter = () => {
 
         if (recentTypeResponse.status && deadlineResponse.status === 200) {
           const { data } = recentTypeResponse;
-
-          setTagActiveLevel(
-            levelMap[data?.recentType as keyof typeof levelMap] || 0,
-          );
+          const level =
+            levelMap[data?.recentType as keyof typeof levelMap] || 0;
+          setTagActiveLevel(level);
+          const initStatus = level === 4 || 0 ? level - 1 : level;
+          setTagStatus(initStatus);
           setDeadLine(deadlineResponse?.data?.deadline);
         }
       } catch (err) {
         alert(err);
-        navigate('/seller');
+        navigate('/minder');
       }
     };
     fetchLetterInfo();
@@ -166,7 +168,7 @@ export const SellerLetter = () => {
         <BottomButton
           text={bottomButtonText[tagActiveLevel]}
           onClick={() => {
-            navigate(`/seller/writeLetter/${consultid}`);
+            navigate(`/minder/writeLetter/${consultid}`);
           }}
         />
       )}

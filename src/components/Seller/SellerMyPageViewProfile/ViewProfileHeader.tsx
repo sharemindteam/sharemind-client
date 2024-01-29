@@ -12,7 +12,7 @@ export const ViewProfileHeader = () => {
       <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
         <LeftArrowIcon
           onClick={() => {
-            navigate('/seller/mypage');
+            navigate('/minder/mypage');
           }}
         />
       </div>
