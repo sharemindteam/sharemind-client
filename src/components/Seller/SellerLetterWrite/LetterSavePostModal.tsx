@@ -36,15 +36,15 @@ export const LetterSavePostModal = ({
     try {
       if (isSave) {
         await patchLetterMessage(patchBody);
-        navigate(`/seller/letter/${consultid}`);
+        navigate(`/minder/letter/${consultid}`);
       } else {
         await postLetterMessage(postBody);
-        navigate(`/seller/letter/${consultid}`);
+        navigate(`/minder/letter/${consultid}`);
       }
     } catch (err) {
       console.log(err);
     }
-    navigate(`/seller/letter/${consultid}`);
+    navigate(`/minder/letter/${consultid}`);
   };
   return (
     <PostModalBox>

@@ -4,6 +4,7 @@ import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
 interface LetterQuestionStepProps {
   isArrive: boolean;
   time: string;
@@ -18,6 +19,7 @@ export const LetterQuestionStep = ({
 }: LetterQuestionStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();
+
   return (
     <LetterQuestionWrapper>
       {isArrive ? (
@@ -52,6 +54,7 @@ const TextField = styled.div`
   width: calc(100% - 8rem);
   margin: 0 auto;
   min-height: 55.6rem;
+  white-space: pre;
   border-radius: 1.2rem;
   background: var(--Greyscale-Grey-6, #f6f6fa);
   padding: 1.6rem;

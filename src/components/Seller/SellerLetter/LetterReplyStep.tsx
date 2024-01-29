@@ -4,23 +4,30 @@ import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
 
 interface LetterReplyStepProps {
   isArrive: boolean;
   time: string;
   deadline: string;
   replyMsg: string;
-  tagActiveLevel:number;
+  tagActiveLevel: number;
 }
 export const LetterReplyStep = ({
   isArrive,
   time,
   deadline,
   replyMsg,
-  tagActiveLevel
+  tagActiveLevel,
 }: LetterReplyStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();
+  const formattedText = replyMsg?.split('\n').map((line, index) => (
+    <React.Fragment key={index}>
+      {line}
+      {index < replyMsg.split('\n').length - 1 && <br />}
+    </React.Fragment>
+  ));
   return (
     <LetterReplyStepWrapper>
       {isArrive ? (
@@ -69,6 +76,7 @@ const TextField = styled.div`
   border-radius: 1.2rem;
   background: var(--Greyscale-Grey-6, #f6f6fa);
   padding: 1.6rem;
+  white-space: pre;
   color: var(--greyscale-grey-1-text, #33333a);
   font-family: Pretendard;
   font-size: 1.6rem;

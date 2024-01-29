@@ -58,6 +58,7 @@ const TextField = styled.div`
   margin: 0 auto;
   min-height: 55.6rem;
   border-radius: 1.2rem;
+  white-space: pre;
   background: var(--Greyscale-Grey-6, #f6f6fa);
   padding: 1.6rem;
   color: var(--greyscale-grey-1-text, #33333a);
