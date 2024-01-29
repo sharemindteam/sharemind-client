@@ -7,8 +7,8 @@ import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
 import { LetterMainSection } from 'components/Buyer/BuyerLetter/LetterMainSection';
 import { LetterTags } from 'components/Buyer/BuyerLetter/LetterTags';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLayoutEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
@@ -44,7 +44,6 @@ export const BuyerLetter = () => {
     try {
       const res: any = await getLetterRecentType(id);
       if (res.status === 200) {
-        console.log(res);
         if (
           res.data.recentType === '해당 편지에 대해 작성된 메시지가 없습니다.'
         ) {
@@ -55,10 +54,10 @@ export const BuyerLetter = () => {
         } else if (res.data.recentType === '답장') {
           await fetchDeadline();
           setActive(2);
-        } else if (res.data.recentType === '추가 질문') {
-          await fetchDeadline();
-          setActive(3);
-        } else if (res.data.recentType === '추가 답장') {
+        } else if (
+          res.data.recentType === '추가 질문' ||
+          res.data.recentType === '추가 답장'
+        ) {
           await fetchDeadline();
           setActive(3);
         }

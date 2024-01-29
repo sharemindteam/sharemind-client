@@ -1,6 +1,7 @@
 import { patchLetterMessage, patchLetterMessageFirstQustion } from 'api/patch';
 import { postLetterMessage, postLetterMessageFirstQustion } from 'api/post';
 import { Button } from 'components/Common/Button';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
@@ -36,6 +37,7 @@ export const LetterSaveModal = ({
     //임시 저장 메세지 없는 경우에 first or not(patch)
     if (!isSaved) {
       if (tagStatus === 0) {
+        // console.log('임시저장 메세지 없을 시 first Q');
         const body = {
           letterId: consultId,
           consultCategory: convertCategoryEnum(consultCategory),
@@ -47,7 +49,7 @@ export const LetterSaveModal = ({
           alert('상담 카테고리를 정해주세요.');
           setIsActive(false);
         } else {
-          //첫번째 질문 임시저장 X 메세지 임시저장 수정
+          //첫번째 질문 임시저장 X 메세지 임시저장 생성
           try {
             const res: any = await postLetterMessageFirstQustion(body);
             if (res.status === 201) {
@@ -56,10 +58,8 @@ export const LetterSaveModal = ({
               setIsSaved(true);
             } else if (res.response.status === 400) {
               alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 403) {
               alert('접근 권한이 없습니다.');
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 404) {
               alert('존재하지 않는 편지 아이디로 요청되었습니다.');
             }
@@ -68,6 +68,7 @@ export const LetterSaveModal = ({
           }
         }
       } else if (tagStatus === 2) {
+        // console.log('여기로 들어와야함');
         //임시저장 없는 추가질문
         const body = {
           letterId: consultId,
@@ -75,7 +76,7 @@ export const LetterSaveModal = ({
           content: replyText,
           isCompleted: false,
         };
-        //추가 질문 임시저장 X 메세지 임시저장 수정
+        //추가 질문 임시저장 X 메세지 임시저장 생성
         try {
           const res: any = await postLetterMessage(body);
           if (res.status === 201) {
@@ -84,10 +85,8 @@ export const LetterSaveModal = ({
             setIsSaved(true);
           } else if (res.response.status === 400) {
             alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 403) {
             alert('접근 권한이 없습니다.');
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 404) {
             alert('존재하지 않는 편지 아이디로 요청되었습니다.');
           }
@@ -118,10 +117,8 @@ export const LetterSaveModal = ({
               setIsSaved(true);
             } else if (res.response.status === 400) {
               alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 403) {
               alert('접근 권한이 없습니다.');
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 404) {
               alert('존재하지 않는 편지 아이디로 요청되었습니다.');
             }
@@ -130,7 +127,7 @@ export const LetterSaveModal = ({
           }
         }
       } else if (tagStatus === 2) {
-        //임시저장 없는 추가질문
+        // console.log('임시저장 메세지 있을 시 second Q');
         const body = {
           messageId: messageId,
           content: replyText,
@@ -140,16 +137,14 @@ export const LetterSaveModal = ({
         //추가 질문 임시저장 O 메세지 임시저장 수정
         try {
           const res: any = await patchLetterMessage(body);
-          if (res.status === 201) {
+          if (res.status === 200) {
             //모달 끄고 isSaved true
             setIsActive(false);
             setIsSaved(true);
           } else if (res.response.status === 400) {
             alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 403) {
             alert('접근 권한이 없습니다.');
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 404) {
             alert('존재하지 않는 편지 아이디로 요청되었습니다.');
           }
@@ -158,7 +153,9 @@ export const LetterSaveModal = ({
         }
       }
     }
+    navigate(`/buyer/letter/${consultId}`);
   };
+
   return (
     <PostModalBox>
       <ModalBox>

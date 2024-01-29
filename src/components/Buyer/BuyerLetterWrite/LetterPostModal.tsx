@@ -136,7 +136,7 @@ export const LetterPostModal = ({
         //추가 질문 임시저장 O 메세지 임시저장 수정
         try {
           const res: any = await patchLetterMessage(body);
-          if (res.status === 201) {
+          if (res.status === 200) {
             //제출 후에 홈으로 navigate
             setIsActive(false);
             navigate(`/buyer/letter/${consultId}`);

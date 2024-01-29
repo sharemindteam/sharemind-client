@@ -49,7 +49,7 @@ export const BuyerSearchResult = () => {
   };
   //로딩 state
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
-  const fectchSearchResults = async (searchWord: string) => {
+  const fetchSearchResults = async (searchWord: string) => {
     setIsLoading(true);
     try {
       const body = {
@@ -74,7 +74,7 @@ export const BuyerSearchResult = () => {
     }
   };
   useLayoutEffect(() => {
-    fectchSearchResults(keyword);
+    fetchSearchResults(keyword);
   }, [keyword, sortType]);
   if (isLoading) {
     return (

@@ -74,8 +74,10 @@ export const BuyerLetterWrite = () => {
       const res: any = await getDraftsLetter({ params }, id);
       if (res.status === 200) {
         if (res.data.isSaved === true) {
-          setIsActiveLoadModal(true);
           setIsSaved(true);
+          setIsActiveLoadModal(true);
+        } else {
+          setIsSaved(false);
         }
       } else if (res.response.statue === 403) {
         alert('접근 권한이 없습니다.');
@@ -105,8 +107,14 @@ export const BuyerLetterWrite = () => {
   };
   //임시 저장된 메세지 있으면 정보받아오기, 아니면 null
   const fetchSavedData = async () => {
+    let messageType = '';
+    if (tagStatus === 0) {
+      messageType = 'FIRST_QUESTION';
+    } else if (tagStatus === 2) {
+      messageType = 'SECOND_QUESTION';
+    }
     const params = {
-      messageType: 'FIRST_QUESTION',
+      messageType: messageType,
       isCompleted: false,
     };
     try {

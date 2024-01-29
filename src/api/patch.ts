@@ -35,7 +35,7 @@ export const patchReviews = async (body: any) =>
 //SearchWord Controller
 //검색 결과 반환
 export const patchSearchWordsResults = async (sortType: string, body: any) =>
-  await patchInstance(`/searchWords/results?sortType=${sortType}`, body);
+  await patchPublicInstance(`/searchWords/results?sortType=${sortType}`, body);
 
 //Wishlist Controlloer
 //찜하기 추가
