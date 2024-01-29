@@ -29,7 +29,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
           if (isBuyer) {
             navigate('/');
           } else {
-            navigate('/seller');
+            navigate('/minder');
           }
         }}
       >
@@ -48,7 +48,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
           if (isBuyer) {
             navigate('/consult');
           } else {
-            navigate('/seller/consult');
+            navigate('/minder/consult');
           }
         }}
       >
@@ -75,7 +75,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
               if (isBuyer) {
                 navigate('/mypage');
               } else {
-                navigate('/seller/mypage');
+                navigate('/minder/mypage');
               }
             }}
           >

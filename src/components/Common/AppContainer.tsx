@@ -18,10 +18,10 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   useEffect(() => {
     const reviewPageRegex = /^\/buyer\/review\/\d+$/;
     if (
-      pathname === '/seller/mypage/viewProfile' ||
-      pathname === '/seller/mypage' ||
+      pathname === '/minder/mypage/viewProfile' ||
+      pathname === '/minder/mypage' ||
+      pathname === '/minder/mypage/modifyProfile' ||
       pathname === '/mypage' ||
-      pathname === '/seller/mypage/modifyProfile' ||
       reviewPageRegex.test(pathname) ||
       pathname === '/paymentDetail'
     ) {

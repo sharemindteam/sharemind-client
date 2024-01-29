@@ -32,11 +32,10 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
   } else {
     return (
       <Wrapper>
-        <Logo>
+        <Logo onClick={onClick}>
           <LogoSeller />
           <LogoText />
         </Logo>
-        <StyledSearch />
       </Wrapper>
     );
   }
