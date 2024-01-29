@@ -52,6 +52,7 @@ export const SellerLetter = () => {
       '추가 답장': 4,
     };
   }, []);
+
   // 처음 마운트될 떄 호출하는 API
   useEffect(() => {
     const fetchLetterInfo = async () => {
@@ -66,6 +67,9 @@ export const SellerLetter = () => {
           const { data } = recentTypeResponse;
 
           setTagActiveLevel(
+            levelMap[data?.recentType as keyof typeof levelMap] || 0,
+          );
+          setTagStatus(
             levelMap[data?.recentType as keyof typeof levelMap] || 0,
           );
           setDeadLine(deadlineResponse?.data?.deadline);
