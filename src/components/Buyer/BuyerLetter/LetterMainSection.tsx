@@ -118,7 +118,9 @@ export const LetterMainSection = ({
           <Body3 color={Grey3}>{messageResponse.updatedAt}</Body3>
         </UpdatedAtBox>
         <ContentBox>
-          <Body2 color={Grey1}>{messageResponse.content}</Body2>
+          <Body2 color={Grey1} style={{ whiteSpace: 'pre' }}>
+            {messageResponse.content}
+          </Body2>
         </ContentBox>
       </SectionWrapper>
     );

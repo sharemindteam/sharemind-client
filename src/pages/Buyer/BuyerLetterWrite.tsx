@@ -328,6 +328,7 @@ const TextArea = styled.textarea<{ tagStatus: number }>`
   rgba(242, 241, 248, 0.8);
   background: ${Grey6};
   box-sizing: border-box;
+  white-space: pre-wrap; 
   ${(props) => (props.tagStatus === 2 ? 'margin-top:1.2rem' : null)};
 `;
 const ButtonWrapper = styled.div`
