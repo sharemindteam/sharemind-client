@@ -15,13 +15,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import constructWithOptions from 'styled-components/dist/constructors/constructWithOptions';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 
 export const SellerLetter = () => {
   const navigate = useNavigate();
   // 상단 태그상태 -> 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
   const [tagStatus, setTagStatus] = useState<number>(0);
-  // 현재 편지의 태그 활성화레벨, tagStatus가 tagActiveLevel보다 작으면 검은색, 같거나 크면 희색:  1 2 3 4
+  // 현재 편지의 태그 활성화레벨, tagStatus가 tagActiveLevel보다 작으면 검은색, 같거나 크면 희색:  0 1 2 3 4
   const [tagActiveLevel, setTagActiveLevel] = useState<number>(0);
   // 신고할 것인지 여부
   const [isActiveComplaint, setIsComplaint] = useState<boolean>(false);
@@ -68,8 +69,18 @@ export const SellerLetter = () => {
           const level =
             levelMap[data?.recentType as keyof typeof levelMap] || 0;
           setTagActiveLevel(level);
-          const initStatus = level === 4 || 0 ? level - 1 : level;
-          setTagStatus(initStatus);
+          console.log(level);
+          setTagStatus(
+            level === 0
+              ? 1
+              : level === 1
+              ? 1
+              : level === 2
+              ? 1
+              : level === 3
+              ? 2
+              : 3,
+          );
           setDeadLine(deadlineResponse?.data?.deadline);
         }
       } catch (err) {
@@ -79,7 +90,6 @@ export const SellerLetter = () => {
     };
     fetchLetterInfo();
   }, []);
-
   // 태그 바뀜에 따라 getLetterMessages API 호출
   const messageTypeMap = useMemo(
     () => ({
