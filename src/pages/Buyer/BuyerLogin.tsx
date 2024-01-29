@@ -33,7 +33,7 @@ export const BuyerLogin = () => {
         // setCookie('refreshToken', newRefreshToken, { path: '/' });
         localStorage.setItem('accessToken', newAccessToken);
         localStorage.setItem('refreshToken', newRefreshToken);
-        navigate('/buyer');
+        navigate('/');
       } else if (res.response.status === 400) {
         setIsActiveModal(true);
         setModalErrorMessage('비밀번호가 일치하지 않습니다.');
@@ -50,7 +50,7 @@ export const BuyerLogin = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/mypage');
+            navigate('/mypage');
           }}
         />
         <Heading color={Grey1}>로그인</Heading>

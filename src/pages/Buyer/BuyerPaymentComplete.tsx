@@ -2,7 +2,6 @@ import { HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useNavigate } from 'react-router-dom';
 import { Green, Grey1 } from 'styles/color';
 import { Body2, Heading } from 'styles/font';
-import { ReactComponent as Graphic } from 'assets/icons/graphic-payment-complete.svg';
 import { ReactComponent as ProcessGraphic } from 'assets/icons/graphic-payment-inprocess.svg';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
@@ -29,7 +28,7 @@ export const BuyerPaymentComplete = () => {
           height="5.2rem"
           margin="0 0 1.9rem 0"
           onClick={() => {
-            navigate('/buyer');
+            navigate('/');
           }}
         />
       </div>

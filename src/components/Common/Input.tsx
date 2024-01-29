@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Black, Grey3, Grey4, Grey6 } from 'styles/color';
+import { Black, Grey3, Grey6 } from 'styles/color';
 
 interface InputProps {
   width?: string;

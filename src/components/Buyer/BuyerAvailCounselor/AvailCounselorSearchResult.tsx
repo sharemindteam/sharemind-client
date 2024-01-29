@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
-import { useState } from 'react';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';

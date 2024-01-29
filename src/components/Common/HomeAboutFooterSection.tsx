@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Body3 } from 'styles/font';
 import { ReactComponent as LogoText } from 'assets/icons/logo-text.svg';

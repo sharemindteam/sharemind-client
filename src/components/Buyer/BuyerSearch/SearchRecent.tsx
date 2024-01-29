@@ -29,7 +29,7 @@ export const SearchRecent = () => {
   };
   const handleRecentClick = (index: number) => {
     setKeyword(recentSearch[index]);
-    navigate('/buyer/search/result');
+    navigate('/search/result');
   };
   useEffect(() => {
     const fetchData = async () => {
