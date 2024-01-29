@@ -22,7 +22,7 @@ export const UpdateSuccess = () => {
           text="확인"
           onClick={() => {
             setIsSuccessUpdateState(false);
-            navigate(`/seller/mypage`);
+            navigate(`/minder/mypage`);
           }}
         />
       </UpdateSuccessSection>
