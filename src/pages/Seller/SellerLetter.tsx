@@ -65,13 +65,11 @@ export const SellerLetter = () => {
 
         if (recentTypeResponse.status && deadlineResponse.status === 200) {
           const { data } = recentTypeResponse;
-
-          setTagActiveLevel(
-            levelMap[data?.recentType as keyof typeof levelMap] || 0,
-          );
-          setTagStatus(
-            levelMap[data?.recentType as keyof typeof levelMap] || 0,
-          );
+          const level =
+            levelMap[data?.recentType as keyof typeof levelMap] || 0;
+          setTagActiveLevel(level);
+          const initStatus = level === 4 || 0 ? level - 1 : level;
+          setTagStatus(initStatus);
           setDeadLine(deadlineResponse?.data?.deadline);
         }
       } catch (err) {
