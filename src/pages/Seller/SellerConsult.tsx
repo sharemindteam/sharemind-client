@@ -5,13 +5,12 @@ import { useNavigate } from 'react-router-dom';
 export const SellerConsult = () => {
   const navigate = useNavigate();
 
-  
   return (
     <>
       <Header
         isBuyer={false}
         onClick={() => {
-          navigate('/seller');
+          navigate('/minder');
         }}
       />
       <TabA1 isBuyer={false} initState={2} />

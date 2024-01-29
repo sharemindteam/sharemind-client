@@ -33,7 +33,7 @@ export const SellerMypage = () => {
       <Header
         isBuyer={false}
         onClick={() => {
-          navigate('/seller');
+          navigate('/minder');
         }}
       />
       <TabA1 isBuyer={false} initState={3} />
