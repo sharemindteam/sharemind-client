@@ -8,7 +8,7 @@ import { ReactComponent as NoneBookMark } from 'assets/icons/icon-save1.svg';
 import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { ReactComponent as DownIcon } from 'assets/icons/icon-down-toggle.svg';
 import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultTimes } from 'utils/type';
 import { convertTimeToString } from 'utils/convertTimeToString';

@@ -112,7 +112,7 @@ export interface MinderProfile {
   consultTypes: string[];
   counselorId: number;
   introduction: string;
-  // isWishList: boolean;
+  isWishList: boolean;
   experience: string;
   level: number;
   nickname: string;

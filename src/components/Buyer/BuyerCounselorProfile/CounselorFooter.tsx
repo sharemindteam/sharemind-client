@@ -2,36 +2,70 @@ import styled from 'styled-components';
 import { ReactComponent as NoneBookMark } from 'assets/icons/icon-save1.svg';
 import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { Button } from 'components/Common/Button';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
+import { patchWishLists } from 'api/patch';
+import { deleteWishLists } from 'api/delete';
 interface CounselorFooterProps {
   counselorId: number;
-  isBookmarked: boolean;
+  isWishList: boolean;
 }
 export const CounselorFooter = ({
-  isBookmarked,
   counselorId,
+  isWishList,
 }: CounselorFooterProps) => {
   const navigate = useNavigate();
-  const [bookmarkToggle, setBookmarkToggle] = useState<boolean>();
-  useEffect(() => {
-    setBookmarkToggle(isBookmarked);
-  }, []);
+
+  //찜하기 여부
+  const [isSaved, setIsSaved] = useState<boolean>(isWishList);
+  //보내는 동안 중복 클릭 방지
+  const [isSending, setIsSending] = useState<boolean>(false);
+  //찜하기 업데이트
+  const handleBookmark = async () => {
+    if (isSending) {
+      return;
+    }
+    try {
+      setIsSending(true);
+      const res: any = await patchWishLists(counselorId);
+      if (res.response?.status === 400) {
+        alert('이미 찜하기 처리된 상담사입니다.');
+      } else if (res.response?.status === 404) {
+        alert('존재하지 않는 상담사입니다.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsSending(false);
+      setIsSaved(true);
+    }
+  };
+  const handleUnBookmark = async () => {
+    if (isSending) {
+      return;
+    }
+    try {
+      setIsSending(true);
+      const res: any = await deleteWishLists(counselorId);
+      if (res.response?.status === 400) {
+        alert('이미 찜하기 취소된 상담사입니다.');
+      } else if (res.response?.status === 404) {
+        alert('존재하지 않는 상담사입니다.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsSending(false);
+      setIsSaved(false);
+    }
+  };
   return (
     <Wrapper>
-      {bookmarkToggle ? (
-        <BookMarkIcon
-          onClick={() => {
-            setBookmarkToggle(false);
-          }}
-        />
+      {isSaved ? (
+        <BookMarkIcon onClick={handleUnBookmark} />
       ) : (
-        <NoneBookMarkIcon
-          onClick={() => {
-            setBookmarkToggle(true);
-          }}
-        />
+        <NoneBookMarkIcon onClick={handleBookmark} />
       )}
       <Button
         text="상담 신청하기"
