@@ -13,7 +13,7 @@ export const SellerTerminate = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/seller/setting');
+            navigate('/minder/setting');
           }}
         />
         <Heading color={Grey1}>회원 탈퇴</Heading>
@@ -32,7 +32,7 @@ export const SellerTerminate = () => {
             width="16rem"
             height="5.2rem"
             onClick={() => {
-              navigate('/seller/setting');
+              navigate('/minder/setting');
             }}
           />
           <Button

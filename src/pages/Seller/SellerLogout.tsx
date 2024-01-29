@@ -13,7 +13,7 @@ export const SellerLogout = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/seller/setting');
+            navigate('/minder/setting');
           }}
         />
         <Heading color={Grey1}>로그아웃</Heading>
@@ -29,7 +29,7 @@ export const SellerLogout = () => {
             width="16rem"
             height="5.2rem"
             onClick={() => {
-              navigate('/seller/setting');
+              navigate('/minder/setting');
             }}
           />
           <Button
@@ -41,7 +41,7 @@ export const SellerLogout = () => {
             onClick={() => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
-              navigate('/seller/mypage');
+              navigate('/minder/mypage');
             }}
           />
         </div>

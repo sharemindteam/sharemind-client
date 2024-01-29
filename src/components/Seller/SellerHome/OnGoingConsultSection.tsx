@@ -12,7 +12,7 @@ function OnGoingConsultSection() {
     <>
       <ContentTag
         onClick={() => {
-          navigate('/seller/consult');
+          navigate('/minder/consult');
         }}
       >
         <Heading color={Black}>진행중인 상담</Heading>

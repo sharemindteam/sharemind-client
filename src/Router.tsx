@@ -100,55 +100,55 @@ const Router = () => {
       <Route path="/setting/terminate" element={<BuyerTerminate />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />
 
-      <Route path="/seller" element={<SellerHome />} />
+      <Route path="/minder" element={<SellerHome />} />
       {/* 판매자 설정 */}
-      <Route path="/seller/setting" element={<SellerAccountSetting />} />
+      <Route path="/minder/setting" element={<SellerAccountSetting />} />
       <Route
-        path="/seller/setting/changePassword"
+        path="/minder/setting/changePassword"
         element={<SellerPwChange />}
       />
       <Route
-        path="/setting/refundBankAccount"
+        path="/minder/refundBankAccount"
         element={<SellerRefundBankAccount />}
       />
-      <Route path="/seller/setting/terminate" element={<SellerTerminate />} />
-      <Route path="/seller/setting/logout" element={<SellerLogout />} />
+      <Route path="/minder/setting/terminate" element={<SellerTerminate />} />
+      <Route path="/minder/setting/logout" element={<SellerLogout />} />
 
       {/* 판매자 : 상담 */}
       {/* 판매자 : 채팅 */}
-      <Route path="/seller/chat/:chatid" element={<SellerChat />} />
+      <Route path="/minder/chat/:chatid" element={<SellerChat />} />
 
       {/* 판매자 : 편지 */}
       {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}
-      <Route path="/seller/letter/:consultid" element={<SellerLetter />} />
+      <Route path="/minder/letter/:consultid" element={<SellerLetter />} />
       {/* 답장쓰기, 추가답장쓰기*/}
       <Route
-        path="/seller/writeLetter/:consultid"
+        path="/minder/writeLetter/:consultid"
         element={<SellerLetterWrite />}
       />
 
-      <Route path="/seller/consult" element={<SellerConsult />} />
+      <Route path="/minder/consult" element={<SellerConsult />} />
       {/* 판매자 : 프로필 정보 */}
-      <Route path="/seller/mypage" element={<SellerMypage />} />
+      <Route path="/minder/mypage" element={<SellerMypage />} />
 
-      <Route path="/seller/mypage/review" element={<SellerMyPageReview />} />
+      <Route path="/minder/mypage/review" element={<SellerMyPageReview />} />
       <Route
-        path="/seller/mypage/viewProfile"
+        path="/minder/mypage/viewProfile"
         element={<SellerMypageViewProfile />}
       />
 
       <Route
-        path="/seller/mypage/modifyProfile"
+        path="/minder/mypage/modifyProfile"
         element={<SellerMypageModifyProfile />}
       />
       {/* 판매자 : 수익 관리 */}
       <Route
-        path="/seller/calculatemanagement"
+        path="/minder/calculatemanagement"
         element={<SellerCaculateManagement />}
       />
       {/* 판매자 : 마인더 인증 */}
-      <Route path="/seller/education/*" element={<SellerVerifyMaterial />} />
-      <Route path="/seller/quiz/*" element={<SellerVerifyQuiz />} />
+      <Route path="/minder/education/*" element={<SellerVerifyMaterial />} />
+      <Route path="/minder/quiz/*" element={<SellerVerifyQuiz />} />
 
       {/* 서비스 소개 */}
       <Route path="/service" element={<Service />} />

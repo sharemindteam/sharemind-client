@@ -12,7 +12,7 @@ function ChatHeader({ customerName }: { customerName: string }) {
     <LetterHeaderWrapper>
       <LeftArrow
         onClick={() => {
-          navigate('/seller/consult');
+          navigate('/minder/consult');
         }}
       />
       <Heading>{customerName}</Heading>

@@ -12,7 +12,7 @@ export const IncomeManagementSection = () => {
     <>
       <ContentTag
         onClick={() => {
-          navigate('/seller/calculatemanagement');
+          navigate('/minder/calculatemanagement');
         }}
       >
         <Heading color={Black} margin="0px auto 0px 0px">

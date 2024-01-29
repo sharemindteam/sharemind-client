@@ -57,7 +57,7 @@ function SellerRefundBankAccount() {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/seller/setting');
+            navigate('/minder/setting');
           }}
         />
         <Heading color={Grey1}>환불계좌 관리</Heading>
@@ -109,7 +109,7 @@ function SellerRefundBankAccount() {
           isActive={isActiveFisnishButton ? true : false}
           onClick={() => {
             handlePostAccountInfo();
-            navigate('/seller/setting');
+            navigate('/minder/setting');
           }}
         />
       </BottomButtonWrapper>

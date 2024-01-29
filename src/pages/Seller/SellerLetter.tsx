@@ -74,7 +74,7 @@ export const SellerLetter = () => {
         }
       } catch (err) {
         alert(err);
-        navigate('/seller');
+        navigate('/minder');
       }
     };
     fetchLetterInfo();
@@ -168,7 +168,7 @@ export const SellerLetter = () => {
         <BottomButton
           text={bottomButtonText[tagActiveLevel]}
           onClick={() => {
-            navigate(`/seller/writeLetter/${consultid}`);
+            navigate(`/minder/writeLetter/${consultid}`);
           }}
         />
       )}

@@ -121,9 +121,9 @@ export const SellerConsultSection = () => {
               newMessageCounts={item?.unreadMessageCount}
               onClick={() => {
                 if (isLetterActive) {
-                  navigate(`/seller/letter/${item?.id}`);
+                  navigate(`/minder/letter/${item?.id}`);
                 } else {
-                  navigate(`/seller/chat/${item?.id}`);
+                  navigate(`/minder/chat/${item?.id}`);
                 }
               }}
             />
