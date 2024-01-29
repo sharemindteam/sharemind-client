@@ -50,13 +50,10 @@ export const LetterPostModal = ({
             if (res.status === 201) {
               //제출 후에 홈으로 navigate
               setIsActive(false);
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 400) {
               alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 403) {
               alert('접근 권한이 없습니다.');
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 404) {
               alert('존재하지 않는 편지 아이디로 요청되었습니다.');
             }
@@ -78,13 +75,10 @@ export const LetterPostModal = ({
           if (res.status === 201) {
             //제출 후에 홈으로 navigate
             setIsActive(false);
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 400) {
             alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 403) {
             alert('접근 권한이 없습니다.');
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 404) {
             alert('존재하지 않는 편지 아이디로 요청되었습니다.');
           }
@@ -112,13 +106,10 @@ export const LetterPostModal = ({
             if (res.status === 200) {
               //제출 후에 홈으로 navigate
               setIsActive(false);
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 400) {
               alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 403) {
               alert('접근 권한이 없습니다.');
-              navigate(`/buyer/letter/${consultId}`);
             } else if (res.response.status === 404) {
               alert('존재하지 않는 편지 아이디로 요청되었습니다.');
             }
@@ -139,13 +130,10 @@ export const LetterPostModal = ({
           if (res.status === 200) {
             //제출 후에 홈으로 navigate
             setIsActive(false);
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 400) {
             alert('이미 답장을 했거나 올바른 순서의 접근이 아닙니다.');
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 403) {
             alert('접근 권한이 없습니다.');
-            navigate(`/buyer/letter/${consultId}`);
           } else if (res.response.status === 404) {
             alert('존재하지 않는 편지 아이디로 요청되었습니다.');
           }
@@ -154,6 +142,7 @@ export const LetterPostModal = ({
         }
       }
     }
+    navigate(`/letter/${consultId}`);
   };
   return (
     <PostModalBox>

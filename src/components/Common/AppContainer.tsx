@@ -20,10 +20,10 @@ export const AppContainer = ({ children }: AppContainerProps) => {
     if (
       pathname === '/seller/mypage/viewProfile' ||
       pathname === '/seller/mypage' ||
-      pathname === '/buyer/mypage' ||
+      pathname === '/mypage' ||
       pathname === '/seller/mypage/modifyProfile' ||
       reviewPageRegex.test(pathname) ||
-      pathname === '/buyer/paymentDetail'
+      pathname === '/paymentDetail'
     ) {
       setIsGray(true);
     } else {

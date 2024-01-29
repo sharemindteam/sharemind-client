@@ -24,7 +24,7 @@ export type CartegoryState =
   | '팩폭';
 //tagA2 카테고리 array type
 
-type LetterState = '질문' | '답장' | '추가질문' | '추가답장';
+export type LetterState = '질문' | '답장' | '추가질문' | '추가답장';
 
 type CartegoryStateArray = CartegoryState[];
 

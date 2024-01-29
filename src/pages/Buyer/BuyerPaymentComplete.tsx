@@ -28,7 +28,7 @@ export const BuyerPaymentComplete = () => {
           height="5.2rem"
           margin="0 0 1.9rem 0"
           onClick={() => {
-            navigate('/buyer');
+            navigate('/');
           }}
         />
       </div>

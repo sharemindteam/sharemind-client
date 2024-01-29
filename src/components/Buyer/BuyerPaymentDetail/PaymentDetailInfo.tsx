@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Green, Grey2, Grey3, Grey6, White } from 'styles/color';
+import { Green, Grey2, Grey3, White } from 'styles/color';
 import { Body1, Body3, Caption2, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as Heart } from 'assets/icons/icon-heart2.svg';

@@ -43,7 +43,7 @@ export const ConsultCard = ({
     <Wrapper
       onClick={() => {
         setOpponentNickname(opponentNickname);
-        navigate(`/buyer/letter/${id}`);
+        navigate(`/letter/${id}`);
       }}
     >
       <ConsultContent>

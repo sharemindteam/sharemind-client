@@ -120,7 +120,7 @@ export const BuyerConsult = () => {
         <Header
           isBuyer={true}
           onClick={() => {
-            navigate('/buyer');
+            navigate('/');
           }}
         />
         <TabA1 isBuyer={true} initState={2} />
@@ -142,7 +142,7 @@ export const BuyerConsult = () => {
         <Header
           isBuyer={true}
           onClick={() => {
-            navigate('/buyer');
+            navigate('/');
           }}
         />
         <TabA1 isBuyer={true} initState={2} />

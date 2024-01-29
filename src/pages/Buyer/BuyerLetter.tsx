@@ -77,7 +77,7 @@ export const BuyerLetter = () => {
         setDeadline(res.data.deadline);
       } else if (res.response.status === 404) {
         alert('존재하지 않는 상담입니다.');
-        navigate('/buyer/consult');
+        navigate('/consult');
       }
     } catch (e) {
       console.log(e);
@@ -109,7 +109,7 @@ export const BuyerLetter = () => {
         setMessageResponse(res.data);
       } else if (res.response.status === 403) {
         alert('접근 권한이 없습니다.');
-        navigate('/buyer/consult');
+        navigate('/consult');
       } else if (res.response.status === 404) {
         alert('존재하지 않는 편지 아이디로 요청되었습니다.');
       }
@@ -132,7 +132,7 @@ export const BuyerLetter = () => {
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate('/buyer/consult');
+              navigate('/consult');
             }}
           />
           <MoreIcon />
@@ -156,7 +156,7 @@ export const BuyerLetter = () => {
           <HeaderWrapper>
             <BackIcon
               onClick={() => {
-                navigate('/buyer/consult');
+                navigate('/consult');
               }}
             />
             {/* params로 넘어온 id에 해당하는 상담이름 */}

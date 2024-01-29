@@ -45,7 +45,7 @@ export const BuyerCounselorProfile = () => {
           setProfileData(res.data);
         } else if (res.response.status === 404) {
           alert('존재하지 않는 상담 아이디입니다.');
-          navigate('/buyer');
+          navigate('/');
         }
       } catch (e) {
         alert(e);

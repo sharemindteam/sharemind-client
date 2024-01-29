@@ -153,7 +153,7 @@ export const LetterSaveModal = ({
         }
       }
     }
-    navigate(`/buyer/letter/${consultId}`);
+    navigate(`/letter/${consultId}`);
   };
 
   return (

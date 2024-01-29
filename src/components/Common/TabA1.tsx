@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as UnderLineBuyer } from 'assets/icons/underline-buyer.svg';
-import { ReactComponent as UnderLineSeller } from 'assets/icons/underline-seller.svg';
 import { Subtitle } from 'styles/font';
-import { Black, Green, Red, Grey6 } from 'styles/color';
+import { Black, Green, Grey6 } from 'styles/color';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface TabA1Props {
@@ -28,7 +27,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         onClick={() => {
           setTabState(1);
           if (isBuyer) {
-            navigate('/buyer');
+            navigate('/');
           } else {
             navigate('/seller');
           }
@@ -47,7 +46,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         onClick={() => {
           setTabState(2);
           if (isBuyer) {
-            navigate('/buyer/consult');
+            navigate('/consult');
           } else {
             navigate('/seller/consult');
           }
@@ -74,7 +73,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
             onClick={() => {
               setTabState(3);
               if (isBuyer) {
-                navigate('/buyer/mypage');
+                navigate('/mypage');
               } else {
                 navigate('/seller/mypage');
               }

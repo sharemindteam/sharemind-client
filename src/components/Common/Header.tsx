@@ -21,7 +21,7 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
         <StyledSearch
           onClick={() => {
             if (isBuyer) {
-              navigate('/buyer/search');
+              navigate('/search');
             } else {
               navigate('/seller/search');
             }

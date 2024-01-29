@@ -63,7 +63,7 @@ export const BuyerSearchResult = () => {
         setSearchData(res.data);
       } else if (res.response.status === 400) {
         alert('검색어는 2~20자 사이여야 합니다.');
-        navigate('/buyer');
+        navigate('/');
       }
     } catch (e) {
       console.log(e);
@@ -82,7 +82,7 @@ export const BuyerSearchResult = () => {
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate('/buyer/consult');
+              navigate('/consult');
             }}
           />
         </HeaderWrapper>

@@ -24,7 +24,7 @@ export const ReviewModal = () => {
           onClick={() => {
             //추후 클릭한 consult id에 대한 리뷰로 넘어감
             //props로 받으면될듯
-            navigate('/buyer/review/0');
+            navigate('/review/0');
           }}
         />
       </div>

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Caption2 } from 'styles/font';
+import { ConsultState } from 'utils/type';
 interface TagA2ConsultProps {
   tagType: ConsultState;
 }
