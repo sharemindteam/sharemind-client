@@ -19,6 +19,7 @@ function ChatBottomSection() {
   const [isEnd, setIsEnd] = useState(false);
   // 내가 보낼 텍스트
 
+  
   const [counselorStomp, setCounselorStomp] = useState();
   const [text, setText] = useState('');
   const { chatid } = useParams();
@@ -59,7 +60,6 @@ function ChatBottomSection() {
           `/queue/chatMessages/counselors/${chatid}`,
           (receivedMessage: any) => {
             console.log('Message: ', receivedMessage.body);
-            
           },
         );
       },
