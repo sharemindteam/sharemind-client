@@ -5,6 +5,7 @@ import { Grey3 } from 'styles/color';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate, useParams } from 'react-router-dom';
 import React from 'react';
+import { formattedMessage } from 'utils/formattedMessage';
 interface LetterQuestionStepProps {
   isArrive: boolean;
   time: string;
@@ -25,7 +26,7 @@ export const LetterQuestionStep = ({
       {isArrive ? (
         <ArriveSection>
           <Time>{time}</Time>
-          <TextField>{questionMsg}</TextField>
+          <TextField>{formattedMessage(questionMsg)}</TextField>
         </ArriveSection>
       ) : (
         <NotArriveSection>
