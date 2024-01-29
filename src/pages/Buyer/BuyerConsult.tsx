@@ -178,24 +178,26 @@ export const BuyerConsult = () => {
               <Down />
             </div>
           </div>
-          <div className="exception-toggle">
-            {isChecked ? (
-              <CheckIcon
-                onClick={() => {
-                  setIsChecked(false);
-                }}
-                style={{ cursor: 'pointer' }}
-              />
-            ) : (
-              <NonCheckIcon
-                onClick={() => {
-                  setIsChecked(true);
-                }}
-                style={{ cursor: 'pointer' }}
-              />
-            )}
-            <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
-          </div>
+          {cardData.length !== 0 && (
+            <div className="exception-toggle">
+              {isChecked ? (
+                <CheckIcon
+                  onClick={() => {
+                    setIsChecked(false);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                />
+              ) : (
+                <NonCheckIcon
+                  onClick={() => {
+                    setIsChecked(true);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                />
+              )}
+              <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
+            </div>
+          )}
         </div>
         {cardData.length !== 0 ? (
           <CardWrapper>
@@ -238,7 +240,6 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    border-bottom: 1px solid ${Grey6};
   }
   .select {
     display: flex;
