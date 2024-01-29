@@ -21,7 +21,16 @@ export const LetterMainSection = ({
   deadline,
 }: LetterMainSectionProps) => {
   const navigate = useNavigate();
-
+  const formattedMessage = (message: string | null): JSX.Element[] | null => {
+    return message
+      ? message.split('\n').map((item, key) => (
+          <span key={key}>
+            {item}
+            <br />
+          </span>
+        ))
+      : null;
+  };
   if (messageResponse.messageId === null) {
     if (tagStatus === 0) {
       return (
@@ -118,8 +127,8 @@ export const LetterMainSection = ({
           <Body3 color={Grey3}>{messageResponse.updatedAt}</Body3>
         </UpdatedAtBox>
         <ContentBox>
-          <Body2 color={Grey1} style={{ whiteSpace: 'pre' }}>
-            {messageResponse.content}
+          <Body2 color={Grey1}>
+            {formattedMessage(messageResponse.content)}
           </Body2>
         </ContentBox>
       </SectionWrapper>
