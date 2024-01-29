@@ -27,7 +27,7 @@ function IsTakeQuizModal() {
           <YesButton
             onClick={() => {
               setIsTakingQuizModalOpen(false);
-              navigate('/seller/quiz');
+              navigate('/minder/quiz');
             }}
           >
             퀴즈 응시하기
