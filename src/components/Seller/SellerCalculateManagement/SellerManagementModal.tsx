@@ -8,22 +8,20 @@ import styled, { keyframes } from 'styled-components';
 interface SellerManagementModalProps {
   sortType: number;
   setSortType: React.Dispatch<React.SetStateAction<number>>;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SellerManagementModal = ({
   sortType,
   setSortType,
+  setIsModalOpen,
 }: SellerManagementModalProps) => {
   //modal 여부
   const isModalOpen = useRecoilValue(isConsultModalOpenState);
   //여기서 unmount 시 sortType 바꾸고 새로 request
   //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
   const [modalSortType, setModalSortType] = useState<number>(sortType);
-  useEffect(() => {
-    return () => {
-      setSortType(modalSortType);
-    };
-  });
+
   return (
     <>
       {' '}
@@ -35,6 +33,8 @@ export const SellerManagementModal = ({
           className="row"
           onClick={() => {
             setModalSortType(0);
+            setSortType(0);
+            setIsModalOpen(false);
           }}
         >
           {modalSortType === 0 ? (
@@ -50,6 +50,8 @@ export const SellerManagementModal = ({
           className="row"
           onClick={() => {
             setModalSortType(1);
+            setSortType(1);
+            setIsModalOpen(false);
           }}
         >
           {modalSortType === 1 ? (
@@ -65,6 +67,8 @@ export const SellerManagementModal = ({
           className="row"
           onClick={() => {
             setModalSortType(2);
+            setSortType(2);
+            setIsModalOpen(false);
           }}
         >
           {modalSortType === 2 ? (
