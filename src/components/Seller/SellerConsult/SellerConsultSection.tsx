@@ -111,18 +111,20 @@ export const SellerConsultSection = () => {
           </div>
         </div>
       </ConsultSortingMenu>
+       {/* 스켈레톤 UI 적용 */}
       {isLoading ? (
-        <div
-          style={{
-            height: '40vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <LoadingSpinner />
-          <Skeleton />
-        </div>
+        <SkeletonList>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Skeleton
+              key={index}
+              variant="rectangular"
+              animation="wave"
+              width={'calc(100% - 4rem)'}
+              sx={{ bgcolor: '#f6f6fa' }}
+              height={'12rem'}
+            />
+          ))}
+        </SkeletonList>
       ) : (
         <ConsultBoxList>
           {consultInfo?.length === 0 ? (
@@ -230,6 +232,13 @@ const SortingType = styled.div`
   align-items: center;
   gap: 0.4rem;
   cursor: pointer;
+`;
+
+const SkeletonList = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.8rem;
 `;
 
 const ConsultBoxList = styled.div`

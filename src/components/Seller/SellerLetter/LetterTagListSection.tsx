@@ -2,7 +2,7 @@ import { TagLetterStatus } from 'components/Common/TagLetterStatus';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 interface LetterTagListSectionProps {
-  tagStatus: number;
+  tagStatus?: number;
   setTagStatus: React.Dispatch<React.SetStateAction<number>>;
   tagActiveLevel: number;
 }

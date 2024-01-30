@@ -12,6 +12,8 @@ import {
   getLetterMessages,
   getLetterRecentType,
 } from 'api/get';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
+import { Space } from 'components/Common/Space';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -66,6 +68,7 @@ export const LetterWriteMainSection = ({
     질문: 'first_question',
     '추가 질문': 'second_question',
   };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,7 +108,6 @@ export const LetterWriteMainSection = ({
         setSaveText(minderSaveResponse?.data?.content);
         setSaveDate(minderSaveResponse?.data?.updatedAt);
         setSaveId(minderSaveResponse?.data?.messageId);
-        console.log(minderSaveResponse);
       }
 
       // 셰어가 최근에 보낸 질문 조회하는 API
@@ -130,8 +132,7 @@ export const LetterWriteMainSection = ({
         content: letterResponse?.data?.content,
         date: letterResponse?.data?.updatedAt,
       });
-      console.log(letterResponse);
-      console.log(customerInfoResponse);
+      setIsLoading(false);
     };
     fetchData();
   }, [isSave]);
@@ -168,8 +169,12 @@ export const LetterWriteMainSection = ({
       {isActivePostModal || isActiveSaveModal || isActiveSavePostModal ? (
         <BackDrop />
       ) : null}
-
-      {isViewQuestion ? (
+      {isLoading ? (
+        <>
+          <Space height="18vh" />
+          <LoadingSpinner />
+        </>
+      ) : isViewQuestion ? (
         <>
           <QuestionDate>{consultInform?.date}</QuestionDate>
           <UnfoldedTextField>{consultInform?.content}</UnfoldedTextField>
