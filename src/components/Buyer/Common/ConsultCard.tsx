@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { ConsultState } from 'utils/type';
 import { useSetRecoilState } from 'recoil';
 import { opponentNicknameState } from 'utils/atom';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 
 interface ConsultCardProps {
   consultStyle: string;
@@ -17,6 +18,8 @@ interface ConsultCardProps {
   opponentNickname: string;
   status: string;
   unreadMessageCount: number | null;
+  reviewCompleted: boolean | null;
+  consultId: number | null;
 }
 export const ConsultCard = ({
   consultStyle,
@@ -27,6 +30,8 @@ export const ConsultCard = ({
   opponentNickname,
   status,
   unreadMessageCount,
+  reviewCompleted,
+  consultId,
 }: ConsultCardProps) => {
   const navigate = useNavigate();
   const setOpponentNickname = useSetRecoilState(opponentNicknameState);
@@ -37,19 +42,19 @@ export const ConsultCard = ({
   return (
     <Wrapper
       onClick={() => {
-        //추후 consult id에 해당하는 letter로 navigate, 채팅 편지 구분까지
         setOpponentNickname(opponentNickname);
-        // navigate(`/buyer/letter/${id}`, {
-        //   state: { opponentNickname: opponentNickname },
-        // });
-        navigate(`/buyer/letter/${id}`);
+        navigate(`/letter/${id}`);
       }}
     >
       <ConsultContent>
         <ConsultStateBox>
           <div className="col1">
             <TagA2Consult tagType={consultStatus} />
-            <Characters number={9} width="5.4rem" height="5.1rem" />
+            <Characters
+              number={consultStyleToCharNum(consultStyle)}
+              width="5.4rem"
+              height="5.1rem"
+            />
           </div>
           <div className="col2">
             <div className="name-row">

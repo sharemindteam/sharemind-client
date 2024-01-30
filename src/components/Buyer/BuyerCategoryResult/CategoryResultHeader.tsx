@@ -3,7 +3,6 @@ import { Grey1, Grey6, White } from 'styles/color';
 import { Heading } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { useNavigate } from 'react-router-dom';
-import { categories } from 'utils/constant';
 interface ResultHeaderProps {
   categoryType: string;
 }

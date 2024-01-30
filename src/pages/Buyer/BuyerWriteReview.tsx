@@ -31,7 +31,7 @@ export const BuyerWriteReview = () => {
     };
     const res: any = await patchReviews(body);
     if (res.status === 200) {
-      navigate('/buyer/reviewManage');
+      navigate('/reviewManage');
     } else if (res.response.status === 400) {
       alert(res.response.data.message);
     } else if (res.response.status === 403) {
@@ -43,7 +43,7 @@ export const BuyerWriteReview = () => {
   useEffect(() => {
     if (reviewData === null || reviewData === undefined) {
       alert('잘못된 접근입니다.');
-      navigate('/buyer/reviewManage');
+      navigate('/reviewManage');
     }
   }, []);
   if (!(reviewData === null || reviewData === undefined)) {
@@ -52,7 +52,7 @@ export const BuyerWriteReview = () => {
         <HeaderWrapper border={false}>
           <BackIcon
             onClick={() => {
-              navigate('/buyer/reviewManage');
+              navigate('/reviewManage');
             }}
           />
           <Heading color={Grey1}>리뷰 작성</Heading>

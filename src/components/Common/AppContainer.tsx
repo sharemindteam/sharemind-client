@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
 import { scrollLockState } from 'utils/atom';
-import { useTokenRefresh } from 'hooks/useTokenRefresh';
 interface AppContainerProps {
   children: React.ReactNode;
 }
@@ -20,11 +19,11 @@ export const AppContainer = ({ children }: AppContainerProps) => {
     const reviewPageRegex = /^\/buyer\/review\/\d+$/;
     if (
       pathname === '/minder/mypage/viewProfile' ||
-      pathname === '/seller/mypage' ||
       pathname === '/minder/mypage' ||
       pathname === '/minder/mypage/modifyProfile' ||
+      pathname === '/mypage' ||
       reviewPageRegex.test(pathname) ||
-      pathname === '/buyer/paymentDetail'
+      pathname === '/paymentDetail'
     ) {
       setIsGray(true);
     } else {

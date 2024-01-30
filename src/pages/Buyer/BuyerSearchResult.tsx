@@ -49,7 +49,7 @@ export const BuyerSearchResult = () => {
   };
   //로딩 state
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
-  const fectchSearchResults = async (searchWord: string) => {
+  const fetchSearchResults = async (searchWord: string) => {
     setIsLoading(true);
     try {
       const body = {
@@ -63,7 +63,7 @@ export const BuyerSearchResult = () => {
         setSearchData(res.data);
       } else if (res.response.status === 400) {
         alert('검색어는 2~20자 사이여야 합니다.');
-        navigate('/buyer');
+        navigate('/');
       }
     } catch (e) {
       console.log(e);
@@ -74,7 +74,7 @@ export const BuyerSearchResult = () => {
     }
   };
   useLayoutEffect(() => {
-    fectchSearchResults(keyword);
+    fetchSearchResults(keyword);
   }, [keyword, sortType]);
   if (isLoading) {
     return (
@@ -82,7 +82,7 @@ export const BuyerSearchResult = () => {
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate('/buyer/consult');
+              navigate('/consult');
             }}
           />
         </HeaderWrapper>

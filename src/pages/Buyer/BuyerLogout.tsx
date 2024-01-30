@@ -13,7 +13,7 @@ export const BuyerLogout = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/setting');
+            navigate('/setting');
           }}
         />
         <Heading color={Grey1}>로그아웃</Heading>
@@ -29,7 +29,7 @@ export const BuyerLogout = () => {
             width="16rem"
             height="5.2rem"
             onClick={() => {
-              navigate('/buyer/mypage');
+              navigate('/mypage');
             }}
           />
           <Button
@@ -41,7 +41,7 @@ export const BuyerLogout = () => {
             onClick={() => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
-              navigate('/buyer/mypage');
+              navigate('/mypage');
             }}
           />
         </div>

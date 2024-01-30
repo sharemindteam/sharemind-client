@@ -34,7 +34,7 @@ export const BuyerMypage = () => {
       <Header
         isBuyer={true}
         onClick={() => {
-          navigate('/buyer');
+          navigate('/');
         }}
       />
       <TabA1 isBuyer={true} initState={3} />
@@ -59,7 +59,7 @@ export const BuyerMypage = () => {
             <div
               className="button"
               onClick={() => {
-                navigate('/buyer/payment');
+                navigate('/payment');
               }}
             >
               <PayedIcon />
@@ -68,7 +68,7 @@ export const BuyerMypage = () => {
             <div
               className="button"
               onClick={() => {
-                navigate('/buyer/reviewManage');
+                navigate('/reviewManage');
               }}
             >
               <ReviewIcon />
@@ -77,7 +77,7 @@ export const BuyerMypage = () => {
             <div
               className="button"
               onClick={() => {
-                navigate('/buyer/saved');
+                navigate('/saved');
               }}
             >
               <SavedIcon />
@@ -129,7 +129,7 @@ export const BuyerMypage = () => {
             <Body2
               color={Grey1}
               onClick={() => {
-                navigate('/buyer/setting');
+                navigate('/setting');
               }}
             >
               계정 설정

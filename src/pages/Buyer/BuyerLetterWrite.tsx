@@ -74,15 +74,17 @@ export const BuyerLetterWrite = () => {
       const res: any = await getDraftsLetter({ params }, id);
       if (res.status === 200) {
         if (res.data.isSaved === true) {
-          setIsActiveLoadModal(true);
           setIsSaved(true);
+          setIsActiveLoadModal(true);
+        } else {
+          setIsSaved(false);
         }
       } else if (res.response.statue === 403) {
         alert('접근 권한이 없습니다.');
-        navigate('/buyer/consult');
+        navigate('/consult');
       } else if (res.response.statue === 404) {
         alert('존재하지 않는 상담입니다.');
-        navigate('/buyer/consult');
+        navigate('/consult');
       }
     } catch (e) {
       console.log(e);
@@ -97,16 +99,23 @@ export const BuyerLetterWrite = () => {
         setCategoryList(updatedCategoryList);
       } else if (res.response.statue === 404) {
         alert('존재하지 않는 상담입니다.');
-        navigate('/buyer/consult');
+        navigate('/consult');
       }
     } catch (e) {
       console.log(e);
     }
   };
   //임시 저장된 메세지 있으면 정보받아오기, 아니면 null
+  //tagStatus 1, 3일 시엔 빼야함
   const fetchSavedData = async () => {
+    let messageType = '';
+    if (tagStatus === 0) {
+      messageType = 'FIRST_QUESTION';
+    } else if (tagStatus === 2) {
+      messageType = 'SECOND_QUESTION';
+    }
     const params = {
-      messageType: 'FIRST_QUESTION',
+      messageType: messageType,
       isCompleted: false,
     };
     try {
@@ -115,7 +124,7 @@ export const BuyerLetterWrite = () => {
         setMessageResponse(res.data);
       } else if (res.response.status === 403) {
         alert('접근 권한이 없습니다.');
-        navigate('/buyer/consult');
+        navigate('/consult');
       } else if (res.response.status === 404) {
         alert('존재하지 않는 편지 아이디로 요청되었습니다.');
       }
@@ -137,7 +146,7 @@ export const BuyerLetterWrite = () => {
       id === undefined
     ) {
       alert('유효하지 않은 접근입니다.');
-      navigate('/buyer/consult');
+      navigate('/consult');
     } else {
       fetchData();
     }
@@ -159,7 +168,7 @@ export const BuyerLetterWrite = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate(`/buyer/letter/${id}`);
+            navigate(`/letter/${id}`);
           }}
         />
         {tagStatus === 0 ? (

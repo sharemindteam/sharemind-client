@@ -41,7 +41,7 @@ export const BuyerReviewManage = () => {
       <HeaderWrapper border={false}>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/mypage');
+            navigate('/mypage');
           }}
         />
         <Heading color={Grey1}>리뷰관리</Heading>

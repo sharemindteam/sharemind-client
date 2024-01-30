@@ -23,7 +23,7 @@ export const BuyerHome = () => {
         setSearchData(res.data);
       } else if (res.response.status === 404) {
         alert('유효하지 않은 정렬 방식입니다.');
-        navigate('/buyer/home');
+        navigate('/');
       }
     } catch (e) {
       console.log(e);
@@ -37,7 +37,7 @@ export const BuyerHome = () => {
       <Header
         isBuyer={true}
         onClick={() => {
-          navigate('/buyer');
+          navigate('/');
         }}
       />
       <TabA1 isBuyer={true} initState={1} />

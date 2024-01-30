@@ -7,8 +7,8 @@ import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
 import { LetterMainSection } from 'components/Buyer/BuyerLetter/LetterMainSection';
 import { LetterTags } from 'components/Buyer/BuyerLetter/LetterTags';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLayoutEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
@@ -54,7 +54,10 @@ export const BuyerLetter = () => {
         } else if (res.data.recentType === '답장') {
           await fetchDeadline();
           setActive(2);
-        } else if (res.data.recentType === '추가 질문') {
+        } else if (
+          res.data.recentType === '추가 질문' ||
+          res.data.recentType === '추가 답장'
+        ) {
           await fetchDeadline();
           setActive(3);
         }
@@ -74,7 +77,7 @@ export const BuyerLetter = () => {
         setDeadline(res.data.deadline);
       } else if (res.response.status === 404) {
         alert('존재하지 않는 상담입니다.');
-        navigate('/buyer/consult');
+        navigate('/consult');
       }
     } catch (e) {
       console.log(e);
@@ -106,7 +109,7 @@ export const BuyerLetter = () => {
         setMessageResponse(res.data);
       } else if (res.response.status === 403) {
         alert('접근 권한이 없습니다.');
-        navigate('/buyer/consult');
+        navigate('/consult');
       } else if (res.response.status === 404) {
         alert('존재하지 않는 편지 아이디로 요청되었습니다.');
       }
@@ -129,7 +132,7 @@ export const BuyerLetter = () => {
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate('/buyer/consult');
+              navigate('/consult');
             }}
           />
           <MoreIcon />
@@ -153,7 +156,7 @@ export const BuyerLetter = () => {
           <HeaderWrapper>
             <BackIcon
               onClick={() => {
-                navigate('/buyer/consult');
+                navigate('/consult');
               }}
             />
             {/* params로 넘어온 id에 해당하는 상담이름 */}

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
-import { useState } from 'react';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
@@ -12,16 +11,9 @@ interface CategorySearchResultsProps {
 export const CategorySearchResults = ({
   searchData,
 }: CategorySearchResultsProps) => {
-  //찜하기 배열 init
-  const initialBookmarkStates = searchData.map(
-    (data) => data.isWishList || false,
-  );
-  const [bookmarkStates, setBookmarkStates] = useState<boolean[]>(
-    initialBookmarkStates,
-  );
   return (
     <Wrapper>
-      {searchData.map((value, index) => {
+      {searchData.map((value) => {
         return (
           <ReadyConsultCard
             key={value.counselorId}
