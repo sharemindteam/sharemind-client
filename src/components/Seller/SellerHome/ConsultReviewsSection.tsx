@@ -19,7 +19,7 @@ interface ReviewData {
 }
 export const ConsultReviewSection = () => {
   const navigate = useNavigate();
-  const [reviewData, setReviewData] = useState<ReviewData[]>();
+  const [reviewData, setReviewData] = useState<ReviewData[]>([]);
   useEffect(() => {
     const fetchHomeReview = async () => {
       const reviweRes: any = await getMinderReviewsHome();
@@ -42,7 +42,9 @@ export const ConsultReviewSection = () => {
             </Body1>
           </>
         ) : (
-          <Heading color={Black}>받은 리뷰</Heading>
+          <Heading color={Black} margin="0px auto 0px 0px">
+            받은 리뷰
+          </Heading>
         )}
         <RightArrow />
       </ContentTag>
@@ -52,7 +54,11 @@ export const ConsultReviewSection = () => {
           <Body3 color={Grey3}>아직 받은 리뷰가 없어요</Body3>
         ) : (
           reviewData?.map((item) => (
-            <ConsultReview>
+            <ConsultReview
+              onClick={() => {
+                navigate('/minder/mypage/review');
+              }}
+            >
               <div className="flex-1">
                 <Body1>{item.nickname}</Body1>
                 <Body3 margin="0 0 0 auto">{item.updatedAt}</Body3>

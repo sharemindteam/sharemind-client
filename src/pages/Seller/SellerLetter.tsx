@@ -15,13 +15,19 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
+import constructWithOptions from 'styled-components/dist/constructors/constructWithOptions';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
+import {
+  isConsultModalOpenState,
+  isLoadingState,
+  scrollLockState,
+} from 'utils/atom';
 
 export const SellerLetter = () => {
   const navigate = useNavigate();
   // 상단 태그상태 -> 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
   const [tagStatus, setTagStatus] = useState<number>(0);
-  // 현재 편지의 태그 활성화레벨, tagStatus가 tagActiveLevel보다 작으면 검은색, 같거나 크면 희색:  1 2 3 4
+  // 현재 편지의 태그 활성화레벨, tagStatus가 tagActiveLevel보다 작으면 검은색, 같거나 크면 희색:  0 1 2 3 4
   const [tagActiveLevel, setTagActiveLevel] = useState<number>(0);
   // 신고할 것인지 여부
   const [isActiveComplaint, setIsComplaint] = useState<boolean>(false);
@@ -52,11 +58,14 @@ export const SellerLetter = () => {
       '추가 답장': 4,
     };
   }, []);
+  // 로딩스피너 여부
+  const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
 
   // 처음 마운트될 떄 호출하는 API
   useEffect(() => {
     const fetchLetterInfo = async () => {
       try {
+        setIsLoading(true);
         const [recentTypeResponse, deadlineResponse]: [any, any] =
           await Promise.all([
             getLetterRecentType(consultid),
@@ -68,18 +77,28 @@ export const SellerLetter = () => {
           const level =
             levelMap[data?.recentType as keyof typeof levelMap] || 0;
           setTagActiveLevel(level);
-          const initStatus = level === 4 || 0 ? level - 1 : level;
-          setTagStatus(initStatus);
+          setTagStatus(
+            level === 0
+              ? 0
+              : level === 1
+              ? 1
+              : level === 2
+              ? 1
+              : level === 3
+              ? 2
+              : 3,
+          );
           setDeadLine(deadlineResponse?.data?.deadline);
+          setIsLoading(false);
         }
       } catch (err) {
         alert(err);
         navigate('/minder');
       }
     };
+
     fetchLetterInfo();
   }, []);
-
   // 태그 바뀜에 따라 getLetterMessages API 호출
   const messageTypeMap = useMemo(
     () => ({
@@ -92,6 +111,7 @@ export const SellerLetter = () => {
   );
   useEffect(() => {
     const fetchMessages = async () => {
+      setIsLoading(true);
       const params = {
         messageType: messageTypeMap[tagStatus as keyof typeof messageTypeMap],
         isCompleted: true,
@@ -100,6 +120,7 @@ export const SellerLetter = () => {
         const res: any = await getLetterMessages({ params }, consultid);
         setText(res.data.content);
         setDate(res.data.updatedAt);
+        setIsLoading(false);
       } catch (err) {
         alert(err);
         navigate('/seller');
@@ -115,62 +136,75 @@ export const SellerLetter = () => {
         setTagStatus={setTagStatus}
         tagActiveLevel={tagActiveLevel}
       />
-      {/* 질문, 답장, 추가질문, 추가답장탭 */}
-      {tagStatus === 0 ? (
-        <LetterQuestionStep
-          isArrive={tagActiveLevel >= 1}
-          time={date}
-          questionMsg={text}
-          tagActiveLevel={tagActiveLevel}
-        />
-      ) : tagStatus === 1 ? (
-        <LetterReplyStep
-          isArrive={tagActiveLevel >= 2}
-          time={date}
-          deadline={deadline}
-          replyMsg={text}
-          tagActiveLevel={tagActiveLevel}
-        />
-      ) : tagStatus === 2 ? (
-        <LetterBonusQuestionStep
-          isArrive={tagActiveLevel >= 3}
-          time={date}
-          deadline={deadline}
-          questionMsg={text}
-          tagActiveLevel={tagActiveLevel}
-        />
-      ) : (
-        <LetterBonusReplyStep
-          isArrive={tagActiveLevel >= 4}
-          time={date}
-          deadline={deadline}
-          replyMsg={text}
-          tagActiveLevel={tagActiveLevel}
-        />
-      )}
-
-      {isModalOpen ? (
-        <>
-          <BackDrop
-            onClick={() => {
-              setIsModalOpen(false);
-              setScrollLock(false);
-            }}
-          />
-          <LetterComplaintMenu
-            isActiveComplaint={isActiveComplaint}
-            setIsActiveComplaint={setIsComplaint}
-          />
-        </>
-      ) : null}
-
-      {tagActiveLevel % 2 !== 0 && (
-        <BottomButton
-          text={bottomButtonText[tagActiveLevel]}
-          onClick={() => {
-            navigate(`/minder/writeLetter/${consultid}`);
+      {isLoading ? (
+        <div
+          style={{
+            height: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-        />
+        >
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <>
+          {/* 질문, 답장, 추가질문, 추가답장탭 */}
+          {tagStatus === 0 ? (
+            <LetterQuestionStep
+              isArrive={tagActiveLevel >= 1}
+              time={date}
+              questionMsg={text}
+              tagActiveLevel={tagActiveLevel}
+            />
+          ) : tagStatus === 1 ? (
+            <LetterReplyStep
+              isArrive={tagActiveLevel >= 2}
+              time={date}
+              deadline={deadline}
+              replyMsg={text}
+              tagActiveLevel={tagActiveLevel}
+            />
+          ) : tagStatus === 2 ? (
+            <LetterBonusQuestionStep
+              isArrive={tagActiveLevel >= 3}
+              time={date}
+              deadline={deadline}
+              questionMsg={text}
+              tagActiveLevel={tagActiveLevel}
+            />
+          ) : (
+            <LetterBonusReplyStep
+              isArrive={tagActiveLevel >= 4}
+              time={date}
+              deadline={deadline}
+              replyMsg={text}
+              tagActiveLevel={tagActiveLevel}
+            />
+          )}
+          {isModalOpen ? (
+            <>
+              <BackDrop
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setScrollLock(false);
+                }}
+              />
+              <LetterComplaintMenu
+                isActiveComplaint={isActiveComplaint}
+                setIsActiveComplaint={setIsComplaint}
+              />
+            </>
+          ) : null}
+          {tagActiveLevel % 2 !== 0 && (
+            <BottomButton
+              text={bottomButtonText[tagActiveLevel]}
+              onClick={() => {
+                navigate(`/minder/writeLetter/${consultid}`);
+              }}
+            />
+          )}
+        </>
       )}
     </>
   );
