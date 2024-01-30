@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
 import { Body1, Body3, Caption2 } from 'styles/font';
@@ -15,7 +14,6 @@ interface ReviewWroteCardProps {
 }
 //캐릭터 넘버 레벨 별점 후기개수 상담유형 상담일자 상담가격 (남긴리뷰) 리뷰내용
 export const ReviewWroteCard = ({ reviewData }: ReviewWroteCardProps) => {
-  const navigate = useNavigate();
   // Modal 여부(recoil)
   const setIsModalOpen = useSetRecoilState<boolean>(isModifyReviewState);
   return (

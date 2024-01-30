@@ -35,12 +35,12 @@ export const Button = ({
         <StyledButton
           type={type}
           onClick={onClick}
-          width={width}
-          height={height}
-          backgroundColor={backgroundColor}
-          borderRadius={borderRadius}
-          border={border}
-          margin={margin}
+          $width={width}
+          $height={height}
+          $backgroundColor={backgroundColor}
+          $borderRadius={borderRadius}
+          $border={border}
+          $margin={margin}
         >
           <Button1 color={color}>{text}</Button1>
         </StyledButton>
@@ -50,12 +50,12 @@ export const Button = ({
         <StyledButton
           type={type}
           onClick={onClick}
-          width={width}
-          height={height}
-          backgroundColor={backgroundColor}
-          borderRadius={borderRadius}
-          border={border}
-          margin={margin}
+          $width={width}
+          $height={height}
+          $backgroundColor={backgroundColor}
+          $borderRadius={borderRadius}
+          $border={border}
+          $margin={margin}
         >
           <Button2 color={color}>{text}</Button2>
         </StyledButton>
@@ -65,12 +65,12 @@ export const Button = ({
     if (buttonTextType === 1 || buttonTextType === undefined) {
       return (
         <StyledDiv
-          width={width}
-          height={height}
-          backgroundColor={Grey5}
-          borderRadius={borderRadius}
-          border={border}
-          margin={margin}
+          $width={width}
+          $height={height}
+          $backgroundColor={Grey5}
+          $borderRadius={borderRadius}
+          $border={border}
+          $margin={margin}
         >
           <Button1 color={color}>{text}</Button1>
         </StyledDiv>
@@ -78,12 +78,12 @@ export const Button = ({
     } else {
       return (
         <StyledDiv
-          width={width}
-          height={height}
-          backgroundColor={Grey5}
-          borderRadius={borderRadius}
-          border={border}
-          margin={margin}
+          $width={width}
+          $height={height}
+          $backgroundColor={Grey5}
+          $borderRadius={borderRadius}
+          $border={border}
+          $margin={margin}
         >
           <Button2 color={color}>{text}</Button2>
         </StyledDiv>
@@ -93,35 +93,35 @@ export const Button = ({
 };
 
 const StyledButton = styled.button<{
-  width: string;
-  height: string;
-  backgroundColor: string;
-  borderRadius: string;
-  border: string;
-  margin: string;
+  $width: string;
+  $height: string;
+  $backgroundColor: string;
+  $borderRadius: string;
+  $border: string;
+  $margin: string;
 }>`
   font-family: Pretendard;
-  border-radius: ${(props) => props.borderRadius};
-  background-color: ${(props) => props.backgroundColor};
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  border: ${(props) => props.border};
-  margin: ${(props) => props.margin};
+  border-radius: ${(props) => props.$borderRadius};
+  background-color: ${(props) => props.$backgroundColor};
+  width: ${(props) => props.$width};
+  height: ${(props) => props.$height};
+  border: ${(props) => props.$border};
+  margin: ${(props) => props.$margin};
 `;
 
 const StyledDiv = styled.button<{
-  width: string;
-  height: string;
-  backgroundColor: string;
-  borderRadius: string;
-  border: string;
-  margin: string;
+  $width: string;
+  $height: string;
+  $backgroundColor: string;
+  $borderRadius: string;
+  $border: string;
+  $margin: string;
 }>`
   font-family: Pretendard;
-  border-radius: ${(props) => props.borderRadius};
-  background-color: ${(props) => props.backgroundColor};
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  border: ${(props) => props.border};
-  margin: ${(props) => props.margin};
+  border-radius: ${(props) => props.$borderRadius};
+  background-color: ${(props) => props.$backgroundColor};
+  width: ${(props) => props.$width};
+  height: ${(props) => props.$height};
+  border: ${(props) => props.$border};
+  margin: ${(props) => props.$margin};
 `;

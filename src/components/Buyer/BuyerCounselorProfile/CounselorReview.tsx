@@ -1,5 +1,5 @@
 import { getReviews } from 'api/get';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey6 } from 'styles/color';
@@ -29,7 +29,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
         setReviews(res.data);
       } else if (res.response.status === 404) {
         alert('존재하지 않는 상담사의 리뷰 요청입니다.');
-        navigate('/buyer');
+        navigate('/');
       }
       setTimeout(() => {
         setIsLoading(false);

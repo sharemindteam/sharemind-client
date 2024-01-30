@@ -46,7 +46,7 @@ export const BuyerCategoryResult = () => {
         setSearchData(res.data);
       } else if (res.response.status === 404) {
         alert('카테고리 유형이 유효하지 않습니다.');
-        navigate('/buyer/home');
+        navigate('/');
       }
     } catch (e) {
       console.log(e);

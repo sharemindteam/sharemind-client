@@ -56,7 +56,7 @@ export const BuyerPaymentDetail = () => {
     try {
       const res: any = await postConsults(body);
       if (res.status === 201) {
-        navigate('/buyer/paymentComplete');
+        navigate('/paymentComplete');
       } else if (res.response.status === 400) {
         alert('프로필 심사가 진행 중이거나 상담 유형이 존재하지 않습니다.');
       } else if (res.response.status === 404) {

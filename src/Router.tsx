@@ -48,54 +48,33 @@ const Router = () => {
   const navigate = useNavigate();
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <>
-            <button
-              onClick={() => {
-                navigate('/buyer');
-              }}
-            >
-              BuyerHome
-            </button>
-            <button
-              onClick={() => {
-                navigate('/seller');
-              }}
-            >
-              SellerHome
-            </button>
-          </>
-        }
-      />
       {/* admin */}
       <Route path="/admin" element={<Admin />} />
       {/* minder(buyer) */}
-      <Route path="/buyer" element={<BuyerHome />} />
-      <Route path="/buyer/consult" element={<BuyerConsult />} />
-      <Route path="/buyer/profile/:id" element={<BuyerCounselorProfile />} />
-      <Route path="/buyer/search" element={<BuyerSearch />} />
-      <Route path="/buyer/categorySearch" element={<BuyerCategoryResult />} />
-      <Route path="/buyer/search/result" element={<BuyerSearchResult />} />
-      <Route path="/buyer/consultRequest" element={<BuyerConsultRequest />} />
-      <Route path="/buyer/paymentDetail/:id" element={<BuyerPaymentDetail />} />
-      <Route path="/buyer/paymentComplete" element={<BuyerPaymentComplete />} />
-      <Route path="/buyer/counselors" element={<BuyerAvailCounselor />} />
-      <Route path="/buyer/mypage" element={<BuyerMypage />} />
-      <Route path="/buyer/reviewManage" element={<BuyerReviewManage />} />
-      <Route path="/buyer/review" element={<BuyerWriteReview />} />
-      <Route path="/buyer/saved" element={<BuyerSavedCounselor />} />
-      <Route path="/buyer/payment" element={<BuyerPayment />} />
-      <Route path="/buyer/letter/:id" element={<BuyerLetter />} />
-      <Route path="/buyer/chat" element={<BuyerChat />} />
-      <Route path="/buyer/writeLetter/:id" element={<BuyerLetterWrite />} />
+      <Route path="/" element={<BuyerHome />} />
+      <Route path="/consult" element={<BuyerConsult />} />
+      <Route path="/profile/:id" element={<BuyerCounselorProfile />} />
+      <Route path="/search" element={<BuyerSearch />} />
+      <Route path="/categorySearch" element={<BuyerCategoryResult />} />
+      <Route path="/search/result" element={<BuyerSearchResult />} />
+      <Route path="/consultRequest" element={<BuyerConsultRequest />} />
+      <Route path="/paymentDetail/:id" element={<BuyerPaymentDetail />} />
+      <Route path="/paymentComplete" element={<BuyerPaymentComplete />} />
+      <Route path="/counselors" element={<BuyerAvailCounselor />} />
+      <Route path="/mypage" element={<BuyerMypage />} />
+      <Route path="/reviewManage" element={<BuyerReviewManage />} />
+      <Route path="/review" element={<BuyerWriteReview />} />
+      <Route path="/saved" element={<BuyerSavedCounselor />} />
+      <Route path="/payment" element={<BuyerPayment />} />
+      <Route path="/letter/:id" element={<BuyerLetter />} />
+      <Route path="/chat" element={<BuyerChat />} />
+      <Route path="/writeLetter/:id" element={<BuyerLetterWrite />} />
       {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}
       <Route path="/login" element={<BuyerLogin />} />
       <Route path="/signup" element={<BuyerSignup />} />
       <Route path="/signup/nav" element={<BuyerSignupComplete />} />
       <Route path="/find" element={<BuyerFindInfo />} />
-      <Route path="/buyer/setting" element={<BuyerAccountSetting />} />
+      <Route path="/setting" element={<BuyerAccountSetting />} />
       <Route path="/setting/changePassword" element={<BuyerPwChange />} />
       <Route path="/setting/terminate" element={<BuyerTerminate />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />

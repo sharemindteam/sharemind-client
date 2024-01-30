@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as NotWrite } from 'assets/icons/graphic-not-write.svg';
 import { ReactComponent as NotArriveGraphic } from 'assets/icons/graphic-not-arrive.svg';
-import { Body1, Body2, Body3, Body4 } from 'styles/font';
+import { Body1, Body2, Body3 } from 'styles/font';
 import { Grey1, Grey3, Grey6 } from 'styles/color';
 import { Button } from 'components/Common/Button';
 import { Space } from 'components/Common/Space';
@@ -44,7 +44,7 @@ export const LetterMainSection = ({
               width="89.33%"
               height="5.2rem"
               onClick={() => {
-                navigate(`/buyer/writeLetter/${consultId}`, {
+                navigate(`/writeLetter/${consultId}`, {
                   state: { tagStatus: tagStatus },
                 });
               }}
@@ -86,7 +86,7 @@ export const LetterMainSection = ({
               width="89.33%"
               height="5.2rem"
               onClick={() => {
-                navigate(`/buyer/writeLetter/${consultId}`, {
+                navigate(`/writeLetter/${consultId}`, {
                   state: { tagStatus: tagStatus },
                 });
               }}

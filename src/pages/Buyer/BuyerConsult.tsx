@@ -28,6 +28,8 @@ interface consultApiObject {
   opponentNickname: string;
   status: string;
   unreadMessageCount: number | null;
+  reviewCompleted: boolean | null;
+  consultId: number | null;
 }
 export const BuyerConsult = () => {
   const navigate = useNavigate();
@@ -68,6 +70,7 @@ export const BuyerConsult = () => {
           };
           const res: any = await getLettersCustomers({ params });
           if (res.status === 200) {
+            console.log(res.data);
             setCardData(res.data);
           } else if (res.response.status === 404) {
             alert('존재하지 않는 정렬 방식입니다.');
@@ -117,7 +120,7 @@ export const BuyerConsult = () => {
         <Header
           isBuyer={true}
           onClick={() => {
-            navigate('/buyer');
+            navigate('/');
           }}
         />
         <TabA1 isBuyer={true} initState={2} />
@@ -139,7 +142,7 @@ export const BuyerConsult = () => {
         <Header
           isBuyer={true}
           onClick={() => {
-            navigate('/buyer');
+            navigate('/');
           }}
         />
         <TabA1 isBuyer={true} initState={2} />
@@ -178,24 +181,26 @@ export const BuyerConsult = () => {
               <Down />
             </div>
           </div>
-          <div className="exception-toggle">
-            {isChecked ? (
-              <CheckIcon
-                onClick={() => {
-                  setIsChecked(false);
-                }}
-                style={{ cursor: 'pointer' }}
-              />
-            ) : (
-              <NonCheckIcon
-                onClick={() => {
-                  setIsChecked(true);
-                }}
-                style={{ cursor: 'pointer' }}
-              />
-            )}
-            <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
-          </div>
+          {cardData.length !== 0 && (
+            <div className="exception-toggle">
+              {isChecked ? (
+                <CheckIcon
+                  onClick={() => {
+                    setIsChecked(false);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                />
+              ) : (
+                <NonCheckIcon
+                  onClick={() => {
+                    setIsChecked(true);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                />
+              )}
+              <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
+            </div>
+          )}
         </div>
         {cardData.length !== 0 ? (
           <CardWrapper>
@@ -210,6 +215,8 @@ export const BuyerConsult = () => {
                   opponentNickname={value.opponentNickname}
                   status={value.status}
                   unreadMessageCount={value.unreadMessageCount}
+                  reviewCompleted={value.reviewCompleted}
+                  consultId={value.consultId}
                 />
               );
             })}
@@ -238,7 +245,6 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    border-bottom: 1px solid ${Grey6};
   }
   .select {
     display: flex;

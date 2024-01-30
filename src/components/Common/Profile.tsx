@@ -46,7 +46,7 @@ export const Profile = ({
             if (isBuyer) {
               navigate('/minder/mypage');
             } else {
-              navigate('/buyer/mypage');
+              navigate('/mypage');
             }
             event?.stopPropagation();
           }}
