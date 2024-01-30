@@ -19,6 +19,7 @@ import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-
 import { ConsultInfoList } from 'utils/type';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Skeleton } from '@mui/material';
+import ConsultCardSkeleton from 'components/Skeleton/ConsultCardSkeleton';
 
 interface ConsultTypeProps {
   isActive: boolean;
@@ -115,13 +116,7 @@ export const SellerConsultSection = () => {
       {isLoading ? (
         <SkeletonList>
           {Array.from({ length: 5 }).map((_, index) => (
-            <Skeleton
-              key={index}
-              variant="rounded"
-              width={'calc(100% - 4rem)'}
-              sx={{ bgcolor: '#f6f6fa' }}
-              height={'12rem'}
-            />
+            <ConsultCardSkeleton />
           ))}
         </SkeletonList>
       ) : (
