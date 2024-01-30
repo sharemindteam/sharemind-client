@@ -8,9 +8,10 @@ function ConsultCardSkeleton() {
   return (
     <ConsultCardSkeletonWrapper>
       <div className="flex-1">
-        <Skeleton width={'6rem'} height={'2.5rem'} variant="rounded" />
+        <Skeleton width={'4rem'} height={'2.5rem'} variant="rounded" />
+        <Space height="0.6rem" />
         <div>
-          <Skeleton variant="circular" width={'5rem'} height="5rem" />
+          <Skeleton variant="circular" width={'4rem'} height="4rem" />
         </div>
       </div>
       <div className="flex-2">
@@ -41,9 +42,10 @@ const ConsultCardSkeletonWrapper = styled.div`
   border-radius: 0.4rem;
   box-sizing: border-box;
   background-color: ${Grey6};
-  gap: 1rem;
+  gap: 3rem;
   .flex-1 {
     display: flex;
+    width: 6rem;
     flex-direction: column;
     gap: 0.5rem;
     align-items: center;
