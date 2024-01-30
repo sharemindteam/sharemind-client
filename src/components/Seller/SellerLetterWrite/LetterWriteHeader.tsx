@@ -31,11 +31,11 @@ export const LetterWriteHeader = ({
         // 현재 답장 쓰기 단계가 아닌데 들어왔을 떄
         else {
           alert('현재 답장 쓰기 단계가 아닙니다.');
-          navigate('/seller');
+          navigate('/minder');
         }
       } catch (err) {
         alert(err);
-        navigate('/seller');
+        navigate('/minder');
       }
     };
     fetchData();
@@ -53,7 +53,7 @@ export const LetterWriteHeader = ({
         ) : (
           <LeftArrowIcon
             onClick={() => {
-              navigate(`/seller/letter/${consultid}`);
+              navigate(`/minder/letter/${consultid}`);
             }}
           />
         )}

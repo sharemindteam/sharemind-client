@@ -4,6 +4,7 @@ import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate, useParams } from 'react-router-dom';
+import { formattedMessage } from 'utils/formattedMessage';
 interface LetterBonusReplyStepProps {
   isArrive: boolean;
   time: string;
@@ -25,7 +26,7 @@ export const LetterBonusReplyStep = ({
       {isArrive ? (
         <ArriveSection>
           <Time>{time}</Time>
-          <TextField>{replyMsg}</TextField>
+          <TextField>{formattedMessage(replyMsg)}</TextField>
         </ArriveSection>
       ) : (
         <NotWriteSection>

@@ -14,7 +14,7 @@ export const LetterWriteSuccess = () => {
       <BottomButton
         text="확인"
         onClick={() => {
-          navigate('/seller/consult');
+          navigate('/minder/consult');
         }}
       />
     </>
