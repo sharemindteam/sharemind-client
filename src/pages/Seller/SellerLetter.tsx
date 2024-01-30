@@ -112,10 +112,9 @@ export const SellerLetter = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       setIsLoading(true);
-      console.log(tagStatus);
       const params = {
         messageType:
-          messageTypeMap[tagStatus as keyof typeof messageTypeMap] ?? 0,
+          messageTypeMap[tagStatus as keyof typeof messageTypeMap] ?? "intended_error",
         isCompleted: true,
       };
       try {
