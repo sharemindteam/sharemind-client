@@ -114,6 +114,7 @@ const OngoingCounsultBoxWrapper = styled.div`
   margin: 0 2rem;
   .button {
     display: flex;
+    width: 6rem;
     justify-content: center;
   }
   .flex-1 {

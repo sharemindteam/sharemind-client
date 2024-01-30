@@ -67,8 +67,6 @@ function SetChatTimeSection({
     useRecoilState(isTimeModalOpenState);
   const [isOutPopupOpen, setIsOutPopupOpen] =
     useRecoilState(isOutPopupOpenState);
-  console.log(selectedTimeList['THU'][0]);
-  console.log(selectedTimeList);
   return (
     <Wrapper>
       <ScrollContainer>

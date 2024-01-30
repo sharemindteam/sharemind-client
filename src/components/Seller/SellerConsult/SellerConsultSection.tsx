@@ -19,6 +19,7 @@ import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-
 import { ConsultInfoList } from 'utils/type';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Skeleton } from '@mui/material';
+import ConsultCardSkeleton from 'components/Skeleton/ConsultCardSkeleton';
 
 interface ConsultTypeProps {
   isActive: boolean;
@@ -111,18 +112,13 @@ export const SellerConsultSection = () => {
           </div>
         </div>
       </ConsultSortingMenu>
+      {/* 스켈레톤 UI 적용 */}
       {isLoading ? (
-        <div
-          style={{
-            height: '40vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <LoadingSpinner />
-          <Skeleton />
-        </div>
+        <SkeletonList>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <ConsultCardSkeleton />
+          ))}
+        </SkeletonList>
       ) : (
         <ConsultBoxList>
           {consultInfo?.length === 0 ? (
@@ -211,7 +207,7 @@ const ConsultSortingMenu = styled.div`
 const ConsultType = styled.div<ConsultTypeProps>`
   display: flex;
   width: 5.7rem;
-  height: 3.1rem;
+  height: 3.4rem;
   cursor: pointer;
   justify-content: center;
   align-items: center;
@@ -230,6 +226,13 @@ const SortingType = styled.div`
   align-items: center;
   gap: 0.4rem;
   cursor: pointer;
+`;
+
+const SkeletonList = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.8rem;
 `;
 
 const ConsultBoxList = styled.div`
