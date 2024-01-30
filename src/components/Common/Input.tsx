@@ -27,6 +27,7 @@ interface InputProps {
   textIndent?: string;
   onClick?: () => void;
   alignCenter?: boolean;
+  isCut?: boolean;
 }
 const Input = ({
   width = 'auto',
@@ -54,6 +55,7 @@ const Input = ({
   isBoxSizing = false,
   textIndent = '0',
   onClick,
+  isCut = false,
 }: InputProps) => {
   return (
     <StyledInput
@@ -82,6 +84,7 @@ const Input = ({
       textIndent={textIndent}
       onClick={onClick}
       alignCenter={alignCenter}
+      isCut={isCut}
     />
   );
 };
@@ -102,6 +105,7 @@ const StyledInput = styled.input<{
   isBoxSizing: boolean;
   textIndent: string;
   alignCenter: boolean;
+  isCut: boolean;
 }>`
   border-radius: 10px;
   border: ${(props) => (props.isError ? '1px solid #ff002e' : '')};
@@ -114,6 +118,7 @@ const StyledInput = styled.input<{
   font-weight: ${({ fontWeight }) => fontWeight};
   line-height: 150%;
   color: ${({ fontColor }) => fontColor};
+  text-overflow: ${({ isCut }) => (isCut ? 'ellipsis' : '')};
   text-indent: ${({ textIndent }) => textIndent};
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};

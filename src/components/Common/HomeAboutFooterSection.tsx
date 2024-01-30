@@ -6,12 +6,14 @@ import { ReactComponent as Char2 } from 'assets/characters/char2.svg';
 
 import { Green, Grey6, LightGreen } from 'styles/color';
 import { Button } from './Button';
+import { useNavigate } from 'react-router-dom';
 interface HomeAboutFooterSectionProps {
   isBuyer: boolean;
 }
 export const HomeAboutFooterSection = ({
   isBuyer,
 }: HomeAboutFooterSectionProps) => {
+  const navigate = useNavigate();
   return (
     <>
       <AboutSection isBuyer={isBuyer}>
@@ -25,6 +27,9 @@ export const HomeAboutFooterSection = ({
         </div>
         <Button
           text="About 셰어마인드"
+          onClick={() => {
+            navigate('/service');
+          }}
           width="80%"
           height="5.1rem"
           buttonTextType={1}

@@ -265,6 +265,7 @@ export const ModifyProfileMainSection = ({
           <Input
             width="100%"
             height="4.8rem"
+            isCut={true}
             value={convertObjectToString(selectAvailableTime)}
             readOnly={true}
             padding="1.2rem 1.6rem"

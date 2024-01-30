@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { Black, Green, Grey5, White } from 'styles/color';
-import { Caption2 } from 'styles/font';
+import { Body2, Button2, Caption2 } from 'styles/font';
 import { LetterState } from 'utils/type';
+
 interface TagLetterStatusProps {
   tagType: LetterState;
   isActive?: boolean;
@@ -21,9 +22,9 @@ export const TagLetterStatus = ({
       onClick={onClick}
       disabled={!isActive}
     >
-      <Caption2 color={isSelect ? White : isActive ? Black : White}>
+      <Button2 color={isSelect ? White : isActive ? Black : White}>
         {tagType}
-      </Caption2>
+      </Button2>
     </Wrapper>
   );
 };
@@ -37,6 +38,6 @@ const Wrapper = styled.button<{
   cursor: pointer;
   align-items: center;
   padding: 0.8rem 1.6rem;
-  border-radius: 0.8rem;
+  border-radius: 1.2rem;
   background-color: ${(props) => (props.isSelect ? Green : Grey5)};
 `;

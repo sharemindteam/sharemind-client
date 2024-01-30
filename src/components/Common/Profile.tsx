@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Button } from './Button';
-import { Black, Green, Grey6, LightGreen, Red, White } from 'styles/color';
+import { Black, Green, Grey6, LightGreen,  White } from 'styles/color';
 import { Button2, Caption2, Subtitle } from 'styles/font';
 import { ReactComponent as InfoIcon } from 'assets/icons/info.svg';
 import { ReactComponent as ReciptIcon } from 'assets/icons/recipt.svg';
@@ -119,7 +119,13 @@ export const Profile = ({
         </ServiceList>
       ) : isVerified ? (
         <ServiceList>
-          <ServiceItem>서비스 소개</ServiceItem>
+          <ServiceItem
+            onClick={() => {
+              navigate('/service');
+            }}
+          >
+            서비스 소개
+          </ServiceItem>
           <ServiceItem>정산 문의</ServiceItem>
           <ServiceItem
             onClick={() => {
@@ -131,7 +137,13 @@ export const Profile = ({
         </ServiceList>
       ) : (
         <ServiceList>
-          <ServiceItem>서비스 소개</ServiceItem>
+          <ServiceItem
+            onClick={() => {
+              navigate('/service');
+            }}
+          >
+            서비스 소개
+          </ServiceItem>
         </ServiceList>
       )}
     </>

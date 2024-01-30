@@ -185,13 +185,13 @@ function TimeSelectModal({
             isBlock={
               !blockRange
                 ? false
-                : hour >= blockRange[0] - 1 && hour <= blockRange[1] + 1
+                : hour >= blockRange[0] && hour <= blockRange[1]
                 ? true
                 : false
             }
             onClick={() => {
               if (blockRange) {
-                if (hour >= blockRange[0] - 1 && hour <= blockRange[1] + 1) {
+                if (hour >= blockRange[0] && hour <= blockRange[1]) {
                   return;
                 }
               }

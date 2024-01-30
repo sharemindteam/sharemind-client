@@ -26,7 +26,7 @@ import {
 export const SellerLetter = () => {
   const navigate = useNavigate();
   // 상단 태그상태 -> 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
-  const [tagStatus, setTagStatus] = useState<number>(0);
+  const [tagStatus, setTagStatus] = useState<number>();
   // 현재 편지의 태그 활성화레벨, tagStatus가 tagActiveLevel보다 작으면 검은색, 같거나 크면 희색:  0 1 2 3 4
   const [tagActiveLevel, setTagActiveLevel] = useState<number>(0);
   // 신고할 것인지 여부
@@ -113,17 +113,19 @@ export const SellerLetter = () => {
     const fetchMessages = async () => {
       setIsLoading(true);
       const params = {
-        messageType: messageTypeMap[tagStatus as keyof typeof messageTypeMap],
+        messageType:
+          messageTypeMap[tagStatus as keyof typeof messageTypeMap] ?? "intended_error",
         isCompleted: true,
       };
       try {
         const res: any = await getLetterMessages({ params }, consultid);
-        setText(res.data.content);
-        setDate(res.data.updatedAt);
+        setText(res.data?.content);
+        setDate(res.data?.updatedAt);
         setIsLoading(false);
       } catch (err) {
         alert(err);
-        navigate('/seller');
+        console.log(err);
+        navigate('/minder');
       }
     };
     fetchMessages();

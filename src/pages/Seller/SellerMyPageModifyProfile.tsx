@@ -1,4 +1,5 @@
 import { getMyInfo, getProfiles } from 'api/get';
+import { Space } from 'components/Common/Space';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import IsOutPopup from 'components/Seller/SellerMyPageModifyProfile/IsOutPopup';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
@@ -15,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 import {
   isBankModalOpenState,
   isCategoryModalOpenState,
@@ -87,6 +89,7 @@ export const SellerMypageModifyProfile = () => {
   const oneLiner = useInput('');
   const experience = useInput('');
   const [isNoProfile, setIsNoProfile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchProfile = async () => {
@@ -133,6 +136,7 @@ export const SellerMypageModifyProfile = () => {
           setSelectedTimeList({ ...selectedTimeList, ...data?.consultTimes });
           oneLiner.setValue(data?.introduction);
           experience.setValue(data?.experience);
+          setIsLoading(false);
         }
       } catch (err) {
         navigate('/seller/mypage');
@@ -144,7 +148,6 @@ export const SellerMypageModifyProfile = () => {
     };
     fetchProfile();
   }, []);
-  console.log(selectType);
   return (
     <>
       <ModifyProfileHeader
@@ -152,7 +155,12 @@ export const SellerMypageModifyProfile = () => {
         isSetChatTime={isSetChatTime}
         setIsSetChatTime={setIsSetChatTime}
       />
-      {isSucessUpdate ? (
+      {isLoading ? (
+        <>
+          <Space height="20vh" />
+          <LoadingSpinner />
+        </>
+      ) : isSucessUpdate ? (
         <UpdateSuccess />
       ) : isSetChatTime ? (
         <SetChatTimeSection
