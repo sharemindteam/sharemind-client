@@ -79,7 +79,7 @@ export const getSearchWords = async () =>
 
 //Payment Controller
 export const getPaymentsCustomers = async (params: any) =>
-  await getPublicInstance('/payments/customers', params);
+  await getInstance('/payments/customers', params);
 //Review Controller
 
 export const getMinderReviews = async (params: any) =>

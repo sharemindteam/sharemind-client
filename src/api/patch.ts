@@ -27,7 +27,9 @@ export const patchLetterMessageFirstQustion = async (body: any) =>
 
 export const patchProfiles = async (body: any) =>
   await patchInstance('counselors/profiles', body);
-
+//Payment Controller
+export const patchPaymentsCustomers = async (paymentId: number) =>
+  await patchInstance(`/payments/customers/${paymentId}`);
 //Review Controller
 export const patchReviews = async (body: any) =>
   await patchInstance('/reviews', body);

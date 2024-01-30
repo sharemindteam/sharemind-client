@@ -1,14 +1,15 @@
+import { getPaymentsCustomers } from 'api/get';
 import { PaymentCard } from 'components/Buyer/BuyerPayment/PaymentCard';
 import { PaymentModal } from 'components/Buyer/BuyerPayment/PaymentModal';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey5, White } from 'styles/color';
 import { Button2, Heading } from 'styles/font';
 import { isPaymentModalOpenState, scrollLockState } from 'utils/atom';
-import { paymentDummy as dummy } from 'utils/buyerDummy';
+import { PaymentInfo } from 'utils/type';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현
 export const BuyerPayment = () => {
   const navigate = useNavigate();
@@ -19,6 +20,38 @@ export const BuyerPayment = () => {
   );
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+  //data
+  const [paymentData, setPaymentData] = useState<PaymentInfo[]>([]);
+  //clicked paymentId
+  const [clickedPaymentId, setClickedPaymentId] = useState<number>(-1);
+  useEffect(() => {
+    const fetchData = async () => {
+      let statusString = '';
+      if (pageType === 0) {
+        statusString = 'PAYMENT_COMPLETE';
+      } else if (pageType === 1) {
+        statusString = 'REFUND_WAITING';
+      } else if (pageType === 2) {
+        statusString = 'REFUND_COMPLETE';
+      }
+      const params = {
+        status: statusString,
+        paymentId: 0,
+      };
+      try {
+        const res: any = await getPaymentsCustomers({ params });
+        if (res.status === 200) {
+          setPaymentData(res.data);
+        } else if (res.response.status === 404) {
+          alert('존재하지 않는 상태입니다.');
+          navigate('/mypage');
+        }
+      } catch (e) {
+        alert(e);
+      }
+    };
+    fetchData();
+  }, [pageType]);
   return (
     <>
       <HeaderWrapper>
@@ -56,18 +89,20 @@ export const BuyerPayment = () => {
         </ToggleButton>
       </ToggleWrapper>
       <CardWrapper>
-        {dummy.map((value) => {
+        {paymentData.map((value) => {
           return (
             <PaymentCard
-              counselorId={value.counselorId}
+              key={value.paymentId}
+              paymentId={value.paymentId}
               nickname={value.nickname}
               consultType={value.consultType}
-              consultState={value.consultState}
-              price={value.price}
-              consultDate={value.consultDate}
-              payDate={value.payDate}
-              payment={value.payment}
+              consultState={value.status}
+              price={value.cost}
+              consultDate={value.consultedAt}
+              payDate={value.paidAt}
+              payment={value.method}
               isPayComplete={pageType === 0}
+              setClickedPaymentId={setClickedPaymentId}
             />
           );
         })}
@@ -81,7 +116,11 @@ export const BuyerPayment = () => {
               setScrollLock(false);
             }}
           />
-          <PaymentModal />
+          <PaymentModal
+            clickedPaymentId={clickedPaymentId}
+            paymentData={paymentData}
+            setPaymentData={setPaymentData}
+          />
         </>
       ) : null}
     </>
