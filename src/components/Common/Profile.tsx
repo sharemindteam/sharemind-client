@@ -119,7 +119,13 @@ export const Profile = ({
         </ServiceList>
       ) : isVerified ? (
         <ServiceList>
-          <ServiceItem>서비스 소개</ServiceItem>
+          <ServiceItem
+            onClick={() => {
+              navigate('/service');
+            }}
+          >
+            서비스 소개
+          </ServiceItem>
           <ServiceItem>정산 문의</ServiceItem>
           <ServiceItem
             onClick={() => {
@@ -131,7 +137,13 @@ export const Profile = ({
         </ServiceList>
       ) : (
         <ServiceList>
-          <ServiceItem>서비스 소개</ServiceItem>
+          <ServiceItem
+            onClick={() => {
+              navigate('/service');
+            }}
+          >
+            서비스 소개
+          </ServiceItem>
         </ServiceList>
       )}
     </>
