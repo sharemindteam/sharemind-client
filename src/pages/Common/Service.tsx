@@ -34,7 +34,7 @@ function Service() {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/minder');
+            navigate('/');
           }}
         />
         <Heading>서비스 소개</Heading>
@@ -318,7 +318,7 @@ function Service() {
                 width="calc(100% - 4rem)"
                 height="5.2rem"
                 onClick={() => {
-                  navigate('/minder');
+                  navigate('/');
                 }}
               />
             </FinalBox>
