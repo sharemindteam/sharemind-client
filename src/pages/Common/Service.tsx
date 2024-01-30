@@ -17,8 +17,9 @@ import Procedure1 from 'assets/icons/procedure1.png';
 import Procedure2 from 'assets/icons/procedure2.png';
 import { Button } from 'components/Common/Button';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
-import { HeartRate } from 'utils/HeartRate';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+import { Characters } from 'utils/Characters';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 function Service() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -116,7 +117,113 @@ function Service() {
               </div>
             </div>
 
-            <div className="slide-category"></div>
+            <div className="slide-category">
+              <div className="slide1">
+                <SlideList>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={1} />
+                    </div>
+                    <Heading>연애갈등</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={2} />
+                    </div>
+                    <Heading>이별/재회</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={3} />
+                    </div>
+                    <Heading>여자심리</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={4} />
+                    </div>
+                    <Heading>남자심리</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={5} />
+                    </div>
+                    <Heading>썸/연애시작</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={6} />
+                    </div>
+                    <Heading>짝사랑</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={7} />
+                    </div>
+                    <Heading>권태기</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={8} />
+                    </div>
+                    <Heading>기타</Heading>
+                  </SliderItem>
+                </SlideList>
+              </div>
+              <div className="slide2">
+                <SlideList>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={5} />
+                    </div>
+                    <Heading>썸/연애시작</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={6} />
+                    </div>
+                    <Heading>짝사랑</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={7} />
+                    </div>
+                    <Heading>권태기</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={8} />
+                    </div>
+                    <Heading>기타</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={1} />
+                    </div>
+                    <Heading>연애갈등</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={2} />
+                    </div>
+                    <Heading>이별/재회</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={3} />
+                    </div>
+                    <Heading>여자심리</Heading>
+                  </SliderItem>
+                  <SliderItem>
+                    <div className="char">
+                      <Characters number={4} />
+                    </div>
+                    <Heading>남자심리</Heading>
+                  </SliderItem>
+                </SlideList>
+              </div>
+            </div>
+
             <div className="service-point">
               <Caption1 color={Grey3}>Service Point1</Caption1>
               <Space height="0.4rem" />
@@ -155,7 +262,7 @@ function Service() {
             <Space height="6rem" />
             <div className="main-gray">
               <Space height="3.8rem" />
-              <img src={Figure6} style={{ width: '60%' }} />
+              <img src={Figure6} style={{ width: '60%' }} alt="figure" />
             </div>
             <div className="service-point">
               <Caption1 color={Grey3}>Service Point3</Caption1>
@@ -265,6 +372,10 @@ const ServicePageContainer = styled.div`
   .slide-category {
     background-color: ${Grey6};
     height: 21.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    justify-content: center;
   }
   .service-point {
     padding: 2rem;
@@ -290,6 +401,17 @@ const ServicePageContainer = styled.div`
   .flex {
     display: flex;
     align-items: center;
+  }
+  .slide1 {
+    width: 100%;
+    overflow: scroll;
+  }
+  .slide2 {
+    width: 100%;
+    overflow: scroll;
+  }
+  .char {
+    width: 8rem;
   }
 `;
 
@@ -324,6 +446,23 @@ const ProcedureImg1 = styled.img`
 `;
 const ProcedureImg2 = styled.img`
   width: 31rem;
+`;
+
+const SlideList = styled.div`
+  display: flex;
+  gap: 1rem;
+  width: 200rem;
+`;
+
+const SliderItem = styled.div`
+  width: 19rem;
+  height: 8rem;
+  background-color: white;
+  border-radius: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.9rem;
 `;
 
 const FinalBox = styled.div`
