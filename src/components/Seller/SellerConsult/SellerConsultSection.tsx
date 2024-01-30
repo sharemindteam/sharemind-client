@@ -115,10 +115,9 @@ export const SellerConsultSection = () => {
       {isLoading ? (
         <SkeletonList>
           {Array.from({ length: 5 }).map((_, index) => (
-            <Skeleton 
+            <Skeleton
               key={index}
-              variant="rectangular"
-              animation="wave"
+              variant="rounded"
               width={'calc(100% - 4rem)'}
               sx={{ bgcolor: '#f6f6fa' }}
               height={'12rem'}
@@ -213,7 +212,7 @@ const ConsultSortingMenu = styled.div`
 const ConsultType = styled.div<ConsultTypeProps>`
   display: flex;
   width: 5.7rem;
-  height: 3.1rem;
+  height: 3.4rem;
   cursor: pointer;
   justify-content: center;
   align-items: center;
