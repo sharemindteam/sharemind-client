@@ -111,11 +111,11 @@ export const SellerConsultSection = () => {
           </div>
         </div>
       </ConsultSortingMenu>
-       {/* 스켈레톤 UI 적용 */}
+      {/* 스켈레톤 UI 적용 */}
       {isLoading ? (
         <SkeletonList>
           {Array.from({ length: 5 }).map((_, index) => (
-            <Skeleton
+            <Skeleton 
               key={index}
               variant="rectangular"
               animation="wave"
