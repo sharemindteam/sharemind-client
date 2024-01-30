@@ -9,22 +9,23 @@ import {
   Grey3,
   Grey4,
   Grey6,
-  Red,
   White,
 } from 'styles/color';
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from 'components/Common/TagA2Consult';
 import { Button } from 'components/Common/Button';
 import { TagA2Cartegory } from 'components/Common/TagA2Cartegory';
+import { useNavigate } from 'react-router-dom';
 interface OngoingCounsultBoxProps {
-  categoryStatus?: CartegoryState;
-  consultStatus?: ConsultState;
+  categoryStatus?: string;
+  consultStatus?: string;
   counselorName: string | undefined;
   beforeMinutes: string | null;
   content: string | null;
   newMessageCounts: number | null;
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
+  reviewCompleted?: boolean;
 }
 function OngoingCounsultBox({
   categoryStatus,
@@ -35,7 +36,9 @@ function OngoingCounsultBox({
   content,
   newMessageCounts = 0,
   onClick,
+  reviewCompleted,
 }: OngoingCounsultBoxProps) {
+  const navigate = useNavigate();
   return (
     <OngoingCounsultBoxWrapper onClick={onClick}>
       <div className="flex-1">
@@ -76,7 +79,7 @@ function OngoingCounsultBox({
           {content}
         </Content>
       </div>
-      {consultStatus === '상담 종료' && (
+      {consultStatus === '상담 종료' && reviewCompleted && (
         <Button
           text="리뷰 확인하기"
           color={Green}
@@ -84,6 +87,10 @@ function OngoingCounsultBox({
           height="4.2rem"
           backgroundColor={White}
           buttonTextType={2}
+          onClick={(e?: React.MouseEvent<HTMLElement>) => {
+            navigate('/seller/mypage/review');
+            e?.stopPropagation();
+          }}
         />
       )}
       {newMessageCounts !== 0 ||
@@ -107,6 +114,7 @@ const OngoingCounsultBoxWrapper = styled.div`
   margin: 0 2rem;
   .button {
     display: flex;
+    width: 6rem;
     justify-content: center;
   }
   .flex-1 {

@@ -29,8 +29,9 @@ export const BuyerSavedCounselor = () => {
       const res: any = await postWishLists(body);
       if (res.status === 200) {
         setWishlistData(res.data);
+        console.log(res.data[res.data.length]);
       } else if (res.response.status !== 401) {
-        navigate('/buyer/mypage');
+        navigate('/mypage');
       }
       setTimeout(() => {
         setIsLoading(false);
@@ -41,6 +42,14 @@ export const BuyerSavedCounselor = () => {
   if (isLoading) {
     return (
       <>
+        <HeaderWrapper>
+          <BackIcon
+            onClick={() => {
+              navigate('/mypage');
+            }}
+          />
+          <Heading color={Grey1}>찜 목록</Heading>
+        </HeaderWrapper>
         <Space height="30vh" />
         <LoadingSpinner />
       </>
@@ -52,7 +61,7 @@ export const BuyerSavedCounselor = () => {
           <HeaderWrapper>
             <BackIcon
               onClick={() => {
-                navigate('/buyer/mypage');
+                navigate('/mypage');
               }}
             />
             <Heading color={Grey1}>찜 목록</Heading>
@@ -67,7 +76,7 @@ export const BuyerSavedCounselor = () => {
           <HeaderWrapper>
             <BackIcon
               onClick={() => {
-                navigate('/buyer/mypage');
+                navigate('/mypage');
               }}
             />
             <Heading color={Grey1}>찜 목록</Heading>

@@ -20,13 +20,13 @@ export const SearchHeader = () => {
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     setKeyword(input);
-    navigate('/buyer/search/result');
+    navigate('/search/result');
   };
   return (
     <Wrapper>
       <BackIcon
         onClick={() => {
-          navigate('/buyer');
+          navigate('/');
         }}
       />
       <FormWrapper onSubmit={handleSubmit}>

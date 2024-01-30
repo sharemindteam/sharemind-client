@@ -95,7 +95,7 @@ export const SellerPwChange = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/seller/setting');
+            navigate('/minder/setting');
           }}
         />
         <Heading color={Grey1}>비밀번호 변경</Heading>

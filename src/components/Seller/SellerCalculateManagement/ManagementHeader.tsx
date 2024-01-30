@@ -10,7 +10,7 @@ export const ManagementHeader = () => {
       <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
         <LeftArrowIcon
           onClick={() => {
-            navigate('/seller');
+            navigate('/minder');
           }}
         />
       </div>

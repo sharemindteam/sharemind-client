@@ -21,7 +21,7 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
         <StyledSearch
           onClick={() => {
             if (isBuyer) {
-              navigate('/buyer/search');
+              navigate('/search');
             } else {
               navigate('/seller/search');
             }
@@ -32,11 +32,10 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
   } else {
     return (
       <Wrapper>
-        <Logo>
+        <Logo onClick={onClick}>
           <LogoSeller />
           <LogoText />
         </Logo>
-        <StyledSearch />
       </Wrapper>
     );
   }

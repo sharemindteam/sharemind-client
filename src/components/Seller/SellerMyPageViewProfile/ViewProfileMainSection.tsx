@@ -186,7 +186,7 @@ ViewProfileMainSectionProps) => {
           height="5.2rem"
           width="calc(100% - 4rem)"
           onClick={() => {
-            navigate('/seller/mypage/modifyProfile');
+            navigate('/minder/mypage/modifyProfile');
           }}
         />
       </BottomButtonWrapper>

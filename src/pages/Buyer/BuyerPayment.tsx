@@ -24,7 +24,7 @@ export const BuyerPayment = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/mypage');
+            navigate('/mypage');
           }}
         />
         <Heading color={Grey1}>결제 내역</Heading>

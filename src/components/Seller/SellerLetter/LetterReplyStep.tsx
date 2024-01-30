@@ -4,29 +4,32 @@ import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { BottomButton } from '../Common/BottomButton';
 import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { formattedMessage } from 'utils/formattedMessage';
 
 interface LetterReplyStepProps {
   isArrive: boolean;
   time: string;
   deadline: string;
   replyMsg: string;
-  tagActiveLevel:number;
+  tagActiveLevel: number;
 }
 export const LetterReplyStep = ({
   isArrive,
   time,
   deadline,
   replyMsg,
-  tagActiveLevel
+  tagActiveLevel,
 }: LetterReplyStepProps) => {
   const { consultid } = useParams();
   const navigate = useNavigate();
+
   return (
     <LetterReplyStepWrapper>
       {isArrive ? (
         <ArriveSection>
           <Time>{time}</Time>
-          <TextField>{replyMsg}</TextField>
+          <TextField>{formattedMessage(replyMsg)}</TextField>
         </ArriveSection>
       ) : (
         <NotWriteSection>

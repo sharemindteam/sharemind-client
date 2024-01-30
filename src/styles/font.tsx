@@ -6,6 +6,7 @@ interface FontProps {
   padding?: string;
   margin?: string;
   underline?: boolean;
+  textAlign?: string;
 }
 export const Heading = styled.div<FontProps>`
   font-family: Pretendard;
@@ -62,6 +63,7 @@ export const Body3 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  text-align: ${(props) => props?.textAlign};
 `;
 //피그마 상에선 body3
 export const Body4 = styled.div<FontProps>`

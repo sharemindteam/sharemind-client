@@ -6,13 +6,20 @@ import styled from 'styled-components';
 import { useCallback, useEffect, useState } from 'react';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
+import {
+  isConsultModalOpenState,
+  isLoadingState,
+  scrollLockState,
+} from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { useNavigate } from 'react-router-dom';
 import { getChats, getChatsMinder, getConselorLetters } from 'api/get';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
 import { ConsultInfoList } from 'utils/type';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
+import { Skeleton } from '@mui/material';
+import ConsultCardSkeleton from 'components/Skeleton/ConsultCardSkeleton';
 
 interface ConsultTypeProps {
   isActive: boolean;
@@ -29,8 +36,9 @@ export const SellerConsultSection = () => {
   );
   const setScrollLock = useSetRecoilState(scrollLockState);
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
   const fetchData = useCallback(async () => {
+    setIsLoading(true);
     const params = {
       filter: !isInclueCompleteConsult,
       sortType: sortType === 0 ? 'latest' : 'unread',
@@ -46,6 +54,7 @@ export const SellerConsultSection = () => {
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);
+        setIsLoading(false);
       } else {
         console.error('Failed to fetch data:', res.status, res.statusText);
       }
@@ -56,7 +65,6 @@ export const SellerConsultSection = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  console.log(consultInfo);
   return (
     <>
       <ConsultSortingMenu>
@@ -88,61 +96,73 @@ export const SellerConsultSection = () => {
             <DownArrowIcon />
           </SortingType>
         </div>
-        {consultInfo?.length !== 0 && (
-          <div className="row2">
-            <div
-              className="row2-1"
-              onClick={() => {
-                setIsIncludeCompleteConsult(!isInclueCompleteConsult);
-              }}
-            >
-              <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Green} />
-              <Button2 color={Grey3}>완료된 상담 제외</Button2>
-            </div>
+
+        <div className="row2">
+          <div
+            className="row2-1"
+            onClick={() => {
+              setIsIncludeCompleteConsult(!isInclueCompleteConsult);
+            }}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Green} />
+            <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
           </div>
-        )}
+        </div>
       </ConsultSortingMenu>
+      {/* 스켈레톤 UI 적용 */}
+      {isLoading ? (
+        <SkeletonList>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <ConsultCardSkeleton />
+          ))}
+        </SkeletonList>
+      ) : (
+        <ConsultBoxList>
+          {consultInfo?.length === 0 ? (
+            <NoConsultSection>
+              <NoConsultGraphicIcon />
+              <NoConsultText>아직 진행한 상담이 없어요</NoConsultText>
+            </NoConsultSection>
+          ) : (
+            consultInfo?.map((item: any) => (
+              <OngoingCounsultBox
+                consultStatus={item?.status}
+                counselorName={item?.opponentNickname}
+                beforeMinutes={item?.latestMessageUpdatedAt}
+                content={item?.latestMessageContent}
+                key={item?.id}
+                counselorprofileStatus={consultStyleToCharNum(
+                  item?.consultStyle,
+                )}
+                newMessageCounts={item?.unreadMessageCount}
+                onClick={() => {
+                  if (isLetterActive) {
+                    navigate(`/minder/letter/${item?.id}`);
+                  } else {
+                    navigate(`/minder/chat/${item?.id}`);
+                  }
+                }}
+              />
+            ))
+          )}
 
-      <ConsultBoxList>
-        {consultInfo?.length === 0 ? (
-          <NoConsultSection>
-            <NoConsultGraphicIcon />
-            <NoConsultText>아직 진행한 상담이 없어요</NoConsultText>
-          </NoConsultSection>
-        ) : (
-          consultInfo?.map((item: any) => (
-            <OngoingCounsultBox
-              consultStatus={item?.status}
-              counselorName={item?.opponentNickname}
-              beforeMinutes={item?.latestMessageUpdatedAt}
-              content={item?.latestMessageContent}
-              key={item?.id}
-              counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
-              newMessageCounts={item?.unreadMessageCount}
-              onClick={() => {
-                if (isLetterActive) {
-                  navigate(`/seller/letter/${item?.id}`);
-                } else {
-                  navigate(`/seller/chat/${item?.id}`);
-                }
-              }}
-            />
-          ))
-        )}
-
-        {isModalOpen ? (
-          <>
-            <BackDrop
-              onClick={() => {
-                //여기서 api 호출
-                setIsModalOpen(false);
-                setScrollLock(false);
-              }}
-            />
-            <ConsultModal sortType={sortType} setSortType={setSortType} />
-          </>
-        ) : null}
-      </ConsultBoxList>
+          {isModalOpen ? (
+            <>
+              <BackDrop
+                onClick={() => {
+                  //여기서 api 호출
+                  setIsModalOpen(false);
+                  setScrollLock(false);
+                }}
+              />
+              <ConsultModal sortType={sortType} setSortType={setSortType} />
+            </>
+          ) : null}
+        </ConsultBoxList>
+      )}
     </>
   );
 };
@@ -187,7 +207,7 @@ const ConsultSortingMenu = styled.div`
 const ConsultType = styled.div<ConsultTypeProps>`
   display: flex;
   width: 5.7rem;
-  height: 3.1rem;
+  height: 3.4rem;
   cursor: pointer;
   justify-content: center;
   align-items: center;
@@ -206,6 +226,13 @@ const SortingType = styled.div`
   align-items: center;
   gap: 0.4rem;
   cursor: pointer;
+`;
+
+const SkeletonList = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.8rem;
 `;
 
 const ConsultBoxList = styled.div`

@@ -27,7 +27,7 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
           backgroundColor={Green}
           height="5.2rem"
           onClick={() => {
-            navigate('/seller/education/second');
+            navigate('/minder/education/second');
           }}
         />
       </VerifyMaterialButtonWrapper>
@@ -46,7 +46,7 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
             color={Green}
             height="5.2rem"
             onClick={() => {
-              navigate('/seller/education/first');
+              navigate('/minder/education/first');
             }}
           />
           <Button
@@ -55,7 +55,7 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
             backgroundColor={Green}
             height="5.2rem"
             onClick={() => {
-              navigate('/seller/education/third');
+              navigate('/minder/education/third');
             }}
           />
         </div>
@@ -75,7 +75,7 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
             color={Green}
             height="5.2rem"
             onClick={() => {
-              navigate('/seller/education/second');
+              navigate('/minder/education/second');
             }}
           />
           <Button
@@ -84,7 +84,7 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
             backgroundColor={Green}
             height="5.2rem"
             onClick={() => {
-              navigate('/seller/education/final');
+              navigate('/minder/education/final');
             }}
           />
         </div>
@@ -102,7 +102,7 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
             color={Green}
             height="5.2rem"
             onClick={() => {
-              navigate('/seller/education/third');
+              navigate('/minder/education/third');
             }}
           />
           <Button
@@ -126,7 +126,7 @@ const VerifyMaterialButtonWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.6rem;  
+  gap: 0.6rem;
   padding-bottom: 1.6rem;
   background-color: ${White};
   position: fixed;

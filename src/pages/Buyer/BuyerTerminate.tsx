@@ -13,7 +13,7 @@ export const BuyerTerminate = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/buyer/setting');
+            navigate('/setting');
           }}
         />
         <Heading color={Grey1}>회원 탈퇴</Heading>
@@ -32,7 +32,7 @@ export const BuyerTerminate = () => {
             width="16rem"
             height="5.2rem"
             onClick={() => {
-              navigate('/buyer/mypage');
+              navigate('/mypage');
             }}
           />
           <Button
@@ -42,7 +42,7 @@ export const BuyerTerminate = () => {
             backgroundColor={LightGreen}
             color={Green}
             onClick={() => {
-              navigate('/buyer/mypage');
+              navigate('/mypage');
             }}
           />
         </div>

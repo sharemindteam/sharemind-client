@@ -1,4 +1,3 @@
-import { postConsults } from 'api/post';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import { useEffect, useState } from 'react';
@@ -6,17 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey6, LightGreen } from 'styles/color';
 import { Body2, Heading } from 'styles/font';
-interface ConsultDataType {
-  consultId: number;
-  nickname: string;
-  level: number;
-  ratingAverage: number;
-  totalReview: number;
-  consultCategories: string[];
-  consultStyle: string;
-  consultType: string;
-  cost: number;
-}
+
 export const BuyerConsultRequest = () => {
   const navigate = useNavigate();
   const [letterFocus, setLetterFocus] = useState<boolean>(false);
@@ -26,7 +15,7 @@ export const BuyerConsultRequest = () => {
   const { state } = location;
   const counselorId: boolean = state?.counselorId;
   const handleNextClick = () => {
-    navigate(`/buyer/paymentDetail/${counselorId}`, { state: { letterFocus } });
+    navigate(`/paymentDetail/${counselorId}`, { state: { letterFocus } });
   };
   useEffect(() => {
     if (!(letterFocus === false && chatFocus === false)) {

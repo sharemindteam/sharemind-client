@@ -13,7 +13,7 @@ function SellerAccountSetting() {
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate('/seller/mypage');
+              navigate('/minder/mypage');
             }}
           />
           <Heading color={Grey1}>계정 설정</Heading>
@@ -22,7 +22,7 @@ function SellerAccountSetting() {
         <div
           className="row"
           onClick={() => {
-            navigate('/seller/setting/changePassword');
+            navigate('/minder/setting/changePassword');
           }}
         >
           <Body2 color={Grey1}>비밀번호 변경</Body2>
@@ -30,7 +30,7 @@ function SellerAccountSetting() {
         <div
           className="row"
           onClick={() => {
-            navigate('/setting/refundBankAccount');
+            navigate('/minder/refundBankAccount');
           }}
         >
           <Body2 color={Grey1}>환불계좌 관리</Body2>
@@ -38,7 +38,7 @@ function SellerAccountSetting() {
         <div
           className="row"
           onClick={() => {
-            navigate('/seller/setting/terminate');
+            navigate('/minder/setting/terminate');
           }}
         >
           <Body2 color={Grey1}>회원 탈퇴</Body2>
@@ -46,7 +46,7 @@ function SellerAccountSetting() {
         <div
           className="row"
           onClick={() => {
-            navigate('/seller/setting/logout');
+            navigate('/minder/setting/logout');
           }}
         >
           <Body2 color={Grey1} onClick={() => {}}>

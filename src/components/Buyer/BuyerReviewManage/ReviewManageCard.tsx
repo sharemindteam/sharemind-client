@@ -57,7 +57,7 @@ export const ReviewManageCard = ({ reviewData }: ReviewManageCardProps) => {
           borderRadius="0.8rem"
           onClick={() => {
             //추후 해당하는 consult id에 해당하는 review로 넘어감
-            navigate('/buyer/review', { state: { reviewData: reviewData } });
+            navigate('/review', { state: { reviewData: reviewData } });
           }}
         />
       </LowerWrapper>

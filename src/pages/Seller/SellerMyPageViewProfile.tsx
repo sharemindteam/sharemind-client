@@ -1,9 +1,11 @@
 import { getMyInfo, getProfiles } from 'api/get';
+import { Space } from 'components/Common/Space';
 import NoProfileSection from 'components/Seller/SellerMyPageViewProfile/NoProfileSection';
 import { ViewProfileHeader } from 'components/Seller/SellerMyPageViewProfile/ViewProfileHeader';
 import { ViewProfileMainSection } from 'components/Seller/SellerMyPageViewProfile/ViewProfileMainSection';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 export interface ProfileData {
   counselorId: string;
   nickname: string;
@@ -20,6 +22,7 @@ export const SellerMypageViewProfile = () => {
   const navigate = useNavigate();
   const [isNoProfile, setIsNoProfile] = useState(false);
   const [isEvaluationPending, setIsEvaluationPending] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchMinderProfile = async () => {
       try {
@@ -32,12 +35,13 @@ export const SellerMypageViewProfile = () => {
         const profileRes: any = await getProfiles();
         if (profileRes?.response?.status === 404) {
           alert('마인더 인증을 통과한 뒤 판매 정보를 등록할 수 있습니다.');
-          navigate('/seller/mypage');
+          navigate('/minder/mypage');
         }
         setProfile(profileRes.data);
+        setIsLoading(false);
       } catch (err) {
         alert('판매 정보 가져오는도중 에러 발생');
-        navigate('/seller/mypage');
+        navigate('/minder/mypage');
       }
     };
     fetchMinderProfile();
@@ -45,7 +49,12 @@ export const SellerMypageViewProfile = () => {
   return (
     <>
       <ViewProfileHeader />
-      {isNoProfile ? (
+      {isLoading ? (
+        <>
+          <Space height="20vh" />
+          <LoadingSpinner />
+        </>
+      ) : isNoProfile ? (
         <NoProfileSection />
       ) : (
         <ViewProfileMainSection

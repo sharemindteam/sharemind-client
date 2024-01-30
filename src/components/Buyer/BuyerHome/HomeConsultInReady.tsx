@@ -18,7 +18,7 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
       <div
         className="nav-consult"
         onClick={() => {
-          navigate('/buyer/counselors');
+          navigate('/counselors');
         }}
       >
         <NavConsult>

@@ -12,7 +12,7 @@ function IsOutPopup() {
   const handlePostSaveSettings = () => {
     // 프로플 수정 메인 섹션에서 반영
     setIsOutPopupOpen(false);
-    navigate('/seller/mypage/viewProfile');
+    navigate('/minder/mypage/viewProfile');
   };
   return (
     <IsOutModalBox>

@@ -1,121 +1,72 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import SockJs from 'sockjs-client';
-import Stomp from 'stompjs';
-
+// import * as StompJs from '@stomp/stompjs';
+import { CompatClient, Stomp } from '@stomp/stompjs';
+import { useChat } from 'hooks/useChat';
+import { useInput } from 'hooks/useInput';
+import { useEffect, useRef } from 'react';
+import { Heading } from 'styles/font';
 export const BuyerChat = () => {
-  // const [stompClient, setStompClient] = useState(null);
-  // const [chatId] = useState(20);
-  // const [isCustomer] = useState(true);
-  // const [token, setToken] = useState('');
-  // const [messages, setMessages] = useState([]);
-  // const [messageInput, setMessageInput] = useState('');
-  // const connect = () => {
-  //   const socket = new SockJs('/chat');
-  //   const client = Stomp.over(socket);
-  //   client.connect(
-  //     {
-  //       Authorization: 'Bearer ' + token,
-  //       isCustomer: isCustomer,
-  //     },
-  //     (frame) => {
-  //       console.log('Connected: ' + frame);
-  //       // Subscribe to channels
-  //       client.subscribe(
-  //         '/queue/chattings/notifications/customers/19',
-  //         (notification) => {
-  //           console.log('Notification: ', notification.body);
-  //         },
-  //       );
-  //       client.subscribe(
-  //         '/queue/chattings/customers/' + chatId,
-  //         (statusUpdate) => {
-  //           console.log('Status Update: ', statusUpdate.body);
-  //         },
-  //       );
-  //       client.subscribe(
-  //         '/queue/chattings/status/customers/' + chatId,
-  //         (statusAutoUpdate) => {
-  //           console.log('Status Auto Update: ', statusAutoUpdate.body);
-  //         },
-  //       );
-  //       client.subscribe(
-  //         '/queue/chattings/exception/customers/' + chatId,
-  //         (error) => {
-  //           console.log('Error: ', error.body);
-  //         },
-  //       );
-  //       client.subscribe(
-  //         '/queue/chatMessages/customers/' + chatId,
-  //         (message) => {
-  //           console.log('Message: ', message.body);
-  //           displayMessage(message.body);
-  //         },
-  //       );
-  //       setStompClient(client);
-  //     },
-  //   );
-  // };
-  // const sendMessage = () => {
-  //   if (stompClient !== null) {
-  //     stompClient.send(
-  //       `/app/api/v1/chatMessages/customers/${chatId}`,
-  //       {},
-  //       JSON.stringify({ content: messageInput }),
-  //     );
-  //   }
-  // };
-  // const sendChatStartRequest = () => {
-  //   stompClient.send(
-  //     `/app/api/v1/chat/customers/${chatId}`,
-  //     {},
-  //     JSON.stringify({ chatWebsocketStatus: 'COUNSELOR_CHAT_START_REQUEST' }),
-  //   );
-  // };
-  // const sendChatStartResponse = () => {
-  //   stompClient.send(
-  //     `/app/api/v1/chat/customers/${chatId}`,
-  //     {},
-  //     JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_START_RESPONSE' }),
-  //   );
-  // };
-  // const sendChatFinishRequest = () => {
-  //   stompClient.send(
-  //     `/app/api/v1/chat/customers/${chatId}`,
-  //     {},
-  //     JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_FINISH_REQUEST' }),
-  //   );
-  // };
-  // const displayMessage = (message) => {
-  //   setMessages([...messages, message]);
-  // };
+  // const chat = useChat();
+  const messages = useInput('');
+  const stompClient = useRef<CompatClient>();
+  const isConnected = useRef(false);
+  // chat.connectStomp();
+  const connectChat = () => {
+    const socket = new SockJs(process.env.REACT_APP_API_URL + '/chat');
+    stompClient.current = Stomp.over(socket);
+    const headers = {
+      //나중에 localStorage 에서 꺼내기
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaGF0QGdtYWlsLmNvbSIsImF1dGhvcml0aWVzIjoiUk9MRV9DVVNUT01FUiIsImV4cCI6MTcwNjM0NDQ0Mn0.NFR-w7_TsoXOPsw0rU_5I4OvCDKdfokTowWYGYxulXw',
+      isCustomer: 'true',
+    };
+
+    if (isConnected.current) {
+      stompClient.current.disconnect();
+      isConnected.current = false;
+    }
+
+    stompClient.current.connect(headers, (frame: any) => {
+      console.log('Connected: ' + frame);
+
+      // 서버로부터 메시지 수신 시 동작 정의
+      stompClient.current.subscribe(
+        '/queue/chatMessages/customers/20',
+        (message) => {
+          console.log('Message: ', message.body);
+        },
+      );
+    });
+  };
+
+  const disconnectFromChat = () => {
+    if (stompClient.current) {
+      stompClient.current.disconnect();
+    }
+  };
+
+  //보내기
+  const sendMessage = (message: string) => {
+    // var message = document.getElementById('messageInput').value;
+    stompClient.current.send(
+      '/app/api/v1/chatMessages/customers/20',
+      {},
+      JSON.stringify({ content: message }),
+    );
+  };
+  useEffect(() => {
+    // 컴포넌트가 마운트되었을 때 실행
+    connectChat();
+
+    // 언마운트 시에 소켓 연결 해제
+    return () => {
+      disconnectFromChat();
+    };
+  }, []);
   return (
-    <></>
-    // <div>
-    //   <h2>Customer Chat</h2>
-    //   <div>
-    //     <label htmlFor="tokenInput">Token:</label>
-    //     <input
-    //       type="text"
-    //       id="tokenInput"
-    //       value={token}
-    //       onChange={(e) => setToken(e.target.value)}
-    //     />
-    //     <button onClick={connect}>Connect</button>
-    //   </div>
-    //   <div id="messages">
-    //     {messages.map((message, index) => (
-    //       <div key={index}>{message}</div>
-    //     ))}
-    //   </div>
-    //   <input
-    //     type="text"
-    //     value={messageInput}
-    //     onChange={(e) => setMessageInput(e.target.value)}
-    //   />
-    //   <button onClick={sendMessage}>Send Message</button>
-    //   <button onClick={sendChatStartRequest}>Start Chat Request</button>
-    //   <button onClick={sendChatStartResponse}>Start Chat Response</button>
-    //   <button onClick={sendChatFinishRequest}>End Chat</button>
-    // </div>
+    <>
+      <Heading> 채팅</Heading>
+    </>
   );
 };

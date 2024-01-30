@@ -74,8 +74,12 @@ export const getCounselorConsults = async (
 export const getCounselors = async (counselorId: string | undefined) =>
   await getPublicInstance(`/counselors/${counselorId}`);
 // SearchWord Controller
-export const getSearchWords = async () => await getInstance('/searchWords');
+export const getSearchWords = async () =>
+  await getPublicInstance('/searchWords');
 
+//Payment Controller
+export const getPaymentsCustomers = async (params: any) =>
+  await getPublicInstance('/payments/customers', params);
 //Review Controller
 
 export const getMinderReviews = async (params: any) =>
