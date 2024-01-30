@@ -9,7 +9,7 @@ import {
   CounselorReview,
 } from 'components/Buyer/BuyerCounselorProfile';
 import { Space } from 'components/Common/Space';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
@@ -36,6 +36,7 @@ export const BuyerCounselorProfile = () => {
   });
   //로딩 state
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   useLayoutEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -71,7 +72,7 @@ export const BuyerCounselorProfile = () => {
     if (id !== undefined) {
       const counselorId = parseInt(id, 10);
       return (
-        <Wrapper>
+        <Wrapper className="header">
           <CounselorProfileHeader />
           <Body>
             <CounselorProfileCard
