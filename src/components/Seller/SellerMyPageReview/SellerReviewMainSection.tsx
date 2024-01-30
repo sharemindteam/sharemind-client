@@ -34,7 +34,12 @@ export const SellerReviewMainSection = () => {
   return (
     <>
       <ReviewCardList>
-        {cardList?.length === 0 && <NoCalculationGraphicIcon />}
+        {cardList?.length === 0 && (
+          <NoCalculationGraphicWrapper>
+            <NoCalculationGraphicIcon />
+            <MainText>아직 받은 리뷰가 없어요</MainText>
+          </NoCalculationGraphicWrapper>
+        )}
         {cardList?.map((item) => (
           <ReviewCard
             key={item.reviewId}
@@ -59,4 +64,20 @@ const ReviewCardList = styled.div`
   flex-direction: column;
   gap: 0.8rem;
   align-items: center;
+`;
+const NoCalculationGraphicWrapper = styled.div`
+  display: flex;
+  margin-top: 23.7rem;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const MainText = styled.div`
+  color: #000;
+  margin-top: 4.61rem;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 3rem;
 `;

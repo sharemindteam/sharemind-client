@@ -62,7 +62,6 @@ const Time = styled(Body3)`
 const TextField = styled.div`
   width: calc(100% - 8rem);
   margin: 0 auto;
-  white-space: pre;
   min-height: 55.6rem;
   border-radius: 1.2rem;
   background: var(--Greyscale-Grey-6, #f6f6fa);
