@@ -10,12 +10,12 @@ import { LetterTags } from 'components/Buyer/BuyerLetter/LetterTags';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
-import { isLoadingState, opponentNicknameState } from 'utils/atom';
+import { isLoadingState } from 'utils/atom';
 import { GetMessagesType } from 'utils/type';
 
 export const BuyerLetter = () => {
@@ -37,6 +37,8 @@ export const BuyerLetter = () => {
   const [deadline, setDeadline] = useState<string>('');
   //로딩 state
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
+  //상대 이름 state
+  const [opponentNickname, setOpponentNickname] = useState<string>('');
   //제일 먼저 현재 상담 상태 정보업데이트
   //그리고 메세지 fetch 이어서
   const fetchData = async () => {
@@ -124,7 +126,13 @@ export const BuyerLetter = () => {
   };
   const fetchNicknameData = async () => {
     const res: any = await getLettersNickname(id);
-    console.log(res);
+    if (res.status === 200) {
+      setOpponentNickname(res.data);
+    } else if (res.response.status === 403) {
+      alert('편지 참여자가 아닙니다.');
+    } else if (res.response.status === 403) {
+      alert('존재하지 않는 편지 아이디입니다.');
+    }
   };
   //location null 시 예외처리
   useLayoutEffect(() => {
@@ -167,7 +175,7 @@ export const BuyerLetter = () => {
               }}
             />
             {/* params로 넘어온 id에 해당하는 상담이름 */}
-            <Heading color={Grey1}>{'opponentNickname'}</Heading>
+            <Heading color={Grey1}>{opponentNickname}</Heading>
             <MoreIcon />
           </HeaderWrapper>
           <LetterTags
