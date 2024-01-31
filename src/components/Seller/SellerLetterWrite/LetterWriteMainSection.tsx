@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Green, Grey3, Grey5, Grey6, LightGreen, White } from 'styles/color';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { LetterPostModal } from './LetterPostModal';
 import { LetterIsSaveModal } from './LetterIsSaveModal';
 import { LetterSavePostModal } from './LetterSavePostModal';
@@ -69,13 +69,17 @@ export const LetterWriteMainSection = ({
     '추가 질문': 'second_question',
   };
   const [isLoading, setIsLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       // 편지 단계 API
       const recentLetterResponse: any = await getLetterRecentType(consultid);
       const recentType: string = recentLetterResponse.data.recentType;
       // 편지 단계 API 결과값과 메시지 타입 연동
+      if (recentLetterResponse?.data?.isCanceled) {
+        alert('이미 취소된 상담입니다.');
+        navigate('/minder');
+      }
       if (recentType === '질문') {
         setMessageType('first_reply');
       } else if (recentType === '추가 질문') {
