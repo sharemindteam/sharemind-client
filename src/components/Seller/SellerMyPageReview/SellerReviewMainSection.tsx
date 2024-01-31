@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ReviewCard, ReviewCardProps } from './ReviewCard';
 import { getMinderReviews } from 'api/get';
 import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
+import { useNavigate } from 'react-router-dom';
 
 interface ReviewData {
   reviewId: string;
@@ -20,6 +21,7 @@ interface ReviewData {
 
 export const SellerReviewMainSection = () => {
   const [cardList, setCardList] = useState<ReviewData[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchReviewData = async () => {
       const params = {
@@ -27,6 +29,12 @@ export const SellerReviewMainSection = () => {
         reviewId: 0,
       };
       const reviewRes: any = await getMinderReviews({ params });
+      if (reviewRes?.response?.status === 403) {
+        alert(
+          '아직 상담 프로필이 존재하지 않거나 상담 프로필 심사가 완료되지 않았어요.',
+        );
+        navigate('/minder/mypage');
+      }
       setCardList(reviewRes.data);
     };
     fetchReviewData();

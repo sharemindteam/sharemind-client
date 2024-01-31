@@ -204,7 +204,7 @@ const ViewProfileMainSectionWrapper = styled.section`
 `;
 
 const ProfileInformTag = styled(Body1)`
-  margin-right: 3.3rem;
+  margin-right: 2rem;
   color: ${Grey3};
   width: 8.7rem;
 `;
