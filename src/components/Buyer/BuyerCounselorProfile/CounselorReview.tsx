@@ -32,7 +32,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
         if (res.data.length !== 0) {
           if (lastReviewId === 0) {
             setReviews(res.data);
-          } else if (lastReviewId) {
+          } else {
             const updatedReviews = [...reviews, ...res.data];
             setReviews(updatedReviews);
           }

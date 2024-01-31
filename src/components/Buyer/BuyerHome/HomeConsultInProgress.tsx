@@ -4,7 +4,6 @@ import { Body1, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ConsultCard } from '../Common/ConsultCard';
 import { useNavigate } from 'react-router-dom';
-import { ConsultState } from 'utils/type';
 import { useEffect, useState } from 'react';
 import { getConsultsCustomers } from 'api/get';
 interface Response {
