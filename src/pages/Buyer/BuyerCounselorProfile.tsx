@@ -1,4 +1,4 @@
-import { getCounselors } from 'api/get';
+import { getCounselorsAll } from 'api/get';
 import {
   CounselorExp,
   CounselorFooter,
@@ -9,7 +9,7 @@ import {
   CounselorReview,
 } from 'components/Buyer/BuyerCounselorProfile';
 import { Space } from 'components/Common/Space';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
@@ -41,7 +41,7 @@ export const BuyerCounselorProfile = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res: any = await getCounselors(id);
+        const res: any = await getCounselorsAll(id);
         if (res.status === 200) {
           setProfileData(res.data);
         } else if (res.response.status === 404) {
