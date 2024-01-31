@@ -60,7 +60,7 @@ export const SellerLetter = () => {
   }, []);
   // 로딩스피너 여부
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
-
+  const [isCancel, setIsCancel] = useState<boolean>();
   // 처음 마운트될 떄 호출하는 API
   useEffect(() => {
     const fetchLetterInfo = async () => {
@@ -76,7 +76,9 @@ export const SellerLetter = () => {
           const { data } = recentTypeResponse;
           const level =
             levelMap[data?.recentType as keyof typeof levelMap] || 0;
+
           setTagActiveLevel(level);
+          setIsCancel(data?.isCanceled);
           setTagStatus(
             level === 0
               ? 0
@@ -114,7 +116,8 @@ export const SellerLetter = () => {
       setIsLoading(true);
       const params = {
         messageType:
-          messageTypeMap[tagStatus as keyof typeof messageTypeMap] ?? "intended_error",
+          messageTypeMap[tagStatus as keyof typeof messageTypeMap] ??
+          'intended_error',
         isCompleted: true,
       };
       try {
@@ -200,7 +203,12 @@ export const SellerLetter = () => {
           ) : null}
           {tagActiveLevel % 2 !== 0 && (
             <BottomButton
-              text={bottomButtonText[tagActiveLevel]}
+              isActive={!isCancel}
+              text={
+                isCancel
+                  ? '이미 취소된 상담이에요.'
+                  : bottomButtonText[tagActiveLevel]
+              }
               onClick={() => {
                 navigate(`/minder/writeLetter/${consultid}`);
               }}

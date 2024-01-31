@@ -51,10 +51,15 @@ export const SellerConsultSection = () => {
         : await getChatsMinder({
             params,
           });
+      console.log(res);
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);
         setIsLoading(false);
+      } else if (res?.response?.status === 403) {
+        // 판매 정보를 등록하지 않았을 경우
+        alert('판매 정보를 등록해주세요.');
+        navigate('/minder/mypage/viewProfile');
       } else {
         console.error('Failed to fetch data:', res.status, res.statusText);
       }
