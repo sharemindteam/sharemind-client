@@ -10,7 +10,7 @@ import { sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 import { SearchResultData } from 'utils/type';
-import { patchCounselors } from 'api/patch';
+import { patchCounselorsAll } from 'api/patch';
 import { ConverSortType } from 'utils/convertSortType';
 import { AvailCounselorSearchResults } from 'components/Buyer/BuyerAvailCounselor/AvailCounselorSearchResult';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
@@ -32,7 +32,7 @@ export const BuyerAvailCounselor = () => {
         index: 0,
       };
       const sortTypeString: string = ConverSortType(sortType);
-      const res: any = await patchCounselors(sortTypeString, body);
+      const res: any = await patchCounselorsAll(sortTypeString, body);
       if (res.status === 200) {
         setSearchData(res.data);
       } else if (res.response.status === 404) {

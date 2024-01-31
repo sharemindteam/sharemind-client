@@ -1,7 +1,7 @@
 import { Button } from 'components/Common/Button';
 import { Space } from 'components/Common/Space';
 import { TagA2Consult } from 'components/Common/TagA2Consult';
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
@@ -9,7 +9,7 @@ import { Body1, Body3 } from 'styles/font';
 import { isPaymentModalOpenState } from 'utils/atom';
 import { ConsultState } from 'utils/type';
 interface PaymentCardProps {
-  counselorId: number;
+  paymentId: number;
   nickname: string;
   consultType: string;
   consultState: string;
@@ -18,9 +18,10 @@ interface PaymentCardProps {
   payDate: string;
   payment: string;
   isPayComplete: boolean;
+  setClickedPaymentId: Dispatch<SetStateAction<number>>;
 }
 export const PaymentCard = ({
-  counselorId,
+  paymentId,
   nickname,
   consultType,
   consultState,
@@ -29,18 +30,13 @@ export const PaymentCard = ({
   payDate,
   payment,
   isPayComplete,
+  setClickedPaymentId,
 }: PaymentCardProps) => {
   const tagType = consultState as ConsultState;
-  const [buttonToggle, setButtonToggle] = useState<boolean>(false);
   // Modal 여부(recoil)
   const setIsModalOpen = useSetRecoilState<boolean>(isPaymentModalOpenState);
   return (
-    <CardWrapper
-      onClick={() => {
-        setButtonToggle(!buttonToggle);
-      }}
-      isPaymentComplete={isPayComplete}
-    >
+    <CardWrapper isPaymentComplete={isPayComplete}>
       <div className="upper-wrapper">
         <Body1 color={Grey1} margin="0 0 0 1.5rem">
           {nickname}
@@ -58,7 +54,7 @@ export const PaymentCard = ({
         </div>
         <div className="row">
           <Body3 color={Grey3}>상담가격</Body3>
-          <Body3 color={Grey1}>{price}원</Body3>
+          <Body3 color={Grey1}>{price.toLocaleString()}원</Body3>
         </div>
         <div className="row">
           <Body3 color={Grey3}>구매일자</Body3>
@@ -68,7 +64,7 @@ export const PaymentCard = ({
           <Body3 color={Grey3}>결제수단</Body3>
           <Body3 color={Grey1}>{payment}</Body3>
         </div>
-        {isPayComplete && buttonToggle ? (
+        {isPayComplete ? (
           <>
             <Space height="0.4rem" />
             <div className="button-wrapper">
@@ -79,6 +75,7 @@ export const PaymentCard = ({
                 backgroundColor={White}
                 color={Green}
                 onClick={() => {
+                  setClickedPaymentId(paymentId);
                   setIsModalOpen(true);
                 }}
                 buttonTextType={2}

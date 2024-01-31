@@ -4,7 +4,8 @@ export const getAdminsUnpaidConsults = async () =>
   await getInstance('/admins/unpaid-consults');
 export const getAdminsPedningProfilse = async () =>
   await getInstance('/admins/pending-profiles');
-
+export const getAdminsRefundWaiting = async () =>
+  await getInstance('/admins/refund-waiting');
 //밑에 두개 지우기
 export const getChats = async (params: any) =>
   await getInstance('/chats', params);
@@ -22,6 +23,9 @@ export const getChatsCustomers = async (params: any) =>
 
 export const getChatsMinder = async (params: any) =>
   await getInstance('/chats/counselors', params);
+//Consult Controller
+export const getConsultsCustomers = async () =>
+  await getPublicInstance('/consults/customers');
 
 //Letter Controller
 //편지 목록 반환
@@ -43,6 +47,10 @@ export const getDraftsLetter = async (
 
 export const getLetterDeadline = async (letterId: string | undefined) =>
   await getInstance(`/letters/deadline/${letterId}`);
+//편지 상대방 이름 조회
+export const getLettersNickname = async (letterId: string | undefined) =>
+  await getInstance(`/letters/nickname/${letterId}`);
+
 //Customer Controller
 export const getCustomersNickname = async () =>
   await getPublicInstance('/customers/nickname');
@@ -71,15 +79,15 @@ export const getCounselorConsults = async (
   params: any,
 ) => await getInstance(`/counselors/consults/${counselorId}`, params);
 //마인더 프로필 페이지 마인더 프로필 조회
-export const getCounselors = async (counselorId: string | undefined) =>
-  await getPublicInstance(`/counselors/${counselorId}`);
+export const getCounselorsAll = async (counselorId: string | undefined) =>
+  await getPublicInstance(`/counselors/all/${counselorId}`);
 // SearchWord Controller
 export const getSearchWords = async () =>
   await getPublicInstance('/searchWords');
 
 //Payment Controller
 export const getPaymentsCustomers = async (params: any) =>
-  await getPublicInstance('/payments/customers', params);
+  await getInstance('/payments/customers', params);
 //Review Controller
 
 export const getMinderReviews = async (params: any) =>

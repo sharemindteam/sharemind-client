@@ -40,7 +40,7 @@ instance.interceptors.response.use(
           return instance(originRequest);
         } else if (tokenResponse.response.status === 400) {
           alert('로그인 후 이용해 주세요.');
-          window.location.href = '/buyer/mypage';
+          window.location.href = '/mypage';
           //나중에 지우고 로그인으로 navigate
         }
       } catch (error) {

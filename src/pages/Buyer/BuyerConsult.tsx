@@ -70,7 +70,6 @@ export const BuyerConsult = () => {
           };
           const res: any = await getLettersCustomers({ params });
           if (res.status === 200) {
-            console.log(res.data);
             setCardData(res.data);
           } else if (res.response.status === 404) {
             alert('존재하지 않는 정렬 방식입니다.');

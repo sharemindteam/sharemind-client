@@ -13,10 +13,13 @@ export const patchAdminsPendingProfiles = async (
     undefined,
     params,
   );
+//admin 결제 환불 완료 수정
+export const patchAdminsRefundWaiting = async (paymentId: number) =>
+  await patchInstance(`/admins/refund-waiting/${paymentId}`);
 //Counselor Controller
 //카테고리/들준마 상담사 리스트 반환
-export const patchCounselors = async (sortType: string, body: any) =>
-  await patchPublicInstance(`/counselors?sortType=${sortType}`, body);
+export const patchCounselorsAll = async (sortType: string, body: any) =>
+  await patchPublicInstance(`/counselors/all?sortType=${sortType}`, body);
 //LetterMessage Controller
 //Message 최초 생성
 export const patchLetterMessage = async (body: any) =>
@@ -27,7 +30,9 @@ export const patchLetterMessageFirstQustion = async (body: any) =>
 
 export const patchProfiles = async (body: any) =>
   await patchInstance('counselors/profiles', body);
-
+//Payment Controller
+export const patchPaymentsCustomers = async (paymentId: number) =>
+  await patchInstance(`/payments/customers/${paymentId}`);
 //Review Controller
 export const patchReviews = async (body: any) =>
   await patchInstance('/reviews', body);

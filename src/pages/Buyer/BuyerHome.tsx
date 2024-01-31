@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
 import { SearchResultData } from 'utils/type';
 import { useEffect, useState } from 'react';
-import { patchCounselors } from 'api/patch';
+import { patchCounselorsAll } from 'api/patch';
 export const BuyerHome = () => {
   const navigate = useNavigate();
   //결과저장
@@ -18,7 +18,7 @@ export const BuyerHome = () => {
       const body = {
         index: 0,
       };
-      const res: any = await patchCounselors('POPULARITY', body);
+      const res: any = await patchCounselorsAll('POPULARITY', body);
       if (res.status === 200) {
         setSearchData(res.data);
       } else if (res.response.status === 404) {

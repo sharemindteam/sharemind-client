@@ -4,12 +4,14 @@ import { ReviewManageNav } from 'components/Buyer/BuyerReviewManage/ReviewManage
 import { ReviewModal } from 'components/Buyer/BuyerReviewManage/ReviewModal';
 import { ReviewWroteCard } from 'components/Buyer/BuyerReviewManage/ReviewWroteCard';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
+import { Space } from 'components/Common/Space';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isModifyReviewState, scrollLockState } from 'utils/atom';
 import { BuyerReview } from 'utils/type';
 
@@ -24,18 +26,47 @@ export const BuyerReviewManage = () => {
     useRecoilState<boolean>(isModifyReviewState);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+  //Loading
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   useLayoutEffect(() => {
+    setIsLoading(true);
     const fetchReviewData = async () => {
       const params = { isCompleted: !isReviewWrite, reviewId: 0 };
-      const res: any = await getReviewsCustomer({ params });
-      if (res.status === 200) {
-        setReviewData(res.data);
-      } else if (res.response.status === 404) {
-        alert('존재하지 않는 회원입니다.');
+      try {
+        const res: any = await getReviewsCustomer({ params });
+        if (res.status === 200) {
+          setReviewData(res.data);
+        } else if (res.response.status === 404) {
+          alert('존재하지 않는 회원입니다.');
+        }
+      } catch (e) {
+        alert(e);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchReviewData();
   }, [isReviewWrite]);
+  if (isLoading) {
+    return (
+      <>
+        <HeaderWrapper border={false}>
+          <BackIcon
+            onClick={() => {
+              navigate('/mypage');
+            }}
+          />
+          <Heading color={Grey1}>리뷰관리</Heading>
+        </HeaderWrapper>
+        <ReviewManageNav
+          isWrite={isReviewWrite}
+          setIsWrite={setIsReviewWrite}
+        />
+        <Space height="10vh" />
+        <LoadingSpinner />
+      </>
+    );
+  }
   return (
     <>
       <HeaderWrapper border={false}>
