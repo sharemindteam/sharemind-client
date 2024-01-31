@@ -59,7 +59,6 @@ export const BuyerSearchResult = () => {
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchSearchWordsResults(sortTypeString, body);
       if (res.status === 200) {
-        console.log(res.data);
         setSearchData(res.data);
       } else if (res.response.status === 400) {
         alert('검색어는 2~20자 사이여야 합니다.');
@@ -141,10 +140,10 @@ export const BuyerSearchResult = () => {
         ) : (
           <EmptyWrapper>
             <EmptyIcon />
-            <Heading color={Grey1}>검색 결과가 없어요.</Heading>
-            <Body2 color={Grey1}>
-              마인더명, 제목, 카테고리, 상담 스타일 등
-            </Body2>
+            <Heading color={Grey1} margin="0 0 1.5rem 0">
+              검색 결과가 없어요.
+            </Heading>
+            <Body2 color={Grey1}>마인더명, 제목, 상담 스타일 등</Body2>
             <Body2 color={Grey1}>더 간단한 단어로 검색해보세요.</Body2>
           </EmptyWrapper>
         )}

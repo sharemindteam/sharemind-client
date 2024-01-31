@@ -153,7 +153,14 @@ export const BuyerMypage = () => {
           </LoginCard>
         )}
         <div className="additional-box">
-          <Body2 color={Grey1}>서비스 소개</Body2>
+          <Body2
+            color={Grey1}
+            onClick={() => {
+              navigate('/service');
+            }}
+          >
+            서비스 소개
+          </Body2>
         </div>
         {IsLogin ? (
           <>
