@@ -14,7 +14,7 @@ import {
   searchKeywordState,
 } from 'utils/atom';
 import { ConverSortType } from 'utils/convertSortType';
-import { patchCounselors } from 'api/patch';
+import { patchCounselorsAll } from 'api/patch';
 import { SearchResultData } from 'utils/type';
 
 import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/CategorySearchResult';
@@ -41,7 +41,7 @@ export const BuyerCategoryResult = () => {
         index: 0,
       };
       const sortTypeString: string = ConverSortType(sortType);
-      const res: any = await patchCounselors(sortTypeString, body);
+      const res: any = await patchCounselorsAll(sortTypeString, body);
       if (res.status === 200) {
         setSearchData(res.data);
       } else if (res.response.status === 404) {

@@ -187,10 +187,9 @@ export const SignupVerifyEmail = ({
               <Input
                 value={idInput.value}
                 onChange={idInput.onChange}
-                width="33.5rem"
+                width="24.3rem"
                 height="4.8rem"
-                isBoxSizing={true}
-                maxLength={27}
+                padding="0 9.2rem 0 0"
                 textIndent="1rem"
               />
               <VerifyButton

@@ -1,6 +1,11 @@
-import { getAdminsPedningProfilse, getAdminsUnpaidConsults } from 'api/get';
+import {
+  getAdminsPedningProfilse,
+  getAdminsRefundWaiting,
+  getAdminsUnpaidConsults,
+} from 'api/get';
 import {
   patchAdminsPendingProfiles,
+  patchAdminsRefundWaiting,
   patchAdminsUnpaidConsults,
 } from 'api/patch';
 import { Button } from 'components/Common/Button';
@@ -36,12 +41,24 @@ type Counselor = {
   introduction: string;
   nickname: string;
 };
+interface Refund {
+  paymentId: number;
+  customerNickname: string;
+  counselorNickname: string;
+  status: string;
+  consultType: string;
+  consultedAt: string;
+  cost: number;
+  paidAt: string;
+  method: string;
+}
 export const Admin = () => {
   const navigate = useNavigate();
   const [consultData, setConsultData] = useState<PayArray>([]);
   const [profileData, setProfileData] = useState<Counselor[]>([]);
+  const [refundData, setRefundData] = useState<Refund[]>([]);
   const [valid, setValid] = useState<boolean>(false);
-  // 0 : 결제관리(consult) 1: 마인더인증 관리(counselor)
+  // 0 : 결제관리(consult) 1: 마인더인증 관리(counselor) 2: 환불 관리 (refund)
   const [pageState, setPageState] = useState<number>(0);
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +83,21 @@ export const Admin = () => {
           const res: any = await getAdminsPedningProfilse();
           if (res.status === 200) {
             setProfileData(res.data);
+            setValid(true);
+          } else if (res.response.status === 403) {
+            alert('접근 권한이 없습니다.');
+            navigate('/login');
+          }
+        } catch (e) {
+          alert('조회 도중 오류가 발생하였습니다.');
+        }
+      } else if (pageState === 2) {
+        //상담사 프로필 심사
+        try {
+          const res: any = await getAdminsRefundWaiting();
+          if (res.status === 200) {
+            console.log(res.data);
+            setRefundData(res.data);
             setValid(true);
           } else if (res.response.status === 403) {
             alert('접근 권한이 없습니다.');
@@ -122,6 +154,24 @@ export const Admin = () => {
       alert('요청 도중 오류가 발생하였습니다.');
     }
   };
+  const handleRefundComplete = async (paymentId: number) => {
+    try {
+      const res: any = await patchAdminsRefundWaiting(paymentId);
+      if (res.status === 200) {
+        alert('성공적으로 처리되었습니다.');
+        const newData = refundData.filter(
+          (iter) => iter.paymentId !== paymentId,
+        );
+        setRefundData(newData);
+      } else if (res.response.status === 400) {
+        alert('환불 예정 상태가 아닌 결제에 대한 요청입니다.');
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 결제 아이디로 요청되었습니다.');
+      }
+    } catch (e) {
+      alert('요청 도중 오류가 발생하였습니다.');
+    }
+  };
   if (valid === true) {
     if (pageState === 0) {
       return (
@@ -144,6 +194,14 @@ export const Admin = () => {
               color={Green}
               onClick={() => {
                 setPageState(1);
+              }}
+            />
+            <Button
+              text="환불 예정 결제 정보"
+              backgroundColor={LightGreen}
+              color={Green}
+              onClick={() => {
+                setPageState(2);
               }}
             />
           </ButtonWrapper>
@@ -189,6 +247,14 @@ export const Admin = () => {
               color={Green}
               onClick={() => {
                 setPageState(1);
+              }}
+            />
+            <Button
+              text="환불 예정 결제 정보"
+              backgroundColor={LightGreen}
+              color={Green}
+              onClick={() => {
+                setPageState(2);
               }}
             />
           </ButtonWrapper>
@@ -241,6 +307,71 @@ export const Admin = () => {
                     }}
                   />
                 </ButtonWrapper>
+              </Box>
+            );
+          })}
+        </>
+      );
+    } else if (pageState === 2) {
+      return (
+        <>
+          <Heading color={Green} padding="0.5rem">
+            admin 페이지
+          </Heading>
+          <ButtonWrapper>
+            <Button
+              text="결제 승인"
+              backgroundColor={LightGreen}
+              color={Green}
+              onClick={() => {
+                setPageState(0);
+              }}
+            />
+            <Button
+              text="상담사 프로필 승인"
+              backgroundColor={LightGreen}
+              color={Green}
+              onClick={() => {
+                setPageState(1);
+              }}
+            />
+            <Button
+              text="환불 예정 결제 정보"
+              backgroundColor={LightGreen}
+              color={Green}
+              onClick={() => {
+                setPageState(2);
+              }}
+            />
+          </ButtonWrapper>
+          {refundData.map((value) => {
+            return (
+              <Box key={value.paymentId}>
+                <Caption1>{`결제 ID : ${value.paymentId}`}</Caption1>
+                <Line />
+                <Caption1>{`구매자 이름 : ${value.customerNickname}`}</Caption1>
+                <Line />
+                <Caption1>{`상담사 이름 : ${value.counselorNickname}`}</Caption1>
+                <Line />
+                <Caption1>{`상담 상태 : ${value.status}`}</Caption1>
+                <Line />
+                <Caption1>{`상담 타입 : ${value.consultType}`}</Caption1>
+                <Line />
+                <Caption1>{`상담 일시 : ${value.consultedAt}`}</Caption1>
+                <Line />
+                <Caption1>{`가격 : ${value.cost}`}</Caption1>
+                <Line />
+                <Caption1>{`결제 일시 : ${value.paidAt}`}</Caption1>
+                <Line />
+                <Caption1>{`결제 방식 : ${value.method}`}</Caption1>
+                <Line />
+                <Button
+                  text="환불 승인"
+                  margin="1rem 0 0 0"
+                  onClick={() => {
+                    handleRefundComplete(value.paymentId);
+                  }}
+                />
               </Box>
             );
           })}

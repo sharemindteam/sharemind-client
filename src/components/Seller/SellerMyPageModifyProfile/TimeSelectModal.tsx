@@ -108,7 +108,6 @@ function TimeSelectModal({
     if (foundDayKey) {
       const pushedString = selectedArray[0] + '~' + selectedArray[1];
       setSelectedTimeList((prevSelectedTimeList) => {
-        console.log(prevSelectedTimeList[foundDayKey]);
         return {
           ...prevSelectedTimeList,
           [foundDayKey]: [...prevSelectedTimeList[foundDayKey], pushedString],

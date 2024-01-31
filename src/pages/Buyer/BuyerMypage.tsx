@@ -8,137 +8,173 @@ import { Characters } from 'utils/Characters';
 import { ReactComponent as PayedIcon } from 'assets/icons/icon-mypage-payed.svg';
 import { ReactComponent as ReviewIcon } from 'assets/icons/icon-mypage-review.svg';
 import { ReactComponent as SavedIcon } from 'assets/icons/icon-mypage-saved.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { getCustomersNickname } from 'api/get';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 export const BuyerMypage = () => {
   const navigate = useNavigate();
   //로그인 여부 temp
   const [IsLogin, setIsLogin] = useState<boolean>(true);
+  //로딩 state
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   //회원닉네임
   const [nickname, setNickname] = useState<string>('');
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchNickname = async () => {
-      const res: any = await getCustomersNickname();
-      if (res.status === 200) {
-        setNickname(res.data);
-        setIsLogin(true);
-      } else if (res.response.status === 401) {
-        setIsLogin(false);
+      setIsLoading(true);
+      try {
+        const res: any = await getCustomersNickname();
+        if (res.status === 200) {
+          setNickname(res.data);
+          setIsLogin(true);
+        } else if (res.response.status === 401) {
+          setIsLogin(false);
+        }
+      } catch (e) {
+        alert(e);
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1);
       }
     };
     fetchNickname();
   }, []);
-  return (
-    <Wrapper>
-      <Header
-        isBuyer={true}
-        onClick={() => {
-          navigate('/');
-        }}
-      />
-      <TabA1 isBuyer={true} initState={3} />
-      {IsLogin ? (
-        <>
-          <UserCard>
-            <div className="profile">
-              <Characters number={2} width="7.9rem" height="5.8rem" />
-              <Subtitle>{nickname}</Subtitle>
-            </div>
-            <div className="change-button">
-              <ChangeButton
+  if (isLoading) {
+    return (
+      <>
+        <Header
+          isBuyer={true}
+          onClick={() => {
+            navigate('/');
+          }}
+        />
+        <TabA1 isBuyer={true} initState={3} />
+        <div
+          style={{
+            height: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <LoadingSpinner />
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <Wrapper>
+        <Header
+          isBuyer={true}
+          onClick={() => {
+            navigate('/');
+          }}
+        />
+        <TabA1 isBuyer={true} initState={3} />
+        {IsLogin ? (
+          <>
+            <UserCard>
+              <div className="profile">
+                <Characters number={2} width="7.9rem" height="5.8rem" />
+                <Subtitle>{nickname}</Subtitle>
+              </div>
+              <div className="change-button">
+                <ChangeButton
+                  onClick={() => {
+                    navigate('/minder/mypage');
+                  }}
+                >
+                  <Button2 color={Grey1}>마인더로 전환</Button2>
+                </ChangeButton>
+              </div>
+            </UserCard>
+            <div className="mypage-options">
+              <div
+                className="button"
                 onClick={() => {
-                  navigate('/minder/mypage');
+                  navigate('/payment');
                 }}
               >
-                <Button2 color={Grey1}>마인더로 전환</Button2>
-              </ChangeButton>
+                <PayedIcon />
+                <Button2>결제 내역</Button2>
+              </div>
+              <div
+                className="button"
+                onClick={() => {
+                  navigate('/reviewManage');
+                }}
+              >
+                <ReviewIcon />
+                <Button2>리뷰 관리</Button2>
+              </div>
+              <div
+                className="button"
+                onClick={() => {
+                  navigate('/saved');
+                }}
+              >
+                <SavedIcon />
+                <Button2>찜 목록</Button2>
+              </div>
             </div>
-          </UserCard>
-          <div className="mypage-options">
-            <div
-              className="button"
-              onClick={() => {
-                navigate('/payment');
-              }}
-            >
-              <PayedIcon />
-              <Button2>결제 내역</Button2>
+          </>
+        ) : (
+          <LoginCard>
+            <div className="card-align">
+              <div className="content">
+                <Body3 color={Grey4}>
+                  로그인하지 않은 상태입니다.
+                  <br />
+                  로그인/회원가입 후 이용해주세요.
+                </Body3>
+              </div>
+              <Button
+                text="로그인 및 회원가입"
+                width="33.5rem"
+                height="5.2rem"
+                onClick={() => {
+                  navigate('/login');
+                }}
+              />
+              <div className="find-id">
+                <Body2
+                  color={Grey4}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    navigate('/find');
+                  }}
+                >
+                  아이디/비밀번호 찾기
+                </Body2>
+              </div>
             </div>
-            <div
-              className="button"
-              onClick={() => {
-                navigate('/reviewManage');
-              }}
-            >
-              <ReviewIcon />
-              <Button2>리뷰 관리</Button2>
+          </LoginCard>
+        )}
+        <div className="additional-box">
+          <Body2 color={Grey1}>서비스 소개</Body2>
+        </div>
+        {IsLogin ? (
+          <>
+            <div className="additional-box">
+              <Body2 color={Grey1}>결제 문의</Body2>
             </div>
-            <div
-              className="button"
-              onClick={() => {
-                navigate('/saved');
-              }}
-            >
-              <SavedIcon />
-              <Button2>찜 목록</Button2>
-            </div>
-          </div>
-        </>
-      ) : (
-        <LoginCard>
-          <div className="card-align">
-            <div className="content">
-              <Body3 color={Grey4}>
-                로그인하지 않은 상태입니다.
-                <br />
-                로그인/회원가입 후 이용해주세요.
-              </Body3>
-            </div>
-            <Button
-              text="로그인 및 회원가입"
-              width="33.5rem"
-              height="5.2rem"
-              onClick={() => {
-                navigate('/login');
-              }}
-            />
-            <div className="find-id">
+            <div className="additional-box">
               <Body2
-                color={Grey4}
-                style={{ cursor: 'pointer' }}
+                color={Grey1}
                 onClick={() => {
-                  navigate('/find');
+                  navigate('/setting');
                 }}
               >
-                아이디/비밀번호 찾기
+                계정 설정
               </Body2>
             </div>
-          </div>
-        </LoginCard>
-      )}
-      <div className="additional-box">
-        <Body2 color={Grey1}>서비스 소개</Body2>
-      </div>
-      {IsLogin ? (
-        <>
-          <div className="additional-box">
-            <Body2 color={Grey1}>결제 문의</Body2>
-          </div>
-          <div className="additional-box">
-            <Body2
-              color={Grey1}
-              onClick={() => {
-                navigate('/setting');
-              }}
-            >
-              계정 설정
-            </Body2>
-          </div>
-        </>
-      ) : null}
-    </Wrapper>
-  );
+          </>
+        ) : null}
+      </Wrapper>
+    );
+  }
 };
 const Wrapper = styled.div`
   .mypage-options {

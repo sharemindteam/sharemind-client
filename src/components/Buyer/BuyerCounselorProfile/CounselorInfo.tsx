@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Grey1, Grey3, Grey6 } from 'styles/color';
 import { Body3 } from 'styles/font';
-import { consultTypeList } from 'utils/constant';
 import { convertTimeToString } from 'utils/convertTimeToString';
 import { ConsultTimes } from 'utils/type';
 interface CounselorInfoProps {

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { ReactComponent as OptionIcon } from 'assets/icons/icon-option.svg';
 import styled from 'styled-components';
@@ -6,10 +6,28 @@ import { White } from 'styles/color';
 import { Heading } from 'styles/font';
 import { isConsultModalOpenState } from 'utils/atom';
 import { useSetRecoilState } from 'recoil';
+import { useEffect, useState } from 'react';
+import { getLettersNickname } from 'api/get';
 
-export const LetterHeader = ({ name = '김고민' }) => {
+export const LetterHeader = () => {
   const navigate = useNavigate();
-
+  const { consultid } = useParams();
+  const [name, setName] = useState('');
+  useEffect(() => {
+    const fetchNameData = async () => {
+      const res: any = await getLettersNickname(consultid);
+      if (res?.status === 200) {
+        setName(res?.data);
+      } else if (res?.status === 403) {
+        alert('편지 참여자가 아닙니다.');
+        navigate('/minder');
+      } else if (res?.status === 404) {
+        alert('존재하지 않는 편지입니다.');
+        navigate('/minder');
+      }
+    };
+    fetchNameData();
+  }, []);
   return (
     <LetterHeaderWrapper>
       <LeftArrow

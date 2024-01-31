@@ -12,6 +12,9 @@ export const postReissue = async (body: any) =>
 
 export const postPublicReissue = async (body: any) =>
   await postPublicInstance('/auth/reissue', body);
+// 비밀번호 일치여부 조회
+export const postPassword = async (body: any) =>
+  await postInstance('/auth/password', body);
 
 //Email controller
 //인증번호 전송

@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import { Grey3, Grey6, White } from 'styles/color';
+import { Grey3, White } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
-import { BottomButton, BottomButtonWrapper } from '../Common/BottomButton';
+import { BottomButtonWrapper } from '../Common/BottomButton';
 import { useNavigate } from 'react-router-dom';
 import { Space } from 'components/Common/Space';
-import Input from 'components/Common/Input';
 import { Button } from 'components/Common/Button';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { convertTimeRange } from 'utils/convertTimeToString';
@@ -205,7 +204,7 @@ const ViewProfileMainSectionWrapper = styled.section`
 `;
 
 const ProfileInformTag = styled(Body1)`
-  margin-right: 3.3rem;
+  margin-right: 2rem;
   color: ${Grey3};
   width: 8.7rem;
 `;
@@ -230,12 +229,12 @@ const WhiteBox = styled.div`
   }
 `;
 
-const AccountWhiteBox = styled(WhiteBox)`
-  gap: 0.6rem;
-  & > div {
-    align-items: center;
-  }
-`;
+// const AccountWhiteBox = styled(WhiteBox)`
+//   gap: 0.6rem;
+//   & > div {
+//     align-items: center;
+//   }
+// `;
 
 const FirstWhiteBox = styled(WhiteBox)`
   & > div {
@@ -254,13 +253,13 @@ const IntroduceWhiteBox = styled(WhiteBox)`
   }
 `;
 
-const AccountTag = styled(Body1)`
-  width: 10rem;
-  margin-bottom: 0.4rem;
-`;
+// const AccountTag = styled(Body1)`
+//   width: 10rem;
+//   margin-bottom: 0.4rem;
+// `;
 
-const AccountForm = styled.div`
-  border-radius: 1.2rem;
-  margin-left: 1.7rem;
-  background: ${Grey6};
-`;
+// const AccountForm = styled.div`
+//   border-radius: 1.2rem;
+//   margin-left: 1.7rem;
+//   background: ${Grey6};
+// `;

@@ -1,4 +1,4 @@
-import { getCounselors } from 'api/get';
+import { getCounselorsAll } from 'api/get';
 import {
   CounselorExp,
   CounselorFooter,
@@ -36,11 +36,12 @@ export const BuyerCounselorProfile = () => {
   });
   //로딩 state
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   useLayoutEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res: any = await getCounselors(id);
+        const res: any = await getCounselorsAll(id);
         if (res.status === 200) {
           setProfileData(res.data);
         } else if (res.response.status === 404) {
@@ -71,7 +72,7 @@ export const BuyerCounselorProfile = () => {
     if (id !== undefined) {
       const counselorId = parseInt(id, 10);
       return (
-        <Wrapper>
+        <Wrapper className="header">
           <CounselorProfileHeader />
           <Body>
             <CounselorProfileCard

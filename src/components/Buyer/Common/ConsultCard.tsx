@@ -5,9 +5,8 @@ import { Characters } from 'utils/Characters';
 import { TagA2Consult } from '../../Common/TagA2Consult';
 import { useNavigate } from 'react-router-dom';
 import { ConsultState } from 'utils/type';
-import { useSetRecoilState } from 'recoil';
-import { opponentNicknameState } from 'utils/atom';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { Button } from 'components/Common/Button';
 
 interface ConsultCardProps {
   consultStyle: string;
@@ -34,15 +33,17 @@ export const ConsultCard = ({
   consultId,
 }: ConsultCardProps) => {
   const navigate = useNavigate();
-  const setOpponentNickname = useSetRecoilState(opponentNicknameState);
   const consultStatus = status as ConsultState;
   if (unreadMessageCount === null) {
     unreadMessageCount = 0;
   }
+  const handleReviewClick = (e?: React.MouseEvent<HTMLElement>) => {
+    e?.stopPropagation();
+    navigate('/reviewManage');
+  };
   return (
     <Wrapper
       onClick={() => {
-        setOpponentNickname(opponentNickname);
         navigate(`/letter/${id}`);
       }}
     >
@@ -83,18 +84,34 @@ export const ConsultCard = ({
           </div>
         </ConsultStateBox>
       </ConsultContent>
+      {reviewCompleted && (
+        <Button
+          text="리뷰 작성하기"
+          height="4.2rem"
+          width="90.44%"
+          backgroundColor={White}
+          color={Green}
+          buttonTextType={2}
+          margin="0 0 1.6rem 0"
+          onClick={handleReviewClick}
+        />
+      )}
     </Wrapper>
   );
 };
 const Wrapper = styled.div`
   width: 89%;
-  height: 11.5rem;
   background-color: ${Grey6};
   border-radius: 1.2rem;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const ConsultContent = styled.div`
   padding: 1.6rem;
+  width: 100%;
+  box-sizing: border-box;
 `;
 const Unread = styled.div`
   position: absolute;

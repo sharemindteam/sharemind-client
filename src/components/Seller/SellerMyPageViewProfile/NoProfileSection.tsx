@@ -26,7 +26,7 @@ function NoProfileSection() {
           width="calc(100% - 4rem)"
           height="5.2rem"
           onClick={() => {
-            navigate('/seller/mypage/modifyProfile');
+            navigate('/minder/mypage/modifyProfile');
           }}
         />
       </BottomButtonWrapper>
