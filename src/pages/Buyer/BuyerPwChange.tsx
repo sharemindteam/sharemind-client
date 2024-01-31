@@ -1,3 +1,5 @@
+import { patchAuthPassword } from 'api/patch';
+import { postPassword } from 'api/post';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import PwInput from 'components/Buyer/Common/PwInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
@@ -28,6 +30,29 @@ export const BuyerPwChange = () => {
   const [correctState, setCorrectState] = useState<string>('');
   //최종 완료 valid 여부
   const [valid, setValid] = useState<boolean>(false);
+
+  const pwCorrectCheck = async () => {
+    const body = {
+      password: pw.value,
+    };
+    const res: any = await postPassword(body);
+    if (res.status === 200) {
+      pw.setIsValid(res.data);
+    } else if (res.response.status === 400) {
+      pw.setIsValid(false);
+    }
+  };
+  const handlePwChangeClick = async () => {
+    const body = {
+      password: newPw.value,
+    };
+    const res: any = await patchAuthPassword(body);
+    if (res.status === 200) {
+      navigate('/login');
+    } else if (res.response.status === 400) {
+      alert(res.response.data.message);
+    }
+  };
   useEffect(() => {
     //세 case 모두 valid할 시 다음으로 넘어감
     if (pw.isValid && newPw.typeValid && newPwCheck.isValid) {
@@ -37,13 +62,6 @@ export const BuyerPwChange = () => {
     }
   }, [pw.isValid, newPw.isValid, newPwCheck.isValid]);
 
-  useEffect(() => {
-    if (pw.value.trim() !== '') {
-      pw.setIsValid(true);
-    } else {
-      pw.setIsValid(false);
-    }
-  }, [pw.value]);
   useEffect(() => {
     // 첫 마운트 시에는 error 색상 안되게 처리
     if (isInitialRender.current) {
@@ -114,6 +132,7 @@ export const BuyerPwChange = () => {
               height="4.8rem"
               isBoxSizing={true}
               textIndent="1rem"
+              onBlur={pwCorrectCheck}
             />
             {pw.isValid ? null : (
               <div className="caption">
@@ -171,9 +190,7 @@ export const BuyerPwChange = () => {
           width="33.5rem"
           height="5.2rem"
           isActive={valid}
-          onClick={() => {
-            navigate('/login');
-          }}
+          onClick={handlePwChangeClick}
         />
       </div>
     </Wrapper>
