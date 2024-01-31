@@ -9,6 +9,8 @@ import { useInput } from 'hooks/useInput';
 import { BackDrop } from 'components/Common/BackDrop';
 import { LoginModal } from 'components/Buyer/BuyerLogin/LoginModal';
 import { useState } from 'react';
+import PwInput from 'components/Buyer/Common/PwInput';
+import { Space } from 'components/Common/Space';
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
@@ -68,10 +70,14 @@ export const BuyerLogin = () => {
           </div>
           <div className="input-wrapper">
             <Body1 color={Grey3}>비밀번호</Body1>
-            <LoginInput
-              type="password"
+            <Space height="0.4rem" />
+            <PwInput
+              width="33.5rem"
+              height="4.8rem"
               value={pwInput.value}
               onChange={pwInput.onChange}
+              textIndent="0.8rem"
+              isBoxSizing={true}
             />
           </div>
           <div className="submit-option">
@@ -177,7 +183,7 @@ const LoginInput = styled.input<{
   font-weight: 600;
   line-height: 150%;
   color: ${Grey1};
-  text-indent: 0.5rem;
+  text-indent: 0.8rem;
   &::placeholder {
   }
   &:focus {
