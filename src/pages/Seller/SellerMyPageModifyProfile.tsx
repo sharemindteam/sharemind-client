@@ -97,6 +97,7 @@ export const SellerMypageModifyProfile = () => {
         const profileLevel: any = await getMyInfo();
         if (profileLevel?.data?.profileStatus === 'NO_PROFILE') {
           setIsNoProfile(true);
+          setIsLoading(false);
         } else if (profileLevel?.data?.profileStatus === 'EVALUATION_PENDING') {
           alert('판매 정보 검토 중이니 조금만 기다려주세요!');
           navigate('/seller/mypage/viewProfile');
