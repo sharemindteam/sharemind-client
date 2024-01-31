@@ -29,6 +29,7 @@ function OnGoingConsultSection() {
     };
     fetchOngoingConsult();
   }, []);
+  console.log(totalNum);
   return (
     <>
       <ContentTag
@@ -44,7 +45,7 @@ function OnGoingConsultSection() {
       </ContentTag>
 
       <OngoingCounsultBoxList>
-        {totalNum === (0 || undefined) ? (
+        {totalNum === 0 || totalNum === undefined ? (
           <div style={{ alignSelf: 'flex-start', paddingLeft: '2rem' }}>
             <Body3 color={Grey4}>
               {isNoProfile
