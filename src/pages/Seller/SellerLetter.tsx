@@ -28,6 +28,7 @@ export const SellerLetter = () => {
   // 상단 태그상태 -> 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
   const [tagStatus, setTagStatus] = useState<number>();
   // 현재 편지의 태그 활성화레벨, tagStatus가 tagActiveLevel보다 작으면 검은색, 같거나 크면 희색:  0 1 2 3 4
+  //  질문 도착 전, 질문 도착 , 
   const [tagActiveLevel, setTagActiveLevel] = useState<number>(0);
   // 신고할 것인지 여부
   const [isActiveComplaint, setIsComplaint] = useState<boolean>(false);
@@ -83,7 +84,7 @@ export const SellerLetter = () => {
             level === 0
               ? 0
               : level === 1
-              ? 1
+              ? 0
               : level === 2
               ? 1
               : level === 3
