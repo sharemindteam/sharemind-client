@@ -10,6 +10,7 @@ import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { useRecoilState } from 'recoil';
 import { isLoadingState } from 'utils/atom';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 interface CounselorReviewProps {
   counselorId: number;
 }
@@ -22,7 +23,9 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   const testFetch = (delay = 6000) =>
     new Promise((res) => setTimeout(res, delay));
   const fetchReviewData = async (lastReviewId: number) => {
-    setIsLoading(true);
+    if (lastReviewId === 0) {
+      setIsLoading(true);
+    }
     const params = {
       reviewId: lastReviewId,
     };
@@ -46,9 +49,11 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
     } catch (e) {
       alert(e);
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1);
+      if (lastReviewId === 0) {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1);
+      }
     }
   };
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
@@ -72,47 +77,47 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
     fetchReviewData(0);
   }, []);
 
-  // if (isLoading) {
-  //   return (
-  //     <>
-  //       <LoadingSpinner />
-  //     </>
-  //   );
-  // } else {
-  if (reviews.length === 0) {
+  if (isLoading) {
     return (
-      <EmptyWrapper>
-        <EmptyIcon />
-        <Heading>아직 후기가 없어요.</Heading>
-      </EmptyWrapper>
+      <>
+        <LoadingSpinner />
+      </>
     );
   } else {
-    return (
-      <Wrapper>
-        {reviews.map((value) => {
-          return (
-            <ReviewCard key={value.reviewId}>
-              <div className="row1">
-                <Body1 color={Grey1}>{value.nickname}</Body1>
-                <Body3 color={Grey1}>{value.updateAt}</Body3>
-              </div>
-              <div className="row2">
-                <HeartRate rating={value.rating}></HeartRate>
-              </div>
-              <div className="row3">
-                <Body2>{value.comment}</Body2>
-              </div>
-            </ReviewCard>
-          );
-        })}
-        {!isLastElem ? (
-          <div ref={setTarget} style={{ height: '5rem' }} />
-        ) : null}
-      </Wrapper>
-    );
+    if (reviews.length === 0) {
+      return (
+        <EmptyWrapper>
+          <EmptyIcon />
+          <Heading>아직 후기가 없어요.</Heading>
+        </EmptyWrapper>
+      );
+    } else {
+      return (
+        <Wrapper>
+          {reviews.map((value) => {
+            return (
+              <ReviewCard key={value.reviewId}>
+                <div className="row1">
+                  <Body1 color={Grey1}>{value.nickname}</Body1>
+                  <Body3 color={Grey1}>{value.updateAt}</Body3>
+                </div>
+                <div className="row2">
+                  <HeartRate rating={value.rating}></HeartRate>
+                </div>
+                <div className="row3">
+                  <Body2>{value.comment}</Body2>
+                </div>
+              </ReviewCard>
+            );
+          })}
+          {!isLastElem ? (
+            <div ref={setTarget} style={{ height: '5rem' }} />
+          ) : null}
+        </Wrapper>
+      );
+    }
   }
 };
-// };
 const Wrapper = styled.div`
   padding: 1.2rem 2rem 2rem 2rem;
   margin-bottom: 5.2rem;
