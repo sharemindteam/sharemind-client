@@ -5,24 +5,63 @@ import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ConsultCard } from '../Common/ConsultCard';
 import { useNavigate } from 'react-router-dom';
 import { ConsultState } from 'utils/type';
+import { useEffect, useState } from 'react';
+import { getConsultsCustomers } from 'api/get';
+interface Response {
+  id: number;
+  consultStyle: string;
+  status: string;
+  opponentNickname: string;
+  latestMessageUpdatedAt: string;
+  latestMessageContent: string;
+  latestMessageIsCustomer: boolean;
+  unreadMessageCount: number;
+  reviewCompleted: boolean;
+  consultId: number;
+  isChat: boolean;
+}
+
+interface Data {
+  totalOngoing: number;
+  responses: Response[];
+}
 export const HomeConsultInProgress = () => {
   const navigate = useNavigate();
-  return (
-    <Wrapper>
-      <div
-        className="nav-consult"
-        onClick={() => {
-          navigate('/consult');
-        }}
-      >
-        <NavConsult>
-          <Subtitle>진행 중인 상담</Subtitle>
-          {/* 나중에 api */}
-          <Body1 color={Red}>8</Body1>
-        </NavConsult>
-        <MoreIcon />
-      </div>
-      {/* <ConsultCard
+  const [data, setData] = useState<Data>();
+  const [isLogined, setIsLogined] = useState<boolean>(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res: any = await getConsultsCustomers();
+      console.log(res);
+      if (res.status === 200) {
+        setData(res.data);
+        setIsLogined(true);
+      } else if (res.response.status === 401) {
+        setIsLogined(false);
+      }
+    };
+    fetchData();
+  }, []);
+  if (!isLogined) {
+    return <></>;
+  } else {
+    return (
+      <Wrapper>
+        <div
+          className="nav-consult"
+          onClick={() => {
+            navigate('/consult');
+          }}
+        >
+          <NavConsult>
+            <Subtitle>진행 중인 상담</Subtitle>
+            {/* 나중에 api */}
+            <Body1 color={Red}>{data?.totalOngoing}</Body1>
+          </NavConsult>
+          <MoreIcon />
+        </div>
+
+        {/* <ConsultCard
         consultId={0}
         name={CounselorName}
         consultState={ConsultState}
@@ -30,8 +69,9 @@ export const HomeConsultInProgress = () => {
         content={ContentText}
         unread={unreadNumber}
       /> */}
-    </Wrapper>
-  );
+      </Wrapper>
+    );
+  }
 };
 
 const Wrapper = styled.div`

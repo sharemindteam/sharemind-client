@@ -1,5 +1,5 @@
 import { getReviews } from 'api/get';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey6 } from 'styles/color';
@@ -9,7 +9,6 @@ import { Review } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { useRecoilState } from 'recoil';
 import { isLoadingState } from 'utils/atom';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 interface CounselorReviewProps {
   counselorId: number;
@@ -19,8 +18,8 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  //로딩 테스트를 위해서 가짜 fetch 함수를 넣었다.
-  const testFetch = (delay = 1000) =>
+  //pending 함수
+  const testFetch = (delay = 6000) =>
     new Promise((res) => setTimeout(res, delay));
   const fetchReviewData = async (lastReviewId: number) => {
     setIsLoading(true);
@@ -38,7 +37,6 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
             setReviews(updatedReviews);
           }
         } else {
-          console.log('빈배열');
           setIsLastElem(true);
         }
       } else if (res.response.status === 404) {
@@ -48,9 +46,6 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
     } catch (e) {
       alert(e);
     } finally {
-      // await testFetch();
-      // setIsLoading(false);
-      // await testFetch();
       setTimeout(() => {
         setIsLoading(false);
       }, 1);

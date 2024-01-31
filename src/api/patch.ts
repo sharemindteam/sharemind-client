@@ -15,8 +15,8 @@ export const patchAdminsPendingProfiles = async (
   );
 //Counselor Controller
 //카테고리/들준마 상담사 리스트 반환
-export const patchCounselors = async (sortType: string, body: any) =>
-  await patchPublicInstance(`/counselors?sortType=${sortType}`, body);
+export const patchCounselorsAll = async (sortType: string, body: any) =>
+  await patchPublicInstance(`/counselors/all?sortType=${sortType}`, body);
 //LetterMessage Controller
 //Message 최초 생성
 export const patchLetterMessage = async (body: any) =>

@@ -22,6 +22,9 @@ export const getChatsCustomers = async (params: any) =>
 
 export const getChatsMinder = async (params: any) =>
   await getInstance('/chats/counselors', params);
+//Consult Controller
+export const getConsultsCustomers = async () =>
+  await getPublicInstance('/consults/customers');
 
 //Letter Controller
 //편지 목록 반환
@@ -71,8 +74,8 @@ export const getCounselorConsults = async (
   params: any,
 ) => await getInstance(`/counselors/consults/${counselorId}`, params);
 //마인더 프로필 페이지 마인더 프로필 조회
-export const getCounselors = async (counselorId: string | undefined) =>
-  await getPublicInstance(`/counselors/${counselorId}`);
+export const getCounselorsAll = async (counselorId: string | undefined) =>
+  await getPublicInstance(`/counselors/all/${counselorId}`);
 // SearchWord Controller
 export const getSearchWords = async () =>
   await getPublicInstance('/searchWords');
