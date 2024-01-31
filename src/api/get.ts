@@ -28,7 +28,7 @@ export const getConsultsCustomers = async () =>
   await getPublicInstance('/consults/customers');
 
 export const getConsultsMinder = async () =>
-  await getPublicInstance('/consults/counselors ');
+  await getPublicInstance('/consults/counselors');
 
 //Letter Controller
 //편지 목록 반환

@@ -38,7 +38,7 @@ function OnGoingConsultSection() {
       >
         <Heading color={Black}>진행중인 상담</Heading>
         <Body1 color={Red} margin="0px auto 0px 0px">
-          {totalNum ?? 0}
+          {totalNum}
         </Body1>
         <RightArrow />
       </ContentTag>

@@ -59,9 +59,11 @@ export const HomeConsultInProgress = () => {
           </NavConsult>
           <MoreIcon />
         </div>
-        <div style={{ paddingLeft: '2rem', alignSelf: 'flex-start' }}>
-          <Body3 color={Grey4}>진행중인 상담이 없어요.</Body3>
-        </div>
+        {data?.totalOngoing === 0 && (
+          <div style={{ paddingLeft: '2rem', alignSelf: 'flex-start' }}>
+            <Body3 color={Grey4}>진행중인 상담이 없어요.</Body3>
+          </div>
+        )}
         {data.totalOngoing !== 0 && (
           <ConsultCard
             consultStyle={data.responses[0].consultStyle}
