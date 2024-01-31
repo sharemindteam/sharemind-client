@@ -12,7 +12,7 @@ export const LetterTagListSection = ({
   tagActiveLevel,
 }: LetterTagListSectionProps) => {
   // 1,2,3,4,5,6,...
-  //질문이 왔을 때는 답장탭까지 활성화, 답장이 왔을 때는 추가 질문까지 활성화 
+  //질문이 왔을 때는 답장탭까지 활성화, 답장이 왔을 때는 추가 질문까지 활성화
   return (
     <LetterTagListSectionWrapper>
       <TagLetterStatus
@@ -60,6 +60,6 @@ const LetterTagListSectionWrapper = styled.div`
   height: 5rem;
   align-items: center;
   margin-left: 2rem;
-  gap: 1.2rem;
+  gap: 0.8rem;
   border-bottom: 1px solid var(--Greyscale-Grey-6, #f6f6fa);
 `;

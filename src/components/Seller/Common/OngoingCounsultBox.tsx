@@ -103,6 +103,8 @@ function OngoingCounsultBox({
   );
 }
 const OngoingCounsultBoxWrapper = styled.div`
+  width: calc(100% - 4rem);
+  box-sizing: border-box;
   padding: 1.4rem 1.6rem 1.4rem 1.6rem;
   display: flex;
   flex-direction: column;
