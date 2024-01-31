@@ -40,6 +40,7 @@ export const HomeConsultInProgress = () => {
     };
     fetchData();
   }, []);
+  //  || data === undefined
   if (!isLogined || data === undefined) {
     return <></>;
   } else {
@@ -58,19 +59,20 @@ export const HomeConsultInProgress = () => {
           </NavConsult>
           <MoreIcon />
         </div>
-
-        <ConsultCard
-          consultStyle={data.responses[0].consultStyle}
-          id={data.responses[0].id}
-          latestMessageContent={data.responses[0].latestMessageContent}
-          latestMessageIsCustomer={data.responses[0].latestMessageIsCustomer}
-          latestMessageUpdatedAt={data.responses[0].latestMessageUpdatedAt}
-          opponentNickname={data.responses[0].opponentNickname}
-          status={data.responses[0].status}
-          unreadMessageCount={data.responses[0].unreadMessageCount}
-          reviewCompleted={data.responses[0].reviewCompleted}
-          consultId={data.responses[0].consultId}
-        />
+        {data.totalOngoing !== 0 && (
+          <ConsultCard
+            consultStyle={data.responses[0].consultStyle}
+            id={data.responses[0].id}
+            latestMessageContent={data.responses[0].latestMessageContent}
+            latestMessageIsCustomer={data.responses[0].latestMessageIsCustomer}
+            latestMessageUpdatedAt={data.responses[0].latestMessageUpdatedAt}
+            opponentNickname={data.responses[0].opponentNickname}
+            status={data.responses[0].status}
+            unreadMessageCount={data.responses[0].unreadMessageCount}
+            reviewCompleted={data.responses[0].reviewCompleted}
+            consultId={data.responses[0].consultId}
+          />
+        )}
       </Wrapper>
     );
   }
