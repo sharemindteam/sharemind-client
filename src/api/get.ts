@@ -4,7 +4,8 @@ export const getAdminsUnpaidConsults = async () =>
   await getInstance('/admins/unpaid-consults');
 export const getAdminsPedningProfilse = async () =>
   await getInstance('/admins/pending-profiles');
-
+export const getAdminsRefundWaiting = async () =>
+  await getInstance('/admins/refund-waiting');
 //밑에 두개 지우기
 export const getChats = async (params: any) =>
   await getInstance('/chats', params);

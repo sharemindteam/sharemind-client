@@ -1,13 +1,5 @@
 import styled from 'styled-components';
-import {
-  Black,
-  Green,
-  Grey1,
-  Grey2,
-  Grey6,
-  LightGreen,
-  White,
-} from 'styles/color';
+import { Black, Green, Grey1, Grey2, Grey6, White } from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from '../../Common/TagA2Consult';
