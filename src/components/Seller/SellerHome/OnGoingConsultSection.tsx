@@ -12,13 +12,19 @@ import { Space } from 'components/Common/Space';
 function OnGoingConsultSection() {
   const navigate = useNavigate();
   const [consult, setConsult] = useState([]);
+  const [totalNum, setTotalNum] = useState<number | undefined>();
+  const [isNoProfile, setIsNoProfile] = useState<boolean | undefined>();
   useEffect(() => {
     const fetchOngoingConsult = async () => {
       const res: any = await getConsultsMinder();
       console.log(res);
       if (res?.status === 200) {
         setConsult(res?.data?.responses);
-      } else if (res?.response?.status === 403) {
+        setTotalNum(res?.data?.totalOngoing);
+      } else {
+        // 판매 정보를 등록해주세요.
+        // alert('진행중인 상담 조회 오류 발생!');
+        setIsNoProfile(true);
       }
     };
     fetchOngoingConsult();
@@ -32,15 +38,19 @@ function OnGoingConsultSection() {
       >
         <Heading color={Black}>진행중인 상담</Heading>
         <Body1 color={Red} margin="0px auto 0px 0px">
-          {consult?.length}
+          {totalNum ?? 0}
         </Body1>
         <RightArrow />
       </ContentTag>
 
       <OngoingCounsultBoxList>
-        {consult?.length === 0 ? (
+        {totalNum === (0 || undefined) ? (
           <div style={{ alignSelf: 'flex-start', paddingLeft: '2rem' }}>
-            <Body3 color={Grey4}>진행중인 상담이 없어요</Body3>
+            <Body3 color={Grey4}>
+              {isNoProfile
+                ? '내 정보 탭에서 판매 정보를 등록해주세요.'
+                : '진행중인 상담이 없어요'}
+            </Body3>
             <Space height="1.6rem" />
           </div>
         ) : (
@@ -52,11 +62,14 @@ function OnGoingConsultSection() {
               beforeMinutes={null}
               content={
                 item?.status === '상담 대기'
-                  ? '상담 대기 상태입니다! 상담이 승인될 떄가지 기다려주세요.'
+                  ? '상담 대기 상태입니다! 상담이 승인될 때까지 기다려주세요.'
                   : item?.lastMessageContent
               }
               newMessageCounts={1}
               counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
+              onClick={() => {
+                navigate(`/minder/letter/${item?.id}`);
+              }}
             />
           ))
         )}

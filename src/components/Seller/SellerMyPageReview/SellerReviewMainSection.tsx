@@ -4,6 +4,7 @@ import { ReviewCard, ReviewCardProps } from './ReviewCard';
 import { getMinderReviews } from 'api/get';
 import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
 import { useNavigate } from 'react-router-dom';
+import { Grey4 } from 'styles/color';
 
 interface ReviewData {
   reviewId: string;
@@ -45,7 +46,7 @@ export const SellerReviewMainSection = () => {
         {cardList?.length === 0 && (
           <NoCalculationGraphicWrapper>
             <NoCalculationGraphicIcon />
-            <MainText>아직 받은 리뷰가 없어요</MainText>
+            <MainText color={Grey4}>아직 받은 리뷰가 없어요</MainText>
           </NoCalculationGraphicWrapper>
         )}
         {cardList?.map((item) => (
