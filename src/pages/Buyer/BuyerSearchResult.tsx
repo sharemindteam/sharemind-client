@@ -43,7 +43,7 @@ export const BuyerSearchResult = () => {
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
-  const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit: any = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     setKeyword(input);
   };
@@ -104,7 +104,7 @@ export const BuyerSearchResult = () => {
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate(-1);
+              navigate('/search');
             }}
           />
           <FormWrapper onSubmit={handleSubmit}>
