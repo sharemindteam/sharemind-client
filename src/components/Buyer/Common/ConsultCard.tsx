@@ -13,8 +13,6 @@ import { Characters } from 'utils/Characters';
 import { TagA2Consult } from '../../Common/TagA2Consult';
 import { useNavigate } from 'react-router-dom';
 import { ConsultState } from 'utils/type';
-import { useSetRecoilState } from 'recoil';
-import { opponentNicknameState } from 'utils/atom';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Button } from 'components/Common/Button';
 
@@ -43,7 +41,6 @@ export const ConsultCard = ({
   consultId,
 }: ConsultCardProps) => {
   const navigate = useNavigate();
-  const setOpponentNickname = useSetRecoilState(opponentNicknameState);
   const consultStatus = status as ConsultState;
   if (unreadMessageCount === null) {
     unreadMessageCount = 0;
@@ -55,7 +52,6 @@ export const ConsultCard = ({
   return (
     <Wrapper
       onClick={() => {
-        setOpponentNickname(opponentNickname);
         navigate(`/letter/${id}`);
       }}
     >

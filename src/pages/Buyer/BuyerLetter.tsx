@@ -2,6 +2,7 @@ import {
   getLetterDeadline,
   getLetterMessages,
   getLetterRecentType,
+  getLettersNickname,
 } from 'api/get';
 import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
 import { LetterMainSection } from 'components/Buyer/BuyerLetter/LetterMainSection';
@@ -20,7 +21,6 @@ import { GetMessagesType } from 'utils/type';
 export const BuyerLetter = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const opponentNickname = useRecoilValue(opponentNicknameState);
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3 / 어디까지 가능한지 여부
   const [active, setActive] = useState<number>(0);
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
@@ -122,10 +122,17 @@ export const BuyerLetter = () => {
       }, 1);
     }
   };
+  const fetchNicknameData = async () => {
+    const res: any = await getLettersNickname(id);
+    console.log(res);
+  };
   //location null 시 예외처리
   useLayoutEffect(() => {
     fetchData();
   }, [tagStatus]);
+  useLayoutEffect(() => {
+    fetchNicknameData();
+  }, []);
   if (isLoading) {
     return (
       <>
@@ -160,7 +167,7 @@ export const BuyerLetter = () => {
               }}
             />
             {/* params로 넘어온 id에 해당하는 상담이름 */}
-            <Heading color={Grey1}>{opponentNickname}</Heading>
+            <Heading color={Grey1}>{'opponentNickname'}</Heading>
             <MoreIcon />
           </HeaderWrapper>
           <LetterTags

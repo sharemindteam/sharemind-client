@@ -32,7 +32,6 @@ export const HomeConsultInProgress = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res: any = await getConsultsCustomers();
-      console.log(res);
       if (res.status === 200) {
         setData(res.data);
         setIsLogined(true);
@@ -42,7 +41,7 @@ export const HomeConsultInProgress = () => {
     };
     fetchData();
   }, []);
-  if (!isLogined) {
+  if (!isLogined || data === undefined) {
     return <></>;
   } else {
     return (
@@ -56,19 +55,23 @@ export const HomeConsultInProgress = () => {
           <NavConsult>
             <Subtitle>진행 중인 상담</Subtitle>
             {/* 나중에 api */}
-            <Body1 color={Red}>{data?.totalOngoing}</Body1>
+            <Body1 color={Red}>{data.totalOngoing}</Body1>
           </NavConsult>
           <MoreIcon />
         </div>
 
-        {/* <ConsultCard
-        consultId={0}
-        name={CounselorName}
-        consultState={ConsultState}
-        time={Time}
-        content={ContentText}
-        unread={unreadNumber}
-      /> */}
+        <ConsultCard
+          consultStyle={data.responses[0].consultStyle}
+          id={data.responses[0].id}
+          latestMessageContent={data.responses[0].latestMessageContent}
+          latestMessageIsCustomer={data.responses[0].latestMessageIsCustomer}
+          latestMessageUpdatedAt={data.responses[0].latestMessageUpdatedAt}
+          opponentNickname={data.responses[0].opponentNickname}
+          status={data.responses[0].status}
+          unreadMessageCount={data.responses[0].unreadMessageCount}
+          reviewCompleted={data.responses[0].reviewCompleted}
+          consultId={data.responses[0].consultId}
+        />
       </Wrapper>
     );
   }

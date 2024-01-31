@@ -46,6 +46,10 @@ export const getDraftsLetter = async (
 
 export const getLetterDeadline = async (letterId: string | undefined) =>
   await getInstance(`/letters/deadline/${letterId}`);
+//편지 상대방 이름 조회
+export const getLettersNickname = async (letterId: string | undefined) =>
+  await getInstance(`/letters/nickname/${letterId}`);
+
 //Customer Controller
 export const getCustomersNickname = async () =>
   await getPublicInstance('/customers/nickname');
