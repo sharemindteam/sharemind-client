@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Red } from 'styles/color';
-import { Body1, Subtitle } from 'styles/font';
+import { Grey4, Red } from 'styles/color';
+import { Body1, Body3, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ConsultCard } from '../Common/ConsultCard';
 import { useNavigate } from 'react-router-dom';
@@ -58,6 +58,9 @@ export const HomeConsultInProgress = () => {
             <Body1 color={Red}>{data.totalOngoing}</Body1>
           </NavConsult>
           <MoreIcon />
+        </div>
+        <div style={{ paddingLeft: '2rem', alignSelf: 'flex-start' }}>
+          <Body3 color={Grey4}>진행중인 상담이 없어요.</Body3>
         </div>
         {data.totalOngoing !== 0 && (
           <ConsultCard
