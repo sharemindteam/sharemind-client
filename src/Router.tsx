@@ -51,6 +51,7 @@ const Router = () => {
       <Route path="/admin" element={<Admin />} />
       {/* minder(buyer) */}
       <Route path="/share" element={<BuyerHome />} />
+      <Route path="/" element={<BuyerHome />} />
       <Route path="/consult" element={<BuyerConsult />} />
       <Route path="/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/search" element={<BuyerSearch />} />

@@ -109,7 +109,9 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
           })}
           {!isLastElem ? (
             <div ref={setTarget} style={{ height: '5rem' }} />
-          ) : null}
+          ) : (
+            <div style={{ height: '5rem' }} />
+          )}
         </Wrapper>
       );
     }
@@ -117,7 +119,6 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
 };
 const Wrapper = styled.div`
   padding: 1.2rem 2rem 2rem 2rem;
-  margin-bottom: 5.2rem;
 `;
 const EmptyWrapper = styled.div`
   display: flex;
