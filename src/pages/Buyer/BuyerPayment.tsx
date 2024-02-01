@@ -24,32 +24,32 @@ export const BuyerPayment = () => {
   const [paymentData, setPaymentData] = useState<PaymentInfo[]>([]);
   //clicked paymentId
   const [clickedPaymentId, setClickedPaymentId] = useState<number>(-1);
-  useEffect(() => {
-    const fetchData = async () => {
-      let statusString = '';
-      if (pageType === 0) {
-        statusString = 'PAYMENT_COMPLETE';
-      } else if (pageType === 1) {
-        statusString = 'REFUND_WAITING';
-      } else if (pageType === 2) {
-        statusString = 'REFUND_COMPLETE';
-      }
-      const params = {
-        status: statusString,
-        paymentId: 0,
-      };
-      try {
-        const res: any = await getPaymentsCustomers({ params });
-        if (res.status === 200) {
-          setPaymentData(res.data);
-        } else if (res.response.status === 404) {
-          alert('존재하지 않는 상태입니다.');
-          navigate('/mypage');
-        }
-      } catch (e) {
-        alert(e);
-      }
+  const fetchData = async () => {
+    let statusString = '';
+    if (pageType === 0) {
+      statusString = 'PAYMENT_COMPLETE';
+    } else if (pageType === 1) {
+      statusString = 'REFUND_WAITING';
+    } else if (pageType === 2) {
+      statusString = 'REFUND_COMPLETE';
+    }
+    const params = {
+      status: statusString,
+      paymentId: 0,
     };
+    try {
+      const res: any = await getPaymentsCustomers({ params });
+      if (res.status === 200) {
+        setPaymentData(res.data);
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 상태입니다.');
+        navigate('/mypage');
+      }
+    } catch (e) {
+      alert(e);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [pageType]);
   return (

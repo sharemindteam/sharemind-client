@@ -26,7 +26,6 @@ export const BuyerSavedCounselor = () => {
     if (entry[0].isIntersecting) {
       observer.unobserve(entry[0].target);
       await fetchWishlistData(wishlistData[wishlistData.length - 1].wishlistId);
-      console.log('관측');
       observer.observe(entry[0].target);
     }
   };

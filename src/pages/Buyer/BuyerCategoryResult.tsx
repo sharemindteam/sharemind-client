@@ -52,7 +52,9 @@ export const BuyerCategoryResult = () => {
         index: pageIndex,
       };
       const sortTypeString: string = ConverSortType(sortType);
+      console.log(sortTypeString);
       const res: any = await patchCounselorsAll(sortTypeString, body);
+      console.log(res);
       if (res.status === 200) {
         if (res.data.length !== 0) {
           if (pageIndex === 0) {
@@ -97,6 +99,9 @@ export const BuyerCategoryResult = () => {
   });
 
   useEffect(() => {
+    setIsLastElem(false);
+    setPageNum(0);
+    setSearchData([]);
     fetchSearchResults(pageNum);
   }, [sortType]);
   if (isLoading) {

@@ -1,10 +1,10 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
 import { SetStateAction, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
-import { isSortModalOpenState } from 'utils/atom';
+import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
@@ -12,15 +12,17 @@ interface SortModalProps {
 //최근순 인기순 별점순 모달
 export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
   //modal 여부
-  const isModalOpen = useRecoilValue(isSortModalOpenState);
+  const [isModalOpen, setIsModalOpen] = useRecoilState(isSortModalOpenState);
+  //scorll 막기
+  const setScrollLock = useSetRecoilState(scrollLockState);
   //여기서 unmount 시 sortType 바꾸고 새로 request
   //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
-  const [modalSortType, setModalSortType] = useState<number>(sortType);
-  useEffect(() => {
-    return () => {
-      setSortType(modalSortType);
-    };
-  });
+
+  // useEffect(() => {
+  //   return () => {
+  //     setSortType(modalSortType);
+  //   };
+  // }, []);
   return (
     <Wrapper visible={isModalOpen}>
       <div className="bar-wrapper">
@@ -29,10 +31,12 @@ export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
       <div
         className="row"
         onClick={() => {
-          setModalSortType(0);
+          setSortType(0);
+          setIsModalOpen(false);
+          setScrollLock(false);
         }}
       >
-        {modalSortType === 0 ? (
+        {sortType === 0 ? (
           <>
             <Body1 color={Green}>최근순</Body1>
             <CheckIcon />
@@ -44,10 +48,12 @@ export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
       <div
         className="row"
         onClick={() => {
-          setModalSortType(1);
+          setSortType(1);
+          setIsModalOpen(false);
+          setScrollLock(false);
         }}
       >
-        {modalSortType === 1 ? (
+        {sortType === 1 ? (
           <>
             <Body1 color={Green}>인기순</Body1>
             <CheckIcon />
@@ -59,10 +65,12 @@ export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
       <div
         className="row"
         onClick={() => {
-          setModalSortType(2);
+          setSortType(2);
+          setIsModalOpen(false);
+          setScrollLock(false);
         }}
       >
-        {modalSortType === 2 ? (
+        {sortType === 2 ? (
           <>
             <Body1 color={Green}>별점순</Body1>
             <CheckIcon />
