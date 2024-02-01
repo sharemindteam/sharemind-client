@@ -87,10 +87,10 @@ export const BuyerPaymentDetail = () => {
       const res: any = await getCounselorConsults(id, { params });
       if (res.status === 200) {
         setConsultData(res.data);
-      } else if (res.responsen.status === 400) {
+      } else if (res.response.status === 400) {
         alert('마인더가 해당 유형의 상담을 제공하지 않습니다.');
         navigate(-1);
-      } else if (res.responsen.status === 404) {
+      } else if (res.response.status === 404) {
         alert('존재하지 않는 유형의 상담입니다.');
         navigate(-1);
       }

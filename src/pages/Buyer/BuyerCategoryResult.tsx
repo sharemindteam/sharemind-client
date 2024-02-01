@@ -61,6 +61,7 @@ export const BuyerCategoryResult = () => {
           } else {
             const updatedSearchs = [...searchData, ...res.data];
             setSearchData(updatedSearchs);
+            setPageNum(pageNum + 1);
           }
         } else {
           setIsLastElem(true);
@@ -97,7 +98,9 @@ export const BuyerCategoryResult = () => {
   });
 
   useEffect(() => {
-    fetchSearchResults(pageNum);
+    setIsLastElem(false);
+    setSearchData([]);
+    fetchSearchResults(0);
   }, [sortType]);
   if (isLoading) {
     return (
@@ -137,7 +140,11 @@ export const BuyerCategoryResult = () => {
                 setScrollLock(false);
               }}
             />
-            <SortModal sortType={sortType} setSortType={setSortType} />
+            <SortModal
+              sortType={sortType}
+              setSortType={setSortType}
+              setPageNum={setPageNum}
+            />
           </>
         ) : null}
       </Wrapper>

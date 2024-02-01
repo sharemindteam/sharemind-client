@@ -91,6 +91,7 @@ export const BuyerSearchResult = () => {
           } else {
             const updatedSearchs = [...searchData, ...res.data];
             setSearchData(updatedSearchs);
+            setPageNum(pageNum + 1);
           }
         } else {
           setIsLastElem(true);
@@ -109,7 +110,9 @@ export const BuyerSearchResult = () => {
     }
   };
   useLayoutEffect(() => {
-    fetchSearchResults(keyword, pageNum);
+    setIsLastElem(false);
+    setSearchData([]);
+    fetchSearchResults(keyword, 0);
   }, [keyword, sortType]);
   if (isLoading) {
     return (
@@ -175,9 +178,9 @@ export const BuyerSearchResult = () => {
           <>
             <SearchResults searchData={searchData} />
             {!isLastElem ? (
-              <div ref={setTarget} style={{ height: '5rem' }} />
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
             ) : (
-              <div style={{ height: '5rem' }} />
+              <div style={{ height: '3.5rem' }} />
             )}
           </>
         ) : (
@@ -200,7 +203,11 @@ export const BuyerSearchResult = () => {
                 setScrollLock(false);
               }}
             />
-            <SortModal sortType={sortType} setSortType={setSortType} />
+            <SortModal
+              sortType={sortType}
+              setSortType={setSortType}
+              setPageNum={setPageNum}
+            />
           </>
         ) : null}
       </Wrapper>

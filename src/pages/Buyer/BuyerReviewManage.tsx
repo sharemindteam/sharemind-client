@@ -80,8 +80,8 @@ export const BuyerReviewManage = () => {
   };
 
   useLayoutEffect(() => {
-    fetchReviewData(0);
     setIsLastElem(false);
+    fetchReviewData(0);
   }, [isReviewWrite]);
   if (isLoading) {
     return (
@@ -125,8 +125,10 @@ export const BuyerReviewManage = () => {
               );
             })}
             {!isLastElem ? (
-              <div ref={setTarget} style={{ height: '5rem' }} />
-            ) : null}
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
+            ) : (
+              <div style={{ height: '3.5rem' }} />
+            )}
           </CardWrapper>
         ) : (
           <CardWrapper>
@@ -136,11 +138,12 @@ export const BuyerReviewManage = () => {
               );
             })}
             {!isLastElem ? (
-              <div ref={setTarget} style={{ height: '5rem' }} />
-            ) : null}
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
+            ) : (
+              <div style={{ height: '3.5rem' }} />
+            )}
           </CardWrapper>
         )}
-        <Space height="5rem" />
         {isModalOpen ? (
           <>
             <BackDrop
