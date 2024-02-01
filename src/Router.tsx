@@ -45,13 +45,12 @@ import { Admin } from 'pages/Common/Admin';
 import { BuyerChat } from 'pages/Buyer/BuyerChat';
 import Service from 'pages/Common/Service';
 const Router = () => {
-  const navigate = useNavigate();
   return (
     <Routes>
       {/* admin */}
       <Route path="/admin" element={<Admin />} />
       {/* minder(buyer) */}
-      <Route path="/" element={<BuyerHome />} />
+      <Route path="/share" element={<BuyerHome />} />
       <Route path="/consult" element={<BuyerConsult />} />
       <Route path="/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/search" element={<BuyerSearch />} />

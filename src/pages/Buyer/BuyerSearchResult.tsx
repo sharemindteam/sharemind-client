@@ -22,6 +22,7 @@ import { SearchResultData } from 'utils/type';
 import { ConverSortType } from 'utils/convertSortType';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+import useIntersectionObserver from 'hooks/useIntersectionObserver';
 export const BuyerSearchResult = () => {
   const navigate = useNavigate();
   //0 : 최신순 1:인기순 2: 별점순
@@ -39,41 +40,76 @@ export const BuyerSearchResult = () => {
   const [input, setInput] = useState(initInput);
   //결과저장
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
+  //무한스크롤 위한 page num
+  const [pageNum, setPageNum] = useState<number>(0);
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
+
+  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
+    //&& !isLoading
+    if (entry[0].isIntersecting) {
+      observer.unobserve(entry[0].target);
+      await fetchSearchResults(keyword, pageNum);
+      observer.observe(entry[0].target);
+    }
+  };
+  //현재 대상 및 option을 props로 전달
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 1,
+    onIntersect,
+  });
   //input onchagne
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
   const handleSubmit: any = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setPageNum(0);
+    setSearchData([]);
     setKeyword(input);
   };
+
   //로딩 state
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
-  const fetchSearchResults = async (searchWord: string) => {
-    setIsLoading(true);
+  const fetchSearchResults = async (searchWord: string, pageIndex: number) => {
+    if (pageIndex === 0) {
+      setIsLoading(true);
+    }
     try {
       const body = {
         word: searchWord,
-        index: 0,
+        index: pageIndex,
       };
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchSearchWordsResults(sortTypeString, body);
       if (res.status === 200) {
-        setSearchData(res.data);
+        if (res.data.length !== 0) {
+          if (pageIndex === 0) {
+            setSearchData(res.data);
+            setPageNum(pageNum + 1);
+          } else {
+            const updatedSearchs = [...searchData, ...res.data];
+            setSearchData(updatedSearchs);
+          }
+        } else {
+          setIsLastElem(true);
+        }
       } else if (res.response.status === 400) {
         alert('검색어는 2~20자 사이여야 합니다.');
-        navigate('/');
       }
     } catch (e) {
       console.log(e);
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1);
+      if (pageIndex === 0) {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1);
+      }
     }
   };
   useLayoutEffect(() => {
-    fetchSearchResults(keyword);
+    fetchSearchResults(keyword, pageNum);
   }, [keyword, sortType]);
   if (isLoading) {
     return (
@@ -136,7 +172,14 @@ export const BuyerSearchResult = () => {
           </div>
         </div>
         {searchData.length !== 0 ? (
-          <SearchResults searchData={searchData} />
+          <>
+            <SearchResults searchData={searchData} />
+            {!isLastElem ? (
+              <div ref={setTarget} style={{ height: '5rem' }} />
+            ) : (
+              <div style={{ height: '5rem' }} />
+            )}
+          </>
         ) : (
           <EmptyWrapper>
             <EmptyIcon />

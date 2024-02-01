@@ -35,7 +35,7 @@ export const BuyerLogin = () => {
         // setCookie('refreshToken', newRefreshToken, { path: '/' });
         localStorage.setItem('accessToken', newAccessToken);
         localStorage.setItem('refreshToken', newRefreshToken);
-        navigate('/');
+        navigate('/share');
       } else if (res.response.status === 400) {
         setIsActiveModal(true);
         setModalErrorMessage('비밀번호가 일치하지 않습니다.');

@@ -16,7 +16,6 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   var { pathname } = useLocation();
   const [isGray, setIsGray] = useState(false);
   useEffect(() => {
-    const reviewPageRegex = /^\/review\/\d+$/;
     if (
       pathname === '/minder/mypage/viewProfile' ||
       pathname === '/minder/mypage' ||

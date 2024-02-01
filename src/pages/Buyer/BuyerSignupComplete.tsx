@@ -30,7 +30,7 @@ export const BuyerSignupComplete = () => {
           width="33.5rem"
           height="5.2rem"
           onClick={() => {
-            navigate('/');
+            navigate('/share');
           }}
         />
       </div>

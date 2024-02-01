@@ -30,16 +30,12 @@ export const BuyerReviewManage = () => {
   //Loading
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  //pending 함수
-  const testFetch = (delay = 1000) =>
-    new Promise((res) => setTimeout(res, delay));
 
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
     //&& !isLoading
     if (entry[0].isIntersecting) {
       observer.unobserve(entry[0].target);
       await fetchReviewData(reviewData[reviewData.length - 1]?.reviewId);
-      await testFetch();
       observer.observe(entry[0].target);
     }
   };
