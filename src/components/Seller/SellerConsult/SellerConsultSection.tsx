@@ -51,11 +51,12 @@ export const SellerConsultSection = () => {
         : await getChatsMinder({
             params,
           });
-      console.log(res);
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 100);
       } else if (res?.response?.status === 403) {
         // 판매 정보를 등록하지 않았을 경우
         alert('판매 정보를 등록해주세요.');
@@ -119,11 +120,20 @@ export const SellerConsultSection = () => {
       </ConsultSortingMenu>
       {/* 스켈레톤 UI 적용 */}
       {isLoading ? (
-        <SkeletonList>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <ConsultCardSkeleton />
-          ))}
-        </SkeletonList>
+        // <SkeletonList>
+        //   {/* {Array.from({ length: 5 }).map((_, index) => (
+        //     <ConsultCardSkeleton />
+        //   ))} */}
+        // </SkeletonList>
+        <div
+          style={{
+            height: 'calc(100vh - 50rem)',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <LoadingSpinner />
+        </div>
       ) : (
         <ConsultBoxList>
           {consultInfo?.length === 0 ? (

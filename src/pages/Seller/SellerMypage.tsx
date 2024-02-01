@@ -29,7 +29,9 @@ export const SellerMypage = () => {
         setIsPass(isPassRes?.data);
       }
       setUserInfo(res?.data);
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 100);
     };
     fetchMyInfo();
   }, []);
