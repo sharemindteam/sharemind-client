@@ -52,9 +52,7 @@ export const BuyerCategoryResult = () => {
         index: pageIndex,
       };
       const sortTypeString: string = ConverSortType(sortType);
-      console.log(sortTypeString);
       const res: any = await patchCounselorsAll(sortTypeString, body);
-      console.log(res);
       if (res.status === 200) {
         if (res.data.length !== 0) {
           if (pageIndex === 0) {
@@ -63,6 +61,7 @@ export const BuyerCategoryResult = () => {
           } else {
             const updatedSearchs = [...searchData, ...res.data];
             setSearchData(updatedSearchs);
+            setPageNum(pageNum + 1);
           }
         } else {
           setIsLastElem(true);
@@ -100,9 +99,8 @@ export const BuyerCategoryResult = () => {
 
   useEffect(() => {
     setIsLastElem(false);
-    setPageNum(0);
     setSearchData([]);
-    fetchSearchResults(pageNum);
+    fetchSearchResults(0);
   }, [sortType]);
   if (isLoading) {
     return (
@@ -142,7 +140,11 @@ export const BuyerCategoryResult = () => {
                 setScrollLock(false);
               }}
             />
-            <SortModal sortType={sortType} setSortType={setSortType} />
+            <SortModal
+              sortType={sortType}
+              setSortType={setSortType}
+              setPageNum={setPageNum}
+            />
           </>
         ) : null}
       </Wrapper>

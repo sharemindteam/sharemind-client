@@ -8,9 +8,14 @@ import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
+  setPageNum: React.Dispatch<SetStateAction<number>>;
 }
 //최근순 인기순 별점순 모달
-export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
+export const SortModal = ({
+  sortType,
+  setSortType,
+  setPageNum,
+}: SortModalProps) => {
   //modal 여부
   const [isModalOpen, setIsModalOpen] = useRecoilState(isSortModalOpenState);
   //scorll 막기
@@ -32,6 +37,7 @@ export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
         className="row"
         onClick={() => {
           setSortType(0);
+          setPageNum(0);
           setIsModalOpen(false);
           setScrollLock(false);
         }}
@@ -49,6 +55,7 @@ export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
         className="row"
         onClick={() => {
           setSortType(1);
+          setPageNum(0);
           setIsModalOpen(false);
           setScrollLock(false);
         }}
@@ -66,6 +73,7 @@ export const SortModal = ({ sortType, setSortType }: SortModalProps) => {
         className="row"
         onClick={() => {
           setSortType(2);
+          setPageNum(0);
           setIsModalOpen(false);
           setScrollLock(false);
         }}

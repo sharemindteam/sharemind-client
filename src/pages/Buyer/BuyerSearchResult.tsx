@@ -91,6 +91,7 @@ export const BuyerSearchResult = () => {
           } else {
             const updatedSearchs = [...searchData, ...res.data];
             setSearchData(updatedSearchs);
+            setPageNum(pageNum + 1);
           }
         } else {
           setIsLastElem(true);
@@ -109,7 +110,9 @@ export const BuyerSearchResult = () => {
     }
   };
   useLayoutEffect(() => {
-    fetchSearchResults(keyword, pageNum);
+    setIsLastElem(false);
+    setSearchData([]);
+    fetchSearchResults(keyword, 0);
   }, [keyword, sortType]);
   if (isLoading) {
     return (
@@ -200,7 +203,11 @@ export const BuyerSearchResult = () => {
                 setScrollLock(false);
               }}
             />
-            <SortModal sortType={sortType} setSortType={setSortType} />
+            <SortModal
+              sortType={sortType}
+              setSortType={setSortType}
+              setPageNum={setPageNum}
+            />
           </>
         ) : null}
       </Wrapper>
