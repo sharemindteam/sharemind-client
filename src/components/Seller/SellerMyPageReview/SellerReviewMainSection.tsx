@@ -54,7 +54,7 @@ export const SellerReviewMainSection = () => {
             key={item.reviewId}
             id={item.reviewId}
             name={item.nickname}
-            iconType={Math.floor(Math.random() * 8)}
+            iconType={Math.floor(1 + Math.random() * 8)}
             consultType={item.consultType}
             date={item.consultedAt}
             price="8000원"

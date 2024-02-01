@@ -20,7 +20,6 @@ export const SellerCaculateManagement = () => {
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
-  console.log(sortType);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   return (

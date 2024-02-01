@@ -20,7 +20,7 @@ function VerifySuccess() {
         <BottomButtonWrapper>
           <Button
             onClick={() => {
-              navigate('/seller/mypage/modifyProfile');
+              navigate('/minder/mypage/modifyProfile');
             }}
             text="판매정보 작성하기"
             width="calc(100% - 4rem)"
