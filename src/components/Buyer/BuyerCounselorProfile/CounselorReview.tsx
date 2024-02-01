@@ -1,4 +1,4 @@
-import { getReviews } from 'api/get';
+import { getReviewsAll } from 'api/get';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -19,9 +19,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  //pending 함수
-  const testFetch = (delay = 6000) =>
-    new Promise((res) => setTimeout(res, delay));
+
   const fetchReviewData = async (lastReviewId: number) => {
     if (lastReviewId === 0) {
       setIsLoading(true);
@@ -30,7 +28,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
       reviewId: lastReviewId,
     };
     try {
-      const res: any = await getReviews(counselorId, { params });
+      const res: any = await getReviewsAll(counselorId, { params });
       if (res.status === 200) {
         if (res.data.length !== 0) {
           if (lastReviewId === 0) {
@@ -61,7 +59,6 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
     if (entry[0].isIntersecting) {
       observer.unobserve(entry[0].target);
       await fetchReviewData(reviews[reviews.length - 1].reviewId);
-      await testFetch();
       observer.observe(entry[0].target);
     }
   };

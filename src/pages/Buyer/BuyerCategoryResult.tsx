@@ -54,7 +54,6 @@ export const BuyerCategoryResult = () => {
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchCounselorsAll(sortTypeString, body);
       if (res.status === 200) {
-        console.log(res.data);
         if (res.data.length !== 0) {
           if (pageIndex === 0) {
             setSearchData(res.data);
