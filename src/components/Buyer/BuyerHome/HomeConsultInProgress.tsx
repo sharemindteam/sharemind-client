@@ -32,7 +32,6 @@ export const HomeConsultInProgress = () => {
     const fetchData = async () => {
       const res: any = await getConsultsCustomers();
       if (res.status === 200) {
-        console.log(res.data);
         setData(res.data);
         setIsLogined(true);
       } else if (res.response.status === 401) {

@@ -175,9 +175,9 @@ export const BuyerSearchResult = () => {
           <>
             <SearchResults searchData={searchData} />
             {!isLastElem ? (
-              <div ref={setTarget} style={{ height: '5rem' }} />
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
             ) : (
-              <div style={{ height: '5rem' }} />
+              <div style={{ height: '3.5rem' }} />
             )}
           </>
         ) : (

@@ -12,32 +12,65 @@ import { isLoadingState } from 'utils/atom';
 import { WishlistDataType } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import styled from 'styled-components';
+import useIntersectionObserver from 'hooks/useIntersectionObserver';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현
 export const BuyerSavedCounselor = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
   const [updatedAt, setUpdatedAt] = useState<string>('');
   const [wishlistData, setWishlistData] = useState<WishlistDataType[]>([]);
-  useLayoutEffect(() => {
-    const fetchReviewData = async () => {
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
+
+  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
+    //&& !isLoading
+    if (entry[0].isIntersecting) {
+      observer.unobserve(entry[0].target);
+      await fetchWishlistData(wishlistData[wishlistData.length - 1].wishlistId);
+      console.log('관측');
+      observer.observe(entry[0].target);
+    }
+  };
+  //현재 대상 및 option을 props로 전달
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 1,
+    onIntersect,
+  });
+  const fetchWishlistData = async (lastId: number) => {
+    if (lastId === 0) {
       setIsLoading(true);
-      // 찜하기 목록을 받아오는 api마지막 찜하기의 wishlistId와 updatedAt 바디로 넘겨주시면 됩니다~4개씩 리턴합니다.처음 요청의 경우 wishlistId 0으로 쏴주세요해당 wishlsit가 없을 경우 빈배열로 리턴합니다.
-      const body = {
-        wishlistId: 0,
-        updatedAt: updatedAt,
-      };
-      const res: any = await postWishLists(body);
-      if (res.status === 200) {
-        console.log(res.data);
-        setWishlistData(res.data);
-      } else if (res.response.status !== 401) {
-        navigate('/mypage');
+    }
+    // 찜하기 목록을 받아오는 api마지막 찜하기의 wishlistId와 updatedAt 바디로 넘겨주시면 됩니다~4개씩 리턴합니다.처음 요청의 경우 wishlistId 0으로 쏴주세요해당 wishlsit가 없을 경우 빈배열로 리턴합니다.
+    const body = {
+      wishlistId: lastId,
+      updatedAt: updatedAt,
+    };
+    const res: any = await postWishLists(body);
+    if (res.status === 200) {
+      if (res.data.length !== 0) {
+        if (lastId === 0) {
+          setWishlistData(res.data);
+          setUpdatedAt(res.data[res.data.length - 1].updatedAt);
+        } else {
+          const updatedReviews = [...wishlistData, ...res.data];
+          setUpdatedAt(res.data[res.data.length - 1].updatedAt);
+          setWishlistData(updatedReviews);
+        }
+      } else {
+        setIsLastElem(true);
       }
+    } else if (res.response.status !== 401) {
+      navigate('/mypage');
+    }
+    if (lastId === 0) {
       setTimeout(() => {
         setIsLoading(false);
       }, 1);
-    };
-    fetchReviewData();
+    }
+  };
+  useLayoutEffect(() => {
+    fetchWishlistData(0);
   }, []);
   if (isLoading) {
     return (
@@ -68,6 +101,11 @@ export const BuyerSavedCounselor = () => {
           </HeaderWrapper>
           <Space height="1.2rem" />
           <SavedCounselorResults wishlistData={wishlistData} />
+          {!isLastElem ? (
+            <div ref={setTarget} style={{ height: '3.5rem' }} />
+          ) : (
+            <div style={{ height: '3.5rem' }} />
+          )}
         </>
       );
     } else {

@@ -45,5 +45,4 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 3.5rem;
 `;
