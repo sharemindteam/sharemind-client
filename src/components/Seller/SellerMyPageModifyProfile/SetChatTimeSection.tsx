@@ -121,7 +121,7 @@ function SetChatTimeSection({
                 isSelected[item] ? (
                   <TimeList>
                     <TimeItem>
-                      <Input height="5rem" isBoxSizing={true} />
+                      <Input height="5rem" isBoxSizing={true} width="100%" />
                       <PlusIcon />
                     </TimeItem>
                   </TimeList>
@@ -217,6 +217,7 @@ const DayList = styled.div`
 const DayItem = styled.div`
   display: flex;
   padding: 2.3rem 2rem;
+  background-color: white;
   width: 100%;
   box-sizing: border-box;
 `;
