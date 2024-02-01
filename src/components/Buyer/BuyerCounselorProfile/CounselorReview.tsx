@@ -42,7 +42,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
         }
       } else if (res.response.status === 404) {
         alert('존재하지 않는 상담사의 리뷰 요청입니다.');
-        navigate('/');
+        navigate('/share');
       }
     } catch (e) {
       alert(e);

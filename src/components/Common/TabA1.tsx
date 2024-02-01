@@ -27,7 +27,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         onClick={() => {
           setTabState(1);
           if (isBuyer) {
-            navigate('/');
+            navigate('/share');
           } else {
             navigate('/minder');
           }
