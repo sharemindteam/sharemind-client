@@ -67,6 +67,10 @@ function SetChatTimeSection({
     useRecoilState(isTimeModalOpenState);
   const [isOutPopupOpen, setIsOutPopupOpen] =
     useRecoilState(isOutPopupOpenState);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Wrapper>
       <ScrollContainer>
@@ -195,7 +199,6 @@ function SetChatTimeSection({
 }
 const Wrapper = styled.div`
   background-color: white;
-  height: calc(100vh - 5.3rem);
 `;
 
 const ScrollContainer = styled.div``;
