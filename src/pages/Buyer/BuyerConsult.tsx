@@ -229,7 +229,11 @@ export const BuyerConsult = () => {
 
         {isModalOpen ? (
           <>
-            <BackDrop />
+            <BackDrop
+              onClick={() => {
+                setIsModalOpen(false);
+              }}
+            />
             <ConsultModal sortType={sortType} setSortType={setSortType} />
           </>
         ) : null}

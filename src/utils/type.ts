@@ -126,7 +126,7 @@ export type WishlistDataType = {
   consultStyle: string;
   consultTimes: ConsultTimes;
   consultTypes: string[];
-  updateAt: string;
+  updatedAt: string;
   introduction: string;
   counselorId: number;
   wishlistId: number;
