@@ -26,7 +26,7 @@ export const SearchHeader = () => {
     <Wrapper>
       <BackIcon
         onClick={() => {
-          navigate('/');
+          navigate('/share');
         }}
       />
       <FormWrapper onSubmit={handleSubmit}>

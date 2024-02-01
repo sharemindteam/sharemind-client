@@ -6,11 +6,11 @@ export const getAdminsPedningProfilse = async () =>
   await getInstance('/admins/pending-profiles');
 export const getAdminsRefundWaiting = async () =>
   await getInstance('/admins/refund-waiting');
-//밑에 두개 지우기
-export const getChats = async (params: any) =>
-  await getInstance('/chats', params);
-export const getLetters = async (params: any) =>
-  await getInstance('/letters', params);
+// //밑에 두개 지우기
+// export const getChats = async (params: any) =>
+//   await getInstance('/chats', params);
+// export const getLetters = async (params: any) =>
+//   await getInstance('/letters', params);
 
 // 판매자 사이드 letter list
 export const getConselorLetters = async (params: any) =>
@@ -70,8 +70,8 @@ export const getLetterRecentType = async (letterId: string | undefined) =>
 export const getReviewsCustomer = async (params: any) =>
   await getInstance('/reviews/customers', params);
 
-export const getReviews = async (counselorId: number, params: any) =>
-  await getPublicInstance(`/reviews/${counselorId}`, params);
+export const getReviewsAll = async (counselorId: number, params: any) =>
+  await getPublicInstance(`/reviews/all/${counselorId}`, params);
 
 // Conuselor Controller
 export const getMyInfo = async () => await getInstance('counselors/my-info');

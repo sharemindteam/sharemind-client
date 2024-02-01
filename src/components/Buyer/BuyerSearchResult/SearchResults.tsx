@@ -11,7 +11,7 @@ interface SearchResultsProps {
 export const SearchResults = ({ searchData }: SearchResultsProps) => {
   return (
     <Wrapper>
-      {searchData.map((value, index) => {
+      {searchData.map((value) => {
         return (
           <ReadyConsultCard
             key={value.counselorId}
@@ -42,5 +42,4 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 3.5rem;
 `;

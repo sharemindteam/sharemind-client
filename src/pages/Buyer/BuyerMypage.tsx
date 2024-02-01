@@ -8,7 +8,7 @@ import { Characters } from 'utils/Characters';
 import { ReactComponent as PayedIcon } from 'assets/icons/icon-mypage-payed.svg';
 import { ReactComponent as ReviewIcon } from 'assets/icons/icon-mypage-review.svg';
 import { ReactComponent as SavedIcon } from 'assets/icons/icon-mypage-saved.svg';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { getCustomersNickname } from 'api/get';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
@@ -47,7 +47,7 @@ export const BuyerMypage = () => {
         <Header
           isBuyer={true}
           onClick={() => {
-            navigate('/');
+            navigate('/share');
           }}
         />
         <TabA1 isBuyer={true} initState={3} />
@@ -69,7 +69,7 @@ export const BuyerMypage = () => {
         <Header
           isBuyer={true}
           onClick={() => {
-            navigate('/');
+            navigate('/share');
           }}
         />
         <TabA1 isBuyer={true} initState={3} />
