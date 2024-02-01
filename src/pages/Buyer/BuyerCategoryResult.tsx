@@ -19,6 +19,8 @@ import { SearchResultData } from 'utils/type';
 
 import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/CategorySearchResult';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
+import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerCategoryResult = () => {
   const navigate = useNavigate();
@@ -34,58 +36,114 @@ export const BuyerCategoryResult = () => {
   const searchKeyword = useRecoilValue(searchKeywordState);
   //결과저장
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
-  const fectchSearchResults = async () => {
+  //무한스크롤 위한 page num
+  const [pageNum, setPageNum] = useState<number>(0);
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
+  //로딩 state
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  //fetch 함수
+  const fetchSearchResults = async (pageIndex: number) => {
+    if (pageIndex === 0) {
+      setIsLoading(true);
+    }
     try {
       const body = {
         consultCategory: convertCategoryEnum(searchKeyword),
-        index: 0,
+        index: pageIndex,
       };
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchCounselorsAll(sortTypeString, body);
       if (res.status === 200) {
-        setSearchData(res.data);
+        console.log(res.data);
+        if (res.data.length !== 0) {
+          if (pageIndex === 0) {
+            setSearchData(res.data);
+            setPageNum(pageNum + 1);
+          } else {
+            const updatedSearchs = [...searchData, ...res.data];
+            setSearchData(updatedSearchs);
+          }
+        } else {
+          setIsLastElem(true);
+        }
       } else if (res.response.status === 404) {
         alert('카테고리 유형이 유효하지 않습니다.');
         navigate('/');
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      if (pageIndex === 0) {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1);
+      }
     }
   };
-  useEffect(() => {
-    fectchSearchResults();
-  }, [sortType]);
 
-  return (
-    <Wrapper>
-      <CategoryResultHeader categoryType={searchKeyword} />
-      <div className="select">
-        <div
-          className="select-wrapper"
-          onClick={() => {
-            setIsModalOpen(true);
-            setScrollLock(true);
-          }}
-        >
-          <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-          <Down />
-        </div>
-      </div>
-      <CategorySearchResults searchData={searchData} />
-      {isModalOpen ? (
-        <>
-          <BackDrop
+  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
+    //&& !isLoading
+    if (entry[0].isIntersecting) {
+      observer.unobserve(entry[0].target);
+      await fetchSearchResults(pageNum);
+      observer.observe(entry[0].target);
+    }
+  };
+  //현재 대상 및 option을 props로 전달
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 1,
+    onIntersect,
+  });
+
+  useEffect(() => {
+    fetchSearchResults(pageNum);
+  }, [sortType]);
+  if (isLoading) {
+    return (
+      <>
+        <CategoryResultHeader categoryType={searchKeyword} />
+        <LoadingSpinner />
+      </>
+    );
+  } else {
+    return (
+      <Wrapper>
+        <CategoryResultHeader categoryType={searchKeyword} />
+        <div className="select">
+          <div
+            className="select-wrapper"
             onClick={() => {
-              //여기서 api
-              setIsModalOpen(false);
-              setScrollLock(false);
+              setIsModalOpen(true);
+              setScrollLock(true);
             }}
-          />
-          <SortModal sortType={sortType} setSortType={setSortType} />
-        </>
-      ) : null}
-    </Wrapper>
-  );
+          >
+            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+            <Down />
+          </div>
+        </div>
+        <CategorySearchResults searchData={searchData} />
+        {!isLastElem ? (
+          <div ref={setTarget} style={{ height: '5rem' }} />
+        ) : (
+          <div style={{ height: '5rem' }} />
+        )}
+        {isModalOpen ? (
+          <>
+            <BackDrop
+              onClick={() => {
+                //여기서 api
+                setIsModalOpen(false);
+                setScrollLock(false);
+              }}
+            />
+            <SortModal sortType={sortType} setSortType={setSortType} />
+          </>
+        ) : null}
+      </Wrapper>
+    );
+  }
 };
 const Wrapper = styled.div`
   .select {

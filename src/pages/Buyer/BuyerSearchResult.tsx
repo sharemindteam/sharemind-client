@@ -43,17 +43,12 @@ export const BuyerSearchResult = () => {
   //무한스크롤 위한 page num
   const [pageNum, setPageNum] = useState<number>(0);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  //pending 함수
-  const testFetch = (delay = 1000) =>
-    new Promise((res) => setTimeout(res, delay));
 
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
     //&& !isLoading
     if (entry[0].isIntersecting) {
       observer.unobserve(entry[0].target);
       await fetchSearchResults(keyword, pageNum);
-      await testFetch();
-      console.log('관측');
       observer.observe(entry[0].target);
     }
   };
@@ -89,9 +84,7 @@ export const BuyerSearchResult = () => {
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchSearchWordsResults(sortTypeString, body);
       if (res.status === 200) {
-        console.log(res.data);
         if (res.data.length !== 0) {
-          console.log(pageIndex);
           if (pageIndex === 0) {
             setSearchData(res.data);
             setPageNum(pageNum + 1);
@@ -117,7 +110,6 @@ export const BuyerSearchResult = () => {
   };
   useLayoutEffect(() => {
     fetchSearchResults(keyword, pageNum);
-    console.log('리렌더', pageNum);
   }, [keyword, sortType]);
   if (isLoading) {
     return (
@@ -184,7 +176,9 @@ export const BuyerSearchResult = () => {
             <SearchResults searchData={searchData} />
             {!isLastElem ? (
               <div ref={setTarget} style={{ height: '5rem' }} />
-            ) : null}
+            ) : (
+              <div style={{ height: '5rem' }} />
+            )}
           </>
         ) : (
           <EmptyWrapper>

@@ -105,7 +105,7 @@ export const ReadyConsultCard = ({
         <TagWrapper>
           {tagList.map((value: any, index) => {
             return (
-              <TagA2Cartegory key={index} tagType={value} bgColorType={1} />
+              <TagA2Cartegory key={value} tagType={value} bgColorType={1} />
             );
           })}
         </TagWrapper>

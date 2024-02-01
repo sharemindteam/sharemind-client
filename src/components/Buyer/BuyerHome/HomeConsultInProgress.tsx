@@ -32,6 +32,7 @@ export const HomeConsultInProgress = () => {
     const fetchData = async () => {
       const res: any = await getConsultsCustomers();
       if (res.status === 200) {
+        console.log(res.data);
         setData(res.data);
         setIsLogined(true);
       } else if (res.response.status === 401) {
@@ -41,7 +42,7 @@ export const HomeConsultInProgress = () => {
     fetchData();
   }, []);
   //  || data === undefined
-  if (!isLogined || data === undefined) {
+  if (!isLogined || !data || !data.responses) {
     return <></>;
   } else {
     return (
@@ -59,12 +60,12 @@ export const HomeConsultInProgress = () => {
           </NavConsult>
           <MoreIcon />
         </div>
-        {data?.totalOngoing === 0 && (
+        {data.totalOngoing === 0 && (
           <div style={{ paddingLeft: '2rem', alignSelf: 'flex-start' }}>
             <Body3 color={Grey4}>진행중인 상담이 없어요.</Body3>
           </div>
         )}
-        {data.totalOngoing !== 0 && (
+        {data.totalOngoing !== 0 && data.responses[0] && (
           <ConsultCard
             consultStyle={data.responses[0].consultStyle}
             id={data.responses[0].id}
