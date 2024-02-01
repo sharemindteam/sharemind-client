@@ -64,7 +64,7 @@ export const PaymentCard = ({
           <Body3 color={Grey3}>결제수단</Body3>
           <Body3 color={Grey1}>{payment}</Body3>
         </div>
-        {isPayComplete ? (
+        {isPayComplete && consultState === '상담 대기' ? (
           <>
             <Space height="0.4rem" />
             <div className="button-wrapper">
