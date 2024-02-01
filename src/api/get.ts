@@ -92,6 +92,9 @@ export const getSearchWords = async () =>
 export const getPaymentsCustomers = async (params: any) =>
   await getInstance('/payments/customers', params);
 
+export const getPaymentsMinder = async (params: any) =>
+  await getInstance('/payments/counselors', params);
+
 export const getPaymentsHome = async () =>
   await getInstance('/payments/counselors/home');
 //Review Controller
