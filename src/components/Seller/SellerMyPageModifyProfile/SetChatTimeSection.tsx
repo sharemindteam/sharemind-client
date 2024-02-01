@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Black, Green, Grey1, Grey3, Grey4, Grey5 } from 'styles/color';
 import { ReactComponent as CheckIcon2SVG } from 'assets/icons/icon-check2.svg';
@@ -67,12 +67,10 @@ function SetChatTimeSection({
     useRecoilState(isTimeModalOpenState);
   const [isOutPopupOpen, setIsOutPopupOpen] =
     useRecoilState(isOutPopupOpenState);
+  const scrollRef = useRef();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   return (
-    <Wrapper>
+    <Wrapper ref={scrollRef}>
       <ScrollContainer>
         {isOutPopupOpen && <IsOutPopup />}
         {isTimeModalOpen && (
