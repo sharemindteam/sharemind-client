@@ -52,6 +52,7 @@ export const SellerCaculateManagement = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchManagements = async () => {
+      setIsLoading(true);
       const params = {
         status: manageStatusMap[manageStatus],
         sort: sortTypeMap[sortType],
