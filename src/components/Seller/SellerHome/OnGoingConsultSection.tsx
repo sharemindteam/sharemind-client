@@ -17,7 +17,6 @@ function OnGoingConsultSection() {
   useEffect(() => {
     const fetchOngoingConsult = async () => {
       const res: any = await getConsultsMinder();
-      console.log(res);
       if (res?.status === 200) {
         setConsult(res?.data?.responses);
         setTotalNum(res?.data?.totalOngoing);
@@ -62,8 +61,8 @@ function OnGoingConsultSection() {
               counselorName={item?.opponentNickname}
               beforeMinutes={null}
               content={
-                item?.status === '상담 대기'
-                  ? '상담 대기 상태입니다! 상담이 승인될 때까지 기다려주세요.'
+                item?.status === '질문 대기'
+                  ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요! '
                   : item?.lastMessageContent
               }
               newMessageCounts={1}

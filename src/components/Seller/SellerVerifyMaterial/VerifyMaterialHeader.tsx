@@ -12,15 +12,14 @@ function VerifyMaterialHeader() {
   const [progress, setProgess] = useState<string | undefined>(undefined);
   useEffect(() => {
     let path = location.pathname;
-    if (path === '/seller/education/first') {
+    if (path === '/minder/education/first') {
       setProgess('25%');
-    } else if (path === '/seller/education/second') {
+    } else if (path === '/minder/education/second') {
       setProgess('50%');
-    } else if (path === '/seller/education/third') {
+    } else if (path === '/minder/education/third') {
       setProgess('75%');
-    }
-    else if (path ==="/seller/education/final"){
-      setProgess("100%");
+    } else if (path === '/minder/education/final') {
+      setProgess('100%');
     }
   }, [location]);
   return (
@@ -29,7 +28,7 @@ function VerifyMaterialHeader() {
         <div className="left-icon">
           <XIcon
             onClick={() => {
-              navigate('/seller/mypage');
+              navigate('/minder/mypage');
             }}
           />
         </div>

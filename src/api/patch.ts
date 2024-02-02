@@ -40,7 +40,7 @@ export const patchPaymentsCustomers = async (paymentId: number) =>
 export const patchReviews = async (body: any) =>
   await patchInstance('/reviews', body);
 
-export const patchApplyPayments = async (body: any, id: any) =>
+export const patchApplyPayments = async (id: any) =>
   await patchInstance(`/payments/counselors/${id}`);
 
 //SearchWord Controller
