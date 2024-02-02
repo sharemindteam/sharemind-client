@@ -128,7 +128,7 @@ export const ModifyProfileMainSection = ({
       category?.setViewValue(categoryInputMaker(selectCategory ?? ['']));
     } catch (err) {
       alert('판매 정보를 제대로 가져오지 못했어요.');
-      navigate('/seller/mypage');
+      navigate('/minder/mypage');
     }
   }, [selectCategory]);
 
@@ -137,7 +137,7 @@ export const ModifyProfileMainSection = ({
       style?.setViewValue(selectStyle);
     } catch (err) {
       alert('판매 정보를 제대로 가져오지 못했어요.');
-      navigate('/seller/mypage');
+      navigate('/minder/mypage');
     }
   }, [selectStyle]);
 
@@ -266,6 +266,7 @@ export const ModifyProfileMainSection = ({
             width="100%"
             height="4.8rem"
             isCut={true}
+            placeholder="클릭하여 상담 가능시간을 선택해주세요."
             value={convertObjectToString(selectAvailableTime)}
             readOnly={true}
             padding="1.2rem 1.6rem"
