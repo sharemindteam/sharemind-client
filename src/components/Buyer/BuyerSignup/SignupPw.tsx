@@ -9,6 +9,7 @@ import { UseInputResult, useInput } from 'hooks/useInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 import PwInput from 'components/Buyer/Common/PwInput';
+import { Space } from 'components/Common/Space';
 interface SignupPwProps {
   pw: UseInputResult;
   setSignupState: Dispatch<SetStateAction<number>>;
@@ -99,6 +100,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               비밀번호
             </Body1>
+            <Space height="0.4rem" />
             <PwInput
               value={pw.value}
               onChange={pw.onChange}
@@ -123,6 +125,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               비밀번호 확인
             </Body1>
+            <Space height="0.4rem" />
             <PwInput
               value={pwCheck.value}
               onChange={pwCheck.onChange}
