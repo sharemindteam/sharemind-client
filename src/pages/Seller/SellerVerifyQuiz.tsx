@@ -30,7 +30,7 @@ export const SellerVerifyQuiz = () => {
       // isPassRes
       if (!isPassRes?.data) {
         alert('접근 권한이 없습니다.');
-        navigate('/seller/mypage');
+        navigate('/minder/mypage');
       }
     };
     fetchIsPassQuiz();
