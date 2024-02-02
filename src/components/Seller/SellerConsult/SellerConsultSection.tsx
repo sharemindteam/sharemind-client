@@ -147,7 +147,11 @@ export const SellerConsultSection = () => {
                 consultStatus={item?.status}
                 counselorName={item?.opponentNickname}
                 beforeMinutes={item?.latestMessageUpdatedAt}
-                content={item?.latestMessageContent}
+                content={
+                  item?.status === '질문 대기'
+                    ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요! '
+                    : item?.lastMessageContent
+                }
                 key={item?.id}
                 counselorprofileStatus={consultStyleToCharNum(
                   item?.consultStyle,

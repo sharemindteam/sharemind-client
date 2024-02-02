@@ -13,8 +13,8 @@ import { getPaymentsMinder } from 'api/get';
 import { useNavigate } from 'react-router-dom';
 
 const manageStatusMap = {
-  '정산 중': 'SETTLEMENT_WAITING',
-  '정산 예정': 'SETTLEMENT_ONGOING',
+  '정산 중': 'SETTLEMENT_ONGOING',
+  '정산 예정': 'SETTLEMENT_WAITING',
   완료: 'SETTLEMENT_COMPLETE',
 };
 
@@ -46,6 +46,7 @@ export const SellerCaculateManagement = () => {
 
   const [managementList, setManagementList] = useState<ManageList>([]);
   const [toatlMoney, setTotalMoney] = useState<number>(0);
+  const [isCompleteApplyManage, setIsCompleteApplyManage] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchManagements = async () => {
@@ -95,6 +96,8 @@ export const SellerCaculateManagement = () => {
           {/* //정산 예정일일 경우 calculateActivate false true로~*/}
           {managementList?.map((item) => (
             <SellerCalulateCard
+              key={item?.paymentId}
+              id={item?.paymentId}
               customerName={item?.nickname}
               calculateActivate={manageStatus === '정산 예정' ? true : false}
               consultType={item?.isChat ? '채팅' : '편지'}
