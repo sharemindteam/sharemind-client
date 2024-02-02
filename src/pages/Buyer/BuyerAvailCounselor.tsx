@@ -26,6 +26,8 @@ export const BuyerAvailCounselor = () => {
   const navigate = useNavigate();
   //결과저장
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
+  //임의 state 추후 삭제
+  const [temp, setTemp] = useState<number>(0);
   const fectchSearchResults = async () => {
     try {
       const body = {
@@ -79,7 +81,11 @@ export const BuyerAvailCounselor = () => {
               setScrollLock(false);
             }}
           />
-          <SortModal sortType={sortType} setSortType={setSortType} />
+          <SortModal
+            sortType={sortType}
+            setSortType={setSortType}
+            setPageNum={setTemp}
+          />
         </>
       ) : null}
     </Wrapper>
