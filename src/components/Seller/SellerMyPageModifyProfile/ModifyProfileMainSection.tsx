@@ -175,7 +175,7 @@ export const ModifyProfileMainSection = ({
             }}
             padding="1.2rem 1.6rem"
             isBoxSizing={true}
-            maxLength={10}
+            maxLength={8}
           />
           <ConditionMessage>
             <Caption2
@@ -187,7 +187,7 @@ export const ModifyProfileMainSection = ({
                   : Grey4
               }
             >
-              1-10자 / 한글, 영문, 숫자 가능 (특수문자 불가)
+              1-8자 / 한글, 영문, 숫자 가능 (특수문자 불가)
             </Caption2>
             {nickname.isError ? (
               ''

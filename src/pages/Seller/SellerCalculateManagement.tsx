@@ -10,6 +10,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { SellerManagementModal } from 'components/Seller/SellerCalculateManagement/SellerManagementModal';
 import { getPaymentsMinder } from 'api/get';
+import { useNavigate } from 'react-router-dom';
 
 const manageStatusMap = {
   '정산 중': 'SETTLEMENT_WAITING',
@@ -44,7 +45,8 @@ export const SellerCaculateManagement = () => {
   const setScrollLock = useSetRecoilState(scrollLockState);
 
   const [managementList, setManagementList] = useState<ManageList>([]);
-
+  const [toatlMoney, setTotalMoney] = useState<number>(0);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchManagements = async () => {
       const params = {
@@ -53,7 +55,17 @@ export const SellerCaculateManagement = () => {
         paymentId: 0,
       };
       const res: any = await getPaymentsMinder({ params });
-      setManagementList(res?.data);
+      if (res?.status === 200) {
+        setManagementList(res?.data);
+        let totalEarnMoney = 0;
+        res?.data?.forEach((item: ManageItem) => {
+          totalEarnMoney += Number(item?.profit);
+        });
+        setTotalMoney(totalEarnMoney);
+      } else {
+        alert('판매 정보가 아직 등록되지 않았어요!');
+        navigate('/minder');
+      }
     };
     fetchManagements();
   }, [manageStatus, sortType]);
@@ -71,17 +83,17 @@ export const SellerCaculateManagement = () => {
             ? '완료 금액 합계'
             : manageStatus === '정산 중'
             ? '정산 중 금액 합계'
-            : '예정 금액 합계'}
+            : '정산예정 금액 합계'}
         </Heading>
-        <Subtitle color={Red}>100,000 원</Subtitle>
+        <Subtitle color={Red}>{toatlMoney.toLocaleString()} 원</Subtitle>
       </TotalEarnMoney>
       {/* 내역이 없을시 */}
-      {managementList.length === 0 ? (
+      {managementList?.length === 0 ? (
         <NoCalculationGraphic status={manageStatus} />
       ) : (
         <SellerCalculateCardList>
           {/* //정산 예정일일 경우 calculateActivate false true로~*/}
-          {managementList.map((item) => (
+          {managementList?.map((item) => (
             <SellerCalulateCard
               customerName={item?.nickname}
               calculateActivate={manageStatus === '정산 예정' ? true : false}
