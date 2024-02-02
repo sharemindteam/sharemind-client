@@ -4,12 +4,23 @@ import { Body1, Body2 } from 'styles/font';
 interface CounselorExpProps {
   experience: string;
 }
+
 export const CounselorExp = ({ experience }: CounselorExpProps) => {
+  const formattedMessage = (message: string | null): JSX.Element[] | null => {
+    return message
+      ? message.split('\n').map((item, key) => (
+          <span key={key}>
+            {item}
+            <br />
+          </span>
+        ))
+      : null;
+  };
   return (
     <Wrapper>
       <Body1 color={Grey3}>경험 소개</Body1>
       <ExpBox>
-        <Body2 color={Grey1}>{experience}</Body2>
+        <Body2 color={Grey1}>{formattedMessage(experience)}</Body2>
       </ExpBox>
     </Wrapper>
   );
