@@ -17,7 +17,7 @@ function CompleteApplyPopup({
   return (
     <CompleteApplyPopupBox>
       <Body1>정산 신청이 완료되었어요!</Body1>
-      <Body3 color={Grey4}>김고민님과의 편지 상담 2023.12.23</Body3>
+      <Body3 color={Grey4}>{name}과의 편지 상담 2023.12.23</Body3>
       <Space height="2rem" />
       <Button
         text="닫기"
@@ -34,17 +34,17 @@ const CompleteApplyPopupBox = styled.div`
   height: 15rem;
   z-index: 9999;
   @media (max-width: 768px) {
-    width: 100%;
+    width: calc(100% - 3.2rem);
   }
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: 34.5rem;
   }
   border-radius: 1.2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: fixed;
+  position: absolute;
   background-color: white;
   top: 22.3rem;
 `;

@@ -69,7 +69,7 @@ export const SellerCaculateManagement = () => {
       }
     };
     fetchManagements();
-  }, [manageStatus, sortType]);
+  }, [manageStatus, sortType, isCompleteApplyManage]);
   return (
     <>
       <ManagementHeader />
@@ -106,6 +106,8 @@ export const SellerCaculateManagement = () => {
               paymentAccount={item?.account ?? '계좌 명시안됨'}
               paymentDate={item?.approvedAt ?? '지급 일자 명시안됨'}
               salePrice={item?.cost}
+              isShowPopup={isCompleteApplyManage}
+              setIsShowPopup={setIsCompleteApplyManage}
             />
           ))}
         </SellerCalculateCardList>
@@ -140,7 +142,8 @@ const TotalEarnMoney = styled.div`
 const SellerCalculateCardList = styled.div`
   display: flex;
   gap: 1rem;
-  margin: 1.4rem 2rem;
+  margin: 1.4rem 0rem;
+  align-items: center;
   flex-direction: column;
 `;
 const BackDrop = styled.div`

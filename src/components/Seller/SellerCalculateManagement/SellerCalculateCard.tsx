@@ -5,6 +5,7 @@ import { Grey3, Grey6, Green, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import CompleteApplyPopup from './CompleteApplyPopup';
 import { useState } from 'react';
+import { BackDrop } from 'components/Common/BackDrop';
 
 interface SellerCalulateCardProps {
   customerName: string;
@@ -16,6 +17,8 @@ interface SellerCalulateCardProps {
   paymentAccount: string;
   id: string;
   calculateActivate: boolean;
+  isShowPopup: boolean;
+  setIsShowPopup: any;
 }
 
 export const SellerCalulateCard = ({
@@ -27,18 +30,23 @@ export const SellerCalulateCard = ({
   paymentAccount,
   paymentDate,
   calculateActivate,
+  id,
+  isShowPopup,
+  setIsShowPopup,
 }: SellerCalulateCardProps) => {
-  const applyManagement = (id: string) => {
-    patchApplyPayments(id);
+  const applyManagement = async (id: string) => {
+    await patchApplyPayments(id);
+    setIsShowPopup(true);
   };
-  const [isCompleteApplyManage, setIsCompleteApplyManage] = useState(false);
+
   return (
     <>
-      {isCompleteApplyManage && (
+      {isShowPopup && <BackDrop />}
+      {isShowPopup && (
         <CompleteApplyPopup
           name={customerName}
           date={paymentDate}
-          setIsCompleteApplyManage={setIsCompleteApplyManage}
+          setIsCompleteApplyManage={setIsShowPopup}
         />
       )}
       <SellerCalulateCardWrapper>
@@ -77,7 +85,7 @@ export const SellerCalulateCard = ({
             color={Green}
             backgroundColor={White}
             onClick={() => {
-              setIsCompleteApplyManage(true);
+              applyManagement(id);
             }}
           />
         ) : (
@@ -92,8 +100,10 @@ const SellerCalulateCardWrapper = styled.div`
   border-radius: 1.2rem;
   background: ${Grey6};
   display: flex;
+  width: calc(100% - 4rem);
   flex-direction: column;
   gap: 1rem;
+  box-sizing: border-box;
   padding: 1.6rem;
 `;
 
