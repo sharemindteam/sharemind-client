@@ -11,6 +11,7 @@ import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { SellerManagementModal } from 'components/Seller/SellerCalculateManagement/SellerManagementModal';
 import { getPaymentsMinder } from 'api/get';
 import { useNavigate } from 'react-router-dom';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 
 const manageStatusMap = {
   '정산 중': 'SETTLEMENT_ONGOING',
@@ -47,6 +48,7 @@ export const SellerCaculateManagement = () => {
   const [managementList, setManagementList] = useState<ManageList>([]);
   const [toatlMoney, setTotalMoney] = useState<number>(0);
   const [isCompleteApplyManage, setIsCompleteApplyManage] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchManagements = async () => {
@@ -63,6 +65,9 @@ export const SellerCaculateManagement = () => {
           totalEarnMoney += Number(item?.profit);
         });
         setTotalMoney(totalEarnMoney);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
       } else {
         alert('판매 정보가 아직 등록되지 않았어요!');
         navigate('/minder');
@@ -78,45 +83,55 @@ export const SellerCaculateManagement = () => {
         setManageStatus={setManageStatus}
         sortType={sortType}
       />
-      <TotalEarnMoney>
-        <Heading>
-          {manageStatus === '완료'
-            ? '완료 금액 합계'
-            : manageStatus === '정산 중'
-            ? '정산 중 금액 합계'
-            : '정산예정 금액 합계'}
-        </Heading>
-        <Subtitle color={Red}>{toatlMoney.toLocaleString()} 원</Subtitle>
-      </TotalEarnMoney>
-      {/* 내역이 없을시 */}
-      {managementList?.length === 0 ? (
-        <NoCalculationGraphic status={manageStatus} />
+      {isLoading ? (
+        <div style={{ display: 'flex', alignItems: 'center', height: '70vh' }}>
+          <LoadingSpinner />
+        </div>
       ) : (
-        <SellerCalculateCardList>
-          {/* //정산 예정일일 경우 calculateActivate false true로~*/}
-          {managementList?.map((item) => (
-            <SellerCalulateCard
-              key={item?.paymentId}
-              id={item?.paymentId}
-              customerName={item?.nickname}
-              calculateActivate={manageStatus === '정산 예정' ? true : false}
-              consultType={item?.isChat ? '채팅' : '편지'}
-              netProfit={item?.profit}
-              commission={item?.fee}
-              paymentAccount={item?.account ?? '계좌 명시안됨'}
-              paymentDate={item?.approvedAt ?? '지급 일자 명시안됨'}
-              salePrice={item?.cost}
-              isShowPopup={isCompleteApplyManage}
-              setIsShowPopup={setIsCompleteApplyManage}
-            />
-          ))}
-        </SellerCalculateCardList>
+        <>
+          <TotalEarnMoney>
+            <Heading>
+              {manageStatus === '완료'
+                ? '완료 금액 합계'
+                : manageStatus === '정산 중'
+                ? '정산 중 금액 합계'
+                : '정산예정 금액 합계'}
+            </Heading>
+            <Subtitle color={Red}>{toatlMoney.toLocaleString()} 원</Subtitle>
+          </TotalEarnMoney>
+          {/* 내역이 없을시 */}
+          {managementList?.length === 0 ? (
+            <NoCalculationGraphic status={manageStatus} />
+          ) : (
+            <SellerCalculateCardList>
+              {/* //정산 예정일일 경우 calculateActivate false true로~*/}
+              {managementList?.map((item) => (
+                <SellerCalulateCard
+                  key={item?.paymentId}
+                  id={item?.paymentId}
+                  customerName={item?.nickname}
+                  calculateActivate={
+                    manageStatus === '정산 예정' ? true : false
+                  }
+                  consultType={item?.isChat ? '채팅' : '편지'}
+                  netProfit={item?.profit}
+                  commission={item?.fee}
+                  paymentAccount={item?.account ?? '계좌 명시안됨'}
+                  paymentDate={item?.approvedAt ?? '지급 일자 명시안됨'}
+                  salePrice={item?.cost}
+                  isShowPopup={isCompleteApplyManage}
+                  setIsShowPopup={setIsCompleteApplyManage}
+                />
+              ))}
+            </SellerCalculateCardList>
+          )}
+        </>
       )}
+
       {isModalOpen ? (
         <>
           <BackDrop
             onClick={() => {
-              //여기서 api 호출
               setIsModalOpen(false);
               setScrollLock(false);
             }}
