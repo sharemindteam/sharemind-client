@@ -19,7 +19,7 @@ function VerifyFail() {
         <BottomButtonWrapper>
           <Button
             onClick={() => {
-              navigate('/seller/');
+              navigate('/minder');
             }}
             text="홈으로 가기"
             width="calc(100% - 4rem)"
