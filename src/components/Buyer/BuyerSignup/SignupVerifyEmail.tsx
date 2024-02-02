@@ -191,7 +191,7 @@ export const SignupVerifyEmail = ({
                 width="24.3rem"
                 height="4.8rem"
                 padding="0 9.2rem 0 0"
-                textIndent="1rem"
+                textIndent="1.6rem"
               />
               <VerifyButton
                 isActive={idInput.isValid}

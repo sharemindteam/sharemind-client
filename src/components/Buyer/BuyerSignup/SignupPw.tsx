@@ -100,7 +100,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               비밀번호
             </Body1>
-            <Space height="0.4rem" />
+
             <PwInput
               value={pw.value}
               onChange={pw.onChange}
@@ -110,6 +110,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
               textIndent="1rem"
             />
           </div>
+          <Space height="0.4rem" />
           <div className="caption">
             <Caption2 color={typeColor}>
               영문, 숫자, 특수문자 중 2종 이상 조합
@@ -125,7 +126,6 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               비밀번호 확인
             </Body1>
-            <Space height="0.4rem" />
             <PwInput
               value={pwCheck.value}
               onChange={pwCheck.onChange}
@@ -135,6 +135,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
               textIndent="1rem"
             />
           </div>
+          <Space height="0.4rem" />
           <div className="caption">
             <Caption2 color={correctColor}>비밀번호 일치</Caption2>
             <SignupValidIcon type={correctState} />
