@@ -2,7 +2,7 @@ import { getPaymentsCustomers } from 'api/get';
 import { PaymentCard } from 'components/Buyer/BuyerPayment/PaymentCard';
 import { PaymentModal } from 'components/Buyer/BuyerPayment/PaymentModal';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { Space } from 'components/Common/Space';
+import { useDebounce } from 'hooks/useDebounce';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,6 @@ import { Green, Grey1, Grey5, White } from 'styles/color';
 import { Button2, Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isPaymentModalOpenState, scrollLockState } from 'utils/atom';
-import { pending6 } from 'utils/pending';
 import { PaymentInfo } from 'utils/type';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현
 export const BuyerPayment = () => {
@@ -30,11 +29,12 @@ export const BuyerPayment = () => {
   const [clickedPaymentId, setClickedPaymentId] = useState<number>(-1);
   //최초 로딩 여부
   const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
+
   const fetchData = async (lastId: number) => {
-    if (lastId === 0) {
-      setIsInitialLoading(true);
-    }
+    setIsInitialLoading(true);
+
     let statusString = '';
     if (pageType === 0) {
       statusString = 'PAYMENT_COMPLETE';
@@ -67,18 +67,17 @@ export const BuyerPayment = () => {
     } catch (e) {
       alert(e);
     } finally {
-      if (lastId === 0) {
-        setTimeout(() => {
-          setIsInitialLoading(false);
-        }, 1);
-      }
+      // setTimeout(() => {
+      setIsInitialLoading(false);
+      // }, 1);
     }
   };
+  const debouncedFetchData = useDebounce(fetchData, 1);
+
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    //&& !isLoading
-    if (entry[0].isIntersecting) {
+    if (entry[0].isIntersecting && !isInitialLoading && !isLastElem) {
       observer.unobserve(entry[0].target);
-      await fetchData(paymentData[paymentData.length - 1].paymentId);
+      debouncedFetchData(paymentData[paymentData.length - 1].paymentId);
       observer.observe(entry[0].target);
     }
   };
@@ -94,110 +93,110 @@ export const BuyerPayment = () => {
     setIsLastElem(false);
     fetchData(0);
   }, [pageType]);
-  if (isInitialLoading) {
-    return (
-      <>
-        <HeaderWrapper>
-          <BackIcon
-            onClick={() => {
-              navigate('/mypage');
-            }}
-          />
-          <Heading color={Grey1}>결제 내역</Heading>
-        </HeaderWrapper>
-        <Space height="30vh" />
-        <LoadingSpinner />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <HeaderWrapper>
-          <BackIcon
-            onClick={() => {
-              navigate('/mypage');
-            }}
-          />
-          <Heading color={Grey1}>결제 내역</Heading>
-        </HeaderWrapper>
-        <ToggleWrapper>
-          <ToggleButton
-            focus={pageType === 0}
-            onClick={() => {
-              setPageType(0);
-            }}
-          >
-            <Button2 color={White}>결제완료</Button2>
-          </ToggleButton>
-          <ToggleButton
-            focus={pageType === 1}
-            onClick={() => {
-              setPageType(1);
-            }}
-          >
-            <Button2 color={White}>환불예정</Button2>
-          </ToggleButton>
-          <ToggleButton
-            focus={pageType === 2}
-            onClick={() => {
-              setPageType(2);
-            }}
-          >
-            <Button2 color={White}>환불완료</Button2>
-          </ToggleButton>
-        </ToggleWrapper>
-        <CardWrapper>
-          {paymentData.map((value) => {
-            return (
-              <PaymentCard
-                key={value.paymentId}
-                paymentId={value.paymentId}
-                nickname={value.nickname}
-                consultType={value.consultType}
-                consultState={value.status}
-                price={value.cost}
-                consultDate={value.consultedAt}
-                payDate={value.paidAt}
-                payment={value.method}
-                isPayComplete={pageType === 0}
-                setClickedPaymentId={setClickedPaymentId}
-              />
-            );
-          })}
-        </CardWrapper>
-        {!isLastElem ? (
-          <div
-            ref={setTarget}
-            style={{
-              height: '5.2rem',
-            }}
-          />
-        ) : (
-          <div
-            style={{
-              height: '5.2rem',
-            }}
-          />
-        )}
-        {isModalOpen ? (
-          <>
-            <BackDrop
-              onClick={() => {
-                //여기서 api 호출
-                setIsModalOpen(false);
-                setScrollLock(false);
-              }}
+  // if (isInitialLoading) {
+  //   return (
+  //     <>
+  //       <HeaderWrapper>
+  //         <BackIcon
+  //           onClick={() => {
+  //             navigate('/mypage');
+  //           }}
+  //         />
+  //         <Heading color={Grey1}>결제 내역</Heading>
+  //       </HeaderWrapper>
+  //       <Space height="30vh" />
+  //       <LoadingSpinner />
+  //     </>
+  //   );
+  // } else {
+  return (
+    <>
+      <HeaderWrapper>
+        <BackIcon
+          onClick={() => {
+            navigate('/mypage');
+          }}
+        />
+        <Heading color={Grey1}>결제 내역</Heading>
+      </HeaderWrapper>
+      <ToggleWrapper>
+        <ToggleButton
+          focus={pageType === 0}
+          onClick={() => {
+            setPageType(0);
+          }}
+        >
+          <Button2 color={White}>결제완료</Button2>
+        </ToggleButton>
+        <ToggleButton
+          focus={pageType === 1}
+          onClick={() => {
+            setPageType(1);
+          }}
+        >
+          <Button2 color={White}>환불예정</Button2>
+        </ToggleButton>
+        <ToggleButton
+          focus={pageType === 2}
+          onClick={() => {
+            setPageType(2);
+          }}
+        >
+          <Button2 color={White}>환불완료</Button2>
+        </ToggleButton>
+      </ToggleWrapper>
+      <CardWrapper>
+        {paymentData.map((value) => {
+          return (
+            <PaymentCard
+              key={value.paymentId}
+              paymentId={value.paymentId}
+              nickname={value.nickname}
+              consultType={value.consultType}
+              consultState={value.status}
+              price={value.cost}
+              consultDate={value.consultedAt}
+              payDate={value.paidAt}
+              payment={value.method}
+              isPayComplete={pageType === 0}
+              setClickedPaymentId={setClickedPaymentId}
             />
-            <PaymentModal
-              clickedPaymentId={clickedPaymentId}
-              paymentData={paymentData}
-              setPaymentData={setPaymentData}
-            />
-          </>
-        ) : null}
-      </>
-    );
-  }
+          );
+        })}
+      </CardWrapper>
+      {!isLastElem ? (
+        <div
+          ref={setTarget}
+          style={{
+            height: '5.2rem',
+          }}
+        />
+      ) : (
+        <div
+          style={{
+            height: '5.2rem',
+          }}
+        />
+      )}
+      {isModalOpen ? (
+        <>
+          <BackDrop
+            onClick={() => {
+              //여기서 api 호출
+              setIsModalOpen(false);
+              setScrollLock(false);
+            }}
+          />
+          <PaymentModal
+            clickedPaymentId={clickedPaymentId}
+            paymentData={paymentData}
+            setPaymentData={setPaymentData}
+          />
+        </>
+      ) : null}
+    </>
+  );
+  // }
 };
 
 const CardWrapper = styled.div`
