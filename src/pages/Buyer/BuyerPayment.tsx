@@ -4,7 +4,7 @@ import { PaymentModal } from 'components/Buyer/BuyerPayment/PaymentModal';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useDebounce } from 'hooks/useDebounce';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -29,11 +29,13 @@ export const BuyerPayment = () => {
   const [clickedPaymentId, setClickedPaymentId] = useState<number>(-1);
   //최초 로딩 여부
   const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
+  const preventRef = useRef(true); // 중복 방지 옵션
 
   const fetchData = async (lastId: number) => {
-    setIsInitialLoading(true);
+    if (lastId === 0) {
+      setIsInitialLoading(true);
+    }
 
     let statusString = '';
     if (pageType === 0) {
@@ -67,18 +69,22 @@ export const BuyerPayment = () => {
     } catch (e) {
       alert(e);
     } finally {
-      // setTimeout(() => {
-      setIsInitialLoading(false);
-      // }, 1);
+      if (lastId === 0) {
+        setIsInitialLoading(false);
+      }
     }
   };
-  const debouncedFetchData = useDebounce(fetchData, 1);
-
+  //useIntersection에서 unobserve되는지 확인
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    if (entry[0].isIntersecting && !isInitialLoading && !isLastElem) {
-      observer.unobserve(entry[0].target);
-      debouncedFetchData(paymentData[paymentData.length - 1].paymentId);
-      observer.observe(entry[0].target);
+    if (
+      entry[0].isIntersecting &&
+      !isLastElem &&
+      !isInitialLoading &&
+      preventRef.current
+    ) {
+      preventRef.current = false;
+      await fetchData(paymentData[paymentData.length - 1].paymentId);
+      preventRef.current = true;
     }
   };
   //현재 대상 및 option을 props로 전달
@@ -93,22 +99,7 @@ export const BuyerPayment = () => {
     setIsLastElem(false);
     fetchData(0);
   }, [pageType]);
-  // if (isInitialLoading) {
-  //   return (
-  //     <>
-  //       <HeaderWrapper>
-  //         <BackIcon
-  //           onClick={() => {
-  //             navigate('/mypage');
-  //           }}
-  //         />
-  //         <Heading color={Grey1}>결제 내역</Heading>
-  //       </HeaderWrapper>
-  //       <Space height="30vh" />
-  //       <LoadingSpinner />
-  //     </>
-  //   );
-  // } else {
+
   return (
     <>
       <HeaderWrapper>
@@ -168,13 +159,15 @@ export const BuyerPayment = () => {
         <div
           ref={setTarget}
           style={{
-            height: '5.2rem',
+            height: '3.2rem',
+            width: '10rem',
           }}
         />
       ) : (
         <div
           style={{
-            height: '5.2rem',
+            height: '3.2rem',
+            width: '10rem',
           }}
         />
       )}
@@ -196,7 +189,6 @@ export const BuyerPayment = () => {
       ) : null}
     </>
   );
-  // }
 };
 
 const CardWrapper = styled.div`
