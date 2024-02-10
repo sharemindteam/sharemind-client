@@ -28,16 +28,13 @@ export const BuyerReviewManage = () => {
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   //Loading
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
 
   const preventRef = useRef(true); // 중복 방지 옵션
 
   //review fetch
   const fetchReviewData = async (lastReviewId: number) => {
-    if (lastReviewId === 0) {
-      setIsLoading(true);
-    }
     const params = { isCompleted: !isReviewWrite, reviewId: lastReviewId };
     try {
       const res: any = await getReviewsCustomer({ params });
@@ -86,6 +83,7 @@ export const BuyerReviewManage = () => {
 
   useLayoutEffect(() => {
     setIsLastElem(false);
+    setIsLoading(true);
     setReviewData([]);
     fetchReviewData(0);
   }, [isReviewWrite]);

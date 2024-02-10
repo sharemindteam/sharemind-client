@@ -28,15 +28,11 @@ export const BuyerPayment = () => {
   //clicked paymentId
   const [clickedPaymentId, setClickedPaymentId] = useState<number>(-1);
   //최초 로딩 여부
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const preventRef = useRef(true); // 중복 방지 옵션
 
   const fetchData = async (lastId: number) => {
-    if (lastId === 0) {
-      setIsInitialLoading(true);
-    }
-
     let statusString = '';
     if (pageType === 0) {
       statusString = 'PAYMENT_COMPLETE';
@@ -97,6 +93,7 @@ export const BuyerPayment = () => {
 
   useLayoutEffect(() => {
     setIsLastElem(false);
+    setIsInitialLoading(true);
     setPaymentData([]);
     fetchData(0);
   }, [pageType]);

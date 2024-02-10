@@ -13,13 +13,13 @@ import useIntersectionObserver from 'hooks/useIntersectionObserver';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현
 export const BuyerSavedCounselor = () => {
   const navigate = useNavigate();
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [wishlistData, setWishlistData] = useState<WishlistDataType[]>([]);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
 
   const preventRef = useRef(true);
 
-  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
       !isLastElem &&
@@ -42,9 +42,6 @@ export const BuyerSavedCounselor = () => {
     onIntersect,
   });
   const fetchWishlistData = async (lastId: number, lastUpdateAt: string) => {
-    if (lastId === 0) {
-      setIsInitialLoading(true);
-    }
     const body = {
       wishlistId: lastId,
       updatedAt: lastUpdateAt,
