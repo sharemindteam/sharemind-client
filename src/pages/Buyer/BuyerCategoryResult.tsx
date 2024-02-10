@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { Button2 } from 'styles/font';
 import { Grey3 } from 'styles/color';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
@@ -39,8 +39,9 @@ export const BuyerCategoryResult = () => {
   //무한스크롤 위한 page num
   const [pageNum, setPageNum] = useState<number>(0);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  //로딩 state
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false); //로딩 state
+  const preventRef = useRef(true); // 중복 방지 옵션
   //fetch 함수
   const fetchSearchResults = async (pageIndex: number) => {
     if (pageIndex === 0) {
@@ -71,7 +72,7 @@ export const BuyerCategoryResult = () => {
         navigate('/share');
       }
     } catch (e) {
-      console.log(e);
+      alert(e);
     } finally {
       if (pageIndex === 0) {
         setTimeout(() => {
@@ -81,23 +82,27 @@ export const BuyerCategoryResult = () => {
     }
   };
 
-  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    //&& !isLoading
-    if (entry[0].isIntersecting) {
-      observer.unobserve(entry[0].target);
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
+    if (
+      entry[0].isIntersecting &&
+      !isLoading &&
+      !isLastElem &&
+      preventRef.current
+    ) {
+      preventRef.current = false;
       await fetchSearchResults(pageNum);
-      observer.observe(entry[0].target);
+      preventRef.current = true;
     }
   };
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
-    threshold: 1,
+    threshold: 0.8,
     onIntersect,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setIsLastElem(false);
     setSearchData([]);
     fetchSearchResults(0);
@@ -106,7 +111,6 @@ export const BuyerCategoryResult = () => {
     return (
       <>
         <CategoryResultHeader categoryType={searchKeyword} />
-        <LoadingSpinner />
       </>
     );
   } else {
@@ -135,7 +139,6 @@ export const BuyerCategoryResult = () => {
           <>
             <BackDrop
               onClick={() => {
-                //여기서 api
                 setIsModalOpen(false);
                 setScrollLock(false);
               }}

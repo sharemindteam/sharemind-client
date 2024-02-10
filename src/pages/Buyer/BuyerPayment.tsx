@@ -100,96 +100,136 @@ export const BuyerPayment = () => {
     setPaymentData([]);
     fetchData(0);
   }, [pageType]);
-
-  return (
-    <>
-      <HeaderWrapper>
-        <BackIcon
-          onClick={() => {
-            navigate('/mypage');
-          }}
-        />
-        <Heading color={Grey1}>결제 내역</Heading>
-      </HeaderWrapper>
-      <ToggleWrapper>
-        <ToggleButton
-          focus={pageType === 0}
-          onClick={() => {
-            setPageType(0);
-          }}
-        >
-          <Button2 color={White}>결제완료</Button2>
-        </ToggleButton>
-        <ToggleButton
-          focus={pageType === 1}
-          onClick={() => {
-            setPageType(1);
-          }}
-        >
-          <Button2 color={White}>환불예정</Button2>
-        </ToggleButton>
-        <ToggleButton
-          focus={pageType === 2}
-          onClick={() => {
-            setPageType(2);
-          }}
-        >
-          <Button2 color={White}>환불완료</Button2>
-        </ToggleButton>
-      </ToggleWrapper>
-      <CardWrapper>
-        {paymentData.map((value) => {
-          return (
-            <PaymentCard
-              key={value.paymentId}
-              paymentId={value.paymentId}
-              nickname={value.nickname}
-              consultType={value.consultType}
-              consultState={value.status}
-              price={value.cost}
-              consultDate={value.consultedAt}
-              payDate={value.paidAt}
-              payment={value.method}
-              isPayComplete={pageType === 0}
-              setClickedPaymentId={setClickedPaymentId}
-            />
-          );
-        })}
-      </CardWrapper>
-      {!isLastElem ? (
-        <div
-          ref={setTarget}
-          style={{
-            height: '3.2rem',
-            width: '10rem',
-          }}
-        />
-      ) : (
-        <div
-          style={{
-            height: '3.2rem',
-            width: '10rem',
-          }}
-        />
-      )}
-      {isModalOpen ? (
-        <>
-          <BackDrop
+  if (isInitialLoading) {
+    return (
+      <>
+        <HeaderWrapper>
+          <BackIcon
             onClick={() => {
-              //여기서 api 호출
-              setIsModalOpen(false);
-              setScrollLock(false);
+              navigate('/mypage');
             }}
           />
-          <PaymentModal
-            clickedPaymentId={clickedPaymentId}
-            paymentData={paymentData}
-            setPaymentData={setPaymentData}
+          <Heading color={Grey1}>결제 내역</Heading>
+        </HeaderWrapper>
+        <ToggleWrapper>
+          <ToggleButton
+            focus={pageType === 0}
+            onClick={() => {
+              setPageType(0);
+            }}
+          >
+            <Button2 color={White}>결제완료</Button2>
+          </ToggleButton>
+          <ToggleButton
+            focus={pageType === 1}
+            onClick={() => {
+              setPageType(1);
+            }}
+          >
+            <Button2 color={White}>환불예정</Button2>
+          </ToggleButton>
+          <ToggleButton
+            focus={pageType === 2}
+            onClick={() => {
+              setPageType(2);
+            }}
+          >
+            <Button2 color={White}>환불완료</Button2>
+          </ToggleButton>
+        </ToggleWrapper>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <HeaderWrapper>
+          <BackIcon
+            onClick={() => {
+              navigate('/mypage');
+            }}
           />
-        </>
-      ) : null}
-    </>
-  );
+          <Heading color={Grey1}>결제 내역</Heading>
+        </HeaderWrapper>
+        <ToggleWrapper>
+          <ToggleButton
+            focus={pageType === 0}
+            onClick={() => {
+              setPageType(0);
+            }}
+          >
+            <Button2 color={White}>결제완료</Button2>
+          </ToggleButton>
+          <ToggleButton
+            focus={pageType === 1}
+            onClick={() => {
+              setPageType(1);
+            }}
+          >
+            <Button2 color={White}>환불예정</Button2>
+          </ToggleButton>
+          <ToggleButton
+            focus={pageType === 2}
+            onClick={() => {
+              setPageType(2);
+            }}
+          >
+            <Button2 color={White}>환불완료</Button2>
+          </ToggleButton>
+        </ToggleWrapper>
+        <CardWrapper>
+          {paymentData.map((value) => {
+            return (
+              <PaymentCard
+                key={value.paymentId}
+                paymentId={value.paymentId}
+                nickname={value.nickname}
+                consultType={value.consultType}
+                consultState={value.status}
+                price={value.cost}
+                consultDate={value.consultedAt}
+                payDate={value.paidAt}
+                payment={value.method}
+                isPayComplete={pageType === 0}
+                setClickedPaymentId={setClickedPaymentId}
+              />
+            );
+          })}
+        </CardWrapper>
+        {!isLastElem ? (
+          <div
+            ref={setTarget}
+            style={{
+              height: '3.2rem',
+              width: '10rem',
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              height: '3.2rem',
+              width: '10rem',
+            }}
+          />
+        )}
+        {isModalOpen ? (
+          <>
+            <BackDrop
+              onClick={() => {
+                //여기서 api 호출
+                setIsModalOpen(false);
+                setScrollLock(false);
+              }}
+            />
+            <PaymentModal
+              clickedPaymentId={clickedPaymentId}
+              paymentData={paymentData}
+              setPaymentData={setPaymentData}
+            />
+          </>
+        ) : null}
+      </>
+    );
+  }
 };
 
 const CardWrapper = styled.div`
