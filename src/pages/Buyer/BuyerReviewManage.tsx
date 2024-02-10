@@ -64,7 +64,7 @@ export const BuyerReviewManage = () => {
     }
   };
 
-  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
       !isLoading &&

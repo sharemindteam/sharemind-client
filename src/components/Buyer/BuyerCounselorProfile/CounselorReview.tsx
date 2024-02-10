@@ -1,5 +1,5 @@
 import { getReviewsAll } from 'api/get';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey6 } from 'styles/color';
@@ -7,23 +7,18 @@ import { Body1, Body2, Body3, Heading } from 'styles/font';
 import { HeartRate } from 'utils/HeartRate';
 import { Review } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
-import { useRecoilState } from 'recoil';
-import { isLoadingState } from 'utils/atom';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
 interface CounselorReviewProps {
   counselorId: number;
 }
 export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-
+  const preventRef = useRef(true); // 중복 방지 옵션
   const fetchReviewData = async (lastReviewId: number) => {
-    if (lastReviewId === 0) {
-      setIsLoading(true);
-    }
+    console.log(lastReviewId);
     const params = {
       reviewId: lastReviewId,
     };
@@ -48,25 +43,29 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
       alert(e);
     } finally {
       if (lastReviewId === 0) {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1);
+        setIsLoading(false);
       }
     }
+    console.log(lastReviewId);
   };
-  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    //&& !isLoading
-    if (entry[0].isIntersecting) {
-      observer.unobserve(entry[0].target);
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
+    if (
+      entry[0].isIntersecting &&
+      !isLoading &&
+      !isLastElem &&
+      preventRef.current
+    ) {
+      preventRef.current = false;
+      console.log('관측');
       await fetchReviewData(reviews[reviews.length - 1].reviewId);
-      observer.observe(entry[0].target);
+      preventRef.current = true;
     }
   };
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
-    threshold: 1,
+    threshold: 0.8,
     onIntersect,
   });
   //첫 렌더 시에 data fetch
@@ -75,20 +74,9 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   }, []);
 
   if (isLoading) {
-    return (
-      <>
-        <LoadingSpinner />
-      </>
-    );
+    return <></>;
   } else {
-    if (reviews.length === 0) {
-      return (
-        <EmptyWrapper>
-          <EmptyIcon />
-          <Heading>아직 후기가 없어요.</Heading>
-        </EmptyWrapper>
-      );
-    } else {
+    if (reviews.length !== 0) {
       return (
         <Wrapper>
           {reviews.map((value) => {
@@ -113,6 +101,13 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
             <div style={{ height: '5rem' }} />
           )}
         </Wrapper>
+      );
+    } else {
+      return (
+        <EmptyWrapper>
+          <EmptyIcon />
+          <Heading>아직 후기가 없어요.</Heading>
+        </EmptyWrapper>
       );
     }
   }
