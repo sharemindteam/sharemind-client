@@ -88,6 +88,7 @@ export const BuyerReviewManage = () => {
 
   useLayoutEffect(() => {
     setIsLastElem(false);
+    setReviewData([]);
     fetchReviewData(0);
   }, [isReviewWrite]);
   // if (isLoading) {

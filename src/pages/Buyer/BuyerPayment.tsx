@@ -91,12 +91,13 @@ export const BuyerPayment = () => {
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
-    threshold: 1,
+    threshold: 0.8,
     onIntersect,
   });
 
   useLayoutEffect(() => {
     setIsLastElem(false);
+    setPaymentData([]);
     fetchData(0);
   }, [pageType]);
 
