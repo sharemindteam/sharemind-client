@@ -2,11 +2,10 @@ import { postWishLists } from 'api/post';
 import { SavedCounselorResults } from 'components/Buyer/BuyerSavedCounselor.tsx/SavedCounselorResults';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Space } from 'components/Common/Space';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { WishlistDataType } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import styled from 'styled-components';
@@ -18,30 +17,34 @@ export const BuyerSavedCounselor = () => {
   const [wishlistData, setWishlistData] = useState<WishlistDataType[]>([]);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
 
+  const preventRef = useRef(true);
+
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    //&& !isLoading
-    if (entry[0].isIntersecting) {
-      observer.unobserve(entry[0].target);
-      console.log('관측');
+    if (
+      entry[0].isIntersecting &&
+      !isLastElem &&
+      !isInitialLoading &&
+      preventRef.current
+    ) {
+      preventRef.current = false;
       await fetchWishlistData(
         wishlistData[wishlistData.length - 1].wishlistId,
         wishlistData[wishlistData.length - 1].updatedAt,
       );
-      observer.observe(entry[0].target);
+      preventRef.current = true;
     }
   };
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
-    threshold: 1,
+    threshold: 0.8,
     onIntersect,
   });
   const fetchWishlistData = async (lastId: number, lastUpdateAt: string) => {
     if (lastId === 0) {
       setIsInitialLoading(true);
     }
-    // 찜하기 목록을 받아오는 api마지막 찜하기의 wishlistId와 updatedAt 바디로 넘겨주시면 됩니다~4개씩 리턴합니다.처음 요청의 경우 wishlistId 0으로 쏴주세요해당 wishlsit가 없을 경우 빈배열로 리턴합니다.
     const body = {
       wishlistId: lastId,
       updatedAt: lastUpdateAt,
@@ -67,14 +70,9 @@ export const BuyerSavedCounselor = () => {
       alert(e);
     } finally {
       if (lastId === 0) {
-        setTimeout(() => {
-          setIsInitialLoading(false);
-        }, 1);
+        setIsInitialLoading(false);
       }
     }
-    // } else {
-    //   setIsLoading(false);
-    // }
   };
   useLayoutEffect(() => {
     fetchWishlistData(0, '');
@@ -90,8 +88,6 @@ export const BuyerSavedCounselor = () => {
           />
           <Heading color={Grey1}>찜 목록</Heading>
         </HeaderWrapper>
-        <Space height="30vh" />
-        <LoadingSpinner />
       </>
     );
   } else {
