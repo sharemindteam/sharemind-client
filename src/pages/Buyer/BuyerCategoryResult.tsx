@@ -39,14 +39,10 @@ export const BuyerCategoryResult = () => {
   //무한스크롤 위한 page num
   const [pageNum, setPageNum] = useState<number>(0);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-
-  const [isLoading, setIsLoading] = useState<boolean>(false); //로딩 state
+  const [isLoading, setIsLoading] = useState<boolean>(true); //로딩 state
   const preventRef = useRef(true); // 중복 방지 옵션
   //fetch 함수
   const fetchSearchResults = async (pageIndex: number) => {
-    if (pageIndex === 0) {
-      setIsLoading(true);
-    }
     try {
       const body = {
         consultCategory: convertCategoryEnum(searchKeyword),
@@ -75,9 +71,7 @@ export const BuyerCategoryResult = () => {
       alert(e);
     } finally {
       if (pageIndex === 0) {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1);
+        setIsLoading(false);
       }
     }
   };

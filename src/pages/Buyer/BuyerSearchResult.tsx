@@ -44,7 +44,7 @@ export const BuyerSearchResult = () => {
   const [pageNum, setPageNum] = useState<number>(0);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const preventRef = useRef(true); // 중복 방지 옵션
-  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
       !isLoading &&
@@ -69,17 +69,12 @@ export const BuyerSearchResult = () => {
   };
   const handleSubmit: any = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setPageNum(0);
-    setSearchData([]);
     setKeyword(input);
   };
 
   //로딩 state
-  const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const fetchSearchResults = async (searchWord: string, pageIndex: number) => {
-    if (pageIndex === 0) {
-      setIsLoading(true);
-    }
     try {
       const body = {
         word: searchWord,
@@ -113,7 +108,9 @@ export const BuyerSearchResult = () => {
   };
   useLayoutEffect(() => {
     setIsLastElem(false);
+    setPageNum(0);
     setSearchData([]);
+    setIsLoading(true);
     fetchSearchResults(keyword, 0);
   }, [keyword, sortType]);
   if (isLoading) {
