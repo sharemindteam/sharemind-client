@@ -1,6 +1,6 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
-import { SetStateAction, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { SetStateAction } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';

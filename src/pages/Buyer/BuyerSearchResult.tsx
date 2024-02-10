@@ -7,7 +7,7 @@ import { ReactComponent as Search } from 'assets/icons/search.svg';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { SearchResults } from 'components/Buyer/BuyerSearchResult/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { ChangeEvent, useLayoutEffect, useState } from 'react';
+import { ChangeEvent, useLayoutEffect, useRef, useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
@@ -43,20 +43,24 @@ export const BuyerSearchResult = () => {
   //무한스크롤 위한 page num
   const [pageNum, setPageNum] = useState<number>(0);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-
+  const preventRef = useRef(true); // 중복 방지 옵션
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    //&& !isLoading
-    if (entry[0].isIntersecting) {
-      observer.unobserve(entry[0].target);
+    if (
+      entry[0].isIntersecting &&
+      !isLoading &&
+      !isLastElem &&
+      preventRef.current
+    ) {
+      preventRef.current = false;
       await fetchSearchResults(keyword, pageNum);
-      observer.observe(entry[0].target);
+      preventRef.current = true;
     }
   };
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
-    threshold: 1,
+    threshold: 0.8,
     onIntersect,
   });
   //input onchagne
@@ -100,12 +104,10 @@ export const BuyerSearchResult = () => {
         alert('검색어는 2~20자 사이여야 합니다.');
       }
     } catch (e) {
-      console.log(e);
+      alert(e);
     } finally {
       if (pageIndex === 0) {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1);
+        setIsLoading(false);
       }
     }
   };
