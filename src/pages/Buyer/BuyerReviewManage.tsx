@@ -4,9 +4,9 @@ import { ReviewManageNav } from 'components/Buyer/BuyerReviewManage/ReviewManage
 import { ReviewModal } from 'components/Buyer/BuyerReviewManage/ReviewModal';
 import { ReviewWroteCard } from 'components/Buyer/BuyerReviewManage/ReviewWroteCard';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { Space } from 'components/Common/Space';
+import { useDebounce } from 'hooks/useDebounce';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -28,29 +28,13 @@ export const BuyerReviewManage = () => {
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   //Loading
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
 
-  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    //&& !isLoading
-    if (entry[0].isIntersecting) {
-      observer.unobserve(entry[0].target);
-      await fetchReviewData(reviewData[reviewData.length - 1]?.reviewId);
-      observer.observe(entry[0].target);
-    }
-  };
-  //현재 대상 및 option을 props로 전달
-  const { setTarget } = useIntersectionObserver({
-    root: null,
-    rootMargin: '0px',
-    threshold: 1,
-    onIntersect,
-  });
+  const preventRef = useRef(true); // 중복 방지 옵션
+
   //review fetch
   const fetchReviewData = async (lastReviewId: number) => {
-    if (lastReviewId === 0) {
-      setIsLoading(true);
-    }
     const params = { isCompleted: !isReviewWrite, reviewId: lastReviewId };
     try {
       const res: any = await getReviewsCustomer({ params });
@@ -72,15 +56,35 @@ export const BuyerReviewManage = () => {
       alert(e);
     } finally {
       if (lastReviewId === 0) {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1);
+        setIsLoading(false);
       }
     }
   };
 
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
+    if (
+      entry[0].isIntersecting &&
+      !isLoading &&
+      !isLastElem &&
+      preventRef.current
+    ) {
+      preventRef.current = false;
+      await fetchReviewData(reviewData[reviewData.length - 1].reviewId);
+      preventRef.current = true;
+    }
+  };
+  //현재 대상 및 option을 props로 전달
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.8,
+    onIntersect,
+  });
+
   useLayoutEffect(() => {
     setIsLastElem(false);
+    setIsLoading(true);
+    setReviewData([]);
     fetchReviewData(0);
   }, [isReviewWrite]);
   if (isLoading) {
@@ -98,8 +102,6 @@ export const BuyerReviewManage = () => {
           isWrite={isReviewWrite}
           setIsWrite={setIsReviewWrite}
         />
-        <Space height="10vh" />
-        <LoadingSpinner />
       </>
     );
   } else {
@@ -125,9 +127,20 @@ export const BuyerReviewManage = () => {
               );
             })}
             {!isLastElem ? (
-              <div ref={setTarget} style={{ height: '3.5rem' }} />
+              <div
+                ref={setTarget}
+                style={{
+                  height: '3.5rem',
+                  width: '10rem',
+                }}
+              />
             ) : (
-              <div style={{ height: '3.5rem' }} />
+              <div
+                style={{
+                  height: '3.5rem',
+                  width: '10rem',
+                }}
+              />
             )}
           </CardWrapper>
         ) : (
@@ -138,9 +151,20 @@ export const BuyerReviewManage = () => {
               );
             })}
             {!isLastElem ? (
-              <div ref={setTarget} style={{ height: '3.5rem' }} />
+              <div
+                ref={setTarget}
+                style={{
+                  height: '3.5rem',
+                  width: '10rem',
+                }}
+              />
             ) : (
-              <div style={{ height: '3.5rem' }} />
+              <div
+                style={{
+                  height: '3.5rem',
+                  width: '10rem',
+                }}
+              />
             )}
           </CardWrapper>
         )}

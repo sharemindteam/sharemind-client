@@ -5,7 +5,7 @@ import { Button2, Heading } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isSortModalOpenState, scrollLockState } from 'utils/atom';
@@ -13,6 +13,7 @@ import { SearchResultData } from 'utils/type';
 import { patchCounselorsAll } from 'api/patch';
 import { ConverSortType } from 'utils/convertSortType';
 import { AvailCounselorSearchResults } from 'components/Buyer/BuyerAvailCounselor/AvailCounselorSearchResult';
+import useIntersectionObserver from 'hooks/useIntersectionObserver';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerAvailCounselor = () => {
   //0 : 최신순 1:인기순 2: 별점순
@@ -26,27 +27,65 @@ export const BuyerAvailCounselor = () => {
   const navigate = useNavigate();
   //결과저장
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
-  //임의 state 추후 삭제
-  const [temp, setTemp] = useState<number>(0);
-  const fectchSearchResults = async () => {
+  //무한스크롤 위한 page num
+  const [pageNum, setPageNum] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true); //로딩 state
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
+  const preventRef = useRef(true); // 중복 방지 옵션
+  const fectchSearchResults = async (pageIndex: number) => {
     try {
       const body = {
-        index: 0,
+        index: pageIndex,
       };
       const sortTypeString: string = ConverSortType(sortType);
       const res: any = await patchCounselorsAll(sortTypeString, body);
       if (res.status === 200) {
-        setSearchData(res.data);
+        if (res.data.length !== 0) {
+          if (pageIndex === 0) {
+            setSearchData(res.data);
+            setPageNum(pageNum + 1);
+          } else {
+            const updatedSearchs = [...searchData, ...res.data];
+            setSearchData(updatedSearchs);
+            setPageNum(pageNum + 1);
+          }
+        } else {
+          setIsLastElem(true);
+        }
       } else if (res.response.status === 404) {
         alert('유효하지 않은 정렬 방식입니다.');
         navigate('/share');
       }
     } catch (e) {
-      console.log(e);
+      alert(e);
+    } finally {
+      if (pageIndex === 0) {
+        setIsLoading(false);
+      }
     }
   };
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
+    if (
+      entry[0].isIntersecting &&
+      !isLoading &&
+      !isLastElem &&
+      preventRef.current
+    ) {
+      preventRef.current = false;
+      await fectchSearchResults(pageNum);
+      preventRef.current = true;
+    }
+  };
+  //현재 대상 및 option을 props로 전달
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.8,
+    onIntersect,
+  });
   useEffect(() => {
-    fectchSearchResults();
+    setIsLastElem(false);
+    fectchSearchResults(0);
   }, [sortType]);
   return (
     <Wrapper>
@@ -71,7 +110,11 @@ export const BuyerAvailCounselor = () => {
         </div>
       </div>
       <AvailCounselorSearchResults searchData={searchData} />
-
+      {!isLastElem ? (
+        <div ref={setTarget} style={{ height: '4rem' }} />
+      ) : (
+        <div style={{ height: '4rem' }} />
+      )}
       {isModalOpen ? (
         <>
           <BackDrop
@@ -84,7 +127,7 @@ export const BuyerAvailCounselor = () => {
           <SortModal
             sortType={sortType}
             setSortType={setSortType}
-            setPageNum={setTemp}
+            setPageNum={setPageNum}
           />
         </>
       ) : null}

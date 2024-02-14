@@ -1,6 +1,6 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
-import { SetStateAction, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { SetStateAction } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
@@ -20,14 +20,7 @@ export const SortModal = ({
   const [isModalOpen, setIsModalOpen] = useRecoilState(isSortModalOpenState);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
-  //여기서 unmount 시 sortType 바꾸고 새로 request
-  //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
 
-  // useEffect(() => {
-  //   return () => {
-  //     setSortType(modalSortType);
-  //   };
-  // }, []);
   return (
     <Wrapper visible={isModalOpen}>
       <div className="bar-wrapper">
