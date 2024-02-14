@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { Green, Grey1, LightGreen } from 'styles/color';
 import { Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
-import { removeCookie } from 'utils/cookie';
 
 export const BuyerLogout = () => {
   const navigate = useNavigate();
@@ -40,10 +39,10 @@ export const BuyerLogout = () => {
             backgroundColor={LightGreen}
             color={Green}
             onClick={() => {
-              // localStorage.removeItem('accessToken');
-              // localStorage.removeItem('refreshToken');
-              removeCookie('accessToken');
-              removeCookie('refreshToken');
+              localStorage.removeItem('accessToken');
+              localStorage.removeItem('refreshToken');
+              // removeCookie('accessToken');
+              // removeCookie('refreshToken');
               navigate('/mypage');
             }}
           />
