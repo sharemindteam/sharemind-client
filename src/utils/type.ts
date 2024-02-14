@@ -26,8 +26,6 @@ export type CartegoryState =
 
 export type LetterState = '질문' | '답장' | '추가질문' | '추가답장';
 
-type CartegoryStateArray = CartegoryState[];
-
 export type Review = {
   nickname: string;
   rating: number;
@@ -53,10 +51,6 @@ export interface GetMessagesType {
   messageType: string | null;
   updatedAt: string | null;
 }
-
-type SellerLetterLevelTypes = {};
-
-type LetterInfo = {};
 
 export type ConsultInfoList = ConsultInfoItem[];
 
@@ -145,3 +139,14 @@ export interface PaymentInfo {
   paidAt: string;
   method: string;
 }
+
+//chatting message type
+
+export type ChatMessage = {
+  customerNickname: string;
+  counselorNickname: string;
+  messageId: number;
+  content: string;
+  sendTime: string;
+  isCustomer: boolean;
+};
