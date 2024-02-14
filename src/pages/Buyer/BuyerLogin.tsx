@@ -11,6 +11,7 @@ import { LoginModal } from 'components/Buyer/BuyerLogin/LoginModal';
 import { useState } from 'react';
 import PwInput from 'components/Buyer/Common/PwInput';
 import { Space } from 'components/Common/Space';
+import { setCookie } from 'utils/cookie';
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
@@ -32,9 +33,10 @@ export const BuyerLogin = () => {
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           res.data;
         // instance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
-        // setCookie('refreshToken', newRefreshToken, { path: '/' });
-        localStorage.setItem('accessToken', newAccessToken);
-        localStorage.setItem('refreshToken', newRefreshToken);
+        setCookie('accessToken', newAccessToken, { path: '/' });
+        setCookie('refreshToken', newRefreshToken, { path: '/' });
+        // localStorage.setItem('accessToken', newAccessToken);
+        // localStorage.setItem('refreshToken', newRefreshToken);
         navigate('/share');
       } else if (res.response.status === 400) {
         setIsActiveModal(true);
