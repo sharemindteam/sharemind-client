@@ -30,7 +30,7 @@ export const BuyerChatTest = () => {
     stompClient.current.connect(
       {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDc5MTQyODN9._4GdSCyk8GAwNTxJXp9Y65n5VQFwJURkdJBt1ZJC5S0',
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDc5OTQ0NzJ9.2a8Vd9k6a7cypxLXq5paAIvOoox6ZoOrmv3ti9AS970',
         isCustomer: false,
       },
       (frame: any) => {

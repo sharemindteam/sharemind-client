@@ -20,6 +20,7 @@ import Input from 'components/Common/Input';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
+import { formattedMessage } from 'utils/formattedMessage';
 export const BuyerChat = () => {
   const navigate = useNavigate();
 
@@ -205,7 +206,7 @@ export const BuyerChat = () => {
             return (
               <div className="my-box-container">
                 <CustomerChatBox>
-                  <Body2 color={Grey1}>{value.content}</Body2>
+                  <Body2 color={Grey1}>{formattedMessage(value.content)}</Body2>
                 </CustomerChatBox>
               </div>
             );
@@ -213,7 +214,7 @@ export const BuyerChat = () => {
             return (
               <div className="opponent-box-container">
                 <CounselorChatBox>
-                  <Body2 color={Grey1}>{value.content}</Body2>
+                  <Body2 color={Grey1}>{formattedMessage(value.content)}</Body2>
                 </CounselorChatBox>
               </div>
             );
@@ -310,12 +311,14 @@ const CustomerChatBox = styled.div`
   border-radius: 1rem 0 1rem 1rem;
   padding: 1.2rem;
   box-sizing: border-box;
+  max-width: 27.5rem;
 `;
 const CounselorChatBox = styled.div`
   background-color: ${White};
   border-radius: 0 1rem 1rem 1rem;
   padding: 1.2rem;
   box-sizing: border-box;
+  max-width: 27.5rem;
 `;
 
 const ChatTextarea = styled.textarea`
