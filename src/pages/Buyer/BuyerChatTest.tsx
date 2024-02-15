@@ -30,7 +30,7 @@ export const BuyerChatTest = () => {
     stompClient.current.connect(
       {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDc5OTQ0NzJ9.2a8Vd9k6a7cypxLXq5paAIvOoox6ZoOrmv3ti9AS970',
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDgwMDEwMjh9.6QWhTpdhc0hKMJmD0U1emhJ8dS7uMc48iaUKiSGyhrQ',
         isCustomer: false,
       },
       (frame: any) => {
@@ -102,49 +102,15 @@ export const BuyerChatTest = () => {
     }
   };
 
-  const sendChatStartRequest = () => {
+  function sendChatStartResponse() {
     if (stompClient.current) {
       stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
+        '/app/api/v1/chat/counselors/' + chatId,
         {},
         JSON.stringify({ chatWebsocketStatus: 'COUNSELOR_CHAT_START_REQUEST' }),
       );
     }
-  };
-
-  const sendChatStartResponse = () => {
-    if (stompClient.current) {
-      stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_START_RESPONSE' }),
-      );
-    }
-  };
-
-  const sendChatFinishRequest = () => {
-    if (stompClient.current) {
-      stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_FINISH_REQUEST' }),
-      );
-    }
-  };
-
-  const displayMessage = (message: string) => {
-    //message 하나 보내기
-  };
-
-  const sendConnectRequest = () => {
-    if (stompClient.current !== null) {
-      stompClient.current.send(
-        '/app/api/v1/chat/customers/connect',
-        {},
-        JSON.stringify({}),
-      );
-    }
-  };
+  }
   useEffect(() => {
     // 컴포넌트가 마운트되었을 때 실행
     connectChat();
@@ -181,6 +147,7 @@ export const BuyerChatTest = () => {
       <Heading> 채팅</Heading>
       <button onClick={handleDisconnect}>disconnect</button>
       <button onClick={sendMessage}>send message</button>
+      <button onClick={sendChatStartResponse}>상담 시작요청하기</button>
 
       <SectionWrapper>
         {messages.map((value) => {

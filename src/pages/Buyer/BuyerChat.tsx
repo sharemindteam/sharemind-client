@@ -21,17 +21,19 @@ import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
 import { postReissue } from 'api/post';
+import { getChatMessagesCustomers } from 'api/get';
 export const BuyerChat = () => {
   const navigate = useNavigate();
 
   const [input, setInput] = useState<string>(''); //입력
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
+  const sectionRef = useRef<HTMLDivElement>(null); //input ref 높이 초기화를 위함
   const stompClient = useRef<CompatClient | null>(null);
   const isConnected = useRef(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const chatId = 31;
-  const ReissueToken = async () => {
+  const reissueToken = async () => {
     try {
       const tokenResponse: any = await postReissue({
         refreshToken: localStorage.getItem('refreshToken'),
@@ -50,16 +52,34 @@ export const BuyerChat = () => {
       window.location.href = '/mypage';
     }
   };
+  //getChatMessages로 스크롤 시 계속 업데이트
+  const getChatMessages = async (firstMessageId: number) => {
+    try {
+      const params = {
+        messageId: firstMessageId,
+      };
+      const res: any = await getChatMessagesCustomers(chatId.toString(), {
+        params,
+      });
+      if (res.status === 200) {
+        setMessages(res.data);
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 채팅입니다.');
+        navigate('/consult');
+      }
+      console.log(res);
+    } catch (e) {
+      alert(e);
+    }
+  };
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(socket);
-    //나중에 localStorage 에서 꺼내기
 
     //   if (isConnected.current) {
     //     stompClient.current.disconnect();
     //     isConnected.current = false;
     //   }
-    console.log(localStorage.getItem('accessToken'));
     stompClient.current.connect(
       {
         Authorization: localStorage.getItem('accessToken'),
@@ -123,7 +143,7 @@ export const BuyerChat = () => {
       (error: any) => {
         console.log(error);
         if (error.headers.message === 'UNAUTHORIZED') {
-          ReissueToken();
+          reissueToken();
         } else {
           alert(error);
           navigate('/consult');
@@ -183,6 +203,8 @@ export const BuyerChat = () => {
   useEffect(() => {
     // 컴포넌트가 마운트되었을 때 실행
     connectChat();
+    //채팅 불러오기
+    getChatMessages(0);
     // 언마운트 시에 소켓 연결 해제
     return () => {
       if (stompClient.current) {
@@ -226,7 +248,7 @@ export const BuyerChat = () => {
       </HeaderWrapper>
       <button onClick={handleDisconnect}>disconnect</button>
       <button onClick={sendMessage}>send message</button>
-      <SectionWrapper>
+      <SectionWrapper ref={sectionRef}>
         {messages.map((value) => {
           if (value.isCustomer) {
             return (
@@ -258,6 +280,11 @@ export const BuyerChat = () => {
               setInput(e.target.value);
               //textarea 높이 동적할당
               e.target.style.height = '4.8rem';
+              // if (sectionRef.current && e.target.style.height!==) {
+              //   console.log(sectionRef.current);
+              //   sectionRef.current.style.paddingBottom =
+              //     e.target.scrollHeight + 'px';
+              // }
               e.target.style.height = e.target.scrollHeight + 'px';
             }}
             onKeyDown={(e) => {
