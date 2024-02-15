@@ -1,31 +1,17 @@
-// import { useState } from 'react';
+//test2 옥상달빛
 import SockJs from 'sockjs-client';
-// import * as StompJs from '@stomp/stompjs';
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import { useChat } from 'hooks/useChat';
 import { useInput } from 'hooks/useInput';
 import { useEffect, useRef, useState } from 'react';
-import { Body2, Heading } from 'styles/font';
+import { Heading } from 'styles/font';
 import { ChatMessage } from 'utils/type';
 import styled from 'styled-components';
-import {
-  Green,
-  Grey1,
-  Grey3,
-  Grey6,
-  LightGreenChat,
-  White,
-} from 'styles/color';
+import { LightGreenChat, White } from 'styles/color';
 import Input from 'components/Common/Input';
-import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useNavigate } from 'react-router-dom';
-import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
-export const BuyerChat = () => {
-  const navigate = useNavigate();
-
-  const [input, setInput] = useState<string>(''); //입력
-  const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
-  const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
+export const BuyerChatTest = () => {
+  // const chat = useChat();
+  const [input, setInput] = useState<string>('');
   const stompClient = useRef<CompatClient | null>(null);
   const isConnected = useRef(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -39,12 +25,13 @@ export const BuyerChat = () => {
     //   if (isConnected.current) {
     //     stompClient.current.disconnect();
     //     isConnected.current = false;
-    //   }
+    //
     console.log(localStorage.getItem('accessToken'));
     stompClient.current.connect(
       {
-        Authorization: localStorage.getItem('accessToken'),
-        isCustomer: true,
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDc5MTQyODN9._4GdSCyk8GAwNTxJXp9Y65n5VQFwJURkdJBt1ZJC5S0',
+        isCustomer: false,
       },
       (frame: any) => {
         console.log(stompClient.current);
@@ -61,28 +48,29 @@ export const BuyerChat = () => {
           //request를 보냈을 때에 관한 것, 마인더가 chat start, 셰어가 수락, 셰어가 끝남 확인
           //(COUNSELOR_CHAT_START_REQUEST, CUSTOMER_CHAT_START_RESPONSE, CUSTOMER_CHAT_FINISH_REQUEST)
           stompClient.current.subscribe(
-            '/queue/chattings/customers/' + chatId,
+            '/queue/chattings/counselors/' + chatId,
             function (statusUpdate) {
               console.log('Status Update: ', statusUpdate.body);
             },
           );
           //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
           stompClient.current.subscribe(
-            '/queue/chattings/status/customers/' + chatId,
+            '/queue/chattings/status/counselors/' + chatId,
             function (statusAutoUpdate) {
               console.log('Status Auto Update: ', statusAutoUpdate.body);
             },
           );
           //에러 핸들링
           stompClient.current.subscribe(
-            '/queue/chattings/exception/customers/' + chatId,
+            '/queue/chattings/exception/counselors/' + chatId,
             function (error) {
               console.log('Error: ', error.body);
             },
           );
           stompClient.current.subscribe(
-            '/queue/chatMessages/customers/' + chatId,
+            '/queue/chatMessages/counselors/' + chatId,
             function (message) {
+              // console.log('Message: ', message.body);
               //받은 message 정보
               const arrivedMessage = JSON.parse(message.body);
 
@@ -104,9 +92,10 @@ export const BuyerChat = () => {
     );
   };
   const sendMessage = () => {
+    // var message = document.getElementById('messageInput').value;
     if (stompClient.current) {
       stompClient.current.send(
-        '/app/api/v1/chatMessages/customers/' + chatId,
+        '/app/api/v1/chatMessages/counselors/' + chatId,
         {},
         JSON.stringify({ content: input }),
       );
@@ -143,6 +132,10 @@ export const BuyerChat = () => {
     }
   };
 
+  const displayMessage = (message: string) => {
+    //message 하나 보내기
+  };
+
   const sendConnectRequest = () => {
     if (stompClient.current !== null) {
       stompClient.current.send(
@@ -164,14 +157,10 @@ export const BuyerChat = () => {
       }
     };
   }, []);
-  //보내기 버튼 색상처리
+
   useEffect(() => {
-    if (input.trim() !== '') {
-      setInputValid(true);
-    } else {
-      setInputValid(false);
-    }
-  }, [input]);
+    console.log(messages);
+  }, [messages]);
 
   const handleDisconnect = () => {
     if (stompClient.current) {
@@ -180,164 +169,67 @@ export const BuyerChat = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (input.trim() !== '') {
       sendMessage();
       setInput('');
     }
-    if (inputRef.current) inputRef.current.style.height = '4.8rem';
   };
   return (
-    <Wrapper>
-      <HeaderWrapper border={false}>
-        <BackIcon
-          onClick={() => {
-            navigate('/consult');
-          }}
-        />
-        <Heading color={Grey1}>채팅상대이름</Heading>
-      </HeaderWrapper>
+    <>
+      <Heading> 채팅</Heading>
       <button onClick={handleDisconnect}>disconnect</button>
       <button onClick={sendMessage}>send message</button>
+
       <SectionWrapper>
         {messages.map((value) => {
           if (value.isCustomer) {
             return (
               <div className="my-box-container">
-                <CustomerChatBox>
-                  <Body2 color={Grey1}>{value.content}</Body2>
-                </CustomerChatBox>
+                <CustomerChatBox>{value.content}</CustomerChatBox>
               </div>
             );
           } else {
             return (
               <div className="opponent-box-container">
-                <CounselorChatBox>
-                  <Body2 color={Grey1}>{value.content}</Body2>
-                </CounselorChatBox>
+                <CounselorChatBox>{value.content}</CounselorChatBox>
               </div>
             );
           }
         })}
       </SectionWrapper>
-      <FooterWrapper>
-        <div className="message-form">
-          <ChatTextarea
-            ref={inputRef}
-            rows={1}
-            placeholder="메세지"
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              //textarea 높이 동적할당
-              e.target.style.height = '4.8rem';
-              e.target.style.height = e.target.scrollHeight + 'px';
-            }}
-            onKeyDown={(e) => {
-              if (e.nativeEvent.isComposing) return; //key 조합 감지
-              // 모바일 환경이 아닐 때에는 enter로 전송, shift + enter로 줄바꿈
-              if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                if (e.key === 'Enter' && e.shiftKey) return;
-                else if (e.key === 'Enter') {
-                  e.preventDefault();
-                  handleSubmit();
-                }
-              }
-            }}
-          />
-          <button
-            type="submit"
-            style={{ margin: '0', padding: '0' }}
-            onClick={handleSubmit}
-          >
-            <SearchIcon InputValid={inputValid} />
-          </button>
-        </div>
-      </FooterWrapper>
-    </Wrapper>
+      <form className="message-form" onSubmit={handleSubmit}>
+        <Input
+          placeholder="메세지"
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value);
+          }}
+        />
+      </form>
+    </>
   );
 };
-const Wrapper = styled.main`
-  height: 100%;
-  width: 100%;
-  background-color: ${Grey6};
-  position: relative;
-`;
 const SectionWrapper = styled.section`
   display: flex;
   flex-direction: column;
   .my-box-container {
     display: flex;
     justify-content: flex-end;
-    margin: 0.4rem 2rem 0.4rem 0;
   }
   .opponent-box-container {
     display: flex;
     justify-content: flex-start;
-    margin: 0.4rem 0 0.4rem 2rem;
   }
-`;
-const FooterWrapper = styled.footer`
-  position: fixed;
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  background-color: ${White};
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 1.2rem;
-
   .message-form {
-    padding: 0.8rem 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: end;
+    background-color: pink;
   }
 `;
-const SearchIcon = styled(Search)<{ InputValid: boolean }>`
-  fill: ${(props) => (props.InputValid ? Green : Grey3)};
-  padding: 1rem 0.8rem;
-  cursor: pointer;
-`;
+
 const CustomerChatBox = styled.div`
   background-color: ${LightGreenChat};
-  border-radius: 1rem 0 1rem 1rem;
-  padding: 1.2rem;
-  box-sizing: border-box;
 `;
 const CounselorChatBox = styled.div`
   background-color: ${White};
-  border-radius: 0 1rem 1rem 1rem;
-  padding: 1.2rem;
-  box-sizing: border-box;
-`;
-
-const ChatTextarea = styled.textarea`
-  resize: none;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  font-family: Pretendard;
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 110%;
-  color: ${Grey1};
-  &::placeholder {
-    color: ${Grey3};
-  }
-  min-height: 4.8rem;
-  max-heigth: 9.6rem;
-  border-radius: 1.2rem;
-  width: 78.66%;
-  background-color: ${Grey6};
-  padding: 1.52rem 0.8rem 1.52rem 1.2rem;
-  box-sizing: border-box;
 `;

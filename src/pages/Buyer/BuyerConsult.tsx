@@ -50,7 +50,7 @@ export const BuyerConsult = () => {
   //card에 넘길 데이터
   const [cardData, setCardData] = useState<consultApiObject[]>([]);
   //로딩 state
-  const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   useLayoutEffect(() => {
@@ -103,10 +103,7 @@ export const BuyerConsult = () => {
         } catch (e) {
           alert(e);
         } finally {
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 1);
-          // setIsLoading(false);
+          setIsLoading(false);
         }
       }
     };
