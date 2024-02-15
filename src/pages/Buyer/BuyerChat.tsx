@@ -16,11 +16,11 @@ import {
   LightGreenChat,
   White,
 } from 'styles/color';
-import Input from 'components/Common/Input';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
+import { postReissue } from 'api/post';
 export const BuyerChat = () => {
   const navigate = useNavigate();
 
@@ -31,7 +31,25 @@ export const BuyerChat = () => {
   const isConnected = useRef(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const chatId = 31;
-  // chat.connectStomp();
+  const ReissueToken = async () => {
+    try {
+      const tokenResponse: any = await postReissue({
+        refreshToken: localStorage.getItem('refreshToken'),
+      });
+      if (tokenResponse.status === 200) {
+        const { accessToken, refreshToken } = tokenResponse.data;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        connectChat();
+      } else if (tokenResponse.response.status === 400) {
+        alert('로그인 후 이용해 주세요.');
+        window.location.href = '/mypage';
+      }
+    } catch (error) {
+      alert('로그인 후 이용해 주세요.');
+      window.location.href = '/mypage';
+    }
+  };
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(socket);
@@ -102,6 +120,15 @@ export const BuyerChat = () => {
           );
         }
       },
+      (error: any) => {
+        console.log(error);
+        if (error.headers.message === 'UNAUTHORIZED') {
+          ReissueToken();
+        } else {
+          alert(error);
+          navigate('/consult');
+        }
+      },
     );
   };
   const sendMessage = () => {
@@ -156,7 +183,6 @@ export const BuyerChat = () => {
   useEffect(() => {
     // 컴포넌트가 마운트되었을 때 실행
     connectChat();
-    console.log('mount');
     // 언마운트 시에 소켓 연결 해제
     return () => {
       if (stompClient.current) {
@@ -303,7 +329,7 @@ const FooterWrapper = styled.footer`
 `;
 const SearchIcon = styled(Search)<{ InputValid: boolean }>`
   fill: ${(props) => (props.InputValid ? Green : Grey3)};
-  padding: 1rem 0.8rem;
+  padding: 1rem 0.4rem 1rem 0.8rem;
   cursor: pointer;
 `;
 const CustomerChatBox = styled.div`
