@@ -365,6 +365,7 @@ const CustomerChatBox = styled.div`
   padding: 1.2rem;
   box-sizing: border-box;
   max-width: 27.5rem;
+  word-wrap: break-word;
 `;
 const CounselorChatBox = styled.div`
   background-color: ${White};
@@ -372,6 +373,7 @@ const CounselorChatBox = styled.div`
   padding: 1.2rem;
   box-sizing: border-box;
   max-width: 27.5rem;
+  word-wrap: break-word;
 `;
 
 const ChatTextarea = styled.textarea`
