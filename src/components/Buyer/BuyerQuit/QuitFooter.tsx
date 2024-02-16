@@ -2,7 +2,7 @@ import { Button } from 'components/Common/Button';
 import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Green, LightGreen } from 'styles/color';
+import { Green, LightGreen, White } from 'styles/color';
 interface QuitFooterProps {
   reasonSelected: boolean;
   setReasonSelected: Dispatch<SetStateAction<boolean>>;
@@ -54,5 +54,7 @@ const Wrapper = styled.footer`
   position: fixed;
   bottom: 0;
   gap: 1.5rem;
-  margin-bottom: 1.9rem;
+  padding-top: 0.8rem;
+  padding-bottom: 1.9rem;
+  background-color: ${White};
 `;
