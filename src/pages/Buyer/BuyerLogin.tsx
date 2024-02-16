@@ -77,8 +77,6 @@ export const BuyerLogin = () => {
               height="4.8rem"
               value={pwInput.value}
               onChange={pwInput.onChange}
-              textIndent="0.8rem"
-              isBoxSizing={true}
             />
           </div>
           <div className="submit-option">

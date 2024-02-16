@@ -130,8 +130,6 @@ export const BuyerPwChange = () => {
               onChange={pw.onChange}
               width="33.5rem"
               height="4.8rem"
-              isBoxSizing={true}
-              textIndent="1rem"
               onBlur={pwCorrectCheck}
             />
             {pw.isValid ? null : (
@@ -150,8 +148,6 @@ export const BuyerPwChange = () => {
               onChange={newPw.onChange}
               width="33.5rem"
               height="4.8rem"
-              isBoxSizing={true}
-              textIndent="1rem"
               padding="0.4rem 0"
             />
             <div className="caption">
@@ -175,8 +171,6 @@ export const BuyerPwChange = () => {
               onChange={newPwCheck.onChange}
               width="33.5rem"
               height="4.8rem"
-              textIndent="1rem"
-              isBoxSizing={true}
               padding="0.4rem 0"
             />
             <div className="caption">
