@@ -73,10 +73,7 @@ export const BuyerConsult = () => {
         } catch (e) {
           alert(e);
         } finally {
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 1);
-          // setIsLoading(false);
+          setIsLoading(false);
         }
       } else {
         try {
@@ -174,22 +171,14 @@ export const BuyerConsult = () => {
             </div>
           </div>
 
-          <div className="exception-toggle">
-            {isChecked ? (
-              <CheckIcon
-                onClick={() => {
-                  setIsChecked(false);
-                }}
-                style={{ cursor: 'pointer' }}
-              />
-            ) : (
-              <NonCheckIcon
-                onClick={() => {
-                  setIsChecked(true);
-                }}
-                style={{ cursor: 'pointer' }}
-              />
-            )}
+          <div
+            className="exception-toggle"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              setIsChecked(!isChecked);
+            }}
+          >
+            {isChecked ? <CheckIcon /> : <NonCheckIcon />}
             <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
           </div>
         </div>
