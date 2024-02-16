@@ -208,6 +208,7 @@ export const BuyerConsult = () => {
                   unreadMessageCount={value.unreadMessageCount}
                   reviewCompleted={value.reviewCompleted}
                   consultId={value.consultId}
+                  isLetter={isLetter}
                 />
               );
             })}

@@ -68,7 +68,7 @@ const Router = () => {
       <Route path="/saved" element={<BuyerSavedCounselor />} />
       <Route path="/payment" element={<BuyerPayment />} />
       <Route path="/letter/:id" element={<BuyerLetter />} />
-      <Route path="/chat" element={<BuyerChat />} />
+      <Route path="/chat/:id" element={<BuyerChat />} />
       <Route path="/chatTest" element={<BuyerChatTest />} />
       <Route path="/writeLetter/:id" element={<BuyerLetterWrite />} />
       {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}

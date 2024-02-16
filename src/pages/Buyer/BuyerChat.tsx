@@ -2,8 +2,6 @@
 import SockJs from 'sockjs-client';
 // import * as StompJs from '@stomp/stompjs';
 import { CompatClient, Stomp } from '@stomp/stompjs';
-import { useChat } from 'hooks/useChat';
-import { useInput } from 'hooks/useInput';
 import { useEffect, useRef, useState } from 'react';
 import { Body2, Heading } from 'styles/font';
 import { ChatMessage } from 'utils/type';
@@ -17,14 +15,14 @@ import {
   White,
 } from 'styles/color';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
 import { postReissue } from 'api/post';
 import { getChatMessagesCustomers } from 'api/get';
 export const BuyerChat = () => {
   const navigate = useNavigate();
-
+  const { id } = useParams();
   const [input, setInput] = useState<string>(''); //입력
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
@@ -32,7 +30,7 @@ export const BuyerChat = () => {
   const stompClient = useRef<CompatClient | null>(null);
   const isConnected = useRef(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const chatId = 31;
+  const chatId = id || '';
   const reissueToken = async () => {
     try {
       const tokenResponse: any = await postReissue({
@@ -58,13 +56,13 @@ export const BuyerChat = () => {
       const params = {
         messageId: firstMessageId,
       };
-      const res: any = await getChatMessagesCustomers(chatId.toString(), {
+      const res: any = await getChatMessagesCustomers(chatId, {
         params,
       });
       if (res.status === 200) {
         setMessages(res.data);
       } else if (res.response.status === 404) {
-        alert('존재하지 않는 채팅입니다.');
+        alert('접근 권한이 없거나 존재하지 않는 채팅입니다.');
         navigate('/consult');
       }
       console.log(res);

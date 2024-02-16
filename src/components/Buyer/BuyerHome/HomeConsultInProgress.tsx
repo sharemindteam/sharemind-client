@@ -76,6 +76,7 @@ export const HomeConsultInProgress = () => {
             unreadMessageCount={data.responses[0].unreadMessageCount}
             reviewCompleted={data.responses[0].reviewCompleted}
             consultId={data.responses[0].consultId}
+            isLetter={!data.responses[0].isChat}
           />
         )}
       </Wrapper>
