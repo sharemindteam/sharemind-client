@@ -119,7 +119,7 @@ export const BuyerMypage = () => {
               </div>
               <Button
                 text="로그인 및 회원가입"
-                width="33.5rem"
+                width="100%"
                 height="5.2rem"
                 onClick={() => {
                   navigate('/login');
@@ -213,15 +213,17 @@ const LoginCard = styled.div`
   background-color: ${White};
   justify-content: center;
   margin-bottom: 1.2rem;
+  width: 100%;
   .card-align {
     display: flex;
+    width: 100%;
     flex-direction: column;
     padding: 2.4rem 2rem 2.4rem 2rem;
     margin-bottom: 1.2rem;
     gap: 2rem;
   }
   .find-id {
-    width: 33.5rem;
+    width: 100%;
     display: flex;
     justify-content: center;
   }
