@@ -129,7 +129,6 @@ export const SellerPwChange = () => {
               onChange={newPw.onChange}
               width="33.5rem"
               height="4.8rem"
-              padding="0.4rem 0"
             />
             <div className="caption">
               <Caption2 color={typeColor}>
@@ -152,7 +151,6 @@ export const SellerPwChange = () => {
               onChange={newPwCheck.onChange}
               width="33.5rem"
               height="4.8rem"
-              padding="0.4rem 0"
             />
             <div className="caption">
               <Caption2 color={correctColor}>비밀번호 일치</Caption2>
