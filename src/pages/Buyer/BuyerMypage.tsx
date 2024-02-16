@@ -11,13 +11,12 @@ import { ReactComponent as SavedIcon } from 'assets/icons/icon-mypage-saved.svg'
 import { useLayoutEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { getCustomersNickname } from 'api/get';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
 export const BuyerMypage = () => {
   const navigate = useNavigate();
   //로그인 여부 temp
   const [IsLogin, setIsLogin] = useState<boolean>(true);
   //로딩 state
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   //회원닉네임
   const [nickname, setNickname] = useState<string>('');
   useLayoutEffect(() => {
@@ -34,9 +33,7 @@ export const BuyerMypage = () => {
       } catch (e) {
         alert(e);
       } finally {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1);
+        setIsLoading(false);
       }
     };
     fetchNickname();
@@ -51,16 +48,6 @@ export const BuyerMypage = () => {
           }}
         />
         <TabA1 isBuyer={true} initState={3} />
-        <div
-          style={{
-            height: '70vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <LoadingSpinner />
-        </div>
       </>
     );
   } else {
