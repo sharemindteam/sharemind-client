@@ -1,7 +1,7 @@
 import { QuitBody } from 'components/Buyer/BuyerQuit/QuitBody';
 import { QuitFooter } from 'components/Buyer/BuyerQuit/QuitFooter';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -15,6 +15,11 @@ export const BuyerQuit = () => {
   const [reasonSelected, setReasonSelected] = useState<boolean>(false);
   const [checkedNumber, setCheckedNumber] =
     useRecoilState<number>(checkedNumberState);
+  useEffect(() => {
+    return () => {
+      setCheckedNumber(-1);
+    };
+  }, []);
   return (
     <Wrapper>
       <HeaderWrapper>
