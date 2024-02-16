@@ -119,7 +119,7 @@ export const BuyerFindInfo = () => {
                 </div>
               </div>
               <div className="caption">
-                <Caption2 color={Grey4}>
+                <Caption2 color={Grey4} margin="0.4rem 0 0 0">
                   등록된 복구 이메일로 아이디를 확인할 수 있습니다.
                 </Caption2>
               </div>
