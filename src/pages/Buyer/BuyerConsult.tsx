@@ -6,11 +6,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen } from 'styles/color';
 import { Body3, Button2, Heading } from 'styles/font';
-import {
-  isConsultModalOpenState,
-  isLoadingState,
-  scrollLockState,
-} from 'utils/atom';
+import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.svg';
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';

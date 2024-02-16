@@ -122,3 +122,14 @@ export const isLoadingState = atom({
   key: 'isLoadingState',
   default: false,
 });
+
+//셰어 BuyerQuit checked number
+export const checkedNumberState = atom({
+  key: 'checkedNumberState',
+  default: -1,
+});
+//탈퇴 이유 세부사항
+export const quitLongReasonState = atom({
+  key: 'quitLongReasonState',
+  default: '',
+});

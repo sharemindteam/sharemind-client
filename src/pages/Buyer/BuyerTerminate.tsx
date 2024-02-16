@@ -24,7 +24,6 @@ export const BuyerTerminate = () => {
           <Heading margin="2.7rem 0 0 0">
             정말로 회원을 탈퇴하시겠습니까?
           </Heading>
-          <Body2 margin="2.2rem 0 0 0">탈퇴하시면 ~~~~ 내용 필요</Body2>
         </div>
         <div className="button-row">
           <Button

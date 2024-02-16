@@ -45,6 +45,7 @@ import { Admin } from 'pages/Common/Admin';
 import { BuyerChat } from 'pages/Buyer/BuyerChat';
 import Service from 'pages/Common/Service';
 import { BuyerChatTest } from 'pages/Buyer/BuyerChatTest';
+import { BuyerQuit } from 'pages/Buyer/BuyerQuit';
 const Router = () => {
   return (
     <Routes>
@@ -78,7 +79,7 @@ const Router = () => {
       <Route path="/find" element={<BuyerFindInfo />} />
       <Route path="/setting" element={<BuyerAccountSetting />} />
       <Route path="/setting/changePassword" element={<BuyerPwChange />} />
-      <Route path="/setting/terminate" element={<BuyerTerminate />} />
+      <Route path="/setting/quit" element={<BuyerQuit />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />
 
       <Route path="/minder" element={<SellerHome />} />
