@@ -26,7 +26,8 @@ export const BuyerChat = () => {
   const [input, setInput] = useState<string>(''); //입력
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
-  const sectionRef = useRef<HTMLDivElement>(null); //input ref 높이 초기화를 위함
+  // const sectionRef = useRef<HTMLDivElement>(null); // section scroll을 위한 ref
+  const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
   const stompClient = useRef<CompatClient | null>(null);
   const isConnected = useRef(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -122,7 +123,7 @@ export const BuyerChat = () => {
             function (message) {
               //받은 message 정보
               const arrivedMessage = JSON.parse(message.body);
-
+              console.log(arrivedMessage);
               setMessages((prevMessages) => [
                 ...prevMessages,
                 {
@@ -232,8 +233,10 @@ export const BuyerChat = () => {
       sendMessage();
       setInput('');
     }
-    if (inputRef.current) inputRef.current.style.height = '4.8rem';
+    if (inputRef.current) inputRef.current.style.height = '2.4rem';
+    if (sectionPaddingRef.current) sectionPaddingRef.current = 2.4;
   };
+
   return (
     <Wrapper>
       <HeaderWrapper border={false}>
@@ -244,9 +247,8 @@ export const BuyerChat = () => {
         />
         <Heading color={Grey1}>채팅상대이름</Heading>
       </HeaderWrapper>
-      <button onClick={handleDisconnect}>disconnect</button>
-      <button onClick={sendMessage}>send message</button>
-      <SectionWrapper ref={sectionRef}>
+      {/* <button onClick={handleDisconnect}>disconnect</button> */}
+      <SectionWrapper inputHeight={sectionPaddingRef.current}>
         {messages.map((value) => {
           if (value.isCustomer) {
             return (
@@ -269,34 +271,33 @@ export const BuyerChat = () => {
       </SectionWrapper>
       <FooterWrapper>
         <div className="message-form">
-          <ChatTextarea
-            ref={inputRef}
-            rows={1}
-            placeholder="메세지"
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              //textarea 높이 동적할당
-              e.target.style.height = '4.8rem';
-              // if (sectionRef.current && e.target.style.height!==) {
-              //   console.log(sectionRef.current);
-              //   sectionRef.current.style.paddingBottom =
-              //     e.target.scrollHeight + 'px';
-              // }
-              e.target.style.height = e.target.scrollHeight + 'px';
-            }}
-            onKeyDown={(e) => {
-              if (e.nativeEvent.isComposing) return; //key 조합 감지
-              // 모바일 환경이 아닐 때에는 enter로 전송, shift + enter로 줄바꿈
-              if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                if (e.key === 'Enter' && e.shiftKey) return;
-                else if (e.key === 'Enter') {
-                  e.preventDefault();
-                  handleSubmit();
+          <ChatTextareaWrapper>
+            <ChatTextarea
+              rows={1}
+              ref={inputRef}
+              placeholder="메세지"
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                //textarea 높이 동적할당
+                e.target.style.height = '2.4rem';
+                e.target.style.height = e.target.scrollHeight / 10 + 'rem';
+                sectionPaddingRef.current = e.target.scrollHeight / 10;
+                console.log(e.target.scrollHeight / 10);
+              }}
+              onKeyDown={(e) => {
+                if (e.nativeEvent.isComposing) return; //key 조합 감지
+                // 모바일 환경이 아닐 때에는 enter로 전송, shift + enter로 줄바꿈
+                if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                  if (e.key === 'Enter' && e.shiftKey) return;
+                  else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
                 }
-              }
-            }}
-          />
+              }}
+            />
+          </ChatTextareaWrapper>
           <button
             type="submit"
             style={{ margin: '0', padding: '0' }}
@@ -315,9 +316,10 @@ const Wrapper = styled.main`
   background-color: ${Grey6};
   position: relative;
 `;
-const SectionWrapper = styled.section`
+const SectionWrapper = styled.section<{ inputHeight: number }>`
   display: flex;
   flex-direction: column;
+  padding-bottom: ${(props) => `${props.inputHeight + 5.5}rem`};
   .my-box-container {
     display: flex;
     justify-content: flex-end;
@@ -373,6 +375,12 @@ const CounselorChatBox = styled.div`
   max-width: 27.5rem;
   word-wrap: break-word;
 `;
+const ChatTextareaWrapper = styled.div`
+  padding: 1.2rem 0.8rem 1.2rem 1.2rem;
+  background-color: ${Grey6};
+  width: 78.66%;
+  border-radius: 1.2rem;
+`;
 
 const ChatTextarea = styled.textarea`
   resize: none;
@@ -384,16 +392,14 @@ const ChatTextarea = styled.textarea`
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 110%;
+  line-height: 150%;
   color: ${Grey1};
   &::placeholder {
     color: ${Grey3};
   }
-  min-height: 4.8rem;
-  max-heigth: 9.6rem;
-  border-radius: 1.2rem;
-  width: 78.66%;
+  padding: 0;
+  max-height: 7.2rem;
+  width: 100%;
   background-color: ${Grey6};
-  padding: 1.52rem 0.8rem 1.52rem 1.2rem;
   box-sizing: border-box;
 `;

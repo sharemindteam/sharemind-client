@@ -1,7 +1,6 @@
 //test2 옥상달빛
 import SockJs from 'sockjs-client';
 import { CompatClient, Stomp } from '@stomp/stompjs';
-import { useChat } from 'hooks/useChat';
 import { useInput } from 'hooks/useInput';
 import { useEffect, useRef, useState } from 'react';
 import { Heading } from 'styles/font';
@@ -30,7 +29,7 @@ export const BuyerChatTest = () => {
     stompClient.current.connect(
       {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDgwMDEwMjh9.6QWhTpdhc0hKMJmD0U1emhJ8dS7uMc48iaUKiSGyhrQ',
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDgyNTU4NDN9.T-v_W5P735t-TBIbtRICyKPk8Zplkx51j_jxLgJaETs',
         isCustomer: false,
       },
       (frame: any) => {

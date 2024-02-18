@@ -22,7 +22,8 @@ export const AppContainer = ({ children }: AppContainerProps) => {
       pathname === '/minder/mypage/modifyProfile' ||
       pathname === '/mypage' ||
       pathname === '/review' ||
-      pathname === '/paymentDetail'
+      pathname === '/paymentDetail' ||
+      pathname.includes('/chat/')
     ) {
       setIsGray(true);
     } else {
