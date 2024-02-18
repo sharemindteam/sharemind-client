@@ -9,7 +9,7 @@ function App() {
   //   appRef?.current?.scrollTo(0, 0);
   // }, [pathname]);
   return (
-    <div className="App">
+    <div className="App" style={{ height: '100%', width: '100%' }}>
       <Router />
     </div>
   );

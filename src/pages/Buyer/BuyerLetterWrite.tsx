@@ -232,6 +232,7 @@ export const BuyerLetterWrite = () => {
             categoryType={categoryType}
             setCategoryType={setCategoryType}
             categoryList={categoryList}
+            setIsModalOpen={setIsModalOpen}
           />
         </>
       ) : null}

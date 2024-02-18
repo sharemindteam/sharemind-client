@@ -28,6 +28,7 @@ interface InputProps {
   onClick?: () => void;
   alignCenter?: boolean;
   isCut?: boolean;
+  borderRadius?: string;
 }
 const Input = ({
   width = 'auto',
@@ -56,6 +57,7 @@ const Input = ({
   textIndent = '0',
   onClick,
   isCut = false,
+  borderRadius = '1rem',
 }: InputProps) => {
   return (
     <StyledInput
@@ -85,6 +87,7 @@ const Input = ({
       onClick={onClick}
       alignCenter={alignCenter}
       isCut={isCut}
+      borderRadius={borderRadius}
     />
   );
 };
@@ -106,8 +109,9 @@ const StyledInput = styled.input<{
   textIndent: string;
   alignCenter: boolean;
   isCut: boolean;
+  borderRadius: string;
 }>`
-  border-radius: 10px;
+  border-radius: ${({ borderRadius }) => borderRadius};
   border: ${(props) => (props.isError ? '1px solid #ff002e' : '')};
   width: ${({ width }) => width};
   height: ${({ height }) => height};

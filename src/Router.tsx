@@ -16,7 +16,7 @@ import { SellerMypageModifyProfile } from 'pages/Seller/SellerMyPageModifyProfil
 import { SellerMypageViewProfile } from 'pages/Seller/SellerMyPageViewProfile';
 import { SellerMypage } from 'pages/Seller/SellerMypage';
 import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { SellerMyPageReview } from 'pages/Seller/SellerMyPageReview';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
@@ -25,7 +25,6 @@ import { SellerVerifyQuiz } from 'pages/Seller/SellerVerifyQuiz';
 import { BuyerAccountSetting } from 'pages/Buyer/BuyerAccountSetting';
 import { BuyerPwChange } from 'pages/Buyer/BuyerPwChange';
 import { BuyerLogout } from 'pages/Buyer/BuyerLogout';
-import { BuyerTerminate } from 'pages/Buyer/BuyerTerminate';
 import { BuyerReviewManage } from 'pages/Buyer/BuyerReviewManage';
 import { BuyerWriteReview } from 'pages/Buyer/BuyerWriteReview';
 import { BuyerSavedCounselor } from 'pages/Buyer/BuyerSavedCounselor';
@@ -44,6 +43,8 @@ import { SellerLogout } from 'pages/Seller/SellerLogout';
 import { Admin } from 'pages/Common/Admin';
 import { BuyerChat } from 'pages/Buyer/BuyerChat';
 import Service from 'pages/Common/Service';
+import { BuyerChatTest } from 'pages/Buyer/BuyerChatTest';
+import { BuyerQuit } from 'pages/Buyer/BuyerQuit';
 const Router = () => {
   return (
     <Routes>
@@ -67,7 +68,8 @@ const Router = () => {
       <Route path="/saved" element={<BuyerSavedCounselor />} />
       <Route path="/payment" element={<BuyerPayment />} />
       <Route path="/letter/:id" element={<BuyerLetter />} />
-      <Route path="/chat" element={<BuyerChat />} />
+      <Route path="/chat/:id" element={<BuyerChat />} />
+      <Route path="/chatTest" element={<BuyerChatTest />} />
       <Route path="/writeLetter/:id" element={<BuyerLetterWrite />} />
       {/* 로그인 관련 페이지는 앞에 buyer seller 구분 제외했음 */}
       <Route path="/login" element={<BuyerLogin />} />
@@ -76,7 +78,7 @@ const Router = () => {
       <Route path="/find" element={<BuyerFindInfo />} />
       <Route path="/setting" element={<BuyerAccountSetting />} />
       <Route path="/setting/changePassword" element={<BuyerPwChange />} />
-      <Route path="/setting/terminate" element={<BuyerTerminate />} />
+      <Route path="/setting/quit" element={<BuyerQuit />} />
       <Route path="/setting/logout" element={<BuyerLogout />} />
 
       <Route path="/minder" element={<SellerHome />} />

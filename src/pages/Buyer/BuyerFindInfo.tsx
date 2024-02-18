@@ -8,12 +8,71 @@ import styled from 'styled-components';
 import { Grey1, Grey3, Grey4 } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
 import { Button } from 'components/Common/Button';
+import { FindInfoIdModal } from 'components/Buyer/BuyerFindInfo/FindInfoIdModal';
+import { BackDrop } from 'components/Common/BackDrop';
+import { patchAuthFindId, patchAuthFindPassword } from 'api/patch';
 
 export const BuyerFindInfo = () => {
   const navigate = useNavigate();
   const [isId, setIsId] = useState<boolean>(true);
   const recoveryEmail = useInput('');
   const email = useInput('');
+  const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
+  // 모달 에러 메세지
+  const [modalMessage, setModalMessage] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const patchFindId = async () => {
+    setIsLoading(true);
+    if (isLoading) {
+      return;
+    }
+    try {
+      const body = {
+        recoveryEmail: recoveryEmail.value,
+      };
+      const res: any = await patchAuthFindId(body);
+      if (res.status === 200) {
+        setModalMessage('복구 이메일로 아이디 정보가 전송되었습니다.');
+        setIsActiveModal(true);
+      } else if (res.response.status === 400) {
+        setModalMessage('올바르지 않은 복구 이메일 형식입니다.');
+        setIsActiveModal(true);
+      } else if (res.response.status === 404) {
+        setModalMessage('존재하지 않는 복구 이메일입니다.');
+        setIsActiveModal(true);
+      }
+    } catch (e) {
+      alert(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const patchFindPassword = async () => {
+    setIsLoading(true);
+    if (isLoading) {
+      return;
+    }
+    try {
+      const body = {
+        recoveryEmail: recoveryEmail.value,
+      };
+      const res: any = await patchAuthFindPassword(body);
+      if (res.status === 200) {
+        setModalMessage('복구 이메일로 아이디 정보가 전송되었습니다.');
+        setIsActiveModal(true);
+      } else if (res.response.status === 400) {
+        setModalMessage('올바르지 않은 복구 이메일 형식입니다.');
+        setIsActiveModal(true);
+      } else if (res.response.status === 404) {
+        setModalMessage('존재하지 않는 복구 이메일입니다.');
+        setIsActiveModal(true);
+      }
+    } catch (e) {
+      alert(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
     //TODO:(아이디) 추후 valid 체크 후 true처리
     //현재는 입력만 들어오면 valid true
@@ -60,7 +119,7 @@ export const BuyerFindInfo = () => {
                 </div>
               </div>
               <div className="caption">
-                <Caption2 color={Grey4}>
+                <Caption2 color={Grey4} margin="0.4rem 0 0 0">
                   등록된 복구 이메일로 아이디를 확인할 수 있습니다.
                 </Caption2>
               </div>
@@ -71,7 +130,7 @@ export const BuyerFindInfo = () => {
               height="5.2rem"
               isActive={recoveryEmail.isValid}
               onClick={() => {
-                navigate('/login');
+                patchFindId();
               }}
             />
           </>
@@ -100,12 +159,25 @@ export const BuyerFindInfo = () => {
               height="5.2rem"
               isActive={email.isValid}
               onClick={() => {
-                navigate('/login');
+                patchFindPassword();
               }}
             />
           </>
         )}
       </div>
+      {isActiveModal && (
+        <FindInfoIdModal
+          setIsActive={setIsActiveModal}
+          message={modalMessage}
+        />
+      )}
+      {isActiveModal ? (
+        <BackDrop
+          onClick={() => {
+            setIsActiveModal(false);
+          }}
+        />
+      ) : null}
     </Wrapper>
   );
 };

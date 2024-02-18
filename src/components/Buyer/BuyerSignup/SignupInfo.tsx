@@ -117,7 +117,6 @@ export const SignupInfo = ({
       if (res.status === 201) {
         navigate('/signup/nav');
       } else if (res.response.status === 400) {
-        console.log(res.response.data);
         if (res.response.data.errorName === 'INVALID_RECOVERY_EMAIL') {
           setEmailErrorState(true);
           setEmailErrorCaption(res.response.data.message);

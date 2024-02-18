@@ -21,6 +21,10 @@ export const getConselorLetters = async (params: any) =>
 export const getChatsCustomers = async (params: any) =>
   await getInstance('/chats/customers', params);
 
+//ChatMessage Controller
+export const getChatMessagesCustomers = async (chatId: string, params: any) =>
+  await getInstance(`/chatMessages/customers/${chatId}`, params);
+
 export const getChatsMinder = async (params: any) =>
   await getInstance('/chats/counselors', params);
 //Consult Controller

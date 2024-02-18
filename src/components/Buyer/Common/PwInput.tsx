@@ -20,9 +20,6 @@ interface PwInputProps {
   isError?: boolean;
   maxLength?: number;
   readOnly?: boolean;
-  isCursorPointer?: boolean;
-  isBoxSizing?: boolean;
-  textIndent?: string;
 }
 const PwInput = ({
   width = 'auto',
@@ -39,10 +36,6 @@ const PwInput = ({
   margin = '',
   name,
   isError = false,
-  maxLength = 19,
-  isCursorPointer = false,
-  isBoxSizing = false,
-  textIndent = '0',
 }: PwInputProps) => {
   const [hideToggle, setHideToggle] = useState<boolean>(true);
   let type: string = 'password';
@@ -52,12 +45,17 @@ const PwInput = ({
     type = 'text';
   }
   return (
-    <div style={{ position: 'relative' }}>
+    <InputWrapper
+      width={width}
+      height={height}
+      backgroundColor={backgroundColor}
+      padding={padding}
+      margin={margin}
+      isError={isError}
+    >
       <StyledInput
-        type={type}
-        width={width}
-        height={height}
         backgroundColor={backgroundColor}
+        type={type}
         fontSize={fontSize}
         fontWeight={fontWeight}
         fontColor={fontColor}
@@ -69,18 +67,12 @@ const PwInput = ({
         margin={margin}
         name={name}
         isError={isError}
-        maxLength={maxLength}
-        isCursorPointer={isCursorPointer}
-        isBoxSizing={isBoxSizing}
-        textIndent={textIndent}
       />
       {hideToggle ? (
         <HideIcon
           style={{
+            paddingRight: '1.6rem',
             cursor: 'pointer',
-            position: 'absolute',
-            right: '1.6rem',
-            top: '1rem',
           }}
           onClick={() => {
             setHideToggle(false);
@@ -89,23 +81,41 @@ const PwInput = ({
       ) : (
         <NonHideIcon
           style={{
+            paddingRight: '1.6rem',
             cursor: 'pointer',
-            position: 'absolute',
-            right: '1.6rem',
-            top: '1rem',
           }}
           onClick={() => {
             setHideToggle(true);
           }}
         />
       )}
-    </div>
+    </InputWrapper>
   );
 };
-
-const StyledInput = styled.input<{
+const InputWrapper = styled.div<{
   width: string;
   height: string;
+  backgroundColor: string;
+  padding: string;
+  margin: string;
+  isError: boolean;
+}>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 1rem;
+  border: ${(props) => (props.isError ? '1px solid #ff002e' : Grey6)};
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  padding: ${({ padding }) => padding};
+  margin: ${({ margin }) => margin};
+  box-sizing: border-box;
+  &:focus {
+    outline: none;
+  }
+`;
+const StyledInput = styled.input<{
   backgroundColor: string;
   fontColor: string;
   fontSize: string;
@@ -113,26 +123,19 @@ const StyledInput = styled.input<{
   padding: string;
   margin: string;
   isError: boolean;
-  isCursorPointer: boolean;
-  isBoxSizing: boolean;
-  textIndent: string;
 }>`
-  border-radius: 10px;
-  border: ${(props) => (props.isError ? '1px solid #ff002e' : '')};
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: 86.86%;
+  border-radius: 1rem;
+  padding-left: 1rem;
   background-color: ${({ backgroundColor }) => backgroundColor};
-  cursor: ${({ isCursorPointer }) => (isCursorPointer ? 'pointer' : 'text')};
   font-family: 'Pretendard';
   font-size: ${({ fontSize }) => fontSize};
   font-weight: ${({ fontWeight }) => fontWeight};
   line-height: 150%;
   color: ${({ fontColor }) => fontColor};
-  text-indent: ${({ textIndent }) => textIndent};
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
-  box-sizing: ${({ isBoxSizing }) =>
-    isBoxSizing ? 'border-box' : 'content-box'};
+  box-sizing: border-box;
   &:focus {
     outline: none;
   }

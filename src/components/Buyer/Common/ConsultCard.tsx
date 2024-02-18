@@ -19,6 +19,7 @@ interface ConsultCardProps {
   unreadMessageCount: number | null;
   reviewCompleted: boolean | null;
   consultId: number | null;
+  isLetter: boolean;
 }
 export const ConsultCard = ({
   consultStyle,
@@ -31,6 +32,7 @@ export const ConsultCard = ({
   unreadMessageCount,
   reviewCompleted,
   consultId,
+  isLetter,
 }: ConsultCardProps) => {
   const navigate = useNavigate();
   const consultStatus = status as ConsultState;
@@ -44,7 +46,11 @@ export const ConsultCard = ({
   return (
     <Wrapper
       onClick={() => {
-        navigate(`/letter/${id}`);
+        if (isLetter) {
+          navigate(`/letter/${id}`);
+        } else {
+          navigate(`/chat/${id}`);
+        }
       }}
     >
       <ConsultContent>

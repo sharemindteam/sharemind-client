@@ -32,6 +32,7 @@ export const BuyerLogin = () => {
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           res.data;
         // instance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
+        // setCookie('accessToken', newAccessToken, { path: '/' });
         // setCookie('refreshToken', newRefreshToken, { path: '/' });
         localStorage.setItem('accessToken', newAccessToken);
         localStorage.setItem('refreshToken', newRefreshToken);
@@ -76,8 +77,6 @@ export const BuyerLogin = () => {
               height="4.8rem"
               value={pwInput.value}
               onChange={pwInput.onChange}
-              textIndent="0.8rem"
-              isBoxSizing={true}
             />
           </div>
           <div className="submit-option">

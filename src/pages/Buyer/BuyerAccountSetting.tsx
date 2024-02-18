@@ -29,7 +29,7 @@ export const BuyerAccountSetting = () => {
       <div
         className="row"
         onClick={() => {
-          navigate('/setting/terminate');
+          navigate('/setting/quit');
         }}
       >
         <Body2 color={Grey1}>회원 탈퇴</Body2>

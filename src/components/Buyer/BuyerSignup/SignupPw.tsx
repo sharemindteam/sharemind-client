@@ -88,8 +88,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            //TODO : 변경사항 alert하고 로그인으로 뺵
-            navigate('/signup');
+            navigate('/login');
           }}
         />
         <Heading color={Grey1}>회원가입</Heading>
@@ -106,8 +105,6 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
               onChange={pw.onChange}
               width="33.5rem"
               height="4.8rem"
-              isBoxSizing={true}
-              textIndent="1rem"
             />
           </div>
           <Space height="0.4rem" />
@@ -131,8 +128,6 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
               onChange={pwCheck.onChange}
               width="33.5rem"
               height="4.8rem"
-              isBoxSizing={true}
-              textIndent="1rem"
             />
           </div>
           <Space height="0.4rem" />

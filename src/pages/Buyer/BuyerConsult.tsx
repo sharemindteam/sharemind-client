@@ -6,11 +6,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen } from 'styles/color';
 import { Body3, Button2, Heading } from 'styles/font';
-import {
-  isConsultModalOpenState,
-  isLoadingState,
-  scrollLockState,
-} from 'utils/atom';
+import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.svg';
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
@@ -50,7 +46,7 @@ export const BuyerConsult = () => {
   //card에 넘길 데이터
   const [cardData, setCardData] = useState<consultApiObject[]>([]);
   //로딩 state
-  const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   useLayoutEffect(() => {
@@ -77,10 +73,7 @@ export const BuyerConsult = () => {
         } catch (e) {
           alert(e);
         } finally {
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 1);
-          // setIsLoading(false);
+          setIsLoading(false);
         }
       } else {
         try {
@@ -103,10 +96,7 @@ export const BuyerConsult = () => {
         } catch (e) {
           alert(e);
         } finally {
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 1);
-          // setIsLoading(false);
+          setIsLoading(false);
         }
       }
     };
@@ -181,22 +171,14 @@ export const BuyerConsult = () => {
             </div>
           </div>
 
-          <div className="exception-toggle">
-            {isChecked ? (
-              <CheckIcon
-                onClick={() => {
-                  setIsChecked(false);
-                }}
-                style={{ cursor: 'pointer' }}
-              />
-            ) : (
-              <NonCheckIcon
-                onClick={() => {
-                  setIsChecked(true);
-                }}
-                style={{ cursor: 'pointer' }}
-              />
-            )}
+          <div
+            className="exception-toggle"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              setIsChecked(!isChecked);
+            }}
+          >
+            {isChecked ? <CheckIcon /> : <NonCheckIcon />}
             <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
           </div>
         </div>
@@ -215,6 +197,7 @@ export const BuyerConsult = () => {
                   unreadMessageCount={value.unreadMessageCount}
                   reviewCompleted={value.reviewCompleted}
                   consultId={value.consultId}
+                  isLetter={isLetter}
                 />
               );
             })}

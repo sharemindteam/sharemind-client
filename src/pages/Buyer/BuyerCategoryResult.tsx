@@ -1,11 +1,11 @@
 import { CategoryResultHeader } from 'components/Buyer/BuyerCategoryResult/CategoryResultHeader';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { Button2 } from 'styles/font';
 import { Grey3 } from 'styles/color';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { sortList } from 'utils/constant';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
@@ -20,7 +20,6 @@ import { SearchResultData } from 'utils/type';
 import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/CategorySearchResult';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
 //백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
 export const BuyerCategoryResult = () => {
   const navigate = useNavigate();
