@@ -38,7 +38,8 @@ export const BuyerChat = () => {
   const stompClient = useRef<CompatClient | null>(null);
   const preventRef = useRef(true); // observer 중복방지
   const isLastElem = useRef(false); //마지막 채팅인지 확인
-  const scrollPositionRef = useRef<HTMLDivElement>(null);
+  const lastRef = useRef<HTMLDivElement>(null); // 마지막 채팅 box ref
+  const newMessageRef = useRef(false); // 새로운 메세지인지 이전 메세지 fetch인지
   const topRef = useRef<HTMLDivElement>(null); //top에 와야하는 box
   const isConnected = useRef(false);
 
@@ -72,6 +73,8 @@ export const BuyerChat = () => {
       });
       if (res.status === 200) {
         if (res.data.length !== 0) {
+          //새 메세지 도착이 아닌 이전 메시지 fetch
+          newMessageRef.current = false;
           if (firstMessageId === 0) {
             setMessages(res.data.reverse());
           } else {
@@ -136,7 +139,8 @@ export const BuyerChat = () => {
             function (message) {
               //받은 message 정보
               const arrivedMessage = JSON.parse(message.body);
-              console.log(arrivedMessage);
+              //새 메세지 도착
+              newMessageRef.current = true;
               setMessages((prevMessages) => [
                 ...prevMessages,
                 {
@@ -223,10 +227,7 @@ export const BuyerChat = () => {
       preventRef.current
     ) {
       preventRef.current = false;
-      console.log('관측');
-      // await pending6();
       await getChatMessages(messages[0].messageId);
-
       preventRef.current = true;
     }
   };
@@ -262,8 +263,13 @@ export const BuyerChat = () => {
   }, [input]);
   // messages 새로 업데이트 됐을 때 11 index에 해당하는 message top으로
   useEffect(() => {
-    console.log(topRef.current);
-    topRef.current?.scrollIntoView({ block: 'start' });
+    if (!newMessageRef.current) {
+      topRef.current?.scrollIntoView({ block: 'start' });
+    } else {
+      lastRef.current?.scrollIntoView({
+        block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
+      });
+    }
   }, [messages]);
 
   const handleSubmit = () => {
@@ -299,16 +305,12 @@ export const BuyerChat = () => {
           <Heading color={Grey1}>채팅상대이름</Heading>
         </HeaderWrapper>
         <Space height="5.2rem" />
-        <SectionWrapper
-          ref={scrollPositionRef}
-          inputHeight={sectionPaddingRef.current}
-        >
+        <SectionWrapper inputHeight={sectionPaddingRef.current}>
           {!isLastElem.current ? (
             <div
               ref={setTarget}
               style={{
                 width: '100%',
-                // height: '5.2rem',
                 backgroundColor: 'green',
               }}
             ></div>
@@ -316,18 +318,18 @@ export const BuyerChat = () => {
             <div
               style={{
                 width: '100%',
-                // height: '5.2rem',
                 backgroundColor: 'pink',
               }}
             ></div>
           )}
           {messages.map((value, index) => {
+            let isLastIndex = index === messages.length - 1;
             if (value.isCustomer) {
               return (
                 <div
                   key={value.messageId}
                   className="my-box-container"
-                  ref={index === 11 ? topRef : null}
+                  ref={isLastIndex ? lastRef : index === 11 ? topRef : null}
                 >
                   <CustomerChatBox>
                     <Body2 color={Grey1}>
@@ -342,7 +344,7 @@ export const BuyerChat = () => {
                 <div
                   key={value.messageId}
                   className="opponent-box-container"
-                  ref={index === 11 ? topRef : null}
+                  ref={isLastIndex ? lastRef : index === 11 ? topRef : null}
                 >
                   <CounselorChatBox>
                     <Body2 color={Grey1}>
@@ -427,7 +429,7 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
 const SectionWrapper = styled.section<{ inputHeight: number }>`
   display: flex;
   flex-direction: column;
-  margin-bottom: ${(props) => `${props.inputHeight + 5.5}rem`};
+  padding-bottom: ${(props) => `${props.inputHeight + 5.5}rem`};
   max-height: calc(100% - 13.1rem);
   overflow-y: scroll;
   .my-box-container {
