@@ -18,7 +18,6 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const preventRef = useRef(true); // 중복 방지 옵션
   const fetchReviewData = async (lastReviewId: number) => {
-    console.log(lastReviewId);
     const params = {
       reviewId: lastReviewId,
     };
@@ -46,7 +45,6 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
         setIsLoading(false);
       }
     }
-    console.log(lastReviewId);
   };
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
@@ -56,7 +54,6 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
       preventRef.current
     ) {
       preventRef.current = false;
-      console.log('관측');
       await fetchReviewData(reviews[reviews.length - 1].reviewId);
       preventRef.current = true;
     }
