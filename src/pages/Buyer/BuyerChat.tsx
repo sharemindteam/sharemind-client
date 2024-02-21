@@ -3,13 +3,22 @@ import SockJs from 'sockjs-client';
 // import * as StompJs from '@stomp/stompjs';
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
-import { Body2, Heading } from 'styles/font';
+import {
+  Body2,
+  Body3,
+  Button1,
+  Button2,
+  Caption1,
+  Caption2,
+  Heading,
+} from 'styles/font';
 import { ChatMessage } from 'utils/type';
 import styled from 'styled-components';
 import {
   Green,
   Grey1,
   Grey3,
+  Grey4,
   Grey6,
   LightGreenChat,
   White,
@@ -23,15 +32,23 @@ import { getChatMessagesCustomers } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { pending6 } from 'utils/pending';
 import { Space } from 'components/Common/Space';
+import { Button } from 'components/Common/Button';
+import {
+  calculateTimeAfterFiveMinutes,
+  convertAMPMToString,
+} from 'utils/convertDate';
 export const BuyerChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const chatId = id || '';
+
   //states
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>(''); //입력
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
+  const [time, setTime] = useState<string>('');
+
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
@@ -39,7 +56,7 @@ export const BuyerChat = () => {
   const preventRef = useRef(true); // observer 중복방지
   const isLastElem = useRef(false); //마지막 채팅인지 확인
   const lastRef = useRef<HTMLDivElement>(null); // 마지막 채팅 box ref
-  const newMessageRef = useRef(false); // 새로운 메세지인지 이전 메세지 fetch인지
+  const newMessageRef = useRef(true); // 새로운 메세지인지 이전 메세지 fetch인지
   const topRef = useRef<HTMLDivElement>(null); //top에 와야하는 box
   const isConnected = useRef(false);
 
@@ -73,8 +90,16 @@ export const BuyerChat = () => {
       });
       if (res.status === 200) {
         if (res.data.length !== 0) {
+          console.log(res.data);
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
+          //메세지 중 start request가 있으면 setTime
+          const startRequestIndex = res.data.findIndex(
+            (item: any) => item.time !== null,
+          );
+          if (startRequestIndex !== -1)
+            setTime(res.data[startRequestIndex].time);
+
           if (firstMessageId === 0) {
             setMessages(res.data.reverse());
           } else {
@@ -118,6 +143,32 @@ export const BuyerChat = () => {
             '/queue/chattings/customers/' + chatId,
             function (statusUpdate) {
               console.log('Status Update: ', statusUpdate.body);
+              const arrivedMessage = JSON.parse(statusUpdate.body);
+              //지금 request 보내는거 오는거 전부 여기서 잡혀서 두개가 생기는데 오는거의 경우에만 메세지 추가하게 처리하고,
+              //보내는 경우는 예외처리해서 request만 보내는걸로해야함
+              if (arrivedMessage.chatWebsocketStatus === '이거 뭔지 알아야함') {
+                //새 메세지 도착으로 분류
+                newMessageRef.current = true;
+                setTime('10:00');
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  {
+                    chatMessageStatus: 'SEND_REQUEST',
+                    customerNickname: arrivedMessage.customerNickname,
+                    counselorNickname: arrivedMessage.counselorNickname,
+                    messageId: prevMessages[prevMessages.length - 1].messageId,
+                    content: `${arrivedMessage.customerNickname}님, 지금 바로 상담을 시작할까요?`,
+                    sendTime: '',
+                    isCustomer: false,
+                    time: '',
+                  },
+                ]);
+              } else if (
+                arrivedMessage.chatWebsocketStatus ===
+                'CUSTOMER_CHAT_FINISH_REQUEST'
+              ) {
+                console.log('상담 종료하기 눌림');
+              }
             },
           );
           //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
@@ -125,6 +176,28 @@ export const BuyerChat = () => {
             '/queue/chattings/status/customers/' + chatId,
             function (statusAutoUpdate) {
               console.log('Status Auto Update: ', statusAutoUpdate.body);
+              const arrivedMessage = JSON.parse(statusAutoUpdate.body);
+              //새 메세지 도착으로 분류
+              newMessageRef.current = true;
+              if (
+                arrivedMessage.chatWebsocketStatus === 'CHAT_LEFT_FIVE_MINUTE'
+              ) {
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  {
+                    chatMessageStatus: 'FIVE_MINUTE_LEFT',
+                    customerNickname: '',
+                    counselorNickname: '',
+                    messageId: prevMessages[prevMessages.length - 1].messageId,
+                    content: `상담 종료까지 5분 남았어요.\n${calculateTimeAfterFiveMinutes(
+                      arrivedMessage.localDateTime,
+                    )}`,
+                    sendTime: arrivedMessage.localDateTime,
+                    isCustomer: false,
+                    time: '',
+                  },
+                ]);
+              }
             },
           );
           //에러 핸들링
@@ -139,17 +212,20 @@ export const BuyerChat = () => {
             function (message) {
               //받은 message 정보
               const arrivedMessage = JSON.parse(message.body);
-              //새 메세지 도착
+              console.log(arrivedMessage);
+              //새 메세지 도착으로 분류
               newMessageRef.current = true;
               setMessages((prevMessages) => [
                 ...prevMessages,
                 {
+                  chatMessageStatus: 'MESSAGE',
                   customerNickname: arrivedMessage.senderName,
-                  counselorNickname: '어떻게알지?',
+                  counselorNickname: '',
                   messageId: 0,
                   content: arrivedMessage.content,
                   sendTime: arrivedMessage.sendTime,
                   isCustomer: arrivedMessage.isCustomer,
+                  time: arrivedMessage.time,
                 },
               ]);
             },
@@ -177,17 +253,6 @@ export const BuyerChat = () => {
       );
     }
   };
-
-  const sendChatStartRequest = () => {
-    if (stompClient.current) {
-      stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'COUNSELOR_CHAT_START_REQUEST' }),
-      );
-    }
-  };
-
   const sendChatStartResponse = () => {
     if (stompClient.current) {
       stompClient.current.send(
@@ -217,7 +282,16 @@ export const BuyerChat = () => {
       );
     }
   };
-  //무한스크롤
+  const handleSubmit = () => {
+    if (input.trim() !== '') {
+      sendMessage();
+      setInput('');
+    }
+    if (inputRef.current) inputRef.current.style.height = '2.4rem';
+    if (sectionPaddingRef.current) sectionPaddingRef.current = 2.4;
+  };
+
+  //무한스크롤 관련 함수
   //useIntersection에서 unobserve되는지 확인
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
@@ -253,6 +327,7 @@ export const BuyerChat = () => {
     };
   }, []);
 
+  //useEffects
   //보내기 버튼 색상처리
   useEffect(() => {
     if (input.trim() !== '') {
@@ -271,15 +346,29 @@ export const BuyerChat = () => {
       });
     }
   }, [messages]);
+  //상담 start request 관련 처리
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const [minutes, seconds] = time.split(':').map(parseFloat);
+      let totalSeconds = minutes * 60 + seconds;
 
-  const handleSubmit = () => {
-    if (input.trim() !== '') {
-      sendMessage();
-      setInput('');
-    }
-    if (inputRef.current) inputRef.current.style.height = '2.4rem';
-    if (sectionPaddingRef.current) sectionPaddingRef.current = 2.4;
-  };
+      if (totalSeconds <= 0) {
+        clearInterval(timer);
+      } else {
+        totalSeconds--;
+        const newMinutes = Math.floor(totalSeconds / 60);
+        const newSeconds = totalSeconds % 60;
+        setTime(
+          `${String(newMinutes).padStart(2, '0')} : ${String(
+            newSeconds,
+          ).padStart(2, '0')}`,
+        );
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [time]);
+
   if (isInitialLoading) {
     return (
       <>
@@ -346,12 +435,72 @@ export const BuyerChat = () => {
                   className="opponent-box-container"
                   ref={isLastIndex ? lastRef : index === 11 ? topRef : null}
                 >
-                  <CounselorChatBox>
-                    <Body2 color={Grey1}>
-                      {formattedMessage(value.content)}
-                    </Body2>
-                    <div>{index}</div>
-                  </CounselorChatBox>
+                  {value.chatMessageStatus === 'MESSAGE' && (
+                    <CounselorChatBox>
+                      <Body2 color={Grey1}>
+                        {formattedMessage(value.content)}
+                      </Body2>
+                      <div>{index}</div>
+                    </CounselorChatBox>
+                  )}
+                  {value.chatMessageStatus === 'SEND_REQUEST' && (
+                    <CounselorStartRequestBox>
+                      <div style={{ paddingBottom: '1.6rem' }}>
+                        <Body3 color={Grey1}>
+                          {formattedMessage(value.content)}
+                        </Body3>
+                        <Body3 color={Grey3}>
+                          * 상담 시작하기를 누르시면 상담이 시작되어요. 상담
+                          시간은 30분입니다.
+                        </Body3>
+                      </div>
+                      <StartButton onClick={sendChatStartResponse}>
+                        <Button1 color={White}>상담 시작하기</Button1>
+                        <Button2 color={White}>{time}</Button2>
+                      </StartButton>
+                    </CounselorStartRequestBox>
+                  )}
+                  {value.chatMessageStatus === 'START' && (
+                    <AlertChatBox>
+                      <Caption1 color={Grey3}>
+                        {value.content.split('\n')[0]}
+                      </Caption1>
+                      <Caption2 color={Grey4}>
+                        {value.content.split('\n')[1]}
+                      </Caption2>
+                    </AlertChatBox>
+                  )}
+                  {value.chatMessageStatus === 'FIVE_MINUTE_LEFT' && (
+                    <AlertChatBox>
+                      <Caption1 color={Grey3}>
+                        {value.content.split('\n')[0]}
+                      </Caption1>
+                      <Caption2 color={Grey4}>
+                        {convertAMPMToString(value.content.split('\n')[1])}
+                      </Caption2>
+                    </AlertChatBox>
+                  )}
+                  {value.chatMessageStatus === 'TIME_OVER' && (
+                    <EndChatBox>
+                      <div style={{ paddingBottom: '1.6rem' }}>
+                        <Body3 color={Grey1}>
+                          {value.content.split('\n')[0]}
+                        </Body3>
+                        <Body3 color={Grey1}>
+                          {value.content.split('\n')[1]}
+                        </Body3>
+                        <Body3 color={Grey3}>
+                          {value.content.split('\n')[2]}
+                        </Body3>
+                      </div>
+                      <Button
+                        text="상담 종료하기"
+                        width="100%"
+                        height="5.2rem"
+                        onClick={sendChatFinishRequest}
+                      />
+                    </EndChatBox>
+                  )}
                 </div>
               );
             }
@@ -456,7 +605,6 @@ const FooterWrapper = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 1.2rem;
 
   .message-form {
     padding: 0.8rem 0;
@@ -486,6 +634,39 @@ const CounselorChatBox = styled.div`
   box-sizing: border-box;
   max-width: 27.5rem;
   word-wrap: break-word;
+`;
+const CounselorStartRequestBox = styled.div`
+  background-color: ${White};
+  border-radius: 0 1rem 1rem 1rem;
+  padding: 1.6rem;
+  box-sizing: border-box;
+  max-width: 23.9rem;
+`;
+const AlertChatBox = styled.div`
+  width: 100%;
+  padding: 0.4rem 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const EndChatBox = styled.div`
+  background-color: ${White};
+  border-radius: 0 1rem 1rem 1rem;
+  padding: 1.6rem;
+  box-sizing: border-box;
+  max-width: 23.9rem;
+`;
+const StartButton = styled.button`
+  background-color: ${Green};
+  width: 100%;
+  height: 5.2rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  align-items: center;
 `;
 const ChatTextareaWrapper = styled.div`
   padding: 1.2rem 0.8rem 1.2rem 1.2rem;

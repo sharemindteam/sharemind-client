@@ -29,7 +29,7 @@ export const BuyerChatTest = () => {
     stompClient.current.connect(
       {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDg1MDQ0OTR9.Map197libZ4cDTnwachjBEif-RVyfBWQsDOd79JK31I',
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDg1MTQ4MTF9.Ab7fL7UiWNx8XxJTzowthAE4iKC9foZuiMXGWcY01Bg',
         isCustomer: false,
       },
       (frame: any) => {
@@ -76,12 +76,14 @@ export const BuyerChatTest = () => {
               setMessages((prevMessages) => [
                 ...prevMessages,
                 {
+                  chatMessageStatus: arrivedMessage.chatMessageStatus,
                   customerNickname: arrivedMessage.senderName,
                   counselorNickname: '어떻게알지?',
                   messageId: 0,
                   content: arrivedMessage.content,
                   sendTime: arrivedMessage.sendTime,
                   isCustomer: arrivedMessage.isCustomer,
+                  time: arrivedMessage.time,
                 },
               ]);
             },
@@ -89,6 +91,7 @@ export const BuyerChatTest = () => {
         }
       },
     );
+    stompClient.current.reconnect_delay = 100;
   };
   const sendMessage = () => {
     // var message = document.getElementById('messageInput').value;
