@@ -14,7 +14,7 @@ export const BuyerChatTest = () => {
   const stompClient = useRef<CompatClient | null>(null);
   const isConnected = useRef(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const chatId = 34;
+  const chatId = 35;
   // chat.connectStomp();
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
@@ -29,7 +29,7 @@ export const BuyerChatTest = () => {
     stompClient.current.connect(
       {
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDg1OTI3MTl9.Yma12NCkm_UNOiXFO77KWys15PhhTpAcTG7TadCl0So',
+          'Bearer  eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJhdXRob3JpdGllcyI6IlJPTEVfQ1VTVE9NRVIsUk9MRV9DT1VOU0VMT1IiLCJleHAiOjE3MDg2MDY3NTZ9.kddpzODaz4zEq7qqfZ8cayRSJtKvnE9HrP-r6YONnsw',
         isCustomer: false,
       },
       (frame: any) => {

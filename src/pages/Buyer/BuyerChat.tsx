@@ -31,7 +31,6 @@ import { formattedMessage } from 'utils/formattedMessage';
 import { postReissue } from 'api/post';
 import { getChatMessagesCustomers } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
-import { pending6 } from 'utils/pending';
 import { Space } from 'components/Common/Space';
 import { Button } from 'components/Common/Button';
 import {
@@ -456,14 +455,12 @@ export const BuyerChat = () => {
               ref={setTarget}
               style={{
                 width: '100%',
-                backgroundColor: 'green',
               }}
             ></div>
           ) : (
             <div
               style={{
                 width: '100%',
-                backgroundColor: 'pink',
               }}
             ></div>
           )}
@@ -490,15 +487,28 @@ export const BuyerChat = () => {
           {messages.map((value, index) => {
             let isLastIndex = index === messages.length - 1;
             if (value.isCustomer) {
+              let isTimestampCustomer = true;
+              const length = messages.length;
+              if (length !== 0 && index !== length - 1) {
+                //다음메세지와 시간이 같으면 false
+                if (
+                  messages[index + 1].isCustomer &&
+                  messages[index + 1].sendTime === value.sendTime
+                )
+                  isTimestampCustomer = false;
+              }
+
               return (
                 <div
                   key={value.messageId}
                   className="my-box-container"
                   ref={isLastIndex ? lastRef : index === 11 ? topRef : null}
                 >
-                  <Caption2 color={Grey3} margin="0 0.8rem 0 0">
-                    {convertMessageTime(value.sendTime)}
-                  </Caption2>
+                  {isTimestampCustomer ? (
+                    <Caption2 color={Grey3} margin="0 0.8rem 0 0">
+                      {convertMessageTime(value.sendTime)}
+                    </Caption2>
+                  ) : null}
                   <CustomerChatBox>
                     <Body2 color={Grey1}>
                       {formattedMessage(value.content)}
@@ -507,6 +517,17 @@ export const BuyerChat = () => {
                 </div>
               );
             } else {
+              let isTimestampCounselor = true;
+              const length = messages.length;
+              if (length !== 0 && index !== length - 1) {
+                //다음메세지와 시간이 같으면 false
+                if (
+                  messages[index + 1].chatMessageStatus === 'MESSAGE' &&
+                  !messages[index + 1].isCustomer &&
+                  messages[index + 1].sendTime === value.sendTime
+                )
+                  isTimestampCounselor = false;
+              }
               return (
                 <div
                   key={value.messageId}
@@ -520,9 +541,11 @@ export const BuyerChat = () => {
                           {formattedMessage(value.content)}
                         </Body2>
                       </CounselorChatBox>
-                      <Caption2 color={Grey3} margin="0 0 0 0.8rem">
-                        {convertMessageTime(value.sendTime)}
-                      </Caption2>
+                      {isTimestampCounselor ? (
+                        <Caption2 color={Grey3} margin="0 0 0 0.8rem">
+                          {convertMessageTime(value.sendTime)}
+                        </Caption2>
+                      ) : null}
                     </>
                   )}
                   {value.chatMessageStatus === 'SEND_REQUEST' && (
