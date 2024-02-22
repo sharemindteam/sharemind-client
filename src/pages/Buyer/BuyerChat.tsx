@@ -503,7 +503,6 @@ export const BuyerChat = () => {
                     <Body2 color={Grey1}>
                       {formattedMessage(value.content)}
                     </Body2>
-                    <div>{index}</div>
                   </CustomerChatBox>
                 </div>
               );
@@ -515,12 +514,16 @@ export const BuyerChat = () => {
                   ref={isLastIndex ? lastRef : index === 11 ? topRef : null}
                 >
                   {value.chatMessageStatus === 'MESSAGE' && (
-                    <CounselorChatBox>
-                      <Body2 color={Grey1}>
-                        {formattedMessage(value.content)}
-                      </Body2>
-                      <div>{index}</div>
-                    </CounselorChatBox>
+                    <>
+                      <CounselorChatBox>
+                        <Body2 color={Grey1}>
+                          {formattedMessage(value.content)}
+                        </Body2>
+                      </CounselorChatBox>
+                      <Caption2 color={Grey3} margin="0 0 0 0.8rem">
+                        {convertMessageTime(value.sendTime)}
+                      </Caption2>
+                    </>
                   )}
                   {value.chatMessageStatus === 'SEND_REQUEST' && (
                     <CounselorStartRequestBox>
@@ -686,6 +689,7 @@ const SectionWrapper = styled.section<{ inputHeight: number }>`
   .opponent-box-container {
     display: flex;
     justify-content: flex-start;
+    align-items: end;
     padding: 0.4rem 0 0.4rem 2rem;
   }
 `;
