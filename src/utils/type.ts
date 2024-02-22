@@ -150,5 +150,5 @@ export type ChatMessage = {
   content: string;
   sendTime: string;
   isCustomer: boolean;
-  time: string;
+  time: string | null;
 };

@@ -15,6 +15,7 @@ import {
 import { ChatMessage } from 'utils/type';
 import styled from 'styled-components';
 import {
+  Black,
   Green,
   Grey1,
   Grey3,
@@ -36,6 +37,8 @@ import { Button } from 'components/Common/Button';
 import {
   calculateTimeAfterFiveMinutes,
   convertAMPMToString,
+  convertAMPMToStringYear,
+  convertMessageTime,
 } from 'utils/convertDate';
 export const BuyerChat = () => {
   const navigate = useNavigate();
@@ -122,6 +125,7 @@ export const BuyerChat = () => {
       }
     }
   };
+
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(socket);
@@ -146,7 +150,10 @@ export const BuyerChat = () => {
               const arrivedMessage = JSON.parse(statusUpdate.body);
               //지금 request 보내는거 오는거 전부 여기서 잡혀서 두개가 생기는데 오는거의 경우에만 메세지 추가하게 처리하고,
               //보내는 경우는 예외처리해서 request만 보내는걸로해야함
-              if (arrivedMessage.chatWebsocketStatus === '이거 뭔지 알아야함') {
+              if (
+                arrivedMessage.chatWebsocketStatus ===
+                'COUNSELOR_CHAT_START_REQUEST'
+              ) {
                 //새 메세지 도착으로 분류
                 newMessageRef.current = true;
                 setTime('10:00');
@@ -156,7 +163,7 @@ export const BuyerChat = () => {
                     chatMessageStatus: 'SEND_REQUEST',
                     customerNickname: arrivedMessage.customerNickname,
                     counselorNickname: arrivedMessage.counselorNickname,
-                    messageId: prevMessages[prevMessages.length - 1].messageId,
+                    messageId: 0,
                     content: `${arrivedMessage.customerNickname}님, 지금 바로 상담을 시작할까요?`,
                     sendTime: '',
                     isCustomer: false,
@@ -165,9 +172,41 @@ export const BuyerChat = () => {
                 ]);
               } else if (
                 arrivedMessage.chatWebsocketStatus ===
+                'CUSTOMER_CHAT_START_RESPONSE'
+              ) {
+                const updatedMessages = messages.map((message) => {
+                  // chatMessageStatus가 "SEND_REQUEST"인 경우에만 처리합니다.
+                  if (message.chatMessageStatus === 'SEND_REQUEST') {
+                    // 해당 요소의 chatMessageStatus를 "START"로 변경합니다.
+                    return {
+                      ...message,
+                      chatMessageStatus: 'START',
+                      content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
+                    };
+                  }
+
+                  return message;
+                });
+                setMessages(updatedMessages);
+              } else if (
+                arrivedMessage.chatWebsocketStatus ===
                 'CUSTOMER_CHAT_FINISH_REQUEST'
               ) {
-                console.log('상담 종료하기 눌림');
+                //새 메세지 도착으로 분류
+                newMessageRef.current = true;
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  {
+                    chatMessageStatus: 'FINISH',
+                    customerNickname: arrivedMessage.customerNickname,
+                    counselorNickname: arrivedMessage.counselorNickname,
+                    messageId: 0,
+                    content: `${arrivedMessage.counselorNickname}님과의 상담이 만족스러우셨나요? 후기를 남겨주시면 더 나은 서비스를 위해 큰 도움이 되어요.`,
+                    sendTime: arrivedMessage.localDateTime,
+                    isCustomer: false,
+                    time: null,
+                  },
+                ]);
               }
             },
           );
@@ -188,13 +227,30 @@ export const BuyerChat = () => {
                     chatMessageStatus: 'FIVE_MINUTE_LEFT',
                     customerNickname: '',
                     counselorNickname: '',
-                    messageId: prevMessages[prevMessages.length - 1].messageId,
+                    messageId: 0,
                     content: `상담 종료까지 5분 남았어요.\n${calculateTimeAfterFiveMinutes(
                       arrivedMessage.localDateTime,
                     )}`,
                     sendTime: arrivedMessage.localDateTime,
                     isCustomer: false,
                     time: '',
+                  },
+                ]);
+              } else if (
+                arrivedMessage.chatWebsocketStatus === 'CHAT_TIME_OVER'
+              ) {
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  {
+                    chatMessageStatus: 'TIME_OVER',
+                    customerNickname: '',
+                    counselorNickname: '',
+                    messageId: 0,
+                    content:
+                      '상담 시간이 모두 마무리 되었어요.\n상담이 정상적으로 종료되었다면 상담 종료 버튼을 눌러 주세요.\n*신고접수가 되지 않은 상담 건은 7일 후 자동으로 거래가 확정됩니다.',
+                    sendTime: arrivedMessage.localDateTime,
+                    isCustomer: false,
+                    time: null,
                   },
                 ]);
               }
@@ -411,6 +467,26 @@ export const BuyerChat = () => {
               }}
             ></div>
           )}
+          <button
+            onClick={() => {
+              const updatedMessages = messages.map((message) => {
+                // chatMessageStatus가 "SEND_REQUEST"인 경우에만 처리합니다.
+                if (message.chatMessageStatus === 'SEND_REQUEST') {
+                  // 해당 요소의 chatMessageStatus를 "START"로 변경합니다.
+                  return {
+                    ...message,
+                    chatMessageStatus: 'START',
+                    content: `상담이 시작되었어요.\n${'2024년 02월 21일 PM 22시 35분'}`,
+                  };
+                }
+                // chatMessageStatus가 "SEND_REQUEST"가 아닌 경우에는 원래 요소를 그대로 반환합니다.
+                return message;
+              });
+              setMessages(updatedMessages);
+            }}
+          >
+            button
+          </button>
           {messages.map((value, index) => {
             let isLastIndex = index === messages.length - 1;
             if (value.isCustomer) {
@@ -420,6 +496,9 @@ export const BuyerChat = () => {
                   className="my-box-container"
                   ref={isLastIndex ? lastRef : index === 11 ? topRef : null}
                 >
+                  <Caption2 color={Grey3} margin="0 0.8rem 0 0">
+                    {convertMessageTime(value.sendTime)}
+                  </Caption2>
                   <CustomerChatBox>
                     <Body2 color={Grey1}>
                       {formattedMessage(value.content)}
@@ -466,7 +545,7 @@ export const BuyerChat = () => {
                         {value.content.split('\n')[0]}
                       </Caption1>
                       <Caption2 color={Grey4}>
-                        {value.content.split('\n')[1]}
+                        {convertAMPMToStringYear(value.content.split('\n')[1])}
                       </Caption2>
                     </AlertChatBox>
                   )}
@@ -476,7 +555,7 @@ export const BuyerChat = () => {
                         {value.content.split('\n')[0]}
                       </Caption1>
                       <Caption2 color={Grey4}>
-                        {convertAMPMToString(value.content.split('\n')[1])}
+                        {convertAMPMToString(value.content.split('\n')[1])} 종료
                       </Caption2>
                     </AlertChatBox>
                   )}
@@ -498,6 +577,23 @@ export const BuyerChat = () => {
                         width="100%"
                         height="5.2rem"
                         onClick={sendChatFinishRequest}
+                      />
+                    </EndChatBox>
+                  )}
+                  {value.chatMessageStatus === 'FINISH' && (
+                    <EndChatBox>
+                      <div style={{ paddingBottom: '1.6rem' }}>
+                        <Body3 color={Black}>
+                          {value.counselorNickname + value.content}
+                        </Body3>
+                      </div>
+                      <Button
+                        text="상담 후기 남기기"
+                        width="100%"
+                        height="5.2rem"
+                        onClick={() => {
+                          navigate('/reviewManage');
+                        }}
                       />
                     </EndChatBox>
                   )}
@@ -578,12 +674,13 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
 const SectionWrapper = styled.section<{ inputHeight: number }>`
   display: flex;
   flex-direction: column;
-  padding-bottom: ${(props) => `${props.inputHeight + 5.5}rem`};
+  padding-bottom: ${(props) => `${props.inputHeight + 4}rem`};
   max-height: calc(100% - 13.1rem);
   overflow-y: scroll;
   .my-box-container {
     display: flex;
     justify-content: flex-end;
+    align-items: end;
     padding: 0.4rem 2rem 0.4rem 0;
   }
   .opponent-box-container {
