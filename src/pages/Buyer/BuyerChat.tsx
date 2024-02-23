@@ -147,12 +147,13 @@ export const BuyerChat = () => {
             function (statusUpdate) {
               console.log('Status Update: ', statusUpdate.body);
               const arrivedMessage = JSON.parse(statusUpdate.body);
-              //지금 request 보내는거 오는거 전부 여기서 잡혀서 두개가 생기는데 오는거의 경우에만 메세지 추가하게 처리하고,
-              //보내는 경우는 예외처리해서 request만 보내는걸로해야함
+              console.log(arrivedMessage);
+
               if (
                 arrivedMessage.chatWebsocketStatus ===
                 'COUNSELOR_CHAT_START_REQUEST'
               ) {
+                console.log(messages);
                 //새 메세지 도착으로 분류
                 newMessageRef.current = true;
                 setTime('10:00');
@@ -173,20 +174,20 @@ export const BuyerChat = () => {
                 arrivedMessage.chatWebsocketStatus ===
                 'CUSTOMER_CHAT_START_RESPONSE'
               ) {
-                const updatedMessages = messages.map((message) => {
-                  // chatMessageStatus가 "SEND_REQUEST"인 경우에만 처리합니다.
-                  if (message.chatMessageStatus === 'SEND_REQUEST') {
-                    // 해당 요소의 chatMessageStatus를 "START"로 변경합니다.
-                    return {
-                      ...message,
-                      chatMessageStatus: 'START',
-                      content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
-                    };
-                  }
-
-                  return message;
+                setMessages((prevMessages) => {
+                  const updatedMessages = prevMessages.map((value) => {
+                    // chatMessageStatus가 "SEND_REQUEST"인 경우에만 처리합니다.
+                    if (value.chatMessageStatus === 'SEND_REQUEST') {
+                      return {
+                        ...value,
+                        chatMessageStatus: 'START',
+                        content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
+                      };
+                    }
+                    return value;
+                  });
+                  return updatedMessages;
                 });
-                setMessages(updatedMessages);
               } else if (
                 arrivedMessage.chatWebsocketStatus ===
                 'CUSTOMER_CHAT_FINISH_REQUEST'
@@ -467,18 +468,16 @@ export const BuyerChat = () => {
           <button
             onClick={() => {
               const updatedMessages = messages.map((message) => {
-                // chatMessageStatus가 "SEND_REQUEST"인 경우에만 처리합니다.
                 if (message.chatMessageStatus === 'SEND_REQUEST') {
-                  // 해당 요소의 chatMessageStatus를 "START"로 변경합니다.
                   return {
                     ...message,
                     chatMessageStatus: 'START',
                     content: `상담이 시작되었어요.\n${'2024년 02월 21일 PM 22시 35분'}`,
                   };
                 }
-                // chatMessageStatus가 "SEND_REQUEST"가 아닌 경우에는 원래 요소를 그대로 반환합니다.
                 return message;
               });
+              console.log(updatedMessages);
               setMessages(updatedMessages);
             }}
           >
