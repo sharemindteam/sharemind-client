@@ -60,6 +60,7 @@ export const BuyerChat = () => {
   const lastRef = useRef<HTMLDivElement>(null); // 마지막 채팅 box ref
   const newMessageRef = useRef(true); // 새로운 메세지인지 이전 메세지 fetch인지
   const topRef = useRef<HTMLDivElement>(null); //top에 와야하는 box
+  const topMsgIndexRef = useRef<number>(0); //top index ref, fetch해온 배열이 꼭 11이 아닐 수 있기 때문에 fetch 시 변경
   const isConnected = useRef(false);
 
   const reissueToken = async () => {
@@ -92,9 +93,11 @@ export const BuyerChat = () => {
       });
       if (res.status === 200) {
         if (res.data.length !== 0) {
-          console.log(res.data);
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
+          //fetch해온 message 길이
+          topMsgIndexRef.current = res.data.length;
+          console.log(topMsgIndexRef.current);
           //메세지 중 start request가 있으면 setTime
           const startRequestIndex = res.data.findIndex(
             (item: any) => item.time !== null,
@@ -103,6 +106,8 @@ export const BuyerChat = () => {
             setTime(res.data[startRequestIndex].time);
 
           if (firstMessageId === 0) {
+            //첫 fetch 시에는 처음 채팅방을 들어왔을 때니까 맨 밑으로 scroll
+            newMessageRef.current = true;
             setMessages(res.data.reverse());
           } else {
             const reversedMessages = res.data.reverse();
@@ -465,24 +470,6 @@ export const BuyerChat = () => {
               }}
             ></div>
           )}
-          <button
-            onClick={() => {
-              const updatedMessages = messages.map((message) => {
-                if (message.chatMessageStatus === 'SEND_REQUEST') {
-                  return {
-                    ...message,
-                    chatMessageStatus: 'START',
-                    content: `상담이 시작되었어요.\n${'2024년 02월 21일 PM 22시 35분'}`,
-                  };
-                }
-                return message;
-              });
-              console.log(updatedMessages);
-              setMessages(updatedMessages);
-            }}
-          >
-            button
-          </button>
           {messages.map((value, index) => {
             let isLastIndex = index === messages.length - 1;
             if (value.isCustomer) {
@@ -501,7 +488,13 @@ export const BuyerChat = () => {
                 <div
                   key={value.messageId}
                   className="my-box-container"
-                  ref={isLastIndex ? lastRef : index === 11 ? topRef : null}
+                  ref={
+                    isLastIndex
+                      ? lastRef
+                      : index === topMsgIndexRef.current
+                      ? topRef
+                      : null
+                  }
                 >
                   {isTimestampCustomer ? (
                     <Caption2 color={Grey3} margin="0 0.8rem 0 0">
@@ -531,7 +524,13 @@ export const BuyerChat = () => {
                 <div
                   key={value.messageId}
                   className="opponent-box-container"
-                  ref={isLastIndex ? lastRef : index === 11 ? topRef : null}
+                  ref={
+                    isLastIndex
+                      ? lastRef
+                      : index === topMsgIndexRef.current
+                      ? topRef
+                      : null
+                  }
                 >
                   {value.chatMessageStatus === 'MESSAGE' && (
                     <>
@@ -695,7 +694,7 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
   top: 0;
   z-index: 999;
 `;
-// height: calc(100% - 7.9rem);
+//max-height: calc(100% - 13.1rem);
 const SectionWrapper = styled.section<{ inputHeight: number }>`
   display: flex;
   flex-direction: column;
@@ -796,6 +795,7 @@ const ChatTextareaWrapper = styled.div`
   background-color: ${Grey6};
   width: 78.66%;
   border-radius: 1.2rem;
+  box-sizing: border-box;
 `;
 
 const ChatTextarea = styled.textarea`
