@@ -2,7 +2,7 @@
 import SockJs from 'sockjs-client';
 // import * as StompJs from '@stomp/stompjs';
 import { CompatClient, Stomp } from '@stomp/stompjs';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   Body2,
   Body3,
@@ -39,6 +39,7 @@ import {
   convertAMPMToStringYear,
   convertMessageTime,
 } from 'utils/convertDate';
+import { pending } from 'utils/pending';
 export const BuyerChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -363,6 +364,10 @@ export const BuyerChat = () => {
     ) {
       preventRef.current = false;
       await getChatMessages(messages[0].messageId);
+      await pending();
+      // setTimeout(() => {
+      //   preventRef.current = true;
+      // }, 100);
       preventRef.current = true;
     }
   };
@@ -461,12 +466,16 @@ export const BuyerChat = () => {
               ref={setTarget}
               style={{
                 width: '100%',
+                height: '0.1rem',
+                backgroundColor: 'green',
               }}
             ></div>
           ) : (
             <div
               style={{
                 width: '100%',
+                height: '0.1rem',
+                backgroundColor: 'pink',
               }}
             ></div>
           )}
@@ -505,6 +514,7 @@ export const BuyerChat = () => {
                     <Body2 color={Grey1}>
                       {formattedMessage(value.content)}
                     </Body2>
+                    <div>{index}</div>
                   </CustomerChatBox>
                 </div>
               );
@@ -538,6 +548,7 @@ export const BuyerChat = () => {
                         <Body2 color={Grey1}>
                           {formattedMessage(value.content)}
                         </Body2>
+                        <div>{index}</div>
                       </CounselorChatBox>
                       {isTimestampCounselor ? (
                         <Caption2 color={Grey3} margin="0 0 0 0.8rem">
@@ -640,7 +651,9 @@ export const BuyerChat = () => {
                   //textarea 높이 동적할당
                   e.target.style.height = '2.4rem';
                   e.target.style.height = e.target.scrollHeight / 10 + 'rem';
-                  sectionPaddingRef.current = e.target.scrollHeight / 10;
+                  if (e.target.scrollHeight / 10 <= 7.3) {
+                    sectionPaddingRef.current = e.target.scrollHeight / 10;
+                  }
                 }}
                 onKeyDown={(e) => {
                   if (e.nativeEvent.isComposing) return; //key 조합 감지
@@ -695,11 +708,12 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
   z-index: 999;
 `;
 //max-height: calc(100% - 13.1rem);
+//height: calc(100% - 13.1rem);
 const SectionWrapper = styled.section<{ inputHeight: number }>`
   display: flex;
   flex-direction: column;
-  padding-bottom: ${(props) => `${props.inputHeight + 4}rem`};
-  max-height: calc(100% - 13.1rem);
+  padding-bottom: ${(props) => `${props.inputHeight + 4.3}rem`};
+  max-height: calc(100% - ${(props) => `${props.inputHeight + 4.3}rem`});
   overflow-y: scroll;
   .my-box-container {
     display: flex;

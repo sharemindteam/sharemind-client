@@ -1,3 +1,3 @@
 //pending 함수
-export const pending6 = (delay = 2000) =>
+export const pending = (delay = 100) =>
   new Promise((res) => setTimeout(res, delay));
