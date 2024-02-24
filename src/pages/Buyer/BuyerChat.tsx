@@ -51,12 +51,12 @@ export const BuyerChat = () => {
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
   const [time, setTime] = useState<string>('');
-
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
   const stompClient = useRef<CompatClient | null>(null);
-  const preventRef = useRef(true); // observer 중복방지
+  const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
+  const preventScrollRef = useRef(true); // message 변경 시 모바일에서 오버 스크롤로 인해 여러번 불리는 오류 발생, scrollintoview 완료 전까지 observe 막기
   const isLastElem = useRef(false); //마지막 채팅인지 확인
   const lastRef = useRef<HTMLDivElement>(null); // 마지막 채팅 box ref
   const newMessageRef = useRef(true); // 새로운 메세지인지 이전 메세지 fetch인지
@@ -93,6 +93,7 @@ export const BuyerChat = () => {
         params,
       });
       if (res.status === 200) {
+        console.log(res.data);
         if (res.data.length !== 0) {
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
@@ -352,7 +353,13 @@ export const BuyerChat = () => {
     if (inputRef.current) inputRef.current.style.height = '2.4rem';
     if (sectionPaddingRef.current) sectionPaddingRef.current = 2.4;
   };
-
+  //모바일에서 터치가 일어나면 키보드 숨김
+  const handleTouchStart = (e: any) => {
+    if (!e.target.closest('footer')) {
+      // 터치 이벤트가 textarea 바깥에서 발생하면 키보드를 숨깁니다.
+      inputRef.current?.blur();
+    }
+  };
   //무한스크롤 관련 함수
   //useIntersection에서 unobserve되는지 확인
   const onIntersect: IntersectionObserverCallback = async (entry) => {
@@ -361,13 +368,17 @@ export const BuyerChat = () => {
       !isLastElem.current &&
       !isInitialLoading &&
       preventRef.current
+      // &&preventScrollRef.current
     ) {
       preventRef.current = false;
+      // preventScrollRef.current = false;
+      console.log(`관측: ${messages[0].messageId}`);
       await getChatMessages(messages[0].messageId);
-      await pending();
+      console.log('fetch 완료');
       // setTimeout(() => {
       //   preventRef.current = true;
       // }, 100);
+      console.log(`관측: ${messages[0].messageId}`);
       preventRef.current = true;
     }
   };
@@ -375,7 +386,7 @@ export const BuyerChat = () => {
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
-    threshold: 1,
+    threshold: 0.8,
     onIntersect,
   });
 
@@ -384,6 +395,8 @@ export const BuyerChat = () => {
     connectChat();
     //채팅 불러오기
     getChatMessages(0);
+    //관측 가능
+    preventRef.current = true;
     // 언마운트 시에 소켓 연결 해제
     return () => {
       if (stompClient.current) {
@@ -403,7 +416,7 @@ export const BuyerChat = () => {
     }
   }, [input]);
   // messages 새로 업데이트 됐을 때 11 index에 해당하는 message top으로
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!newMessageRef.current) {
       topRef.current?.scrollIntoView({ block: 'start' });
     } else {
@@ -411,6 +424,9 @@ export const BuyerChat = () => {
         block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
       });
     }
+    console.log('스크롤 완료');
+    //scrollIntoView 완료 후 다시 관측가능
+    // preventScrollRef.current = true;
   }, [messages]);
   //상담 start request 관련 처리
   useEffect(() => {
@@ -450,7 +466,7 @@ export const BuyerChat = () => {
     );
   } else {
     return (
-      <Wrapper>
+      <Wrapper onTouchStart={handleTouchStart}>
         <HeaderWrapper border={false}>
           <BackIcon
             onClick={() => {
@@ -459,14 +475,14 @@ export const BuyerChat = () => {
           />
           <Heading color={Grey1}>채팅상대이름</Heading>
         </HeaderWrapper>
-        <Space height="5.2rem" />
+        <Space width="100%" height="5.2rem" />
         <SectionWrapper inputHeight={sectionPaddingRef.current}>
           {!isLastElem.current ? (
             <div
               ref={setTarget}
               style={{
                 width: '100%',
-                height: '0.1rem',
+                height: '5.1rem',
                 backgroundColor: 'green',
               }}
             ></div>
@@ -474,13 +490,14 @@ export const BuyerChat = () => {
             <div
               style={{
                 width: '100%',
-                height: '0.1rem',
+                height: '5.1rem',
                 backgroundColor: 'pink',
               }}
             ></div>
           )}
           {messages.map((value, index) => {
             let isLastIndex = index === messages.length - 1;
+
             if (value.isCustomer) {
               let isTimestampCustomer = true;
               const length = messages.length;
@@ -684,7 +701,6 @@ export const BuyerChat = () => {
 const Wrapper = styled.main`
   height: 100%;
   width: 100%;
-  background-color: ${Grey6};
 `;
 const HeaderWrapper = styled.div<{ border?: boolean }>`
   height: 5.2rem;
@@ -709,11 +725,14 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
 `;
 //max-height: calc(100% - 13.1rem);
 //height: calc(100% - 13.1rem);
+
 const SectionWrapper = styled.section<{ inputHeight: number }>`
   display: flex;
   flex-direction: column;
   padding-bottom: ${(props) => `${props.inputHeight + 4.3}rem`};
-  max-height: calc(100% - ${(props) => `${props.inputHeight + 4.3}rem`});
+  max-height: calc(
+    100% - 5.2rem - ${(props) => `${props.inputHeight + 4.3}rem`}
+  );
   overflow-y: scroll;
   .my-box-container {
     display: flex;
@@ -828,6 +847,7 @@ const ChatTextarea = styled.textarea`
     color: ${Grey3};
   }
   padding: 0;
+  margin: 0;
   max-height: 7.2rem;
   width: 100%;
   background-color: ${Grey6};
