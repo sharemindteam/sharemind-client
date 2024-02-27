@@ -160,7 +160,7 @@ export const SellerChatTemp = () => {
                 arrivedMessage.chatWebsocketStatus ===
                 'COUNSELOR_CHAT_START_REQUEST'
               ) {
-                console.log(messages);
+                //구매자와 달리 현재 채팅 status를 업데이트하는 방향으로 구현해야할듯
                 //새 메세지 도착으로 분류
                 newMessageRef.current = true;
                 setTime('10:00');
@@ -483,16 +483,14 @@ export const SellerChatTemp = () => {
               ref={setTarget}
               style={{
                 width: '100%',
-                height: '5.1rem',
-                backgroundColor: 'green',
+                height: '0.1rem',
               }}
             ></div>
           ) : (
             <div
               style={{
                 width: '100%',
-                height: '5.1rem',
-                backgroundColor: 'pink',
+                height: '0.1rem',
               }}
             ></div>
           )}

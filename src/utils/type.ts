@@ -152,3 +152,14 @@ export type ChatMessage = {
   isCustomer: boolean;
   time: string | null;
 };
+
+export type ChatCounselorInfo = {
+  consultCategories: string[];
+  consultStyle: string;
+  counselorId: number;
+  introduction: string;
+  level: number;
+  nickname: string;
+  ratingAverage: number;
+  totalReview: number;
+};

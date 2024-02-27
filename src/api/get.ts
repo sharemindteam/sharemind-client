@@ -94,7 +94,8 @@ export const getCounselorsAll = async (counselorId: string | undefined) =>
 // SearchWord Controller
 export const getSearchWords = async () =>
   await getPublicInstance('/searchWords');
-
+export const getCounselorsChats = async (chatId: string, params: any) =>
+  await getInstance(`/counselors/chats/${chatId}`, params);
 //Payment Controller
 export const getPaymentsCustomers = async (params: any) =>
   await getInstance('/payments/customers', params);

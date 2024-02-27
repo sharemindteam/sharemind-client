@@ -12,7 +12,7 @@ import {
   Caption2,
   Heading,
 } from 'styles/font';
-import { ChatMessage } from 'utils/type';
+import { CartegoryState, ChatCounselorInfo, ChatMessage } from 'utils/type';
 import styled from 'styled-components';
 import {
   Black,
@@ -29,7 +29,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
 import { postReissue } from 'api/post';
-import { getChatMessagesCustomers } from 'api/get';
+import { getChatMessagesCustomers, getCounselorsChats } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { Space } from 'components/Common/Space';
 import { Button } from 'components/Common/Button';
@@ -41,6 +41,12 @@ import {
 } from 'utils/convertDate';
 import { pending } from 'utils/pending';
 import { useDebounce } from 'hooks/useDebounce';
+import {
+  AppendCategoryType,
+  AppendCategoryTypeUndefined,
+} from 'utils/AppendCategoryType';
+import { TagA2Cartegory } from 'components/Common/TagA2Cartegory';
+import { ChatCounselorInfoBox } from 'components/Buyer/BuyerChat/ChatCounselorInfoBox';
 export const BuyerChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -52,6 +58,9 @@ export const BuyerChat = () => {
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
   const [time, setTime] = useState<string>('');
+  const [counselorInfo, setCounselorInfo] = useState<ChatCounselorInfo | null>(
+    null,
+  );
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
@@ -94,6 +103,7 @@ export const BuyerChat = () => {
         params,
       });
       if (res.status === 200) {
+        console.log(res.data);
         if (res.data.length !== 0) {
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
@@ -116,6 +126,7 @@ export const BuyerChat = () => {
             setMessages(updatedMessages);
           }
         } else {
+          await getCounselorInfo();
           isLastElem.current = true;
         }
       } else if (res.response.status === 404) {
@@ -130,7 +141,23 @@ export const BuyerChat = () => {
       }
     }
   };
-
+  const getCounselorInfo = async () => {
+    try {
+      const params = {
+        isCustomer: true,
+      };
+      //마지막에 닿았을 때, 상담사 info 가져옴
+      const res: any = await getCounselorsChats(chatId, { params });
+      if (res.status === 200) {
+        console.log(res.data);
+        setCounselorInfo(res.data);
+      } else if (res.response.status === 404) {
+        alert(res.response.data.message);
+      }
+    } catch (e) {
+      alert(e);
+    }
+  };
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(socket);
@@ -392,7 +419,7 @@ export const BuyerChat = () => {
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
-    threshold: 0.8,
+    threshold: 0.5,
     onIntersect,
   });
 
@@ -423,43 +450,43 @@ export const BuyerChat = () => {
     }
   }, [input]);
   // // messages 새로 업데이트 됐을 때 11 index에 해당하는 message top으로
-  // useLayoutEffect(() => {
-  //   //scrollIntoView 완료하기까지 관측 X
-  //   preventScrollRef.current = false;
-  //   if (!newMessageRef.current) {
-  //     topRef.current?.scrollIntoView({ block: 'start' });
-  //   } else {
-  //     lastRef.current?.scrollIntoView({
-  //       block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
-  //     });
-  //   }
-  //   console.log('스크롤 완료');
-  //   //scrollIntoView 완료 후 다시 관측가능
-  //   preventScrollRef.current = true;
-  // }, [messages]);
-
   useLayoutEffect(() => {
-    // 2초 동안 대기
-    const delay = setTimeout(() => {
-      // scrollIntoView 완료하기까지 관측 X
-      preventScrollRef.current = false;
-      if (!newMessageRef.current) {
-        topRef.current?.scrollIntoView({ block: 'start' });
-      } else {
-        lastRef.current?.scrollIntoView({
-          block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
-        });
-      }
-      console.log('스크롤 완료');
-      // scrollIntoView 완료 후 다시 관측 가능
-      preventScrollRef.current = true;
-    }, 500); // 0.1초 지연
-
-    // cleanup 함수
-    return () => {
-      clearTimeout(delay); // cleanup 시 setTimeout 취소
-    };
+    //scrollIntoView 완료하기까지 관측 X
+    preventScrollRef.current = false;
+    if (!newMessageRef.current) {
+      topRef.current?.scrollIntoView({ block: 'start' });
+    } else {
+      lastRef.current?.scrollIntoView({
+        block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
+      });
+    }
+    console.log('스크롤 완료');
+    //scrollIntoView 완료 후 다시 관측가능
+    preventScrollRef.current = true;
   }, [messages]);
+
+  // useLayoutEffect(() => {
+  //   // 2초 동안 대기
+  //   const delay = setTimeout(() => {
+  //     // scrollIntoView 완료하기까지 관측 X
+  //     preventScrollRef.current = false;
+  //     if (!newMessageRef.current) {
+  //       topRef.current?.scrollIntoView({ block: 'start' });
+  //     } else {
+  //       lastRef.current?.scrollIntoView({
+  //         block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
+  //       });
+  //     }
+  //     console.log('스크롤 완료');
+  //     // scrollIntoView 완료 후 다시 관측 가능
+  //     preventScrollRef.current = true;
+  //   }, 500); // 0.1초 지연
+
+  //   // cleanup 함수
+  //   return () => {
+  //     clearTimeout(delay); // cleanup 시 setTimeout 취소
+  //   };
+  // }, [messages]);
 
   //상담 start request 관련 처리
   useEffect(() => {
@@ -513,12 +540,17 @@ export const BuyerChat = () => {
         inputHeight={sectionPaddingRef.current}
         className="chat-section"
       >
+        <div className="counselor-info-container">
+          {isLastElem.current && counselorInfo !== null && (
+            <ChatCounselorInfoBox info={counselorInfo} />
+          )}
+        </div>
         {!isLastElem.current ? (
           <div
             ref={setTarget}
             style={{
               width: '100%',
-              // height: '5.1rem',
+              height: '0.1rem',
               backgroundColor: 'green',
             }}
           ></div>
@@ -526,7 +558,7 @@ export const BuyerChat = () => {
           <div
             style={{
               width: '100%',
-              // height: '5.1rem',
+              height: '0.1rem',
               backgroundColor: 'pink',
             }}
           ></div>
@@ -768,6 +800,11 @@ const SectionWrapper = styled.section<{ inputHeight: number }>`
     100% - 5.2rem - ${(props) => `${props.inputHeight + 4.3}rem`}
   );
   overflow-y: auto;
+  .counselor-info-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
   .my-box-container {
     display: flex;
     justify-content: flex-end;
@@ -808,6 +845,7 @@ const SearchIcon = styled(Search)<{ InputValid: boolean }>`
   padding: 1rem 0.4rem 1rem 0.8rem;
   cursor: pointer;
 `;
+
 const CustomerChatBox = styled.div`
   background-color: ${LightGreenChat};
   border-radius: 1rem 0 1rem 1rem;
