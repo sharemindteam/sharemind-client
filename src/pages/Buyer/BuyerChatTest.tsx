@@ -25,7 +25,6 @@ export const BuyerChatTest = () => {
     //     stompClient.current.disconnect();
     //     isConnected.current = false;
     //
-    console.log(localStorage.getItem('accessToken'));
     stompClient.current.connect(
       {
         Authorization:
