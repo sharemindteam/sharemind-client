@@ -503,7 +503,8 @@ export const SellerChatTemp = () => {
               if (length !== 0 && index !== length - 1) {
                 //다음메세지와 시간이 같으면 false
                 if (
-                  messages[index + 1].isCustomer &&
+                  messages[index + 1].chatMessageStatus === 'MESSAGE' &&
+                  !messages[index + 1].isCustomer &&
                   messages[index + 1].sendTime === value.sendTime
                 )
                   isTimestampCustomer = false;
@@ -565,7 +566,7 @@ export const SellerChatTemp = () => {
                 //다음메세지와 시간이 같으면 false
                 if (
                   messages[index + 1].chatMessageStatus === 'MESSAGE' &&
-                  !messages[index + 1].isCustomer &&
+                  messages[index + 1].isCustomer &&
                   messages[index + 1].sendTime === value.sendTime
                 )
                   isTimestampCounselor = false;

@@ -116,7 +116,9 @@ export const convertMessageTime = (inputDate: string): string => {
   if (hour >= 12) {
     hour -= 12;
   }
-
+  if (period === '오후' && hour === 0) {
+    hour += 12;
+  }
   // 시간 형식으로 변환하여 반환
   return `${period} ${hour}:${String(minute).padStart(2, '0')}`;
 };

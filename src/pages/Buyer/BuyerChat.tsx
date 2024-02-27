@@ -104,6 +104,7 @@ export const BuyerChat = () => {
         params,
       });
       if (res.status === 200) {
+        console.log(res.data);
         if (res.data.length !== 0) {
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
@@ -451,43 +452,39 @@ export const BuyerChat = () => {
     }
   }, [input]);
   // // messages 새로 업데이트 됐을 때 11 index에 해당하는 message top으로
-  useLayoutEffect(() => {
-    //scrollIntoView 완료하기까지 관측 X
-    preventScrollRef.current = false;
-    if (!newMessageRef.current) {
-      topRef.current?.scrollIntoView({ block: 'start' });
-    } else {
-      lastRef.current?.scrollIntoView({
-        block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
-      });
-    }
-    console.log('스크롤 완료');
-    //scrollIntoView 완료 후 다시 관측가능
-    preventScrollRef.current = true;
-  }, [messages]);
-
   // useLayoutEffect(() => {
-  //   // 2초 동안 대기
-  //   const delay = setTimeout(() => {
-  //     // scrollIntoView 완료하기까지 관측 X
-  //     preventScrollRef.current = false;
-  //     if (!newMessageRef.current) {
-  //       topRef.current?.scrollIntoView({ block: 'start' });
-  //     } else {
-  //       lastRef.current?.scrollIntoView({
-  //         block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
-  //       });
-  //     }
-  //     console.log('스크롤 완료');
-  //     // scrollIntoView 완료 후 다시 관측 가능
-  //     preventScrollRef.current = true;
-  //   }, 500); // 0.1초 지연
-
-  //   // cleanup 함수
-  //   return () => {
-  //     clearTimeout(delay); // cleanup 시 setTimeout 취소
-  //   };
+  //   //scrollIntoView 완료하기까지 관측 X
+  //   preventScrollRef.current = false;
+  //   if (!newMessageRef.current) {
+  //     topRef.current?.scrollIntoView({ block: 'start' });
+  //   } else {
+  //     lastRef.current?.scrollIntoView({
+  //       block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
+  //     });
+  //   }
+  //   console.log('스크롤 완료');
+  //   //scrollIntoView 완료 후 다시 관측가능
+  //   preventScrollRef.current = true;
   // }, [messages]);
+
+  useLayoutEffect(() => {
+    const handleScroll = async () => {
+      //scrollIntoView 완료하기까지 관측 X
+      preventScrollRef.current = false;
+      if (!newMessageRef.current) {
+        topRef.current?.scrollIntoView({ block: 'start' });
+      } else {
+        lastRef.current?.scrollIntoView({
+          block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
+        });
+      }
+      console.log('스크롤 완료');
+      await pending();
+      //scrollIntoView 완료 후 다시 관측가능
+      preventScrollRef.current = true;
+    };
+    handleScroll();
+  }, [messages]);
 
   //상담 start request 관련 처리
   useEffect(() => {
