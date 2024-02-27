@@ -111,6 +111,7 @@ export const SellerChatTemp = () => {
           const startRequestIndex = res.data.findIndex(
             (item: any) => item.time !== null,
           );
+          //api 수정되면 time 수정되는 로직 삭제
           if (startRequestIndex !== -1)
             setTime(res.data[startRequestIndex].time);
 
@@ -184,24 +185,26 @@ export const SellerChatTemp = () => {
                 //구매자와 달리 현재 채팅 status를 업데이트하는 방향으로 구현해야할듯
                 //새 메세지 도착으로 분류
                 setTime('10:00');
+                setChatStatus('상담 시작 요청');
               } else if (
                 arrivedMessage.chatWebsocketStatus ===
                 'CUSTOMER_CHAT_START_RESPONSE'
               ) {
-                setMessages((prevMessages) => {
-                  const updatedMessages = prevMessages.map((value) => {
-                    // chatMessageStatus가 "SEND_REQUEST"인 경우에만 처리합니다.
-                    if (value.chatMessageStatus === 'SEND_REQUEST') {
-                      return {
-                        ...value,
-                        chatMessageStatus: 'START',
-                        content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
-                      };
-                    }
-                    return value;
-                  });
-                  return updatedMessages;
-                });
+                setChatStatus('상담 중');
+                //setmodal 해야함
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  {
+                    chatMessageStatus: 'START',
+                    customerNickname: arrivedMessage.customerNickname,
+                    counselorNickname: arrivedMessage.counselorNickname,
+                    messageId: 0,
+                    content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
+                    sendTime: arrivedMessage.localDateTime,
+                    isCustomer: false,
+                    time: null,
+                  },
+                ]);
               } else if (
                 arrivedMessage.chatWebsocketStatus ===
                 'CUSTOMER_CHAT_FINISH_REQUEST'
@@ -251,6 +254,11 @@ export const SellerChatTemp = () => {
                   },
                 ]);
               } else if (
+                arrivedMessage.chatWebsocketStatus ===
+                'CHAT_START_REQUEST_CANCEL'
+              ) {
+                setChatStatus('상담 대기');
+              } else if (
                 arrivedMessage.chatWebsocketStatus === 'CHAT_TIME_OVER'
               ) {
                 setMessages((prevMessages) => [
@@ -283,6 +291,7 @@ export const SellerChatTemp = () => {
               //받은 message 정보
               const arrivedMessage = JSON.parse(message.body);
               console.log(arrivedMessage);
+
               //새 메세지 도착으로 분류
               newMessageRef.current = true;
               setMessages((prevMessages) => [
@@ -445,6 +454,9 @@ export const SellerChatTemp = () => {
       let totalSeconds = minutes * 60 + seconds;
 
       if (totalSeconds <= 0) {
+        if (chatStatus === '상담 시작 요청') {
+          setChatStatus('상담 대기');
+        }
         clearInterval(timer);
       } else {
         totalSeconds--;
@@ -488,7 +500,9 @@ export const SellerChatTemp = () => {
         <Space width="100%" height="5.2rem" />
         <SectionWrapper
           inputHeight={sectionPaddingRef.current}
-          isModal={chatStatus === '상담 대기'}
+          isModal={
+            chatStatus === '상담 대기' || chatStatus === '상담 시작 요청'
+          }
         >
           {!isLastElem.current ? (
             <div
@@ -508,7 +522,7 @@ export const SellerChatTemp = () => {
           )}
           {messages.map((value, index) => {
             let isLastIndex = index === messages.length - 1;
-
+            //my(minder)
             if (!value.isCustomer) {
               let isTimestampCustomer = true;
               const length = messages.length;
@@ -559,6 +573,7 @@ export const SellerChatTemp = () => {
                       </Caption2>
                     </AlertChatBox>
                   )}
+
                   {value.chatMessageStatus === 'FIVE_MINUTE_LEFT' && (
                     <AlertChatBox>
                       <Caption1 color={Grey3}>
@@ -571,7 +586,8 @@ export const SellerChatTemp = () => {
                   )}
                 </div>
               );
-            } else {
+            } else if (value.isCustomer) {
+              //oppo(share)
               let isTimestampCounselor = true;
               const length = messages.length;
               if (length !== 0 && index !== length - 1) {
@@ -678,6 +694,69 @@ export const SellerChatTemp = () => {
                   )}
                 </div>
               );
+            } else if (value.isCustomer === null) {
+              return (
+                <div
+                  key={value.messageId}
+                  className="opponent-box-container"
+                  ref={
+                    isLastIndex
+                      ? lastRef
+                      : index === topMsgIndexRef.current
+                      ? topRef
+                      : null
+                  }
+                >
+                  {value.chatMessageStatus === 'FIVE_MINUTE_LEFT' && (
+                    <AlertChatBox>
+                      <Caption1 color={Grey3}>
+                        {value.content.split('\n')[0]}
+                      </Caption1>
+                      <Caption2 color={Grey4}>
+                        {convertAMPMToString(value.content.split('\n')[1])} 종료
+                      </Caption2>
+                    </AlertChatBox>
+                  )}
+                  {value.chatMessageStatus === 'TIME_OVER' && (
+                    <EndChatBox>
+                      <div style={{ paddingBottom: '1.6rem' }}>
+                        <Body3 color={Grey1}>
+                          {value.content.split('\n')[0]}
+                        </Body3>
+                        <Body3 color={Grey1}>
+                          {value.content.split('\n')[1]}
+                        </Body3>
+                        <Body3 color={Grey3}>
+                          {value.content.split('\n')[2]}
+                        </Body3>
+                      </div>
+                      <Button
+                        text="상담 종료하기"
+                        width="100%"
+                        height="5.2rem"
+                        onClick={sendChatFinishRequest}
+                      />
+                    </EndChatBox>
+                  )}
+                  {value.chatMessageStatus === 'FINISH' && (
+                    <EndChatBox>
+                      <div style={{ paddingBottom: '1.6rem' }}>
+                        <Body3 color={Black}>
+                          {value.counselorNickname + value.content}
+                        </Body3>
+                      </div>
+                      <Button
+                        text="상담 후기 남기기"
+                        width="100%"
+                        height="5.2rem"
+                        onClick={() => {
+                          navigate('/reviewManage');
+                        }}
+                      />
+                    </EndChatBox>
+                  )}
+                </div>
+              );
             }
           })}
         </SectionWrapper>
@@ -697,7 +776,6 @@ export const SellerChatTemp = () => {
                   e.target.style.height = e.target.scrollHeight / 10 + 'rem';
                   if (e.target.scrollHeight / 10 <= 7.3) {
                     sectionPaddingRef.current = e.target.scrollHeight / 10;
-                    console.log(e.target.scrollHeight / 10);
                   }
                 }}
                 onKeyDown={(e) => {
@@ -722,8 +800,13 @@ export const SellerChatTemp = () => {
             </button>
           </div>
         </FooterWrapper>
-        {chatStatus === '상담 대기' && (
-          <ChatStartRequestModal inputHeight={sectionPaddingRef.current} />
+        {(chatStatus === '상담 대기' || chatStatus === '상담 시작 요청') && (
+          <ChatStartRequestModal
+            inputHeight={sectionPaddingRef.current}
+            chatStatus={chatStatus}
+            remainTime={time}
+            onClick={sendChatStartRequest}
+          />
         )}
       </Wrapper>
     );

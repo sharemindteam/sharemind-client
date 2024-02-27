@@ -149,7 +149,7 @@ export type ChatMessage = {
   messageId: number;
   content: string;
   sendTime: string;
-  isCustomer: boolean;
+  isCustomer: boolean | null;
   time: string | null;
 };
 

@@ -57,6 +57,7 @@ export const BuyerChat = () => {
     null,
   );
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
+  const [startRequestActive, setStartRequestActive] = useState<boolean>(true);
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
@@ -210,6 +211,7 @@ export const BuyerChat = () => {
                         ...value,
                         chatMessageStatus: 'START',
                         content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
+                        isCustomer: true,
                       };
                     }
                     return value;
@@ -231,7 +233,7 @@ export const BuyerChat = () => {
                     messageId: 0,
                     content: `${arrivedMessage.counselorNickname}님과의 상담이 만족스러우셨나요? 후기를 남겨주시면 더 나은 서비스를 위해 큰 도움이 되어요.`,
                     sendTime: arrivedMessage.localDateTime,
-                    isCustomer: false,
+                    isCustomer: true,
                     time: null,
                   },
                 ]);
@@ -260,7 +262,7 @@ export const BuyerChat = () => {
                       arrivedMessage.localDateTime,
                     )}`,
                     sendTime: arrivedMessage.localDateTime,
-                    isCustomer: false,
+                    isCustomer: null,
                     time: '',
                   },
                 ]);
@@ -277,7 +279,7 @@ export const BuyerChat = () => {
                     content:
                       '상담 시간이 모두 마무리 되었어요.\n상담이 정상적으로 종료되었다면 상담 종료 버튼을 눌러 주세요.\n*신고접수가 되지 않은 상담 건은 7일 후 자동으로 거래가 확정됩니다.',
                     sendTime: arrivedMessage.localDateTime,
-                    isCustomer: false,
+                    isCustomer: null,
                     time: null,
                   },
                 ]);
@@ -559,13 +561,14 @@ export const BuyerChat = () => {
         )}
         {messages.map((value, index) => {
           let isLastIndex = index === messages.length - 1;
-
-          if (value.isCustomer) {
+          //iscustomer가 true인거 customer message, 시작
+          if (value.isCustomer && value.chatMessageStatus !== 'FINISH') {
             let isTimestampCustomer = true;
             const length = messages.length;
             if (length !== 0 && index !== length - 1) {
               //다음메세지와 시간이 같으면 false
               if (
+                messages[index + 1].chatMessageStatus === 'MESSAGE' &&
                 messages[index + 1].isCustomer &&
                 messages[index + 1].sendTime === value.sendTime
               )
@@ -584,18 +587,38 @@ export const BuyerChat = () => {
                     : null
                 }
               >
-                {isTimestampCustomer ? (
-                  <Caption2 color={Grey3} margin="0 0.8rem 0 0">
-                    {convertMessageTime(value.sendTime)}
-                  </Caption2>
-                ) : null}
-                <CustomerChatBox>
-                  <Body2 color={Grey1}>{formattedMessage(value.content)}</Body2>
-                  <div>{index}</div>
-                </CustomerChatBox>
+                {value.chatMessageStatus === 'MESSAGE' && (
+                  <>
+                    {isTimestampCustomer ? (
+                      <Caption2 color={Grey3} margin="0 0.8rem 0 0">
+                        {convertMessageTime(value.sendTime)}
+                      </Caption2>
+                    ) : null}
+                    <CustomerChatBox>
+                      <Body2 color={Grey1}>
+                        {formattedMessage(value.content)}
+                      </Body2>
+                      <div>{index}</div>
+                    </CustomerChatBox>
+                  </>
+                )}
+                {value.chatMessageStatus === 'START' && (
+                  <AlertCustomerChatBox>
+                    <Caption1 color={Grey3}>
+                      {value.content.split('\n')[0]}
+                    </Caption1>
+                    <Caption2 color={Grey4}>
+                      {convertAMPMToStringYear(value.content.split('\n')[1])}
+                    </Caption2>
+                  </AlertCustomerChatBox>
+                )}
               </div>
             );
-          } else {
+          } else if (
+            // isCustomer false 거나, FINISH(true인데 상대편에서 온걸로 처리)
+            value.isCustomer === false ||
+            value.chatMessageStatus === 'FINISH'
+          ) {
             let isTimestampCounselor = true;
             const length = messages.length;
             if (length !== 0 && index !== length - 1) {
@@ -651,25 +674,48 @@ export const BuyerChat = () => {
                     </StartButton>
                   </CounselorStartRequestBox>
                 )}
-                {value.chatMessageStatus === 'START' && (
-                  <AlertChatBox>
-                    <Caption1 color={Grey3}>
-                      {value.content.split('\n')[0]}
-                    </Caption1>
-                    <Caption2 color={Grey4}>
-                      {convertAMPMToStringYear(value.content.split('\n')[1])}
-                    </Caption2>
-                  </AlertChatBox>
+
+                {value.chatMessageStatus === 'FINISH' && (
+                  <EndChatBox>
+                    <div style={{ paddingBottom: '1.6rem' }}>
+                      <Body3 color={Black}>
+                        {value.counselorNickname + value.content}
+                      </Body3>
+                    </div>
+                    <Button
+                      text="상담 후기 남기기"
+                      width="100%"
+                      height="5.2rem"
+                      onClick={() => {
+                        navigate('/reviewManage');
+                      }}
+                    />
+                  </EndChatBox>
                 )}
+              </div>
+            );
+          } else if (value.isCustomer === null) {
+            return (
+              <div
+                key={value.messageId}
+                className="opponent-box-container"
+                ref={
+                  isLastIndex
+                    ? lastRef
+                    : index === topMsgIndexRef.current
+                    ? topRef
+                    : null
+                }
+              >
                 {value.chatMessageStatus === 'FIVE_MINUTE_LEFT' && (
-                  <AlertChatBox>
+                  <AlertCounselorChatBox>
                     <Caption1 color={Grey3}>
                       {value.content.split('\n')[0]}
                     </Caption1>
                     <Caption2 color={Grey4}>
                       {convertAMPMToString(value.content.split('\n')[1])} 종료
                     </Caption2>
-                  </AlertChatBox>
+                  </AlertCounselorChatBox>
                 )}
                 {value.chatMessageStatus === 'TIME_OVER' && (
                   <EndChatBox>
@@ -689,23 +735,6 @@ export const BuyerChat = () => {
                       width="100%"
                       height="5.2rem"
                       onClick={sendChatFinishRequest}
-                    />
-                  </EndChatBox>
-                )}
-                {value.chatMessageStatus === 'FINISH' && (
-                  <EndChatBox>
-                    <div style={{ paddingBottom: '1.6rem' }}>
-                      <Body3 color={Black}>
-                        {value.counselorNickname + value.content}
-                      </Body3>
-                    </div>
-                    <Button
-                      text="상담 후기 남기기"
-                      width="100%"
-                      height="5.2rem"
-                      onClick={() => {
-                        navigate('/reviewManage');
-                      }}
                     />
                   </EndChatBox>
                 )}
@@ -863,8 +892,16 @@ const CounselorStartRequestBox = styled.div`
   box-sizing: border-box;
   max-width: 23.9rem;
 `;
+const AlertCustomerChatBox = styled.div`
+  width: 100%;
+  padding: 0.4rem 0rem 0.4rem 2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 //opponent box에서 padding 2rem 줘서 align을 위해 padding 추가
-const AlertChatBox = styled.div`
+const AlertCounselorChatBox = styled.div`
   width: 100%;
   padding: 0.4rem 2rem 0.4rem 0;
   box-sizing: border-box;
