@@ -61,13 +61,14 @@ export const BuyerChat = () => {
   const [counselorInfo, setCounselorInfo] = useState<ChatCounselorInfo | null>(
     null,
   );
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
   const stompClient = useRef<CompatClient | null>(null);
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
   const preventScrollRef = useRef(false); // message 변경 시 모바일에서 오버 스크롤로 인해 여러번 불리는 오류 발생, scrollintoview 완료 전까지 observe 막기
-  const isLastElem = useRef(false); //마지막 채팅인지 확인
+  // const isLastElem = useRef(false); //마지막 채팅인지 확인
   const lastRef = useRef<HTMLDivElement>(null); // 마지막 채팅 box ref
   const newMessageRef = useRef(true); // 새로운 메세지인지 이전 메세지 fetch인지
   const topRef = useRef<HTMLDivElement>(null); //top에 와야하는 box
@@ -103,7 +104,6 @@ export const BuyerChat = () => {
         params,
       });
       if (res.status === 200) {
-        console.log(res.data);
         if (res.data.length !== 0) {
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
@@ -126,8 +126,7 @@ export const BuyerChat = () => {
             setMessages(updatedMessages);
           }
         } else {
-          await getCounselorInfo();
-          isLastElem.current = true;
+          setIsLastElem(true);
         }
       } else if (res.response.status === 404) {
         alert('접근 권한이 없거나 존재하지 않는 채팅입니다.');
@@ -393,7 +392,7 @@ export const BuyerChat = () => {
     console.log('관측');
     if (
       entry[0].isIntersecting &&
-      !isLastElem.current &&
+      !isLastElem &&
       !isInitialLoading &&
       preventRef.current &&
       preventScrollRef.current
@@ -408,7 +407,7 @@ export const BuyerChat = () => {
     } else {
       console.log(
         entry[0].isIntersecting,
-        !isLastElem.current,
+        !isLastElem,
         !isInitialLoading,
         preventRef.current,
         preventScrollRef.current,
@@ -428,6 +427,8 @@ export const BuyerChat = () => {
     connectChat();
     //채팅 불러오기
     getChatMessages(0);
+    //
+    getCounselorInfo();
     //관측 가능
     preventRef.current = true;
 
@@ -533,7 +534,7 @@ export const BuyerChat = () => {
             navigate('/consult');
           }}
         />
-        <Heading color={Grey1}>채팅상대이름</Heading>
+        <Heading color={Grey1}>{counselorInfo?.nickname}</Heading>
       </HeaderWrapper>
       <Space width="100%" height="5.2rem" />
       <SectionWrapper
@@ -541,16 +542,16 @@ export const BuyerChat = () => {
         className="chat-section"
       >
         <div className="counselor-info-container">
-          {isLastElem.current && counselorInfo !== null && (
+          {isLastElem && counselorInfo !== null && (
             <ChatCounselorInfoBox info={counselorInfo} />
           )}
         </div>
-        {!isLastElem.current ? (
+        {!isLastElem ? (
           <div
             ref={setTarget}
             style={{
               width: '100%',
-              height: '0.1rem',
+              // height: '0.1rem',
               backgroundColor: 'green',
             }}
           ></div>
@@ -558,7 +559,7 @@ export const BuyerChat = () => {
           <div
             style={{
               width: '100%',
-              height: '0.1rem',
+              // height: '0.1rem',
               backgroundColor: 'pink',
             }}
           ></div>
