@@ -20,7 +20,9 @@ export const getConselorLetters = async (params: any) =>
 //채팅 목록 반환
 export const getChatsCustomers = async (params: any) =>
   await getInstance('/chats/customers', params);
-
+//상담사 사이드 채팅방 정보 반환
+export const getChatsCounselors = async (chatId: string) =>
+  await getInstance(`/chats/counselors/${chatId}`);
 //ChatMessage Controller
 export const getChatMessagesCustomers = async (chatId: string, params: any) =>
   await getInstance(`/chatMessages/customers/${chatId}`, params);

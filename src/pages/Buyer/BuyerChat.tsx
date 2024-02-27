@@ -40,12 +40,7 @@ import {
   convertMessageTime,
 } from 'utils/convertDate';
 import { pending } from 'utils/pending';
-import { useDebounce } from 'hooks/useDebounce';
-import {
-  AppendCategoryType,
-  AppendCategoryTypeUndefined,
-} from 'utils/AppendCategoryType';
-import { TagA2Cartegory } from 'components/Common/TagA2Cartegory';
+
 import { ChatCounselorInfoBox } from 'components/Buyer/BuyerChat/ChatCounselorInfoBox';
 export const BuyerChat = () => {
   const navigate = useNavigate();
@@ -403,6 +398,7 @@ export const BuyerChat = () => {
       // observer.unobserve(entry[0].target);
       console.log(`관측 시작: ${messages[0].messageId}`);
       await getChatMessages(messages[0].messageId);
+      // await pending();
       console.log(`관측 종료: ${messages[0].messageId}`);
       preventRef.current = true;
     } else {
@@ -452,39 +448,39 @@ export const BuyerChat = () => {
     }
   }, [input]);
   // // messages 새로 업데이트 됐을 때 11 index에 해당하는 message top으로
-  // useLayoutEffect(() => {
-  //   //scrollIntoView 완료하기까지 관측 X
-  //   preventScrollRef.current = false;
-  //   if (!newMessageRef.current) {
-  //     topRef.current?.scrollIntoView({ block: 'start' });
-  //   } else {
-  //     lastRef.current?.scrollIntoView({
-  //       block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
-  //     });
-  //   }
-  //   console.log('스크롤 완료');
-  //   //scrollIntoView 완료 후 다시 관측가능
-  //   preventScrollRef.current = true;
-  // }, [messages]);
-
   useLayoutEffect(() => {
-    const handleScroll = async () => {
-      //scrollIntoView 완료하기까지 관측 X
-      preventScrollRef.current = false;
-      if (!newMessageRef.current) {
-        topRef.current?.scrollIntoView({ block: 'start' });
-      } else {
-        lastRef.current?.scrollIntoView({
-          block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
-        });
-      }
-      console.log('스크롤 완료');
-      await pending();
-      //scrollIntoView 완료 후 다시 관측가능
-      preventScrollRef.current = true;
-    };
-    handleScroll();
+    //scrollIntoView 완료하기까지 관측 X
+    preventScrollRef.current = false;
+    if (!newMessageRef.current) {
+      topRef.current?.scrollIntoView({ block: 'start' });
+    } else {
+      lastRef.current?.scrollIntoView({
+        block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
+      });
+    }
+    console.log('스크롤 완료');
+    //scrollIntoView 완료 후 다시 관측가능
+    preventScrollRef.current = true;
   }, [messages]);
+
+  // useLayoutEffect(() => {
+  //   const handleScroll = async () => {
+  //     //scrollIntoView 완료하기까지 관측 X
+  //     preventScrollRef.current = false;
+  //     if (!newMessageRef.current) {
+  //       topRef.current?.scrollIntoView({ block: 'start' });
+  //     } else {
+  //       lastRef.current?.scrollIntoView({
+  //         block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
+  //       });
+  //     }
+  //     console.log('스크롤 완료');
+  //     // await pending();
+  //     //scrollIntoView 완료 후 다시 관측가능
+  //     preventScrollRef.current = true;
+  //   };
+  //   handleScroll();
+  // }, [messages]);
 
   //상담 start request 관련 처리
   useEffect(() => {

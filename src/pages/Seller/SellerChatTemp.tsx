@@ -29,7 +29,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
 import { postReissue } from 'api/post';
-import { getChatMessagesCounselors, getChatMessagesCustomers } from 'api/get';
+import {
+  getChatMessagesCounselors,
+  getChatMessagesCustomers,
+  getChatsCounselors,
+} from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { Space } from 'components/Common/Space';
 import { Button } from 'components/Common/Button';
@@ -40,6 +44,7 @@ import {
   convertMessageTime,
 } from 'utils/convertDate';
 import { pending } from 'utils/pending';
+import { ChatStartRequestModal } from 'components/Seller/SellerChatTemp/ChatStartRequestModal';
 export const SellerChatTemp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -51,6 +56,8 @@ export const SellerChatTemp = () => {
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
   const [time, setTime] = useState<string>('');
+  const [chatStatus, setChatStatus] = useState<string>('');
+  const [opponentName, setOpponentName] = useState<string>('');
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
@@ -132,6 +139,20 @@ export const SellerChatTemp = () => {
     }
   };
 
+  const getCounselorChatStatus = async () => {
+    try {
+      const res: any = await getChatsCounselors(chatId);
+      if (res.status === 200) {
+        console.log(res.data.status);
+        setOpponentName(res.data.opponentNickname);
+        setChatStatus(res.data.status);
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 채팅 아이디입니다.');
+      }
+    } catch (e) {
+      alert(e);
+    }
+  };
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(socket);
@@ -150,7 +171,7 @@ export const SellerChatTemp = () => {
         if (stompClient.current) {
           // 구독
           stompClient.current.subscribe(
-            '/queue/chattings/customers/' + chatId,
+            '/queue/chattings/counselors/' + chatId,
             function (statusUpdate) {
               console.log('Status Update: ', statusUpdate.body);
               const arrivedMessage = JSON.parse(statusUpdate.body);
@@ -162,21 +183,7 @@ export const SellerChatTemp = () => {
               ) {
                 //구매자와 달리 현재 채팅 status를 업데이트하는 방향으로 구현해야할듯
                 //새 메세지 도착으로 분류
-                newMessageRef.current = true;
                 setTime('10:00');
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'SEND_REQUEST',
-                    customerNickname: arrivedMessage.customerNickname,
-                    counselorNickname: arrivedMessage.counselorNickname,
-                    messageId: 0,
-                    content: `${arrivedMessage.customerNickname}님, 지금 바로 상담을 시작할까요?`,
-                    sendTime: '',
-                    isCustomer: false,
-                    time: '',
-                  },
-                ]);
               } else if (
                 arrivedMessage.chatWebsocketStatus ===
                 'CUSTOMER_CHAT_START_RESPONSE'
@@ -219,7 +226,7 @@ export const SellerChatTemp = () => {
           );
           //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
           stompClient.current.subscribe(
-            '/queue/chattings/status/customers/' + chatId,
+            '/queue/chattings/status/counselors/' + chatId,
             function (statusAutoUpdate) {
               console.log('Status Auto Update: ', statusAutoUpdate.body);
               const arrivedMessage = JSON.parse(statusAutoUpdate.body);
@@ -265,13 +272,13 @@ export const SellerChatTemp = () => {
           );
           //에러 핸들링
           stompClient.current.subscribe(
-            '/queue/chattings/exception/customers/' + chatId,
+            '/queue/chattings/exception/counselors/' + chatId,
             function (error) {
               console.log('Error: ', error.body);
             },
           );
           stompClient.current.subscribe(
-            '/queue/chatMessages/customers/' + chatId,
+            '/queue/chatMessages/counselors/' + chatId,
             function (message) {
               //받은 message 정보
               const arrivedMessage = JSON.parse(message.body);
@@ -317,7 +324,7 @@ export const SellerChatTemp = () => {
     }
   };
 
-  const sendChatStartResponse = () => {
+  const sendChatStartRequest = () => {
     if (stompClient.current) {
       stompClient.current.send(
         '/app/api/v1/chat/counselors/' + chatId,
@@ -396,6 +403,8 @@ export const SellerChatTemp = () => {
     connectChat();
     //채팅 불러오기
     getChatMessages(0);
+    //채팅 status, 상대이름 가져오기
+    getCounselorChatStatus();
     //관측 가능
     preventRef.current = true;
     // 언마운트 시에 소켓 연결 해제
@@ -461,7 +470,7 @@ export const SellerChatTemp = () => {
               navigate('/minder/consult');
             }}
           />
-          <Heading color={Grey1}>채팅상대이름</Heading>
+          <Heading color={Grey1}></Heading>
         </HeaderWrapper>
       </>
     );
@@ -474,10 +483,13 @@ export const SellerChatTemp = () => {
               navigate('/minder/consult');
             }}
           />
-          <Heading color={Grey1}>채팅상대이름</Heading>
+          <Heading color={Grey1}>{opponentName}</Heading>
         </HeaderWrapper>
         <Space width="100%" height="5.2rem" />
-        <SectionWrapper inputHeight={sectionPaddingRef.current}>
+        <SectionWrapper
+          inputHeight={sectionPaddingRef.current}
+          isModal={chatStatus === '상담 대기'}
+        >
           {!isLastElem.current ? (
             <div
               ref={setTarget}
@@ -609,7 +621,7 @@ export const SellerChatTemp = () => {
                           시간은 30분입니다.
                         </Body3>
                       </div>
-                      <StartButton onClick={sendChatStartResponse}>
+                      <StartButton onClick={sendChatStartRequest}>
                         <Button1 color={White}>상담 시작하기</Button1>
                         <Button2 color={White}>{time}</Button2>
                       </StartButton>
@@ -685,6 +697,7 @@ export const SellerChatTemp = () => {
                   e.target.style.height = e.target.scrollHeight / 10 + 'rem';
                   if (e.target.scrollHeight / 10 <= 7.3) {
                     sectionPaddingRef.current = e.target.scrollHeight / 10;
+                    console.log(e.target.scrollHeight / 10);
                   }
                 }}
                 onKeyDown={(e) => {
@@ -709,6 +722,9 @@ export const SellerChatTemp = () => {
             </button>
           </div>
         </FooterWrapper>
+        {chatStatus === '상담 대기' && (
+          <ChatStartRequestModal inputHeight={sectionPaddingRef.current} />
+        )}
       </Wrapper>
     );
   }
@@ -716,11 +732,11 @@ export const SellerChatTemp = () => {
 const Wrapper = styled.main`
   height: 100%;
   width: 100%;
+  position: relative;
 `;
 const HeaderWrapper = styled.div<{ border?: boolean }>`
   height: 5.2rem;
   background-color: ${White};
-  position: relative;
   ${(props) =>
     props.border || props.border === undefined
       ? `border-bottom: 1px solid ${Grey6};`
@@ -740,15 +756,27 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
 `;
 //max-height: calc(100% - 13.1rem);
 //height: calc(100% - 13.1rem);
-
-const SectionWrapper = styled.section<{ inputHeight: number }>`
+//모달 있을 경우 추가 padding
+const SectionWrapper = styled.section<{
+  inputHeight: number;
+  isModal: boolean;
+}>`
   display: flex;
   flex-direction: column;
-  padding-bottom: ${(props) => `${props.inputHeight + 4.3}rem`};
+  position: relative;
+  padding-bottom: ${(props) =>
+    props.isModal
+      ? `${props.inputHeight + 20.4}rem`
+      : `${props.inputHeight + 4.3}rem`};
   max-height: calc(
-    100% - 5.2rem - ${(props) => `${props.inputHeight + 4.3}rem`}
+    100% - 5.2rem -
+      ${(props) =>
+        props.isModal
+          ? `${props.inputHeight + 20.4}rem`
+          : `${props.inputHeight + 4.3}rem`}
   );
-  overflow-y: scroll;
+
+  overflow-y: auto;
   .my-box-container {
     display: flex;
     justify-content: flex-end;
@@ -764,6 +792,7 @@ const SectionWrapper = styled.section<{ inputHeight: number }>`
 `;
 const FooterWrapper = styled.footer`
   position: fixed;
+  z-index: 999;
   @media (min-width: 768px) {
     width: 37.5rem;
   }
