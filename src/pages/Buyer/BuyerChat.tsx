@@ -12,7 +12,7 @@ import {
   Caption2,
   Heading,
 } from 'styles/font';
-import { CartegoryState, ChatCounselorInfo, ChatMessage } from 'utils/type';
+import { ChatCounselorInfo, ChatMessage } from 'utils/type';
 import styled from 'styled-components';
 import {
   Black,
@@ -100,7 +100,7 @@ export const BuyerChat = () => {
         params,
       });
       if (res.status === 200) {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.length !== 0) {
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
@@ -145,7 +145,7 @@ export const BuyerChat = () => {
       //마지막에 닿았을 때, 상담사 info 가져옴
       const res: any = await getCounselorsChats(chatId, { params });
       if (res.status === 200) {
-        console.log(res.data);
+        // console.log(res.data);
         setCounselorInfo(res.data);
       } else if (res.response.status === 404) {
         alert(res.response.data.message);
@@ -162,6 +162,7 @@ export const BuyerChat = () => {
     //     stompClient.current.disconnect();
     //     isConnected.current = false;
     //   }
+
     stompClient.current.connect(
       {
         Authorization: localStorage.getItem('accessToken'),
@@ -176,7 +177,7 @@ export const BuyerChat = () => {
             function (statusUpdate) {
               console.log('Status Update: ', statusUpdate.body);
               const arrivedMessage = JSON.parse(statusUpdate.body);
-              console.log(arrivedMessage);
+              // console.log(arrivedMessage);
 
               if (
                 arrivedMessage.chatWebsocketStatus ===
@@ -298,7 +299,7 @@ export const BuyerChat = () => {
             function (message) {
               //받은 message 정보
               const arrivedMessage = JSON.parse(message.body);
-              console.log(arrivedMessage);
+              // console.log(arrivedMessage);
               //새 메세지 도착으로 분류
               newMessageRef.current = true;
               setMessages((prevMessages) => [
@@ -387,7 +388,7 @@ export const BuyerChat = () => {
   //무한스크롤 관련 함수
   //useIntersection에서 unobserve되는지 확인
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    console.log('관측');
+    // console.log('관측');
     if (
       entry[0].isIntersecting &&
       !isLastElem &&
@@ -398,20 +399,21 @@ export const BuyerChat = () => {
       preventRef.current = false;
       preventScrollRef.current = false;
       // observer.unobserve(entry[0].target);
-      console.log(`관측 시작: ${messages[0].messageId}`);
+      // console.log(`관측 시작: ${messages[0].messageId}`);
       await getChatMessages(messages[0].messageId);
       // await pending();
-      console.log(`관측 종료: ${messages[0].messageId}`);
+      // console.log(`관측 종료: ${messages[0].messageId}`);
       preventRef.current = true;
-    } else {
-      console.log(
-        entry[0].isIntersecting,
-        !isLastElem,
-        !isInitialLoading,
-        preventRef.current,
-        preventScrollRef.current,
-      );
     }
+    // else {
+    //   console.log(
+    //     entry[0].isIntersecting,
+    //     !isLastElem,
+    //     !isInitialLoading,
+    //     preventRef.current,
+    //     preventScrollRef.current,
+    //   );
+    // }
   };
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
@@ -434,7 +436,7 @@ export const BuyerChat = () => {
     // 언마운트 시에 소켓 연결 해제
     return () => {
       if (stompClient.current) {
-        console.log('연결해제');
+        // console.log('연결해제');
         stompClient.current.disconnect();
       }
     };
@@ -460,7 +462,7 @@ export const BuyerChat = () => {
         block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
       });
     }
-    console.log('스크롤 완료');
+    // console.log('스크롤 완료');
     //scrollIntoView 완료 후 다시 관측가능
     preventScrollRef.current = true;
   }, [messages]);
@@ -562,6 +564,7 @@ export const BuyerChat = () => {
         {messages.map((value, index) => {
           let isLastIndex = index === messages.length - 1;
           //iscustomer가 true인거 customer message, 시작
+          //finish는 isCustomer true이지만 보이는건 상대 채팅임
           if (value.isCustomer && value.chatMessageStatus !== 'FINISH') {
             let isTimestampCustomer = true;
             const length = messages.length;

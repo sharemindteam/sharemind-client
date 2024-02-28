@@ -47,6 +47,7 @@ import { pending } from 'utils/pending';
 import { ChatStartRequestModal } from 'components/Seller/SellerChatTemp/ChatStartRequestModal';
 import { ChatAlertModal } from 'components/Seller/SellerChatTemp/ChatAlertModal';
 import { BackDrop } from 'components/Common/BackDrop';
+import { ChatReportModal } from 'components/Seller/SellerChatTemp/ChatReportModal';
 export const SellerChatTemp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -104,13 +105,12 @@ export const SellerChatTemp = () => {
         params,
       });
       if (res.status === 200) {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.length !== 0) {
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
           //fetch해온 message 길이
           topMsgIndexRef.current = res.data.length;
-          console.log(topMsgIndexRef.current);
           //메세지 중 start request가 있으면 setTime
           const startRequestIndex = res.data.findIndex(
             (item: any) => item.time !== null,
@@ -148,7 +148,6 @@ export const SellerChatTemp = () => {
     try {
       const res: any = await getChatsCounselors(chatId);
       if (res.status === 200) {
-        console.log(res.data.status);
         setOpponentName(res.data.opponentNickname);
         setChatStatus(res.data.status);
       } else if (res.response.status === 404) {
@@ -180,7 +179,6 @@ export const SellerChatTemp = () => {
             function (statusUpdate) {
               console.log('Status Update: ', statusUpdate.body);
               const arrivedMessage = JSON.parse(statusUpdate.body);
-              console.log(arrivedMessage);
 
               if (
                 arrivedMessage.chatWebsocketStatus ===
@@ -256,7 +254,6 @@ export const SellerChatTemp = () => {
                 arrivedMessage.chatWebsocketStatus === 'CHAT_TIME_OVER'
               ) {
                 setChatStatus('시간 종료');
-                setAlertModalActive(true);
               }
             },
           );
@@ -272,7 +269,6 @@ export const SellerChatTemp = () => {
             function (message) {
               //받은 message 정보
               const arrivedMessage = JSON.parse(message.body);
-              console.log(arrivedMessage);
 
               //새 메세지 도착으로 분류
               newMessageRef.current = true;
@@ -362,13 +358,13 @@ export const SellerChatTemp = () => {
     ) {
       preventRef.current = false;
       // preventScrollRef.current = false;
-      console.log(`관측: ${messages[0].messageId}`);
+      // console.log(`관측: ${messages[0].messageId}`);
       await getChatMessages(messages[0].messageId);
       console.log('fetch 완료');
       // setTimeout(() => {
       //   preventRef.current = true;
       // }, 100);
-      console.log(`관측: ${messages[0].messageId}`);
+      // console.log(`관측: ${messages[0].messageId}`);
       preventRef.current = true;
     }
   };
@@ -392,7 +388,7 @@ export const SellerChatTemp = () => {
     // 언마운트 시에 소켓 연결 해제
     return () => {
       if (stompClient.current) {
-        console.log('연결해제');
+        // console.log('연결해제');
         stompClient.current.disconnect();
       }
     };
@@ -416,7 +412,7 @@ export const SellerChatTemp = () => {
         block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
       });
     }
-    console.log('스크롤 완료');
+    // console.log('스크롤 완료');
     //scrollIntoView 완료 후 다시 관측가능
     // preventScrollRef.current = true;
   }, [messages]);
@@ -616,46 +612,51 @@ export const SellerChatTemp = () => {
             }
           })}
         </SectionWrapper>
-
-        <FooterWrapper>
-          <div className="message-form">
-            <ChatTextareaWrapper>
-              <ChatTextarea
-                rows={1}
-                ref={inputRef}
-                placeholder="메세지"
-                value={input}
-                onChange={(e) => {
-                  setInput(e.target.value);
-                  //textarea 높이 동적할당
-                  e.target.style.height = '2.4rem';
-                  e.target.style.height = e.target.scrollHeight / 10 + 'rem';
-                  if (e.target.scrollHeight / 10 <= 7.3) {
-                    sectionPaddingRef.current = e.target.scrollHeight / 10;
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (e.nativeEvent.isComposing) return; //key 조합 감지
-                  // 모바일 환경이 아닐 때에는 enter로 전송, shift + enter로 줄바꿈
-                  if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                    if (e.key === 'Enter' && e.shiftKey) return;
-                    else if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleSubmit();
+        {chatStatus !== '상담 종료' ? (
+          <FooterWrapper>
+            <div className="message-form">
+              <ChatTextareaWrapper>
+                <ChatTextarea
+                  rows={1}
+                  ref={inputRef}
+                  placeholder="메세지"
+                  value={input}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    //textarea 높이 동적할당
+                    e.target.style.height = '2.4rem';
+                    e.target.style.height = e.target.scrollHeight / 10 + 'rem';
+                    if (e.target.scrollHeight / 10 <= 7.3) {
+                      sectionPaddingRef.current = e.target.scrollHeight / 10;
                     }
-                  }
-                }}
-              />
-            </ChatTextareaWrapper>
-            <button
-              type="submit"
-              style={{ margin: '0', padding: '0' }}
-              onClick={handleSubmit}
-            >
-              <SearchIcon InputValid={inputValid} />
-            </button>
-          </div>
-        </FooterWrapper>
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.nativeEvent.isComposing) return; //key 조합 감지
+                    // 모바일 환경이 아닐 때에는 enter로 전송, shift + enter로 줄바꿈
+                    if (
+                      !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+                    ) {
+                      if (e.key === 'Enter' && e.shiftKey) return;
+                      else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSubmit();
+                      }
+                    }
+                  }}
+                />
+              </ChatTextareaWrapper>
+              <button
+                type="submit"
+                style={{ margin: '0', padding: '0' }}
+                onClick={handleSubmit}
+              >
+                <SearchIcon InputValid={inputValid} />
+              </button>
+            </div>
+          </FooterWrapper>
+        ) : (
+          <ChatReportModal />
+        )}
         {(chatStatus === '상담 대기' || chatStatus === '상담 시작 요청') && (
           <ChatStartRequestModal
             inputHeight={sectionPaddingRef.current}

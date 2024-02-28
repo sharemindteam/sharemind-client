@@ -3,6 +3,7 @@ import React, { SetStateAction } from 'react';
 import styled from 'styled-components';
 import { Green, Grey1, Grey4, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
+import { convertAMPMToStringYear } from 'utils/convertDate';
 
 interface ChatAlertModalProps {
   setAlertModalActive: React.Dispatch<SetStateAction<boolean>>;
@@ -25,7 +26,9 @@ export const ChatAlertModal = ({
             <Body1 color={Grey1}>님과의 상담이 시작되었어요.</Body1>
           </div>
           <div className="chat-alert-modal-row2">
-            <Body3 color={Grey4}>{alertModalTime}</Body3>
+            <Body3 color={Grey4}>
+              {convertAMPMToStringYear(alertModalTime)}
+            </Body3>
           </div>
           <Button
             text="닫기"
@@ -47,7 +50,9 @@ export const ChatAlertModal = ({
             <Body1 color={Grey1}>님과의 상담이 종료되었어요.</Body1>
           </div>
           <div className="chat-alert-modal-row2">
-            <Body3 color={Grey4}>{alertModalTime}</Body3>
+            <Body3 color={Grey4}>
+              {convertAMPMToStringYear(alertModalTime)}
+            </Body3>
           </div>
           <Button
             text="닫기"
