@@ -45,6 +45,8 @@ import {
 } from 'utils/convertDate';
 import { pending } from 'utils/pending';
 import { ChatStartRequestModal } from 'components/Seller/SellerChatTemp/ChatStartRequestModal';
+import { ChatAlertModal } from 'components/Seller/SellerChatTemp/ChatAlertModal';
+import { BackDrop } from 'components/Common/BackDrop';
 export const SellerChatTemp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -58,6 +60,8 @@ export const SellerChatTemp = () => {
   const [time, setTime] = useState<string>('');
   const [chatStatus, setChatStatus] = useState<string>('');
   const [opponentName, setOpponentName] = useState<string>('');
+  const [alertModalActive, setAlertModalActive] = useState<boolean>(false);
+  const [alertModalTime, setAlertModalTime] = useState<string>('');
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
@@ -191,6 +195,8 @@ export const SellerChatTemp = () => {
                 'CUSTOMER_CHAT_START_RESPONSE'
               ) {
                 setChatStatus('상담 중');
+                setAlertModalActive(true);
+                setAlertModalTime(arrivedMessage.localDateTime);
                 //setmodal 해야함
                 setMessages((prevMessages) => [
                   ...prevMessages,
@@ -201,7 +207,7 @@ export const SellerChatTemp = () => {
                     messageId: 0,
                     content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
                     sendTime: arrivedMessage.localDateTime,
-                    isCustomer: false,
+                    isCustomer: true,
                     time: null,
                   },
                 ]);
@@ -209,21 +215,9 @@ export const SellerChatTemp = () => {
                 arrivedMessage.chatWebsocketStatus ===
                 'CUSTOMER_CHAT_FINISH_REQUEST'
               ) {
-                //새 메세지 도착으로 분류
-                newMessageRef.current = true;
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'FINISH',
-                    customerNickname: arrivedMessage.customerNickname,
-                    counselorNickname: arrivedMessage.counselorNickname,
-                    messageId: 0,
-                    content: `${arrivedMessage.counselorNickname}님과의 상담이 만족스러우셨나요? 후기를 남겨주시면 더 나은 서비스를 위해 큰 도움이 되어요.`,
-                    sendTime: arrivedMessage.localDateTime,
-                    isCustomer: false,
-                    time: null,
-                  },
-                ]);
+                setChatStatus('상담 종료');
+                setAlertModalActive(true);
+                setAlertModalTime(arrivedMessage.localDateTime);
               }
             },
           );
@@ -249,7 +243,7 @@ export const SellerChatTemp = () => {
                       arrivedMessage.localDateTime,
                     )}`,
                     sendTime: arrivedMessage.localDateTime,
-                    isCustomer: false,
+                    isCustomer: null,
                     time: '',
                   },
                 ]);
@@ -261,20 +255,8 @@ export const SellerChatTemp = () => {
               } else if (
                 arrivedMessage.chatWebsocketStatus === 'CHAT_TIME_OVER'
               ) {
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'TIME_OVER',
-                    customerNickname: '',
-                    counselorNickname: '',
-                    messageId: 0,
-                    content:
-                      '상담 시간이 모두 마무리 되었어요.\n상담이 정상적으로 종료되었다면 상담 종료 버튼을 눌러 주세요.\n*신고접수가 되지 않은 상담 건은 7일 후 자동으로 거래가 확정됩니다.',
-                    sendTime: arrivedMessage.localDateTime,
-                    isCustomer: false,
-                    time: null,
-                  },
-                ]);
+                setChatStatus('시간 종료');
+                setAlertModalActive(true);
               }
             },
           );
@@ -346,22 +328,13 @@ export const SellerChatTemp = () => {
   const sendChatFinishRequest = () => {
     if (stompClient.current) {
       stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
+        '/app/api/v1/chat/counselors/' + chatId,
         {},
         JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_FINISH_REQUEST' }),
       );
     }
   };
 
-  // const sendConnectRequest = () => {
-  //   if (stompClient.current !== null) {
-  //     stompClient.current.send(
-  //       '/app/api/v1/chat/customers/connect',
-  //       {},
-  //       JSON.stringify({}),
-  //     );
-  //   }
-  // };
   const handleSubmit = () => {
     if (input.trim() !== '') {
       sendMessage();
@@ -523,7 +496,7 @@ export const SellerChatTemp = () => {
           {messages.map((value, index) => {
             let isLastIndex = index === messages.length - 1;
             //my(minder)
-            if (!value.isCustomer) {
+            if (value.isCustomer === false) {
               let isTimestampCustomer = true;
               const length = messages.length;
               if (length !== 0 && index !== length - 1) {
@@ -559,30 +532,8 @@ export const SellerChatTemp = () => {
                         <Body2 color={Grey1}>
                           {formattedMessage(value.content)}
                         </Body2>
-                        <div>{index}</div>
                       </CustomerChatBox>
                     </>
-                  )}
-                  {value.chatMessageStatus === 'START' && (
-                    <AlertChatBox>
-                      <Caption1 color={Grey3}>
-                        {value.content.split('\n')[0]}
-                      </Caption1>
-                      <Caption2 color={Grey4}>
-                        {convertAMPMToStringYear(value.content.split('\n')[1])}
-                      </Caption2>
-                    </AlertChatBox>
-                  )}
-
-                  {value.chatMessageStatus === 'FIVE_MINUTE_LEFT' && (
-                    <AlertChatBox>
-                      <Caption1 color={Grey3}>
-                        {value.content.split('\n')[0]}
-                      </Caption1>
-                      <Caption2 color={Grey4}>
-                        {convertAMPMToString(value.content.split('\n')[1])} 종료
-                      </Caption2>
-                    </AlertChatBox>
                   )}
                 </div>
               );
@@ -617,7 +568,6 @@ export const SellerChatTemp = () => {
                         <Body2 color={Grey1}>
                           {formattedMessage(value.content)}
                         </Body2>
-                        <div>{index}</div>
                       </CounselorChatBox>
                       {isTimestampCounselor ? (
                         <Caption2 color={Grey3} margin="0 0 0 0.8rem">
@@ -626,71 +576,15 @@ export const SellerChatTemp = () => {
                       ) : null}
                     </>
                   )}
-                  {value.chatMessageStatus === 'SEND_REQUEST' && (
-                    <CounselorStartRequestBox>
-                      <div style={{ paddingBottom: '1.6rem' }}>
-                        <Body3 color={Grey1}>
-                          {formattedMessage(value.content)}
-                        </Body3>
-                        <Body3 color={Grey3}>
-                          * 상담 시작하기를 누르시면 상담이 시작되어요. 상담
-                          시간은 30분입니다.
-                        </Body3>
-                      </div>
-                      <StartButton onClick={sendChatStartRequest}>
-                        <Button1 color={White}>상담 시작하기</Button1>
-                        <Button2 color={White}>{time}</Button2>
-                      </StartButton>
-                    </CounselorStartRequestBox>
-                  )}
-
-                  {value.chatMessageStatus === 'FIVE_MINUTE_LEFT' && (
-                    <AlertChatBox>
+                  {value.chatMessageStatus === 'START' && (
+                    <AlertChatBox style={{ paddingRight: '2rem' }}>
                       <Caption1 color={Grey3}>
                         {value.content.split('\n')[0]}
                       </Caption1>
                       <Caption2 color={Grey4}>
-                        {convertAMPMToString(value.content.split('\n')[1])} 종료
+                        {convertAMPMToStringYear(value.content.split('\n')[1])}
                       </Caption2>
                     </AlertChatBox>
-                  )}
-                  {value.chatMessageStatus === 'TIME_OVER' && (
-                    <EndChatBox>
-                      <div style={{ paddingBottom: '1.6rem' }}>
-                        <Body3 color={Grey1}>
-                          {value.content.split('\n')[0]}
-                        </Body3>
-                        <Body3 color={Grey1}>
-                          {value.content.split('\n')[1]}
-                        </Body3>
-                        <Body3 color={Grey3}>
-                          {value.content.split('\n')[2]}
-                        </Body3>
-                      </div>
-                      <Button
-                        text="상담 종료하기"
-                        width="100%"
-                        height="5.2rem"
-                        onClick={sendChatFinishRequest}
-                      />
-                    </EndChatBox>
-                  )}
-                  {value.chatMessageStatus === 'FINISH' && (
-                    <EndChatBox>
-                      <div style={{ paddingBottom: '1.6rem' }}>
-                        <Body3 color={Black}>
-                          {value.counselorNickname + value.content}
-                        </Body3>
-                      </div>
-                      <Button
-                        text="상담 후기 남기기"
-                        width="100%"
-                        height="5.2rem"
-                        onClick={() => {
-                          navigate('/reviewManage');
-                        }}
-                      />
-                    </EndChatBox>
                   )}
                 </div>
               );
@@ -708,7 +602,7 @@ export const SellerChatTemp = () => {
                   }
                 >
                   {value.chatMessageStatus === 'FIVE_MINUTE_LEFT' && (
-                    <AlertChatBox>
+                    <AlertChatBox style={{ paddingRight: '2rem' }}>
                       <Caption1 color={Grey3}>
                         {value.content.split('\n')[0]}
                       </Caption1>
@@ -716,44 +610,6 @@ export const SellerChatTemp = () => {
                         {convertAMPMToString(value.content.split('\n')[1])} 종료
                       </Caption2>
                     </AlertChatBox>
-                  )}
-                  {value.chatMessageStatus === 'TIME_OVER' && (
-                    <EndChatBox>
-                      <div style={{ paddingBottom: '1.6rem' }}>
-                        <Body3 color={Grey1}>
-                          {value.content.split('\n')[0]}
-                        </Body3>
-                        <Body3 color={Grey1}>
-                          {value.content.split('\n')[1]}
-                        </Body3>
-                        <Body3 color={Grey3}>
-                          {value.content.split('\n')[2]}
-                        </Body3>
-                      </div>
-                      <Button
-                        text="상담 종료하기"
-                        width="100%"
-                        height="5.2rem"
-                        onClick={sendChatFinishRequest}
-                      />
-                    </EndChatBox>
-                  )}
-                  {value.chatMessageStatus === 'FINISH' && (
-                    <EndChatBox>
-                      <div style={{ paddingBottom: '1.6rem' }}>
-                        <Body3 color={Black}>
-                          {value.counselorNickname + value.content}
-                        </Body3>
-                      </div>
-                      <Button
-                        text="상담 후기 남기기"
-                        width="100%"
-                        height="5.2rem"
-                        onClick={() => {
-                          navigate('/reviewManage');
-                        }}
-                      />
-                    </EndChatBox>
                   )}
                 </div>
               );
@@ -806,6 +662,29 @@ export const SellerChatTemp = () => {
             chatStatus={chatStatus}
             remainTime={time}
             onClick={sendChatStartRequest}
+          />
+        )}
+        {chatStatus === '시간 종료' && (
+          <ChatStartRequestModal
+            inputHeight={sectionPaddingRef.current}
+            chatStatus={chatStatus}
+            remainTime={time}
+            onClick={sendChatFinishRequest}
+          />
+        )}
+        {alertModalActive ? (
+          <BackDrop
+            onClick={() => {
+              setAlertModalActive(false);
+            }}
+          />
+        ) : null}
+        {alertModalActive && (
+          <ChatAlertModal
+            setAlertModalActive={setAlertModalActive}
+            opponentName={opponentName}
+            chatStatus={chatStatus}
+            alertModalTime={alertModalTime}
           />
         )}
       </Wrapper>
@@ -917,13 +796,7 @@ const CounselorChatBox = styled.div`
   max-width: 27.5rem;
   word-wrap: break-word;
 `;
-const CounselorStartRequestBox = styled.div`
-  background-color: ${White};
-  border-radius: 0 1rem 1rem 1rem;
-  padding: 1.6rem;
-  box-sizing: border-box;
-  max-width: 23.9rem;
-`;
+
 //my box에서 padding 2rem 줘서 align을 위해 padding 추가
 const AlertChatBox = styled.div`
   width: 100%;
@@ -933,24 +806,7 @@ const AlertChatBox = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const EndChatBox = styled.div`
-  background-color: ${White};
-  border-radius: 0 1rem 1rem 1rem;
-  padding: 1.6rem;
-  box-sizing: border-box;
-  max-width: 23.9rem;
-`;
-const StartButton = styled.button`
-  background-color: ${Green};
-  width: 100%;
-  height: 5.2rem;
-  border-radius: 0.8rem;
-  cursor: pointer;
-  display: flex;
-  gap: 0.8rem;
-  justify-content: center;
-  align-items: center;
-`;
+
 const ChatTextareaWrapper = styled.div`
   padding: 1.2rem 0.8rem 1.2rem 1.2rem;
   background-color: ${Grey6};

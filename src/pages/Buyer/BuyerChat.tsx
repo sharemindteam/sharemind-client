@@ -598,7 +598,6 @@ export const BuyerChat = () => {
                       <Body2 color={Grey1}>
                         {formattedMessage(value.content)}
                       </Body2>
-                      <div>{index}</div>
                     </CustomerChatBox>
                   </>
                 )}
@@ -648,7 +647,6 @@ export const BuyerChat = () => {
                       <Body2 color={Grey1}>
                         {formattedMessage(value.content)}
                       </Body2>
-                      <div>{index}</div>
                     </CounselorChatBox>
                     {isTimestampCounselor ? (
                       <Caption2 color={Grey3} margin="0 0 0 0.8rem">

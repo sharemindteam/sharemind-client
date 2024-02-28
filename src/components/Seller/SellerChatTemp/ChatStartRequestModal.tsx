@@ -58,6 +58,28 @@ export const ChatStartRequestModal = ({
         </div>
       </RequestModalWrapper>
     );
+  } else if (chatStatus === '시간 종료') {
+    return (
+      <RequestModalWrapper height={inputHeight}>
+        <div className="bar-wrapper">
+          <BarIcon />
+        </div>
+        <div className="content-wrapper">
+          <Body3 color={Grey3} margin="0 0 1.2rem 0">
+            상담시간이 마무리되었습니다. 상담종료 버튼을 눌러 상담 종료 요청을
+            전할 수 있습니다. 버튼을 누르기 전까지 메시지를 계속 입력할 수
+            있습니다.
+          </Body3>
+          <Button
+            isActive={false}
+            text="셰어가 종료 요청을 확인중이에요"
+            width="100%"
+            height="5.2rem"
+            onClick={onClick}
+          />
+        </div>
+      </RequestModalWrapper>
+    );
   }
 };
 const RequestModalWrapper = styled.div<{ height: number }>`
