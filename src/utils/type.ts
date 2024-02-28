@@ -143,10 +143,23 @@ export interface PaymentInfo {
 //chatting message type
 
 export type ChatMessage = {
+  chatMessageStatus: string;
   customerNickname: string;
   counselorNickname: string;
   messageId: number;
   content: string;
   sendTime: string;
-  isCustomer: boolean;
+  isCustomer: boolean | null;
+  time: string | null;
+};
+
+export type ChatCounselorInfo = {
+  consultCategories: string[];
+  consultStyle: string;
+  counselorId: number;
+  introduction: string;
+  level: number;
+  nickname: string;
+  ratingAverage: number;
+  totalReview: number;
 };

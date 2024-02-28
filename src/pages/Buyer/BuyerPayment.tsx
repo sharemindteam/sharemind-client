@@ -71,7 +71,7 @@ export const BuyerPayment = () => {
     }
   };
   //useIntersection에서 unobserve되는지 확인
-  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
       !isLastElem &&
