@@ -212,7 +212,6 @@ export const SignupVerifyEmail = ({
             ) : (
               <>
                 <Caption2 color={errorMessageColor}>{errorMessage}</Caption2>
-                <Check />
               </>
             )}
           </div>

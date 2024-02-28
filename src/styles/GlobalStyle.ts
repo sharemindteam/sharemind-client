@@ -1,9 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
-import { normalize } from 'styled-normalize';
+// import { normalize } from 'styled-normalize';
 import { isMobile } from 'react-device-detect';
-
+import { reset } from 'styled-reset';
 export const GlobalStyle = createGlobalStyle`
-  ${normalize}
+  ${reset}
   html {
     font-size:10px;
     box-sizing: border-box;

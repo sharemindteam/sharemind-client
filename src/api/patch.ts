@@ -16,9 +16,18 @@ export const patchAdminsPendingProfiles = async (
 //admin 결제 환불 완료 수정
 export const patchAdminsRefundWaiting = async (paymentId: number) =>
   await patchInstance(`/admins/refund-waiting/${paymentId}`);
-//Auth Controller
+
+/*Auth Controller*/
+
 export const patchAuthPassword = async (body: any) =>
   await patchInstance('/auth/password', body);
+//아이디 찾기
+export const patchAuthFindId = async (body: any) =>
+  await patchPublicInstance('/auth/find-id', body);
+//비밀번호 찾기
+export const patchAuthFindPassword = async (body: any) =>
+  await patchPublicInstance('/auth/find-password', body);
+
 //Counselor Controller
 //카테고리/들준마 상담사 리스트 반환
 export const patchCounselorsAll = async (sortType: string, body: any) =>

@@ -41,6 +41,8 @@ export const BuyerLogout = () => {
             onClick={() => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
+              // removeCookie('accessToken');
+              // removeCookie('refreshToken');
               navigate('/mypage');
             }}
           />

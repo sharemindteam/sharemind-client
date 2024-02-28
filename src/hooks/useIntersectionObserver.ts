@@ -28,7 +28,6 @@ const useIntersectionObserver = ({
     );
     //observer 관찰 시작
     observer.observe(target);
-
     //observer 관찰 종료
     return () => observer.unobserve(target);
   }, [onIntersect, root, rootMargin, target, threshold]);

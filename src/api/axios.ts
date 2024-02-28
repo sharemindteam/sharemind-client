@@ -41,22 +41,13 @@ instance.interceptors.response.use(
         } else if (tokenResponse.response.status === 400) {
           alert('로그인 후 이용해 주세요.');
           window.location.href = '/mypage';
-          //나중에 지우고 로그인으로 navigate
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          // if (
-          //   error.response?.status === 404 ||
-          //   error.response?.status === 422
-          // ) {
           alert('로그인 후 이용해 주세요');
-          // } else {
-          //   alert(LOGIN.MESSAGE.ETC);
-          // }
         }
       }
     }
-
     return Promise.reject(error);
   },
 );

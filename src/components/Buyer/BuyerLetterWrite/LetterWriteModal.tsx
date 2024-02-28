@@ -10,24 +10,18 @@ interface LetterWriteModalProps {
   categoryType: number;
   setCategoryType: React.Dispatch<SetStateAction<number>>;
   categoryList: string[];
+  setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
 }
 //상담 카테고리
 export const LetterWriteModal = ({
   categoryType,
   setCategoryType,
   categoryList,
+  setIsModalOpen,
 }: LetterWriteModalProps) => {
   //modal 여부
   const isModalOpen = useRecoilValue(isLetterModalOpenState);
-  //여기서 unmount 시 sortType 바꾸고 새로 request
-  //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
-  const [modalCategoryType, setModalCategoryType] =
-    useState<number>(categoryType);
-  useEffect(() => {
-    return () => {
-      setCategoryType(modalCategoryType);
-    };
-  });
+
   return (
     <Wrapper visible={isModalOpen}>
       <div className="bar-wrapper">
@@ -36,16 +30,17 @@ export const LetterWriteModal = ({
       <Body1 color={Grey1} margin="0 0 1.6rem 2rem">
         상담 카테고리
       </Body1>
-      {categoryList.map((value, index) => {
+      {categoryList.map((_, index) => {
         if (index !== 0) {
           return (
             <div
               className="row"
               onClick={() => {
-                setModalCategoryType(index);
+                setCategoryType(index);
+                setIsModalOpen(false);
               }}
             >
-              {modalCategoryType === index ? (
+              {categoryType === index ? (
                 <>
                   <Body1 color={Green}>{categoryList[index]}</Body1>
                   <CheckIcon />

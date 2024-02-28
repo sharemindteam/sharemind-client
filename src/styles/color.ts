@@ -4,6 +4,7 @@ export const White = '#ffffff';
 //signature
 export const Green = '#12c0b5';
 export const LightGreen = '#ecfaf9';
+export const LightGreenChat = '#c2f3f0';
 export const Red = '#ff8cBd';
 export const LightRed = '#fff6fa';
 //gray scale
