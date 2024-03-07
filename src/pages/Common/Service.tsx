@@ -148,6 +148,7 @@ function Service() {
                     <div className="char">
                       <Characters number={5} />
                     </div>
+                    <div></div>
                     <Heading>썸/연애시작</Heading>
                   </SliderItem>
                   <SliderItem>
@@ -422,9 +423,11 @@ const SharemindLogoIcon = styled.img`
 
 const LeftFigure = styled.img`
   width: calc(100% - 2rem);
+  height: auto;
 `;
 const RightFigure = styled.img`
   width: calc(100% - 2rem);
+  height: auto;
   align-self: flex-end;
 `;
 
