@@ -16,7 +16,6 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   const setIsCustomerState = useSetRecoilState<boolean>(isCustomerState);
   var { pathname } = useLocation();
   const [isGray, setIsGray] = useState(false);
-  
   useEffect(() => {
     // 옯바른 소켓 연결을 위해 경로에 따라 마인더, Seller 구분
     if (pathname.includes('/minder')) {
