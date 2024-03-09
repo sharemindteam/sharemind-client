@@ -163,3 +163,5 @@ export type ChatCounselorInfo = {
   ratingAverage: number;
   totalReview: number;
 };
+
+

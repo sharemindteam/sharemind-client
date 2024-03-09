@@ -4,7 +4,7 @@ const { persistAtom } = recoilPersist();
 
 export const isCustomerState = atom({
   key: 'isCustomerState',
-  default: true,
+  default: false,
 });
 //퍈매 정보 수정 페이지 : 상담 카테고리 선택 모달
 export const isCategoryModalOpenState = atom({
