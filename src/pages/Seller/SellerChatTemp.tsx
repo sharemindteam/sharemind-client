@@ -43,7 +43,6 @@ import {
   convertAMPMToStringYear,
   convertMessageTime,
 } from 'utils/convertDate';
-import { pending } from 'utils/pending';
 import { ChatStartRequestModal } from 'components/Seller/SellerChatTemp/ChatStartRequestModal';
 import { ChatAlertModal } from 'components/Seller/SellerChatTemp/ChatAlertModal';
 import { BackDrop } from 'components/Common/BackDrop';
@@ -360,7 +359,7 @@ export const SellerChatTemp = () => {
       // preventScrollRef.current = false;
       // console.log(`관측: ${messages[0].messageId}`);
       await getChatMessages(messages[0].messageId);
-      console.log('fetch 완료');
+      // console.log('fetch 완료');
       // setTimeout(() => {
       //   preventRef.current = true;
       // }, 100);

@@ -1,6 +1,8 @@
+import SockJs from 'sockjs-client';
+import { CompatClient, Stomp } from '@stomp/stompjs';
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -15,6 +17,7 @@ import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
 import { getChatsCustomers, getLettersCustomers } from 'api/get';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+import { postReissue } from 'api/post';
 interface consultApiObject {
   consultStyle: string;
   id: number;
@@ -49,6 +52,7 @@ export const BuyerConsult = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+
   useLayoutEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
