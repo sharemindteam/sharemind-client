@@ -1,6 +1,11 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 const { persistAtom } = recoilPersist();
+
+export const isCustomerState = atom({
+  key: 'isCustomerState',
+  default: false,
+});
 //퍈매 정보 수정 페이지 : 상담 카테고리 선택 모달
 export const isCategoryModalOpenState = atom({
   key: 'categoryModalOpenState',

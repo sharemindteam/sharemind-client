@@ -28,7 +28,7 @@ function IsStopQuizModal({ setIsStopModalOpen }: IsStopQuizModalProps) {
             <YesButton
               onClick={() => {
                 setIsStopModalOpen(false);
-                navigate('/seller/mypage');
+                navigate('/minder/mypage');
               }}
             >
               중단하기

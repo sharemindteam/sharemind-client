@@ -9,6 +9,7 @@ import { Button } from 'components/Common/Button';
 import { UseInputResult } from 'hooks/useInput';
 import { postSingup } from 'api/post';
 import { SignupValidIcon } from '../Common/SignupValidIcon';
+import { Space } from 'components/Common/Space';
 interface SignupInfoProps {
   idInput: UseInputResult;
   pw: UseInputResult;
@@ -165,6 +166,7 @@ export const SignupInfo = ({
               />
             </div>
           </div>
+          <Space height="0.4rem" />
           <div className="caption">
             {!emailErrorState ? (
               <Caption2 color={Grey4}>
@@ -191,9 +193,10 @@ export const SignupInfo = ({
               textIndent="1rem"
             />
           </div>
+          <Space height="0.4rem" />
           <div className="caption">
             <Caption2 color={phoneCaptionColor}>
-              전화번호는 하이픈(-)을 포함한 10~11자리이어야 합니다.
+              올바른 전화번호 형식에 맞춰 입력해주세요. (010-xxxx-xxxx)
             </Caption2>
             <SignupValidIcon type={phoneIconState} />
           </div>

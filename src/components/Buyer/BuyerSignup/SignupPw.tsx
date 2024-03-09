@@ -9,6 +9,7 @@ import { UseInputResult, useInput } from 'hooks/useInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 import PwInput from 'components/Buyer/Common/PwInput';
+import { Space } from 'components/Common/Space';
 interface SignupPwProps {
   pw: UseInputResult;
   setSignupState: Dispatch<SetStateAction<number>>;
@@ -98,6 +99,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               비밀번호
             </Body1>
+
             <PwInput
               value={pw.value}
               onChange={pw.onChange}
@@ -105,6 +107,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
               height="4.8rem"
             />
           </div>
+          <Space height="0.4rem" />
           <div className="caption">
             <Caption2 color={typeColor}>
               영문, 숫자, 특수문자 중 2종 이상 조합
@@ -127,6 +130,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
               height="4.8rem"
             />
           </div>
+          <Space height="0.4rem" />
           <div className="caption">
             <Caption2 color={correctColor}>비밀번호 일치</Caption2>
             <SignupValidIcon type={correctState} />

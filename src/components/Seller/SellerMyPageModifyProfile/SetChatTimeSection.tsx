@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Black, Green, Grey1, Grey3, Grey4, Grey5 } from 'styles/color';
 import { ReactComponent as CheckIcon2SVG } from 'assets/icons/icon-check2.svg';
@@ -67,8 +67,10 @@ function SetChatTimeSection({
     useRecoilState(isTimeModalOpenState);
   const [isOutPopupOpen, setIsOutPopupOpen] =
     useRecoilState(isOutPopupOpenState);
+  const scrollRef = useRef();
+
   return (
-    <Wrapper>
+    <Wrapper ref={scrollRef}>
       <ScrollContainer>
         {isOutPopupOpen && <IsOutPopup />}
         {isTimeModalOpen && (
@@ -121,7 +123,7 @@ function SetChatTimeSection({
                 isSelected[item] ? (
                   <TimeList>
                     <TimeItem>
-                      <Input height="5rem" isBoxSizing={true} />
+                      <Input height="5rem" isBoxSizing={true} width="100%" />
                       <PlusIcon />
                     </TimeItem>
                   </TimeList>
@@ -195,7 +197,6 @@ function SetChatTimeSection({
 }
 const Wrapper = styled.div`
   background-color: white;
-  height: calc(100vh - 5.3rem);
 `;
 
 const ScrollContainer = styled.div``;
@@ -217,6 +218,7 @@ const DayList = styled.div`
 const DayItem = styled.div`
   display: flex;
   padding: 2.3rem 2rem;
+  background-color: white;
   width: 100%;
   box-sizing: border-box;
 `;

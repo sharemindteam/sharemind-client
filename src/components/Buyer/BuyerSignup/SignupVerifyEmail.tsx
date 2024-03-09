@@ -20,6 +20,7 @@ import { UseInputResult, useInput } from 'hooks/useInput';
 import { postEmails, postEmailsCode } from 'api/post';
 import { BackDrop } from 'components/Common/BackDrop';
 import { SignupModal } from './SignupModal';
+import { Space } from 'components/Common/Space';
 interface SignupVerifyEmailProps {
   idInput: UseInputResult;
   setSignupState: Dispatch<SetStateAction<number>>;
@@ -190,7 +191,7 @@ export const SignupVerifyEmail = ({
                 width="24.3rem"
                 height="4.8rem"
                 padding="0 9.2rem 0 0"
-                textIndent="1rem"
+                textIndent="1.6rem"
               />
               <VerifyButton
                 isActive={idInput.isValid}
@@ -201,6 +202,8 @@ export const SignupVerifyEmail = ({
               </VerifyButton>
             </div>
           </div>
+          <Space height="0.4rem" />
+
           <div className="caption">
             {isEmailError ? (
               <>
@@ -227,6 +230,7 @@ export const SignupVerifyEmail = ({
                   textIndent="1rem"
                 />
               </div>
+              <Space height="0.4rem" />
               <div className="caption">
                 <Caption2 color={Grey1}>남은 시간</Caption2>
                 <Caption1 color={Red}>

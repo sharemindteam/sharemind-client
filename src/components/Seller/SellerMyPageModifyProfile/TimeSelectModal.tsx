@@ -230,6 +230,7 @@ const HourButton = styled.div<{
   font-size: 1.4rem;
   height: 3.4rem;
   justify-content: center;
+  font-family: 'Pretendard';
   align-items: center;
   border-radius: 1.2rem;
 `;

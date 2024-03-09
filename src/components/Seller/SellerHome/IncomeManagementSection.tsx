@@ -1,13 +1,30 @@
 import { ContentTag } from 'pages/Seller/SellerHome';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Black, Green, Grey5, Grey6 } from 'styles/color';
 import { Body1, Heading } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { useNavigate } from 'react-router-dom';
+import { getPaymentsHome } from 'api/get';
 // 섹션 안에서 axios 요청
 export const IncomeManagementSection = () => {
   const navigate = useNavigate();
+  const [revenue, setRevenue] = useState({
+    recent: '0',
+    notYet: '0',
+  });
+  useEffect(() => {
+    const fetchInComeData = async () => {
+      const res: any = await getPaymentsHome();
+      if (res?.status === 200) {
+        setRevenue({
+          recent: res?.data?.month,
+          notYet: res?.data?.total,
+        });
+      }
+    };
+    fetchInComeData();
+  }, []);
   return (
     <>
       <ContentTag
@@ -24,12 +41,14 @@ export const IncomeManagementSection = () => {
         <RecentThirtyDayRevenue>
           <Body1>최근 30일 판매 수익</Body1>
           <Body1 color={Green} margin="0 0 0 auto">
-            0,000 원
+            {revenue?.recent?.toLocaleString()} 원
           </Body1>
         </RecentThirtyDayRevenue>
         <UnsettledAmount>
           <Body1>미정산 금액</Body1>
-          <Body1 margin="0 0 0 auto">0,000 원</Body1>
+          <Body1 margin="0 0 0 auto">
+            {revenue?.notYet.toLocaleString()} 원
+          </Body1>
         </UnsettledAmount>
       </IncomeManagementBoxWrapper>
     </>
