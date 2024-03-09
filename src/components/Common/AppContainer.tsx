@@ -1,10 +1,10 @@
 import { useViewResize } from 'hooks/useViewResize';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
-import { scrollLockState } from 'utils/atom';
+import { isCustomerState, scrollLockState } from 'utils/atom';
 interface AppContainerProps {
   children: React.ReactNode;
 }
@@ -13,9 +13,16 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
   // useTokenRefresh();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
+  const setIsCustomerState = useSetRecoilState<boolean>(isCustomerState);
   var { pathname } = useLocation();
   const [isGray, setIsGray] = useState(false);
   useEffect(() => {
+    // 옯바른 소켓 연결을 위해 경로에 따라 마인더, Seller 구분
+    if (pathname.includes('/minder')) {
+      setIsCustomerState(false);
+    } else {
+      setIsCustomerState(true);
+    }
     if (
       pathname === '/minder/mypage/viewProfile' ||
       pathname === '/minder/mypage' ||

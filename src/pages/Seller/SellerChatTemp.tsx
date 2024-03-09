@@ -95,7 +95,7 @@ export const SellerChatTemp = () => {
       navigate('/mypage');
     }
   };
-  //getChatMessages로 스크롤 시 계속 업데이트
+  //getChatMessages로 스크롤 시 계속 업데이트 
   const getChatMessages = async (firstMessageId: number) => {
     try {
       const params = {
