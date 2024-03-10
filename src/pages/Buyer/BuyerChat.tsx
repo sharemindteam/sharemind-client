@@ -183,7 +183,6 @@ export const BuyerChat = () => {
                 arrivedMessage.chatWebsocketStatus ===
                 'COUNSELOR_CHAT_START_REQUEST'
               ) {
-                console.log(messages);
                 //새 메세지 도착으로 분류
                 newMessageRef.current = true;
                 setTime('10:00');
@@ -379,7 +378,7 @@ export const BuyerChat = () => {
   };
   //모바일에서 터치가 일어나면 키보드 숨김
   const handleTouchStart = (e: any) => {
-    if (!e.target.closest('footer')) {
+    if (!e.target.closest('foooter')) {
       // 터치 이벤트가 textarea 바깥에서 발생하면 키보드를 숨깁니다.
       inputRef.current?.blur();
     }
