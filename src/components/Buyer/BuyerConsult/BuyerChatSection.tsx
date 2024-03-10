@@ -1,13 +1,7 @@
 import styled from 'styled-components';
 
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { consultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getChatsCustomers } from 'api/get';
 import { useStompContext } from 'contexts/StompContext';
@@ -17,26 +11,35 @@ import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 interface BuyerChatSectionProps {
   sortType: number;
   isChecked: boolean;
-  isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 export const BuyerChatSection = ({
   sortType,
   isChecked,
-  isLoading,
-  setIsLoading,
 }: BuyerChatSectionProps) => {
   const [cardData, setCardData] = useState<consultApiObject[]>([]); //card에 넘길 데이터
-  const [roomIds, setRoomIds] = useState<number[]>([]);
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const roomIdsRef = useRef<number[]>([]);
+  /* non-react callback은 static copy of the state만 본다고한다.
+   * 따라서 useRef로 함께 관리한다
+   * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
+   */
+  const cardDataRef = useRef<consultApiObject[]>([]);
   const { stompClient } = useStompContext();
   //채팅 readId, 가장 최근 unread message, 정렬 업데이트
   const updateChatData = (chatId: number, content: string) => {
-    const targetIndex = cardData.findIndex((item) => item.id === chatId);
-    console.log(targetIndex);
-    const updatedCardData = [...cardData];
-    updatedCardData[targetIndex].latestMessageContent = content;
-    setCardData(updatedCardData);
+    const targetIndex = cardDataRef.current.findIndex(
+      (item) => item.id === chatId,
+    );
+
+    if (targetIndex !== -1) {
+      const updatedCardData = [...cardDataRef.current];
+      updatedCardData[targetIndex].latestMessageContent = content;
+      const targetElement = updatedCardData.splice(targetIndex, 1)[0];
+      updatedCardData.unshift(targetElement);
+      setCardData(updatedCardData);
+    }
   };
 
   useEffect(() => {
@@ -51,14 +54,15 @@ export const BuyerChatSection = ({
         (rooms) => {
           const response = JSON.parse(rooms.body);
           // console.log(response);
-          setRoomIds(response.roomIds);
+          roomIdsRef.current = response.roomIds;
+
           response.roomIds.forEach((chatId: number) => {
             //모든 채팅방 subscribe
             stompClient.current?.subscribe(
               '/queue/chatMessages/counselors/' + chatId,
               (message) => {
                 const response = JSON.parse(message.body);
-                // console.log(response);
+                console.log(response);
                 updateChatData(chatId, response.content);
               },
             );
@@ -66,6 +70,7 @@ export const BuyerChatSection = ({
         },
       );
     }
+
     const sendConnectRequest = () => {
       if (stompClient.current) {
         stompClient.current.send(
@@ -79,7 +84,7 @@ export const BuyerChatSection = ({
     sendConnectRequest();
 
     return () => {
-      roomIds.forEach((value) => {
+      roomIdsRef.current?.forEach((value) => {
         if (stompClient.current) {
           stompClient.current.unsubscribe(
             '/queue/chattings/connect/customers/' + value,
@@ -105,6 +110,7 @@ export const BuyerChatSection = ({
         };
         const res: any = await getChatsCustomers({ params });
         if (res.status === 200) {
+          cardDataRef.current = res.data;
           setCardData(res.data);
         } else if (res.response.status === 404) {
           alert('존재하지 않는 정렬 방식입니다.');
@@ -139,6 +145,7 @@ export const BuyerChatSection = ({
           {cardData.map((value) => {
             return (
               <ConsultCard
+                key={value.id}
                 consultStyle={value.consultStyle}
                 id={value.id}
                 latestMessageContent={value.latestMessageContent}
@@ -156,10 +163,12 @@ export const BuyerChatSection = ({
         </BuyerChatSectionWrapper>
       );
     } else {
-      <EmptyWrapper>
-        <EmptyIcon />
-        <Heading>아직 진행한 상담이 없어요</Heading>
-      </EmptyWrapper>;
+      return (
+        <EmptyWrapper>
+          <EmptyIcon />
+          <Heading>아직 진행한 상담이 없어요</Heading>
+        </EmptyWrapper>
+      );
     }
   }
 };

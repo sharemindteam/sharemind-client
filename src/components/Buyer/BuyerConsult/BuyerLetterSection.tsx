@@ -1,25 +1,22 @@
 import styled from 'styled-components';
 
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
-import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { consultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getLettersCustomers } from 'api/get';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 interface BuyerLetterSectionProps {
   sortType: number;
   isChecked: boolean;
-  isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 export const BuyerLetterSection = ({
   sortType,
   isChecked,
-  isLoading,
-  setIsLoading,
 }: BuyerLetterSectionProps) => {
   const [cardData, setCardData] = useState<consultApiObject[]>([]); //card에 넘길 데이터
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useLayoutEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);

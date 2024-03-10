@@ -40,7 +40,6 @@ export const BuyerConsult = () => {
     isConsultModalOpenState,
   ); // Modal 여부(recoil)
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const setScrollLock = useSetRecoilState(scrollLockState);
 
   return (
@@ -100,19 +99,9 @@ export const BuyerConsult = () => {
         </div>
       </div>
       {isLetter ? (
-        <BuyerLetterSection
-          sortType={sortType}
-          isChecked={isChecked}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
+        <BuyerLetterSection sortType={sortType} isChecked={isChecked} />
       ) : (
-        <BuyerChatSection
-          sortType={sortType}
-          isChecked={isChecked}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
+        <BuyerChatSection sortType={sortType} isChecked={isChecked} />
       )}
       {isModalOpen ? (
         <>
