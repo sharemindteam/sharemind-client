@@ -42,6 +42,7 @@ import {
 import { pending } from 'utils/pending';
 
 import { ChatCounselorInfoBox } from 'components/Buyer/BuyerChat/ChatCounselorInfoBox';
+import { useStompContext } from 'contexts/StompContext';
 export const BuyerChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -61,7 +62,8 @@ export const BuyerChat = () => {
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
-  const stompClient = useRef<CompatClient | null>(null);
+
+  const { stompClient } = useStompContext();
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
   const preventScrollRef = useRef(false); // message 변경 시 모바일에서 오버 스크롤로 인해 여러번 불리는 오류 발생, scrollintoview 완료 전까지 observe 막기
   // const isLastElem = useRef(false); //마지막 채팅인지 확인
@@ -69,27 +71,7 @@ export const BuyerChat = () => {
   const newMessageRef = useRef(true); // 새로운 메세지인지 이전 메세지 fetch인지
   const topRef = useRef<HTMLDivElement>(null); //top에 와야하는 box
   const topMsgIndexRef = useRef<number>(0); //top index ref, fetch해온 배열이 꼭 11이 아닐 수 있기 때문에 fetch 시 변경
-  const isConnected = useRef(false);
 
-  const reissueToken = async () => {
-    try {
-      const tokenResponse: any = await postReissue({
-        refreshToken: localStorage.getItem('refreshToken'),
-      });
-      if (tokenResponse.status === 200) {
-        const { accessToken, refreshToken } = tokenResponse.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        connectChat();
-      } else if (tokenResponse.response.status === 400) {
-        alert('로그인 후 이용해 주세요.');
-        navigate('/mypage');
-      }
-    } catch (error) {
-      alert('로그인 후 이용해 주세요.');
-      navigate('/mypage');
-    }
-  };
   //getChatMessages로 스크롤 시 계속 업데이트
   const getChatMessages = async (firstMessageId: number) => {
     try {
@@ -155,180 +137,154 @@ export const BuyerChat = () => {
     }
   };
   const connectChat = () => {
-    const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
-    stompClient.current = Stomp.over(socket);
-
     //   if (isConnected.current) {
     //     stompClient.current.disconnect();
     //     isConnected.current = false;
     //   }
 
-    stompClient.current.connect(
-      {
-        Authorization: localStorage.getItem('accessToken'),
-        isCustomer: true,
-      },
-      (frame: any) => {
-        console.log('Connected: ' + frame);
-        if (stompClient.current) {
-          // 구독
-          stompClient.current.subscribe(
-            '/queue/chattings/customers/' + chatId,
-            function (statusUpdate) {
-              console.log('Status Update: ', statusUpdate.body);
-              const arrivedMessage = JSON.parse(statusUpdate.body);
-              // console.log(arrivedMessage);
+    if (stompClient.current) {
+      // 구독
+      stompClient.current.subscribe(
+        '/queue/chattings/customers/' + chatId,
+        function (statusUpdate) {
+          console.log('Status Update: ', statusUpdate.body);
+          const arrivedMessage = JSON.parse(statusUpdate.body);
+          // console.log(arrivedMessage);
 
-              if (
-                arrivedMessage.chatWebsocketStatus ===
-                'COUNSELOR_CHAT_START_REQUEST'
-              ) {
-                //새 메세지 도착으로 분류
-                newMessageRef.current = true;
-                setTime('10:00');
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'SEND_REQUEST',
-                    customerNickname: arrivedMessage.customerNickname,
-                    counselorNickname: arrivedMessage.counselorNickname,
-                    messageId: 0,
-                    content: `${arrivedMessage.customerNickname}님, 지금 바로 상담을 시작할까요?`,
-                    sendTime: '',
-                    isCustomer: false,
-                    time: '',
-                  },
-                ]);
-              } else if (
-                arrivedMessage.chatWebsocketStatus ===
-                'CUSTOMER_CHAT_START_RESPONSE'
-              ) {
-                setMessages((prevMessages) => {
-                  const updatedMessages = prevMessages.map((value) => {
-                    // chatMessageStatus가 "SEND_REQUEST"인 경우에만 처리합니다.
-                    if (value.chatMessageStatus === 'SEND_REQUEST') {
-                      return {
-                        ...value,
-                        chatMessageStatus: 'START',
-                        content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
-                        isCustomer: true,
-                      };
-                    }
-                    return value;
-                  });
-                  return updatedMessages;
-                });
-              } else if (
-                arrivedMessage.chatWebsocketStatus ===
-                'CUSTOMER_CHAT_FINISH_REQUEST'
-              ) {
-                //새 메세지 도착으로 분류
-                newMessageRef.current = true;
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'FINISH',
-                    customerNickname: arrivedMessage.customerNickname,
-                    counselorNickname: arrivedMessage.counselorNickname,
-                    messageId: 0,
-                    content: `${arrivedMessage.counselorNickname}님과의 상담이 만족스러우셨나요? 후기를 남겨주시면 더 나은 서비스를 위해 큰 도움이 되어요.`,
-                    sendTime: arrivedMessage.localDateTime,
+          if (
+            arrivedMessage.chatWebsocketStatus ===
+            'COUNSELOR_CHAT_START_REQUEST'
+          ) {
+            //새 메세지 도착으로 분류
+            newMessageRef.current = true;
+            setTime('10:00');
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                chatMessageStatus: 'SEND_REQUEST',
+                customerNickname: arrivedMessage.customerNickname,
+                counselorNickname: arrivedMessage.counselorNickname,
+                messageId: 0,
+                content: `${arrivedMessage.customerNickname}님, 지금 바로 상담을 시작할까요?`,
+                sendTime: '',
+                isCustomer: false,
+                time: '',
+              },
+            ]);
+          } else if (
+            arrivedMessage.chatWebsocketStatus ===
+            'CUSTOMER_CHAT_START_RESPONSE'
+          ) {
+            setMessages((prevMessages) => {
+              const updatedMessages = prevMessages.map((value) => {
+                // chatMessageStatus가 "SEND_REQUEST"인 경우에만 처리합니다.
+                if (value.chatMessageStatus === 'SEND_REQUEST') {
+                  return {
+                    ...value,
+                    chatMessageStatus: 'START',
+                    content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
                     isCustomer: true,
-                    time: null,
-                  },
-                ]);
-              }
+                  };
+                }
+                return value;
+              });
+              return updatedMessages;
+            });
+          } else if (
+            arrivedMessage.chatWebsocketStatus ===
+            'CUSTOMER_CHAT_FINISH_REQUEST'
+          ) {
+            //새 메세지 도착으로 분류
+            newMessageRef.current = true;
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                chatMessageStatus: 'FINISH',
+                customerNickname: arrivedMessage.customerNickname,
+                counselorNickname: arrivedMessage.counselorNickname,
+                messageId: 0,
+                content: `${arrivedMessage.counselorNickname}님과의 상담이 만족스러우셨나요? 후기를 남겨주시면 더 나은 서비스를 위해 큰 도움이 되어요.`,
+                sendTime: arrivedMessage.localDateTime,
+                isCustomer: true,
+                time: null,
+              },
+            ]);
+          }
+        },
+      );
+      //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
+      stompClient.current.subscribe(
+        '/queue/chattings/status/customers/' + chatId,
+        function (statusAutoUpdate) {
+          console.log('Status Auto Update: ', statusAutoUpdate.body);
+          const arrivedMessage = JSON.parse(statusAutoUpdate.body);
+          //새 메세지 도착으로 분류
+          newMessageRef.current = true;
+          if (arrivedMessage.chatWebsocketStatus === 'CHAT_LEFT_FIVE_MINUTE') {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                chatMessageStatus: 'FIVE_MINUTE_LEFT',
+                customerNickname: '',
+                counselorNickname: '',
+                messageId: 0,
+                content: `상담 종료까지 5분 남았어요.\n${calculateTimeAfterFiveMinutes(
+                  arrivedMessage.localDateTime,
+                )}`,
+                sendTime: arrivedMessage.localDateTime,
+                isCustomer: null,
+                time: '',
+              },
+            ]);
+          } else if (arrivedMessage.chatWebsocketStatus === 'CHAT_TIME_OVER') {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                chatMessageStatus: 'TIME_OVER',
+                customerNickname: '',
+                counselorNickname: '',
+                messageId: 0,
+                content:
+                  '상담 시간이 모두 마무리 되었어요.\n상담이 정상적으로 종료되었다면 상담 종료 버튼을 눌러 주세요.\n*신고접수가 되지 않은 상담 건은 7일 후 자동으로 거래가 확정됩니다.',
+                sendTime: arrivedMessage.localDateTime,
+                isCustomer: null,
+                time: null,
+              },
+            ]);
+          }
+        },
+      );
+      //에러 핸들링
+      stompClient.current.subscribe(
+        '/queue/chattings/exception/customers/' + chatId,
+        function (error) {
+          console.log('Error: ', error.body);
+        },
+      );
+      stompClient.current.subscribe(
+        '/queue/chatMessages/customers/' + chatId,
+        function (message) {
+          //받은 message 정보
+          const arrivedMessage = JSON.parse(message.body);
+          // console.log(arrivedMessage);
+          //새 메세지 도착으로 분류
+          newMessageRef.current = true;
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              chatMessageStatus: 'MESSAGE',
+              customerNickname: arrivedMessage.senderName,
+              counselorNickname: '',
+              messageId: 0,
+              content: arrivedMessage.content,
+              sendTime: arrivedMessage.sendTime,
+              isCustomer: arrivedMessage.isCustomer,
+              time: arrivedMessage.time,
             },
-          );
-          //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
-          stompClient.current.subscribe(
-            '/queue/chattings/status/customers/' + chatId,
-            function (statusAutoUpdate) {
-              console.log('Status Auto Update: ', statusAutoUpdate.body);
-              const arrivedMessage = JSON.parse(statusAutoUpdate.body);
-              //새 메세지 도착으로 분류
-              newMessageRef.current = true;
-              if (
-                arrivedMessage.chatWebsocketStatus === 'CHAT_LEFT_FIVE_MINUTE'
-              ) {
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'FIVE_MINUTE_LEFT',
-                    customerNickname: '',
-                    counselorNickname: '',
-                    messageId: 0,
-                    content: `상담 종료까지 5분 남았어요.\n${calculateTimeAfterFiveMinutes(
-                      arrivedMessage.localDateTime,
-                    )}`,
-                    sendTime: arrivedMessage.localDateTime,
-                    isCustomer: null,
-                    time: '',
-                  },
-                ]);
-              } else if (
-                arrivedMessage.chatWebsocketStatus === 'CHAT_TIME_OVER'
-              ) {
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'TIME_OVER',
-                    customerNickname: '',
-                    counselorNickname: '',
-                    messageId: 0,
-                    content:
-                      '상담 시간이 모두 마무리 되었어요.\n상담이 정상적으로 종료되었다면 상담 종료 버튼을 눌러 주세요.\n*신고접수가 되지 않은 상담 건은 7일 후 자동으로 거래가 확정됩니다.',
-                    sendTime: arrivedMessage.localDateTime,
-                    isCustomer: null,
-                    time: null,
-                  },
-                ]);
-              }
-            },
-          );
-          //에러 핸들링
-          stompClient.current.subscribe(
-            '/queue/chattings/exception/customers/' + chatId,
-            function (error) {
-              console.log('Error: ', error.body);
-            },
-          );
-          stompClient.current.subscribe(
-            '/queue/chatMessages/customers/' + chatId,
-            function (message) {
-              //받은 message 정보
-              const arrivedMessage = JSON.parse(message.body);
-              // console.log(arrivedMessage);
-              //새 메세지 도착으로 분류
-              newMessageRef.current = true;
-              setMessages((prevMessages) => [
-                ...prevMessages,
-                {
-                  chatMessageStatus: 'MESSAGE',
-                  customerNickname: arrivedMessage.senderName,
-                  counselorNickname: '',
-                  messageId: 0,
-                  content: arrivedMessage.content,
-                  sendTime: arrivedMessage.sendTime,
-                  isCustomer: arrivedMessage.isCustomer,
-                  time: arrivedMessage.time,
-                },
-              ]);
-            },
-          );
-        }
-      },
-      (error: any) => {
-        if (error.headers.message === 'UNAUTHORIZED') {
-          reissueToken();
-        } else {
-          alert(error);
-          navigate('/consult');
-        }
-      },
-    );
-
-    stompClient.current.reconnect_delay = 100;
+          ]);
+        },
+      );
+    }
   };
   const sendMessage = () => {
     if (stompClient.current) {

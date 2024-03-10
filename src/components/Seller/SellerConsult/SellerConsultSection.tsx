@@ -13,13 +13,11 @@ import {
 } from 'utils/atom';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { useNavigate } from 'react-router-dom';
-import { getChats, getChatsMinder, getConselorLetters } from 'api/get';
+import { getChatsMinder, getConselorLetters } from 'api/get';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
 import { ConsultInfoList } from 'utils/type';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
-import { Skeleton } from '@mui/material';
-import ConsultCardSkeleton from 'components/Skeleton/ConsultCardSkeleton';
 
 interface ConsultTypeProps {
   isActive: boolean;

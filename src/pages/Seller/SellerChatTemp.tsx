@@ -1,21 +1,8 @@
-// import { useState } from 'react';
-import SockJs from 'sockjs-client';
-// import * as StompJs from '@stomp/stompjs';
-import { CompatClient, Stomp } from '@stomp/stompjs';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import {
-  Body2,
-  Body3,
-  Button1,
-  Button2,
-  Caption1,
-  Caption2,
-  Heading,
-} from 'styles/font';
+import { Body2, Caption1, Caption2, Heading } from 'styles/font';
 import { ChatMessage } from 'utils/type';
 import styled from 'styled-components';
 import {
-  Black,
   Green,
   Grey1,
   Grey3,
@@ -28,12 +15,7 @@ import { BackIcon } from 'components/Buyer/Common/Header';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
-import { postReissue } from 'api/post';
-import {
-  getChatMessagesCounselors,
-  getChatMessagesCustomers,
-  getChatsCounselors,
-} from 'api/get';
+import { getChatMessagesCounselors, getChatsCounselors } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { Space } from 'components/Common/Space';
 import { Button } from 'components/Common/Button';
@@ -47,6 +29,7 @@ import { ChatStartRequestModal } from 'components/Seller/SellerChatTemp/ChatStar
 import { ChatAlertModal } from 'components/Seller/SellerChatTemp/ChatAlertModal';
 import { BackDrop } from 'components/Common/BackDrop';
 import { ChatReportModal } from 'components/Seller/SellerChatTemp/ChatReportModal';
+import { useStompContext } from 'contexts/StompContext';
 export const SellerChatTemp = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -65,7 +48,8 @@ export const SellerChatTemp = () => {
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
-  const stompClient = useRef<CompatClient | null>(null);
+
+  const { stompClient } = useStompContext();
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
   const preventScrollRef = useRef(true); // message 변경 시 모바일에서 오버 스크롤로 인해 여러번 불리는 오류 발생, scrollintoview 완료 전까지 observe 막기
   const isLastElem = useRef(false); //마지막 채팅인지 확인
@@ -73,28 +57,8 @@ export const SellerChatTemp = () => {
   const newMessageRef = useRef(true); // 새로운 메세지인지 이전 메세지 fetch인지
   const topRef = useRef<HTMLDivElement>(null); //top에 와야하는 box
   const topMsgIndexRef = useRef<number>(0); //top index ref, fetch해온 배열이 꼭 11이 아닐 수 있기 때문에 fetch 시 변경
-  const isConnected = useRef(false);
 
-  const reissueToken = async () => {
-    try {
-      const tokenResponse: any = await postReissue({
-        refreshToken: localStorage.getItem('refreshToken'),
-      });
-      if (tokenResponse.status === 200) {
-        const { accessToken, refreshToken } = tokenResponse.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        connectChat();
-      } else if (tokenResponse.response.status === 400) {
-        alert('로그인 후 이용해 주세요.');
-        navigate('/mypage');
-      }
-    } catch (error) {
-      alert('로그인 후 이용해 주세요.');
-      navigate('/mypage');
-    }
-  };
-  //getChatMessages로 스크롤 시 계속 업데이트 
+  //getChatMessages로 스크롤 시 계속 업데이트
   const getChatMessages = async (firstMessageId: number) => {
     try {
       const params = {
@@ -157,148 +121,117 @@ export const SellerChatTemp = () => {
     }
   };
   const connectChat = () => {
-    const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
-    stompClient.current = Stomp.over(socket);
+    if (stompClient.current) {
+      // 구독
+      stompClient.current.subscribe(
+        '/queue/chattings/counselors/' + chatId,
+        function (statusUpdate) {
+          console.log('Status Update: ', statusUpdate.body);
+          const arrivedMessage = JSON.parse(statusUpdate.body);
 
-    //   if (isConnected.current) {
-    //     stompClient.current.disconnect();
-    //     isConnected.current = false;
-    //   }
-    stompClient.current.connect(
-      {
-        Authorization: localStorage.getItem('accessToken'),
-        isCustomer: false,
-      },
-      (frame: any) => {
-        console.log('Connected: ' + frame);
-        if (stompClient.current) {
-          // 구독
-          stompClient.current.subscribe(
-            '/queue/chattings/counselors/' + chatId,
-            function (statusUpdate) {
-              console.log('Status Update: ', statusUpdate.body);
-              const arrivedMessage = JSON.parse(statusUpdate.body);
+          if (
+            arrivedMessage.chatWebsocketStatus ===
+            'COUNSELOR_CHAT_START_REQUEST'
+          ) {
+            //구매자와 달리 현재 채팅 status를 업데이트하는 방향으로 구현해야할듯
+            //새 메세지 도착으로 분류
+            setTime('10:00');
+            setChatStatus('상담 시작 요청');
+          } else if (
+            arrivedMessage.chatWebsocketStatus ===
+            'CUSTOMER_CHAT_START_RESPONSE'
+          ) {
+            setChatStatus('상담 중');
+            setAlertModalActive(true);
+            setAlertModalTime(arrivedMessage.localDateTime);
+            //setmodal 해야함
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                chatMessageStatus: 'START',
+                customerNickname: arrivedMessage.customerNickname,
+                counselorNickname: arrivedMessage.counselorNickname,
+                messageId: 0,
+                content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
+                sendTime: arrivedMessage.localDateTime,
+                isCustomer: true,
+                time: null,
+              },
+            ]);
+          } else if (
+            arrivedMessage.chatWebsocketStatus ===
+            'CUSTOMER_CHAT_FINISH_REQUEST'
+          ) {
+            setChatStatus('상담 종료');
+            setAlertModalActive(true);
+            setAlertModalTime(arrivedMessage.localDateTime);
+          }
+        },
+      );
+      //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
+      stompClient.current.subscribe(
+        '/queue/chattings/status/counselors/' + chatId,
+        function (statusAutoUpdate) {
+          console.log('Status Auto Update: ', statusAutoUpdate.body);
+          const arrivedMessage = JSON.parse(statusAutoUpdate.body);
+          //새 메세지 도착으로 분류
+          newMessageRef.current = true;
+          if (arrivedMessage.chatWebsocketStatus === 'CHAT_LEFT_FIVE_MINUTE') {
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              {
+                chatMessageStatus: 'FIVE_MINUTE_LEFT',
+                customerNickname: '',
+                counselorNickname: '',
+                messageId: 0,
+                content: `상담 종료까지 5분 남았어요.\n${calculateTimeAfterFiveMinutes(
+                  arrivedMessage.localDateTime,
+                )}`,
+                sendTime: arrivedMessage.localDateTime,
+                isCustomer: null,
+                time: '',
+              },
+            ]);
+          } else if (
+            arrivedMessage.chatWebsocketStatus === 'CHAT_START_REQUEST_CANCEL'
+          ) {
+            setChatStatus('상담 대기');
+          } else if (arrivedMessage.chatWebsocketStatus === 'CHAT_TIME_OVER') {
+            setChatStatus('시간 종료');
+          }
+        },
+      );
+      //에러 핸들링
+      stompClient.current.subscribe(
+        '/queue/chattings/exception/counselors/' + chatId,
+        function (error) {
+          console.log('Error: ', error.body);
+        },
+      );
+      stompClient.current.subscribe(
+        '/queue/chatMessages/counselors/' + chatId,
+        function (message) {
+          //받은 message 정보
+          const arrivedMessage = JSON.parse(message.body);
 
-              if (
-                arrivedMessage.chatWebsocketStatus ===
-                'COUNSELOR_CHAT_START_REQUEST'
-              ) {
-                //구매자와 달리 현재 채팅 status를 업데이트하는 방향으로 구현해야할듯
-                //새 메세지 도착으로 분류
-                setTime('10:00');
-                setChatStatus('상담 시작 요청');
-              } else if (
-                arrivedMessage.chatWebsocketStatus ===
-                'CUSTOMER_CHAT_START_RESPONSE'
-              ) {
-                setChatStatus('상담 중');
-                setAlertModalActive(true);
-                setAlertModalTime(arrivedMessage.localDateTime);
-                //setmodal 해야함
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'START',
-                    customerNickname: arrivedMessage.customerNickname,
-                    counselorNickname: arrivedMessage.counselorNickname,
-                    messageId: 0,
-                    content: `상담이 시작되었어요.\n${arrivedMessage.localDateTime}`,
-                    sendTime: arrivedMessage.localDateTime,
-                    isCustomer: true,
-                    time: null,
-                  },
-                ]);
-              } else if (
-                arrivedMessage.chatWebsocketStatus ===
-                'CUSTOMER_CHAT_FINISH_REQUEST'
-              ) {
-                setChatStatus('상담 종료');
-                setAlertModalActive(true);
-                setAlertModalTime(arrivedMessage.localDateTime);
-              }
+          //새 메세지 도착으로 분류
+          newMessageRef.current = true;
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              chatMessageStatus: 'MESSAGE',
+              customerNickname: arrivedMessage.senderName,
+              counselorNickname: '',
+              messageId: 0,
+              content: arrivedMessage.content,
+              sendTime: arrivedMessage.sendTime,
+              isCustomer: arrivedMessage.isCustomer,
+              time: arrivedMessage.time,
             },
-          );
-          //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
-          stompClient.current.subscribe(
-            '/queue/chattings/status/counselors/' + chatId,
-            function (statusAutoUpdate) {
-              console.log('Status Auto Update: ', statusAutoUpdate.body);
-              const arrivedMessage = JSON.parse(statusAutoUpdate.body);
-              //새 메세지 도착으로 분류
-              newMessageRef.current = true;
-              if (
-                arrivedMessage.chatWebsocketStatus === 'CHAT_LEFT_FIVE_MINUTE'
-              ) {
-                setMessages((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    chatMessageStatus: 'FIVE_MINUTE_LEFT',
-                    customerNickname: '',
-                    counselorNickname: '',
-                    messageId: 0,
-                    content: `상담 종료까지 5분 남았어요.\n${calculateTimeAfterFiveMinutes(
-                      arrivedMessage.localDateTime,
-                    )}`,
-                    sendTime: arrivedMessage.localDateTime,
-                    isCustomer: null,
-                    time: '',
-                  },
-                ]);
-              } else if (
-                arrivedMessage.chatWebsocketStatus ===
-                'CHAT_START_REQUEST_CANCEL'
-              ) {
-                setChatStatus('상담 대기');
-              } else if (
-                arrivedMessage.chatWebsocketStatus === 'CHAT_TIME_OVER'
-              ) {
-                setChatStatus('시간 종료');
-              }
-            },
-          );
-          //에러 핸들링
-          stompClient.current.subscribe(
-            '/queue/chattings/exception/counselors/' + chatId,
-            function (error) {
-              console.log('Error: ', error.body);
-            },
-          );
-          stompClient.current.subscribe(
-            '/queue/chatMessages/counselors/' + chatId,
-            function (message) {
-              //받은 message 정보
-              const arrivedMessage = JSON.parse(message.body);
-
-              //새 메세지 도착으로 분류
-              newMessageRef.current = true;
-              setMessages((prevMessages) => [
-                ...prevMessages,
-                {
-                  chatMessageStatus: 'MESSAGE',
-                  customerNickname: arrivedMessage.senderName,
-                  counselorNickname: '',
-                  messageId: 0,
-                  content: arrivedMessage.content,
-                  sendTime: arrivedMessage.sendTime,
-                  isCustomer: arrivedMessage.isCustomer,
-                  time: arrivedMessage.time,
-                },
-              ]);
-            },
-          );
-        }
-      },
-      (error: any) => {
-        if (error.headers.message === 'UNAUTHORIZED') {
-          reissueToken();
-        } else {
-          alert(error);
-          navigate('/minder/consult');
-        }
-      },
-    );
-
-    stompClient.current.reconnect_delay = 100;
+          ]);
+        },
+      );
+    }
   };
   const sendMessage = () => {
     if (stompClient.current) {

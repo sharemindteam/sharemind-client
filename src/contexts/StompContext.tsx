@@ -2,16 +2,16 @@ import React, {
   createContext,
   useContext,
   useEffect,
-  useState,
   ReactNode,
   useRef,
   MutableRefObject,
 } from 'react';
 import SockJs from 'sockjs-client';
 import { CompatClient, Stomp } from '@stomp/stompjs';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isCustomerState } from 'utils/atom';
 import { useLocation } from 'react-router-dom';
+import { postPublicReissue } from 'api/post';
 /*connected to server undefined doesn't mean that something is wrong. This 
 line appears every time.
 https://stackoverflow.com/questions/46662524/java-spring-boot-websocket-communication-with-js
@@ -46,7 +46,23 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
     setIsCustomer(true);
   }
 
-  useEffect(() => {
+  const reissueToken = async () => {
+    try {
+      const tokenResponse: any = await postPublicReissue({
+        refreshToken: localStorage.getItem('refreshToken'),
+      });
+      if (tokenResponse.status === 200) {
+        const { accessToken, refreshToken } = tokenResponse.data;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        connectChat();
+      }
+    } catch (error) {
+      console.log('socket unauthorized');
+    }
+  };
+
+  const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(socket);
     // 연결
@@ -60,15 +76,18 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
       },
       (error: any) => {
         if (error.headers.message === 'UNAUTHORIZED') {
-          //   reissueToken();
-          alert('UNAUTHORIZED');
+          reissueToken();
         } else {
           alert(error);
-          //   navigate('/minder/consult');
         }
       },
     );
+
     stompClient.current.reconnect_delay = 100;
+  };
+
+  useEffect(() => {
+    connectChat();
     // 컴포넌트 언마운트 시 연결 해제
     return () => {
       if (stompClient.current) {
