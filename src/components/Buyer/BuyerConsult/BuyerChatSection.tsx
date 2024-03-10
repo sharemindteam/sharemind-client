@@ -8,6 +8,7 @@ import { useStompContext } from 'contexts/StompContext';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Heading } from 'styles/font';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
+import { convertChatListDate } from 'utils/convertDate';
 interface BuyerChatSectionProps {
   sortType: number;
   isChecked: boolean;
@@ -20,7 +21,9 @@ export const BuyerChatSection = ({
   const [cardData, setCardData] = useState<consultApiObject[]>([]); //card에 넘길 데이터
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const roomIdsRef = useRef<number[]>([]);
+
+  const roomIdsRef = useRef<number[]>([]); //unmout 시 unsubscibe를 위함
+  const userIdRef = useRef<number>(0);
   /* non-react callback은 static copy of the state만 본다고한다.
    * 따라서 useRef로 함께 관리한다
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
@@ -28,7 +31,11 @@ export const BuyerChatSection = ({
   const cardDataRef = useRef<consultApiObject[]>([]);
   const { stompClient } = useStompContext();
   //채팅 readId, 가장 최근 unread message, 정렬 업데이트
-  const updateChatData = (chatId: number, content: string) => {
+  const updateChatData = (
+    chatId: number,
+    content: string,
+    sendTime: string,
+  ) => {
     const targetIndex = cardDataRef.current.findIndex(
       (item) => item.id === chatId,
     );
@@ -36,6 +43,7 @@ export const BuyerChatSection = ({
     if (targetIndex !== -1) {
       const updatedCardData = [...cardDataRef.current];
       updatedCardData[targetIndex].latestMessageContent = content;
+      updatedCardData[targetIndex].latestMessageUpdatedAt = sendTime;
       const targetElement = updatedCardData.splice(targetIndex, 1)[0];
       updatedCardData.unshift(targetElement);
       setCardData(updatedCardData);
@@ -63,10 +71,28 @@ export const BuyerChatSection = ({
               (message) => {
                 const response = JSON.parse(message.body);
                 console.log(response);
-                updateChatData(chatId, response.content);
+                updateChatData(
+                  chatId,
+                  response.content,
+                  convertChatListDate(response.sendTime),
+                );
               },
             );
           });
+          if (response.userId !== null) {
+            userIdRef.current = response.userId;
+            //채팅방 생성, 종료 readid tab 갱신
+            stompClient.current?.subscribe(
+              '/queue/chattings/notifications/customers/' + response.userId,
+              (message) => {
+                const response = JSON.parse(message.body);
+                // const addedChatRomm :consultApiObject= {
+                //     consult
+                // }
+                console.log(response);
+              },
+            );
+          }
         },
       );
     }
@@ -84,13 +110,18 @@ export const BuyerChatSection = ({
     sendConnectRequest();
 
     return () => {
-      roomIdsRef.current?.forEach((value) => {
-        if (stompClient.current) {
-          stompClient.current.unsubscribe(
+      if (roomIdsRef.current) {
+        roomIdsRef.current.forEach((value) => {
+          stompClient.current?.unsubscribe(
             '/queue/chattings/connect/customers/' + value,
           );
-        }
-      });
+        });
+      }
+      if (userIdRef.current) {
+        stompClient.current?.unsubscribe(
+          '/queue/chattings/connect/customers/' + userIdRef.current,
+        );
+      }
     };
   }, [stompClient]);
 

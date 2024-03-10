@@ -122,3 +122,46 @@ export const convertMessageTime = (inputDate: string): string => {
   // 시간 형식으로 변환하여 반환
   return `${period} ${hour}:${String(minute).padStart(2, '0')}`;
 };
+
+//chatting 상담 탭 새 메세지 도착 시 오후 1:25 포멧으로 변경
+export const convertChatListDate = (inputDate: string): string => {
+  // 입력된 문자열 파싱
+  const match = inputDate.match(
+    /(\d{4})년 (\d{2})월 (\d{2})일 (AM|PM) (\d{1,2})시 (\d{1,2})분/,
+  );
+
+  if (!match) {
+    // 유효하지 않은 입력일 경우 에러 처리
+    throw new Error('Invalid input date format');
+  }
+
+  let period = match[4];
+  let hour = parseInt(match[5]);
+  let minute = parseInt(match[6]);
+  let periodString = '';
+  //12시 이상이면 일단 12빼기
+  if (hour >= 12) {
+    hour -= 12;
+  }
+
+  if (minute >= 60) {
+    hour += 1;
+    minute -= 60;
+  }
+  //AM => PM, PM=>AM 처리
+  if (hour >= 12) {
+    period = period === 'AM' ? 'PM' : 'AM';
+
+    hour -= 12;
+  }
+  if (period === 'PM' && hour === 0) {
+    hour = 12;
+  }
+  if (period === 'PM') {
+    periodString = '오후';
+  } else {
+    periodString = '오전';
+  }
+  // 시간 형식으로 변환하여 반환
+  return `${periodString} ${hour}:${String(minute).padStart(2, '0')}`;
+};

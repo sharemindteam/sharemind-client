@@ -68,7 +68,7 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
         }
       },
     );
-
+    stompClient.current.reconnect_delay = 100;
     // 컴포넌트 언마운트 시 연결 해제
     return () => {
       if (stompClient.current) {
