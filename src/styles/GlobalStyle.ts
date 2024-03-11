@@ -11,6 +11,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     display: flex;
     -webkit-box-align: center;
+    font-family: 'Pretendard';
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;

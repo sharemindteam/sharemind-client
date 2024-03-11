@@ -98,7 +98,7 @@ export const SellerCaculateManagement = () => {
                 ? '정산 중 금액 합계'
                 : '정산예정 금액 합계'}
             </Heading>
-            <Subtitle color={Red}>{toatlMoney.toLocaleString()} 원</Subtitle>
+            <Subtitle color={Red}>{toatlMoney?.toLocaleString()} 원</Subtitle>
           </TotalEarnMoney>
           {/* 내역이 없을시 */}
           {managementList?.length === 0 ? (
