@@ -1,7 +1,3 @@
-// import { useState } from 'react';
-import SockJs from 'sockjs-client';
-// import * as StompJs from '@stomp/stompjs';
-import { CompatClient, Stomp } from '@stomp/stompjs';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   Body2,
@@ -295,6 +291,7 @@ export const BuyerChat = () => {
       );
     }
   };
+
   const sendChatStartResponse = () => {
     if (stompClient.current) {
       stompClient.current.send(
@@ -302,6 +299,12 @@ export const BuyerChat = () => {
         {},
         JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_START_RESPONSE' }),
       );
+    }
+  };
+
+  const sentExitResponse = () => {
+    if (stompClient.current) {
+      stompClient.current.send('app/api/v1/chat/customers/exit/' + chatId, {});
     }
   };
 
@@ -314,16 +317,6 @@ export const BuyerChat = () => {
       );
     }
   };
-
-  // const sendConnectRequest = () => {
-  //   if (stompClient.current !== null) {
-  //     stompClient.current.send(
-  //       '/app/api/v1/chat/customers/connect',
-  //       {},
-  //       JSON.stringify({}),
-  //     );
-  //   }
-  // };
   const handleSubmit = () => {
     if (input.trim() !== '') {
       sendMessage();
@@ -334,7 +327,7 @@ export const BuyerChat = () => {
   };
   //모바일에서 터치가 일어나면 키보드 숨김
   const handleTouchStart = (e: any) => {
-    if (!e.target.closest('foooter')) {
+    if (!e.target.closest('footer')) {
       // 터치 이벤트가 textarea 바깥에서 발생하면 키보드를 숨깁니다.
       inputRef.current?.blur();
     }
@@ -360,15 +353,6 @@ export const BuyerChat = () => {
       // console.log(`관측 종료: ${messages[0].messageId}`);
       preventRef.current = true;
     }
-    // else {
-    //   console.log(
-    //     entry[0].isIntersecting,
-    //     !isLastElem,
-    //     !isInitialLoading,
-    //     preventRef.current,
-    //     preventScrollRef.current,
-    //   );
-    // }
   };
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
@@ -387,12 +371,19 @@ export const BuyerChat = () => {
     getCounselorInfo();
     //관측 가능
     preventRef.current = true;
-
-    // 언마운트 시에 소켓 연결 해제
     return () => {
       if (stompClient.current) {
-        // console.log('연결해제');
-        stompClient.current.disconnect();
+        stompClient.current.unsubscribe('/queue/chattings/customers/' + chatId);
+        stompClient.current.unsubscribe(
+          '/queue/chattings/status/customers/' + chatId,
+        );
+        stompClient.current.unsubscribe(
+          '/queue/chattings/exception/customers/' + chatId,
+        );
+        stompClient.current.unsubscribe(
+          '/queue/chatMessages/customers/' + chatId,
+        );
+        sentExitResponse();
       }
     };
   }, []);
@@ -422,25 +413,6 @@ export const BuyerChat = () => {
     preventScrollRef.current = true;
   }, [messages]);
 
-  // useLayoutEffect(() => {
-  //   const handleScroll = async () => {
-  //     //scrollIntoView 완료하기까지 관측 X
-  //     preventScrollRef.current = false;
-  //     if (!newMessageRef.current) {
-  //       topRef.current?.scrollIntoView({ block: 'start' });
-  //     } else {
-  //       lastRef.current?.scrollIntoView({
-  //         block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
-  //       });
-  //     }
-  //     console.log('스크롤 완료');
-  //     // await pending();
-  //     //scrollIntoView 완료 후 다시 관측가능
-  //     preventScrollRef.current = true;
-  //   };
-  //   handleScroll();
-  // }, [messages]);
-
   //상담 start request 관련 처리
   useEffect(() => {
     const timer = setInterval(() => {
@@ -464,20 +436,6 @@ export const BuyerChat = () => {
     return () => clearInterval(timer);
   }, [time]);
 
-  // if (isInitialLoading) {
-  //   return (
-  //     <>
-  //       <HeaderWrapper border={false}>
-  //         <BackIcon
-  //           onClick={() => {
-  //             navigate('/consult');
-  //           }}
-  //         />
-  //         <Heading color={Grey1}>채팅상대이름</Heading>
-  //       </HeaderWrapper>
-  //     </>
-  //   );
-  // } else {
   return (
     <Wrapper onTouchStart={handleTouchStart}>
       <HeaderWrapper border={false}>

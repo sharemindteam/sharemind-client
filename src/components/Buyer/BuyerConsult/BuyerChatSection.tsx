@@ -44,6 +44,12 @@ export const BuyerChatSection = ({
       const updatedCardData = [...cardDataRef.current];
       updatedCardData[targetIndex].latestMessageContent = content;
       updatedCardData[targetIndex].latestMessageUpdatedAt = sendTime;
+
+      if (updatedCardData[targetIndex].unreadMessageCount !== null) {
+        updatedCardData[targetIndex].unreadMessageCount! += 1;
+      } else {
+        updatedCardData[targetIndex].unreadMessageCount = 1;
+      }
       const targetElement = updatedCardData.splice(targetIndex, 1)[0];
       updatedCardData.unshift(targetElement);
       cardDataRef.current = updatedCardData;

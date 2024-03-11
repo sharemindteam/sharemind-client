@@ -64,15 +64,16 @@ export const ConsultCard = ({
             />
           </div>
           <div className="col2">
-            <div className="name-row">
-              <Body1 color={Black}>{opponentNickname}</Body1>
-              {latestMessageUpdatedAt !== null && (
-                <>
-                  <Caption2 color={Grey2}>•</Caption2>
-                  <Caption2 color={Grey2}>{latestMessageUpdatedAt}</Caption2>
-                </>
-              )}
-
+            <div className="col2-row1">
+              <div className="name-row">
+                <Body1 color={Black}>{opponentNickname}</Body1>
+                {latestMessageUpdatedAt !== null && (
+                  <>
+                    <Caption2 color={Grey2}>•</Caption2>
+                    <Caption2 color={Grey2}>{latestMessageUpdatedAt}</Caption2>
+                  </>
+                )}
+              </div>
               {unreadMessageCount > 0 ? (
                 <Unread>
                   <Caption2 color={White}>{unreadMessageCount}</Caption2>
@@ -120,7 +121,6 @@ const ConsultContent = styled.div`
   box-sizing: border-box;
 `;
 const Unread = styled.div`
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -135,6 +135,7 @@ const ConsultStateBox = styled.div`
   gap: 1.6rem;
   .col1 {
     display: flex;
+    flex-basis: auto;
     flex-direction: column;
     align-items: center;
     gap: 0.4rem;
@@ -144,12 +145,17 @@ const ConsultStateBox = styled.div`
     align-items: center;
     margin-top: 0.2rem;
     gap: 0.8rem;
-    position: relative;
   }
   .col2 {
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     gap: 1.2rem;
+  }
+  .col2-row1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
 export const CardText = styled.div`
