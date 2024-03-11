@@ -46,6 +46,7 @@ export const BuyerChatSection = ({
       updatedCardData[targetIndex].latestMessageUpdatedAt = sendTime;
       const targetElement = updatedCardData.splice(targetIndex, 1)[0];
       updatedCardData.unshift(targetElement);
+      cardDataRef.current = updatedCardData;
       setCardData(updatedCardData);
     }
   };
@@ -70,7 +71,6 @@ export const BuyerChatSection = ({
               '/queue/chatMessages/counselors/' + chatId,
               (message) => {
                 const response = JSON.parse(message.body);
-                console.log(response);
                 updateChatData(
                   chatId,
                   response.content,
@@ -85,11 +85,50 @@ export const BuyerChatSection = ({
             stompClient.current?.subscribe(
               '/queue/chattings/notifications/customers/' + response.userId,
               (message) => {
-                const response = JSON.parse(message.body);
-                // const addedChatRomm :consultApiObject= {
-                //     consult
-                // }
-                console.log(response);
+                const notification = JSON.parse(message.body);
+                if (
+                  notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
+                ) {
+                  console.log(notification);
+                  //add cardData
+                  const addedChatRoomItem: consultApiObject = {
+                    consultStyle: notification.consultStyle,
+                    id: notification.chatId,
+                    latestMessageContent:
+                      '{opponentNickname}님께 고민 내용을 남겨 주세요. {opponentNickname}님이 24시간 이내 답장을 드릴 거예요.',
+                    latestMessageIsCustomer: null,
+                    latestMessageUpdatedAt: convertChatListDate(
+                      notification.createTime,
+                    ),
+                    opponentNickname: '임시 이름 api 수정중',
+                    status: '상담 대기',
+                    unreadMessageCount: 0,
+                    reviewCompleted: null,
+                    consultId: null,
+                  };
+                  //add roomIds for unsubscribe
+                  roomIdsRef.current.unshift(notification.chatId);
+
+                  cardDataRef.current = [
+                    addedChatRoomItem,
+                    ...cardDataRef.current,
+                  ];
+
+                  setCardData(cardDataRef.current);
+
+                  //subscribe new chatroom
+                  stompClient.current?.subscribe(
+                    '/queue/chatMessages/counselors/' + notification.chatId,
+                    (message) => {
+                      const response = JSON.parse(message.body);
+                      updateChatData(
+                        notification.chatId,
+                        response.content,
+                        convertChatListDate(response.sendTime),
+                      );
+                    },
+                  );
+                }
               },
             );
           }
