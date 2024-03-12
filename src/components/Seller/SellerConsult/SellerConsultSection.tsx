@@ -3,72 +3,26 @@ import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow
 import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
-import { useCallback, useEffect, useState } from 'react';
-import OngoingCounsultBox from '../Common/OngoingCounsultBox';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import {
-  isConsultModalOpenState,
-  isLoadingState,
-  scrollLockState,
-} from 'utils/atom';
-import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
-import { useNavigate } from 'react-router-dom';
-import { getChatsMinder, getConselorLetters } from 'api/get';
-import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
-import { ConsultInfoList } from 'utils/type';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
 
+import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { isConsultModalOpenState } from 'utils/atom';
+import SellerLetterList from './SellerLetterList';
+import SellerChatList from './SellerChatList';
 interface ConsultTypeProps {
   isActive: boolean;
 }
 
 export const SellerConsultSection = () => {
-  const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
+  // 편지 탭과 채팅 탭
   const [isLetterActive, setIsLetterActive] = useState<boolean>(true);
-  const [isInclueCompleteConsult, setIsIncludeCompleteConsult] =
+  // 완료된 상담 제외, 포함
+  const [isIncludeCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
+  // 최근순, 읽지 않은 순
   const [sortType, setSortType] = useState<number>(0);
-  const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
-    isConsultModalOpenState,
-  );
-  const setScrollLock = useSetRecoilState(scrollLockState);
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    const params = {
-      filter: !isInclueCompleteConsult,
-      sortType: sortType === 0 ? 'latest' : 'unread',
-    };
-
-    let res: any;
-    try {
-      res = isLetterActive
-        ? await getConselorLetters({ params })
-        : await getChatsMinder({
-            params,
-          });
-      if (res.status === 200) {
-        const data: ConsultInfoList = res.data;
-        setConsultInfo(data);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 100);
-      } else if (res?.response?.status === 403) {
-        // 판매 정보를 등록하지 않았을 경우
-        alert('판매 정보를 등록해주세요.');
-        navigate('/minder/mypage/viewProfile');
-      } else {
-        console.error('Failed to fetch data:', res.status, res.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred while fetching data:', error);
-    }
-  }, [isInclueCompleteConsult, isLetterActive, sortType]);
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  // 모달 열지 말지
+  const setIsModalOpen = useSetRecoilState<boolean>(isConsultModalOpenState);
   return (
     <>
       <ConsultSortingMenu>
@@ -100,107 +54,37 @@ export const SellerConsultSection = () => {
             <DownArrowIcon />
           </SortingType>
         </div>
-
         <div className="row2">
           <div
             className="row2-1"
             onClick={() => {
-              setIsIncludeCompleteConsult(!isInclueCompleteConsult);
+              setIsIncludeCompleteConsult(!isIncludeCompleteConsult);
             }}
             style={{
               cursor: 'pointer',
             }}
           >
-            <CircleCheckIcon fill={isInclueCompleteConsult ? Grey5 : Green} />
+            <CircleCheckIcon fill={isIncludeCompleteConsult ? Grey5 : Green} />
             <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
           </div>
         </div>
       </ConsultSortingMenu>
-      {/* 스켈레톤 UI 적용 */}
-      {isLoading ? (
-        // <SkeletonList>
-        //   {/* {Array.from({ length: 5 }).map((_, index) => (
-        //     <ConsultCardSkeleton />
-        //   ))} */}
-        // </SkeletonList>
-        <div
-          style={{
-            height: 'calc(100vh - 50rem)',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <LoadingSpinner />
-        </div>
+      {isLetterActive ? (
+        <SellerLetterList
+          sortType={sortType}
+          setSortType={setSortType}
+          isIncludeCompleteConsult={isIncludeCompleteConsult}
+        />
       ) : (
-        <ConsultBoxList>
-          {consultInfo?.length === 0 ? (
-            <NoConsultSection>
-              <NoConsultGraphicIcon />
-              <NoConsultText>아직 진행한 상담이 없어요</NoConsultText>
-            </NoConsultSection>
-          ) : (
-            consultInfo?.map((item: any) => (
-              <OngoingCounsultBox
-                consultStatus={item?.status}
-                counselorName={item?.opponentNickname}
-                beforeMinutes={item?.latestMessageUpdatedAt}
-                content={
-                  item?.status === '질문 대기'
-                    ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요! '
-                    : item?.lastMessageContent
-                }
-                key={item?.id}
-                counselorprofileStatus={consultStyleToCharNum(
-                  item?.consultStyle,
-                )}
-                newMessageCounts={item?.unreadMessageCount}
-                onClick={() => {
-                  if (isLetterActive) {
-                    navigate(`/minder/letter/${item?.id}`);
-                  } else {
-                    navigate(`/minder/chat/${item?.id}`);
-                  }
-                }}
-              />
-            ))
-          )}
-
-          {isModalOpen ? (
-            <>
-              <BackDrop
-                onClick={() => {
-                  //여기서 api 호출
-                  setIsModalOpen(false);
-                  setScrollLock(false);
-                }}
-              />
-              <ConsultModal sortType={sortType} setSortType={setSortType} />
-            </>
-          ) : null}
-        </ConsultBoxList>
+        <SellerChatList
+          sortType={sortType}
+          setSortType={setSortType}
+          isIncludeCompleteConsult={isIncludeCompleteConsult}
+        />
       )}
     </>
   );
 };
-
-const NoConsultSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4.6rem;
-  margin-top: 17.8rem;
-`;
-
-const NoConsultText = styled.div`
-  color: #000;
-  text-align: center;
-  font-size: 2rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 3rem;
-`;
-
 const ConsultSortingMenu = styled.div`
   display: flex;
   flex-direction: column;
@@ -243,32 +127,4 @@ const SortingType = styled.div`
   align-items: center;
   gap: 0.4rem;
   cursor: pointer;
-`;
-
-const SkeletonList = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.8rem;
-`;
-
-const ConsultBoxList = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 0.5rem;
-  gap: 0.8rem;
-`;
-const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  position: fixed;
-  top: 0;
-  z-index: 2001;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
 `;
