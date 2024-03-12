@@ -4,11 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import {
-  isConsultModalOpenState,
-  isLoadingState,
-  scrollLockState,
-} from 'utils/atom';
+import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { ConsultInfoList } from 'utils/type';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
