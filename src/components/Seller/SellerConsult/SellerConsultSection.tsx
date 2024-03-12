@@ -105,6 +105,7 @@ const ConsultSortingMenu = styled.div`
     align-items: center;
   }
 `;
+
 const ConsultType = styled.div<ConsultTypeProps>`
   display: flex;
   width: 5.7rem;

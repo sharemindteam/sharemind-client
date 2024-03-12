@@ -18,7 +18,7 @@ import { formattedMessage } from 'utils/formattedMessage';
 import { getChatMessagesCounselors, getChatsCounselors } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { Space } from 'components/Common/Space';
-import { Button } from 'components/Common/Button';
+
 import {
   calculateTimeAfterFiveMinutes,
   convertAMPMToString,
