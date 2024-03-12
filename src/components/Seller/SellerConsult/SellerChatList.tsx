@@ -1,15 +1,19 @@
 import { getChatsMinder } from 'api/get';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { ConsultInfoList } from 'utils/type';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+import { useStompContext } from 'contexts/StompContext';
+import { convertChatListDate } from 'utils/convertDate';
+import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
+//buyer consult에 저장돼있고, 나중에 type으로 뺴고 consultinfoLIst 지우기
+//consultinfolist type에 더미값 들어가 있음
 
 interface SellerConsultProps {
   sortType: number;
@@ -29,6 +33,147 @@ function SellerChatList({
   );
   const setScrollLock = useSetRecoilState(scrollLockState);
   const navigate = useNavigate();
+
+  const roomIdsRef = useRef<number[]>([]); //unmout 시 unsubscibe를 위함
+  const userIdRef = useRef<number>(0);
+  /* non-react callback은 static copy of the state만 본다고한다.
+   * 따라서 useRef로 함께 관리한다
+   * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
+   */
+  const cardDataRef = useRef<ConsultInfoItem[]>([]);
+  const { stompClient } = useStompContext();
+  //채팅 readId, 가장 최근 unread message, 정렬 업데이트
+  const updateChatData = (
+    chatId: number,
+    content: string,
+    sendTime: string,
+  ) => {
+    const targetIndex = cardDataRef.current.findIndex(
+      (item) => item.id === chatId,
+    );
+
+    if (targetIndex !== -1) {
+      const updatedCardData = [...cardDataRef.current];
+      updatedCardData[targetIndex].latestMessageContent = content;
+      updatedCardData[targetIndex].latestMessageUpdatedAt = sendTime;
+
+      if (updatedCardData[targetIndex].unreadMessageCount !== null) {
+        updatedCardData[targetIndex].unreadMessageCount! += 1;
+      } else {
+        updatedCardData[targetIndex].unreadMessageCount = 1;
+      }
+      const targetElement = updatedCardData.splice(targetIndex, 1)[0];
+      updatedCardData.unshift(targetElement);
+      cardDataRef.current = updatedCardData;
+      setConsultInfo(updatedCardData);
+    }
+  };
+  useEffect(() => {
+    if (stompClient.current) {
+      stompClient.current.subscribe(
+        '/queue/chattings/connect/counselors/',
+        (rooms) => {
+          const response = JSON.parse(rooms.body);
+
+          roomIdsRef.current = response.roomIds;
+
+          response.roomIds.forEach((chatId: number) => {
+            //모든 채팅방 subscribe
+            stompClient.current?.subscribe(
+              '/queue/chatMessages/counselors/' + chatId,
+              (message) => {
+                const response = JSON.parse(message.body);
+                updateChatData(
+                  chatId,
+                  response.content,
+                  convertChatListDate(response.sendTime),
+                );
+              },
+            );
+          });
+          if (response.userId !== null) {
+            userIdRef.current = response.userId;
+            //채팅방 생성, 종료 readid tab 갱신
+            stompClient.current?.subscribe(
+              '/queue/chattings/notifications/counselors/' + response.userId,
+              (message) => {
+                const notification = JSON.parse(message.body);
+                if (
+                  notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
+                ) {
+                  //add cardData
+                  const addedChatRoomItem: ConsultInfoItem = {
+                    consultStyle: notification.consultStyle,
+                    id: notification.chatId,
+                    latestMessageContent: `${notification.opponentNickname}님께 고민 내용을 남겨 주세요. ${notification.opponentNickname}님이 24시간 이내 답장을 드릴 거예요.`,
+                    latestMessageIsCustomer: null,
+                    latestMessageUpdatedAt: convertChatListDate(
+                      notification.createTime,
+                    ),
+                    opponentNickname: notification.opponentNickname,
+                    status: '상담 대기',
+                    unreadMessageCount: 0,
+                    reviewCompleted: null,
+                    consultId: null,
+                  };
+                  //add roomIds for unsubscribe
+                  roomIdsRef.current.push(notification.chatId);
+
+                  cardDataRef.current = [
+                    ...cardDataRef.current,
+                    addedChatRoomItem,
+                  ];
+
+                  setConsultInfo(cardDataRef.current);
+
+                  //subscribe new chatroom
+                  stompClient.current?.subscribe(
+                    '/queue/chatMessages/counselors/' + notification.chatId,
+                    (message) => {
+                      const response = JSON.parse(message.body);
+                      updateChatData(
+                        notification.chatId,
+                        response.content,
+                        convertChatListDate(response.sendTime),
+                      );
+                    },
+                  );
+                }
+              },
+            );
+          }
+        },
+      );
+    }
+
+    const sendConnectRequest = () => {
+      if (stompClient.current) {
+        stompClient.current.send(
+          '/app/api/v1/chat/counselors/connect',
+          {},
+          JSON.stringify({}),
+        );
+      }
+    };
+
+    sendConnectRequest();
+
+    return () => {
+      if (roomIdsRef.current) {
+        roomIdsRef.current.forEach((value) => {
+          stompClient.current?.unsubscribe(
+            '/queue/chattings/connect/counselors/' + value,
+          );
+        });
+      }
+      if (userIdRef.current) {
+        stompClient.current?.unsubscribe(
+          '/queue/chattings/connect/counselors/' + userIdRef.current,
+        );
+      }
+    };
+  }, [stompClient]);
+
   const fetchChatData = useCallback(async () => {
     setIsLoading(true);
     const params = {
@@ -40,10 +185,9 @@ function SellerChatList({
     try {
       res = await getChatsMinder({ params });
       if (res.status === 200) {
-        const data: ConsultInfoList = res.data;
-        console.log(data);
-        setConsultInfo(data);
-      } else if (res?.response?.status === 403) {
+        cardDataRef.current = res.data;
+        setConsultInfo(res.data);
+      } else if (res.response.status === 403) {
         // 판매 정보를 등록하지 않았을 경우
         alert('판매 정보를 등록해주세요.');
         navigate('/minder/mypage/viewProfile');
@@ -56,9 +200,11 @@ function SellerChatList({
       setIsLoading(false);
     }
   }, [isIncludeCompleteConsult, navigate, setIsLoading, sortType]);
+
   useEffect(() => {
     fetchChatData();
   }, [fetchChatData]);
+
   return (
     <>
       {isLoading ? (
@@ -79,21 +225,17 @@ function SellerChatList({
               <NoConsultText>아직 진행한 상담이 없어요</NoConsultText>
             </NoConsultSection>
           ) : (
-            consultInfo?.map((item: any) => (
+            consultInfo.map((item: any) => (
               <OngoingCounsultBox
-                consultStatus={item?.status}
-                counselorName={item?.opponentNickname}
-                beforeMinutes={item?.latestMessageUpdatedAt}
-                content={
-                  item?.status === '질문 대기'
-                    ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요! '
-                    : item?.lastMessageContent
-                }
-                key={item?.id}
+                consultStatus={item.status}
+                counselorName={item.opponentNickname}
+                beforeMinutes={item.latestMessageUpdatedAt}
+                content={item.latestMessageContent}
+                key={item.id}
                 counselorprofileStatus={consultStyleToCharNum(
-                  item?.consultStyle,
+                  item.consultStyle,
                 )}
-                newMessageCounts={item?.unreadMessageCount}
+                newMessageCounts={item.unreadMessageCount}
                 onClick={() => {
                   navigate(`/minder/chat/${item?.id}`);
                 }}

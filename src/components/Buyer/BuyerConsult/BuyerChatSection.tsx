@@ -69,7 +69,7 @@ export const BuyerChatSection = ({
           response.roomIds.forEach((chatId: number) => {
             //모든 채팅방 subscribe
             stompClient.current?.subscribe(
-              '/queue/chatMessages/counselors/' + chatId,
+              '/queue/chatMessages/customers/' + chatId,
               (message) => {
                 const response = JSON.parse(message.body);
                 updateChatData(
@@ -117,7 +117,7 @@ export const BuyerChatSection = ({
 
                   //subscribe new chatroom
                   stompClient.current?.subscribe(
-                    '/queue/chatMessages/counselors/' + notification.chatId,
+                    '/queue/chatMessages/customers/' + notification.chatId,
                     (message) => {
                       const response = JSON.parse(message.body);
                       updateChatData(

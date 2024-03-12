@@ -253,6 +253,12 @@ export const SellerChatTemp = () => {
     }
   };
 
+  const sentExitResponse = () => {
+    if (stompClient.current) {
+      stompClient.current.send('app/api/v1/chat/counselors/exit/' + chatId, {});
+    }
+  };
+
   const sendChatFinishRequest = () => {
     if (stompClient.current) {
       stompClient.current.send(
@@ -320,8 +326,19 @@ export const SellerChatTemp = () => {
     // 언마운트 시에 소켓 연결 해제
     return () => {
       if (stompClient.current) {
-        // console.log('연결해제');
-        stompClient.current.disconnect();
+        stompClient.current.unsubscribe(
+          '/queue/chattings/counselors/' + chatId,
+        );
+        stompClient.current.unsubscribe(
+          '/queue/chattings/status/counselors/' + chatId,
+        );
+        stompClient.current.unsubscribe(
+          '/queue/chattings/exception/counselors/' + chatId,
+        );
+        stompClient.current.unsubscribe(
+          '/queue/chatMessages/counselors/' + chatId,
+        );
+        sentExitResponse();
       }
     };
   }, []);

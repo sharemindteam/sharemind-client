@@ -24,7 +24,6 @@ import { BackIcon } from 'components/Buyer/Common/Header';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
-import { postReissue } from 'api/post';
 import { getChatMessagesCustomers, getCounselorsChats } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { Space } from 'components/Common/Space';
@@ -35,10 +34,10 @@ import {
   convertAMPMToStringYear,
   convertMessageTime,
 } from 'utils/convertDate';
-import { pending } from 'utils/pending';
 
 import { ChatCounselorInfoBox } from 'components/Buyer/BuyerChat/ChatCounselorInfoBox';
 import { useStompContext } from 'contexts/StompContext';
+
 export const BuyerChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -336,7 +335,6 @@ export const BuyerChat = () => {
   //무한스크롤 관련 함수
   //useIntersection에서 unobserve되는지 확인
   const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
-    // console.log('관측');
     if (
       entry[0].isIntersecting &&
       !isLastElem &&
