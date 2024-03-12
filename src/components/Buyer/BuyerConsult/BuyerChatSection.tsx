@@ -59,16 +59,11 @@ export const BuyerChatSection = ({
 
   useEffect(() => {
     if (stompClient.current) {
-      //먼저 roomIds를 받고 그 결과 값 state에 저장, 그리고 반복문 돌면서
-      // 모두 subscribe.
-      // onClick 이벤트 발생하면 나머지 다 끊고 하나만 남겨두기
-      //여기서 사용하는 건 meesage만 이지만 auto update 같은 subscribe는
-      //chat component에서 이뤄지면되지만 message의 경우는 끊고 다시 연결하나..? 그게맞을듯
       stompClient.current.subscribe(
         '/queue/chattings/connect/customers/',
         (rooms) => {
           const response = JSON.parse(rooms.body);
-          // console.log(response);
+
           roomIdsRef.current = response.roomIds;
 
           response.roomIds.forEach((chatId: number) => {
@@ -95,7 +90,6 @@ export const BuyerChatSection = ({
                 if (
                   notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
                 ) {
-                  console.log(notification);
                   //add cardData
                   const addedChatRoomItem: consultApiObject = {
                     consultStyle: notification.consultStyle,
