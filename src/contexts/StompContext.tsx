@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useRef,
   MutableRefObject,
+  useState,
 } from 'react';
 import SockJs from 'sockjs-client';
 import { CompatClient, Stomp } from '@stomp/stompjs';
@@ -19,7 +20,8 @@ https://stackoverflow.com/questions/46662524/java-spring-boot-websocket-communic
 
 interface StompProviderType {
   stompClient: MutableRefObject<CompatClient | null>;
-  // connect: (roomId: number) => void;
+  connectChat: () => void;
+  isConnected: boolean;
   // disconnect: () => void;
   // sendMessage: (message: Message) => void;
 }
@@ -38,6 +40,8 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
   // const [isConnected, setIsConnected] = useState(false);
   const { pathname } = useLocation();
   const [isCustomer, setIsCustomer] = useRecoilState(isCustomerState);
+
+  const [isConnected, setIsConnected] = useState<boolean>(false);
 
   // 옯바른 소켓 연결을 위해 경로에 따라 마인더, Seller 구분
   if (pathname.includes('/minder')) {
@@ -65,6 +69,7 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(socket);
+
     // 연결
     stompClient.current.connect(
       {
@@ -73,12 +78,13 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
       },
       (frame: any) => {
         console.log('Connected: ' + frame);
+        setIsConnected(true);
       },
       (error: any) => {
         if (error.headers.message === 'UNAUTHORIZED') {
           reissueToken();
         } else {
-          alert(error);
+          alert(error.headers.message);
         }
       },
     );
@@ -95,10 +101,10 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
         console.log('WebSocket disconnected');
       }
     };
-  }, [isCustomer]); // 한 번만 실행
+  }, []); // 한 번만 실행
   //Context 객체의 Provider 컴포넌트
   return (
-    <StompContext.Provider value={{ stompClient }}>
+    <StompContext.Provider value={{ stompClient, connectChat, isConnected }}>
       {children}
     </StompContext.Provider>
   );
