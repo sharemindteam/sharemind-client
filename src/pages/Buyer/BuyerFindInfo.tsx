@@ -23,12 +23,13 @@ export const BuyerFindInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const patchFindId = async () => {
     setIsLoading(true);
+    setIsActiveModal(false);
     if (isLoading) {
       return;
     }
     try {
       const body = {
-        recoveryEmail: recoveryEmail.value,
+        email: recoveryEmail.value,
       };
       const res: any = await patchAuthFindId(body);
       if (res.status === 200) {
@@ -49,12 +50,13 @@ export const BuyerFindInfo = () => {
   };
   const patchFindPassword = async () => {
     setIsLoading(true);
+    setIsActiveModal(false);
     if (isLoading) {
       return;
     }
     try {
       const body = {
-        recoveryEmail: recoveryEmail.value,
+        email: email.value,
       };
       const res: any = await patchAuthFindPassword(body);
       if (res.status === 200) {
@@ -128,7 +130,7 @@ export const BuyerFindInfo = () => {
               text="다음"
               width="33.5rem"
               height="5.2rem"
-              isActive={recoveryEmail.isValid}
+              isActive={recoveryEmail.isValid }
               onClick={() => {
                 patchFindId();
               }}
@@ -157,7 +159,7 @@ export const BuyerFindInfo = () => {
               text="다음"
               width="33.5rem"
               height="5.2rem"
-              isActive={email.isValid}
+              isActive={email.isValid && !isLoading}
               onClick={() => {
                 patchFindPassword();
               }}
