@@ -4,11 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import {
-  isConsultModalOpenState,
-  isLoadingState,
-  scrollLockState,
-} from 'utils/atom';
+import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { ConsultInfoList } from 'utils/type';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
@@ -27,7 +23,7 @@ function SellerLetterList({
   setSortType,
 }: SellerConsultProps) {
   const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
-  const [isLoading, setIsLoading] = useRecoilState(isLoadingState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
@@ -45,9 +41,6 @@ function SellerLetterList({
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 200);
       } else if (res?.response?.status === 403) {
         // 판매 정보를 등록하지 않았을 경우
         alert('판매 정보를 등록해주세요.');
@@ -57,8 +50,10 @@ function SellerLetterList({
       }
     } catch (error) {
       console.error('An error occurred while fetching data:', error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [isIncludeCompleteConsult, sortType]);
+  }, [isIncludeCompleteConsult, navigate, setIsLoading, sortType]);
   useEffect(() => {
     fetchLetterData();
   }, [fetchLetterData]);
