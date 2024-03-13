@@ -13,6 +13,7 @@ import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-c
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { BuyerChatSection } from 'components/Buyer/BuyerConsult/BuyerChatSection';
 import { BuyerLetterSection } from 'components/Buyer/BuyerConsult/BuyerLetterSection';
+import { useConsultParams } from 'hooks/useConsultParams';
 
 export interface consultApiObject {
   consultStyle: string;
@@ -29,13 +30,23 @@ export interface consultApiObject {
 
 export const BuyerConsult = () => {
   const navigate = useNavigate();
+  const {
+    isLetter,
+    setIsLetter,
+    sortType,
+    setSortType,
+    searchParams,
+    setSearchParams,
+    letterColor,
+    setLetterColor,
+    chattingColor,
+    setChattingColor,
+  } = useConsultParams();
   const sortList = ['최근순', '읽지않은순'];
 
-  const [isLetter, setIsLetter] = useState<boolean>(true); //편지 채팅 여부
-  const [letterColor, setLetterColor] = useState<string>(Green);
-  const [chattingColor, setChattingColor] = useState<string>(Grey1);
+  // const [isLetter, setIsLetter] = useState<boolean>(true); //편지 채팅 여부
   const [isChecked, setIsChecked] = useState<boolean>(false); //완료 제외 체크 여부
-  const [sortType, setSortType] = useState<number>(0); //0 : 최신순 1:읽지 않은 순
+  // const [sortType, setSortType] = useState<number>(0); //0 : 최신순 1:읽지 않은 순
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   ); // Modal 여부(recoil)
@@ -60,6 +71,8 @@ export const BuyerConsult = () => {
                 setIsLetter(true);
                 setLetterColor(Green);
                 setChattingColor(Grey1);
+                searchParams.set('consultType', 'letter');
+                setSearchParams(searchParams);
               }}
             >
               <Button2 color={letterColor}>편지</Button2>
@@ -70,6 +83,8 @@ export const BuyerConsult = () => {
                 setIsLetter(false);
                 setLetterColor(Grey1);
                 setChattingColor(Green);
+                searchParams.set('consultType', 'chat');
+                setSearchParams(searchParams);
               }}
             >
               <Button2 color={chattingColor}>채팅</Button2>

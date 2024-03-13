@@ -141,7 +141,7 @@ export const BuyerChat = () => {
       // 구독
       stompClient.current.subscribe(
         '/queue/chattings/customers/' + chatId,
-        function (statusUpdate) {
+        function (statusUpdate: any) {
           console.log('Status Update: ', statusUpdate.body);
           const arrivedMessage = JSON.parse(statusUpdate.body);
           // console.log(arrivedMessage);
@@ -210,7 +210,7 @@ export const BuyerChat = () => {
       //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
       stompClient.current.subscribe(
         '/queue/chattings/status/customers/' + chatId,
-        function (statusAutoUpdate) {
+        function (statusAutoUpdate: any) {
           console.log('Status Auto Update: ', statusAutoUpdate.body);
           const arrivedMessage = JSON.parse(statusAutoUpdate.body);
           //새 메세지 도착으로 분류
@@ -252,13 +252,13 @@ export const BuyerChat = () => {
       //에러 핸들링
       stompClient.current.subscribe(
         '/queue/chattings/exception/customers/' + chatId,
-        function (error) {
+        function (error: any) {
           console.log('Error: ', error.body);
         },
       );
       stompClient.current.subscribe(
         '/queue/chatMessages/customers/' + chatId,
-        function (message) {
+        function (message: any) {
           //받은 message 정보
           const arrivedMessage = JSON.parse(message.body);
           // console.log(arrivedMessage);
@@ -439,7 +439,7 @@ export const BuyerChat = () => {
       <HeaderWrapper border={false}>
         <BackIcon
           onClick={() => {
-            navigate('/consult');
+            navigate(-1);
           }}
         />
         <Heading color={Grey1}>{counselorInfo?.nickname}</Heading>

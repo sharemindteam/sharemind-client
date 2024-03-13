@@ -15,11 +15,11 @@ root.render(
   <BrowserRouter>
     <RecoilRoot>
       <GlobalStyle />
-      <StompProvider>
-        <AppContainer>
+      <AppContainer>
+        <StompProvider>
           <App />
-        </AppContainer>
-      </StompProvider>
+        </StompProvider>
+      </AppContainer>
     </RecoilRoot>
   </BrowserRouter>,
 );

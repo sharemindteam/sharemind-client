@@ -29,7 +29,7 @@ export const BuyerChatSection = ({
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
    */
   const cardDataRef = useRef<consultApiObject[]>([]);
-  const { stompClient } = useStompContext();
+  const { stompClient, connectChat, isConnected } = useStompContext();
   //채팅 readId, 가장 최근 unread message, 정렬 업데이트
   const updateChatData = (
     chatId: number,
