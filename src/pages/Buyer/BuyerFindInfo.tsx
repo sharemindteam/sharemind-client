@@ -29,7 +29,7 @@ export const BuyerFindInfo = () => {
     }
     try {
       const body = {
-        email: recoveryEmail.value,
+        recoveryEmail: recoveryEmail.value,
       };
       const res: any = await patchAuthFindId(body);
       if (res.status === 200) {
@@ -130,7 +130,7 @@ export const BuyerFindInfo = () => {
               text="다음"
               width="33.5rem"
               height="5.2rem"
-              isActive={recoveryEmail.isValid }
+              isActive={recoveryEmail.isValid && !isLoading}
               onClick={() => {
                 patchFindId();
               }}
