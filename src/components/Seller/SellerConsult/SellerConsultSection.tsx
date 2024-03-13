@@ -3,12 +3,12 @@ import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow
 import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
+
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState } from 'utils/atom';
 import SellerLetterList from './SellerLetterList';
 import SellerChatList from './SellerChatList';
-
 interface ConsultTypeProps {
   isActive: boolean;
 }
@@ -19,7 +19,7 @@ export const SellerConsultSection = () => {
   // 완료된 상담 제외, 포함
   const [isIncludeCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
-  // 최근순, 읽지 않은 순 
+  // 최근순, 읽지 않은 순
   const [sortType, setSortType] = useState<number>(0);
   // 모달 열지 말지
   const setIsModalOpen = useSetRecoilState<boolean>(isConsultModalOpenState);
@@ -105,6 +105,7 @@ const ConsultSortingMenu = styled.div`
     align-items: center;
   }
 `;
+
 const ConsultType = styled.div<ConsultTypeProps>`
   display: flex;
   width: 5.7rem;

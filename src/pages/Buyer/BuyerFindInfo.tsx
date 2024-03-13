@@ -32,7 +32,7 @@ export const BuyerFindInfo = () => {
       };
       const res: any = await patchAuthFindId(body);
       if (res.status === 200) {
-        setModalMessage('복구 이메일로 아이디 정보가 전송되었습니다.');
+        setModalMessage('이메일로 아이디 정보가 전송되었습니다.');
         setIsActiveModal(true);
       } else if (res.response.status === 400) {
         setModalMessage('올바르지 않은 복구 이메일 형식입니다.');
@@ -61,7 +61,7 @@ export const BuyerFindInfo = () => {
         setModalMessage('복구 이메일로 아이디 정보가 전송되었습니다.');
         setIsActiveModal(true);
       } else if (res.response.status === 400) {
-        setModalMessage('올바르지 않은 복구 이메일 형식입니다.');
+        setModalMessage('올바르지 않은 이메일 형식입니다.');
         setIsActiveModal(true);
       } else if (res.response.status === 404) {
         setModalMessage('존재하지 않는 복구 이메일입니다.');
