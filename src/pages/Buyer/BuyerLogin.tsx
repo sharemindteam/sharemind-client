@@ -11,6 +11,7 @@ import { LoginModal } from 'components/Buyer/BuyerLogin/LoginModal';
 import { useState } from 'react';
 import PwInput from 'components/Buyer/Common/PwInput';
 import { Space } from 'components/Common/Space';
+import { useStompContext } from 'contexts/StompContext';
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
@@ -19,6 +20,9 @@ export const BuyerLogin = () => {
   const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
   // 모달 에러 메세지
   const [modalErrorMessage, setModalErrorMessage] = useState<string>('');
+
+  const { connectChat } = useStompContext();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -36,6 +40,7 @@ export const BuyerLogin = () => {
         // setCookie('refreshToken', newRefreshToken, { path: '/' });
         localStorage.setItem('accessToken', newAccessToken);
         localStorage.setItem('refreshToken', newRefreshToken);
+        connectChat();
         navigate('/share');
       } else if (res.response.status === 400) {
         setIsActiveModal(true);
