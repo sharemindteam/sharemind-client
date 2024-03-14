@@ -32,15 +32,12 @@ export const BuyerConsult = () => {
   const navigate = useNavigate();
   const {
     isLetter,
-    setIsLetter,
     sortType,
     setSortType,
-    searchParams,
-    setSearchParams,
     letterColor,
-    setLetterColor,
     chattingColor,
-    setChattingColor,
+    handleLetterClick,
+    handleChatClick,
   } = useConsultParams();
   const sortList = ['최근순', '읽지않은순'];
 
@@ -65,28 +62,10 @@ export const BuyerConsult = () => {
       <div className="options">
         <div className="select">
           <div className="select-button">
-            <SelectButton
-              isSelected={isLetter}
-              onClick={() => {
-                setIsLetter(true);
-                setLetterColor(Green);
-                setChattingColor(Grey1);
-                searchParams.set('consultType', 'letter');
-                setSearchParams(searchParams);
-              }}
-            >
+            <SelectButton isSelected={isLetter} onClick={handleLetterClick}>
               <Button2 color={letterColor}>편지</Button2>
             </SelectButton>
-            <SelectButton
-              isSelected={!isLetter}
-              onClick={() => {
-                setIsLetter(false);
-                setLetterColor(Grey1);
-                setChattingColor(Green);
-                searchParams.set('consultType', 'chat');
-                setSearchParams(searchParams);
-              }}
-            >
+            <SelectButton isSelected={!isLetter} onClick={handleChatClick}>
               <Button2 color={chattingColor}>채팅</Button2>
             </SelectButton>
           </div>
