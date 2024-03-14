@@ -28,7 +28,7 @@ function OnGoingConsultSection() {
     };
     fetchOngoingConsult();
   }, []);
-  console.log(totalNum);
+  console.log(consult);
   return (
     <>
       <ContentTag
@@ -57,18 +57,23 @@ function OnGoingConsultSection() {
           consult?.map((item: any) => (
             <OngoingCounsultBox
               key={item?.id}
+              isChat={item?.isChat}
               consultStatus={item?.status}
               counselorName={item?.opponentNickname}
-              beforeMinutes={null}
+              beforeMinutes={item?.latestMessageUpdatedAt}
               content={
                 item?.status === '질문 대기'
-                  ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요! '
-                  : item?.lastMessageContent
+                  ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요!'
+                  : item?.latestMessageContent
               }
-              newMessageCounts={1}
+              newMessageCounts={item?.unreadMessageCount}
               counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
               onClick={() => {
-                navigate(`/minder/letter/${item?.id}`);
+                if (item?.isChat) {
+                  navigate(`/minder/chat/${item?.id}`);
+                } else {
+                  navigate(`/minder/letter/${item?.id}`);
+                }
               }}
             />
           ))
