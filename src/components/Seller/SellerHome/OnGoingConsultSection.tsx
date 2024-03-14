@@ -28,7 +28,6 @@ function OnGoingConsultSection() {
     };
     fetchOngoingConsult();
   }, []);
-  console.log(consult);
   return (
     <>
       <ContentTag
