@@ -36,6 +36,9 @@ export const FindInfoIdModal = ({
 
 const SaveModalBox = styled.div`
   width: 100%;
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
   height: 12.8rem;
   z-index: 9999;
   display: flex;
