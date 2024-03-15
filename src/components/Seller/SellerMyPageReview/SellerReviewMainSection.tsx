@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReviewCard, ReviewCardProps } from './ReviewCard';
 import { getMinderReviews } from 'api/get';
 import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
 import { useNavigate } from 'react-router-dom';
 import { Grey4 } from 'styles/color';
+import useIntersectionObserver from 'hooks/useIntersectionObserver';
 
 interface ReviewData {
-  reviewId: string;
+  reviewId: number;
   nickname: string;
   consultStyle: string;
   level: string;
@@ -16,29 +17,56 @@ interface ReviewData {
   consultType: string;
   consultedAt: string;
   consultCost: string;
-  rating: string;
+  rating: number;
   comment: string;
 }
 
 export const SellerReviewMainSection = () => {
-  const [cardList, setCardList] = useState<ReviewData[]>([]);
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchReviewData = async () => {
-      const params = {
-        cursorId: 0,
-        reviewId: 0,
-      };
-      const reviewRes: any = await getMinderReviews({ params });
-      if (reviewRes?.response?.status === 403) {
-        alert(
-          '아직 상담 프로필이 존재하지 않거나 상담 프로필 심사가 완료되지 않았어요.',
-        );
-        navigate('/minder/mypage');
-      }
-      setCardList(reviewRes.data);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
+  const [cardList, setCardList] = useState<ReviewData[]>([]);
+
+  const preventRef = useRef(true);
+
+  const fetchReviewData = async (lastId: number) => {
+    const params = {
+      reviewId: lastId,
     };
-    fetchReviewData();
+    const reviewRes: any = await getMinderReviews({ params });
+    if (reviewRes?.status === 200) {
+      if (reviewRes.data.length !== 0) {
+        if (lastId === 0) {
+          setCardList(reviewRes.data);
+        } else {
+          const updatedReviews = [...cardList, ...reviewRes.data];
+          setCardList(updatedReviews);
+        }
+      } else {
+        setIsLastElem(true);
+      }
+    } else if (reviewRes?.response?.status === 403) {
+      alert(
+        '아직 상담 프로필이 존재하지 않거나 상담 프로필 심사가 완료되지 않았어요.',
+      );
+      navigate('/minder/mypage');
+    }
+  };
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
+    if (entry[0].isIntersecting && !isLastElem && preventRef.current) {
+      preventRef.current = false;
+      await fetchReviewData(cardList[cardList.length - 1]?.reviewId);
+      preventRef.current = true;
+    }
+  };
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.8,
+    onIntersect,
+  });
+  useEffect(() => {
+    fetchReviewData(0);
   }, []);
   return (
     <>
@@ -57,12 +85,17 @@ export const SellerReviewMainSection = () => {
             iconType={Math.floor(1 + Math.random() * 8)}
             consultType={item.consultType}
             date={item.consultedAt}
-            price="8000원"
+            price={item.consultCost}
             rating={item.rating}
             review={item.comment}
           />
         ))}
       </ReviewCardList>
+      {!isLastElem ? (
+        <div ref={setTarget} style={{ height: '3.5rem' }} />
+      ) : (
+        <div style={{ height: '3.5rem' }} />
+      )}
     </>
   );
 };
