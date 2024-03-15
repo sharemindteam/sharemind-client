@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReviewCard, ReviewCardProps } from './ReviewCard';
 import { getMinderReviews } from 'api/get';
@@ -6,6 +6,7 @@ import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic
 import { useNavigate } from 'react-router-dom';
 import { Grey4 } from 'styles/color';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 
 interface ReviewData {
   reviewId: number;
@@ -28,28 +29,36 @@ export const SellerReviewMainSection = () => {
   const [cardList, setCardList] = useState<ReviewData[]>([]);
 
   const preventRef = useRef(true);
-
   const fetchReviewData = async (lastId: number) => {
     const params = {
       reviewId: lastId,
     };
     const reviewRes: any = await getMinderReviews({ params });
-    if (reviewRes?.status === 200) {
-      if (reviewRes.data.length !== 0) {
-        if (lastId === 0) {
-          setCardList(reviewRes.data);
+    try {
+      if (reviewRes?.status === 200) {
+        if (reviewRes.data.length !== 0) {
+          if (lastId === 0) {
+            setCardList(reviewRes.data);
+          } else {
+            const updatedReviews = [...cardList, ...reviewRes.data];
+            setCardList(updatedReviews);
+          }
         } else {
-          const updatedReviews = [...cardList, ...reviewRes.data];
-          setCardList(updatedReviews);
+          setIsLastElem(true);
         }
-      } else {
-        setIsLastElem(true);
+      } else if (reviewRes?.response?.status === 403) {
+        alert(
+          '아직 상담 프로필이 존재하지 않거나 상담 프로필 심사가 완료되지 않았어요.',
+        );
+        navigate('/minder/mypage');
       }
-    } else if (reviewRes?.response?.status === 403) {
-      alert(
-        '아직 상담 프로필이 존재하지 않거나 상담 프로필 심사가 완료되지 않았어요.',
-      );
-      navigate('/minder/mypage');
+    } catch (err) {
+      alert(err);
+      navigate('minder/profile');
+    } finally {
+      if (lastId === 0) {
+        setIsInitialLoading(false);
+      }
     }
   };
   const onIntersect: IntersectionObserverCallback = async (entry) => {
@@ -65,39 +74,48 @@ export const SellerReviewMainSection = () => {
     threshold: 0.8,
     onIntersect,
   });
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchReviewData(0);
   }, []);
-  return (
-    <>
-      <ReviewCardList>
-        {cardList?.length === 0 && (
-          <NoCalculationGraphicWrapper>
-            <NoCalculationGraphicIcon />
-            <MainText color={Grey4}>아직 받은 리뷰가 없어요</MainText>
-          </NoCalculationGraphicWrapper>
+
+  if (isInitialLoading) {
+    return (
+      <div style={{ height: '80vh', display: 'flex', alignItems: 'center' }}>
+        <LoadingSpinner />
+      </div>
+    );
+  } else {
+    return (
+      <>
+        <ReviewCardList>
+          {cardList?.length === 0 && (
+            <NoCalculationGraphicWrapper>
+              <NoCalculationGraphicIcon />
+              <MainText color={Grey4}>아직 받은 리뷰가 없어요</MainText>
+            </NoCalculationGraphicWrapper>
+          )}
+          {cardList?.map((item) => (
+            <ReviewCard
+              key={item.reviewId}
+              id={item.reviewId}
+              name={item.nickname}
+              iconType={Math.floor(1 + Math.random() * 8)}
+              consultType={item.consultType}
+              date={item.consultedAt}
+              price={item.consultCost}
+              rating={item.rating}
+              review={item.comment}
+            />
+          ))}
+        </ReviewCardList>
+        {!isLastElem ? (
+          <div ref={setTarget} style={{ height: '3.5rem' }} />
+        ) : (
+          <div style={{ height: '3.5rem' }} />
         )}
-        {cardList?.map((item) => (
-          <ReviewCard
-            key={item.reviewId}
-            id={item.reviewId}
-            name={item.nickname}
-            iconType={Math.floor(1 + Math.random() * 8)}
-            consultType={item.consultType}
-            date={item.consultedAt}
-            price={item.consultCost}
-            rating={item.rating}
-            review={item.comment}
-          />
-        ))}
-      </ReviewCardList>
-      {!isLastElem ? (
-        <div ref={setTarget} style={{ height: '3.5rem' }} />
-      ) : (
-        <div style={{ height: '3.5rem' }} />
-      )}
-    </>
-  );
+      </>
+    );
+  }
 };
 
 const ReviewCardList = styled.div`
