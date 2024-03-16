@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { Grey4, Grey6 } from 'styles/color';
 import { isReviewComplaintOpenState } from 'utils/atom';
 interface ReviewComplaintMenuProps {
-  id: string;
+  id: number;
 }
 export const ReviewComplaintMenu = ({ id }: ReviewComplaintMenuProps) => {
   const [isReviewComplaintOpen, setIsReviewComplaintOpen] = useRecoilState(
