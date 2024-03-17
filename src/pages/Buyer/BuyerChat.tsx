@@ -316,14 +316,19 @@ export const BuyerChat = () => {
       );
     }
   };
+
   const handleSubmit = () => {
     if (input.trim() !== '') {
       sendMessage();
       setInput('');
     }
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
     if (inputRef.current) inputRef.current.style.height = '2.4rem';
     if (sectionPaddingRef.current) sectionPaddingRef.current = 2.4;
   };
+
   //모바일에서 터치가 일어나면 키보드 숨김
   const handleTouchStart = (e: any) => {
     if (!e.target.closest('footer')) {
@@ -679,18 +684,14 @@ export const BuyerChat = () => {
                 if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
                   if (e.key === 'Enter' && e.shiftKey) return;
                   else if (e.key === 'Enter') {
-                    e.preventDefault();
                     handleSubmit();
+                    e.preventDefault();
                   }
                 }
               }}
             />
           </ChatTextareaWrapper>
-          <button
-            type="submit"
-            style={{ margin: '0', padding: '0' }}
-            onClick={handleSubmit}
-          >
+          <button style={{ margin: '0', padding: '0' }} onClick={handleSubmit}>
             <SearchIcon InputValid={inputValid} />
           </button>
         </div>

@@ -274,6 +274,9 @@ export const SellerChatTemp = () => {
       sendMessage();
       setInput('');
     }
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
     if (inputRef.current) inputRef.current.style.height = '2.4rem';
     if (sectionPaddingRef.current) sectionPaddingRef.current = 2.4;
   };
@@ -595,7 +598,6 @@ export const SellerChatTemp = () => {
                 />
               </ChatTextareaWrapper>
               <button
-                type="submit"
                 style={{ margin: '0', padding: '0' }}
                 onClick={handleSubmit}
               >
