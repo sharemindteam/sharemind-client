@@ -56,6 +56,7 @@ export const BuyerChat = () => {
   const [startRequestActive, setStartRequestActive] = useState<boolean>(true);
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
 
   const { stompClient } = useStompContext();
@@ -322,7 +323,10 @@ export const BuyerChat = () => {
       sendMessage();
       setInput('');
     }
-    if (inputRef.current) {
+    if (inputRef.current && hiddenInputRef.current) {
+      // hiddenInput에 focus를 옮기고, 다시 input으로 옮기는 방식을 사용하여
+      // ios 환경에서 한글(받침없는 글자) 입력시 buffer가 남아있는 문제를 해결했음
+      hiddenInputRef.current.focus();
       inputRef.current.focus();
     }
     if (inputRef.current) inputRef.current.style.height = '2.4rem';
@@ -464,7 +468,6 @@ export const BuyerChat = () => {
             ref={setTarget}
             style={{
               width: '100%',
-              // height: '0.1rem',
               backgroundColor: 'green',
             }}
           ></div>
@@ -472,7 +475,6 @@ export const BuyerChat = () => {
           <div
             style={{
               width: '100%',
-              // height: '0.1rem',
               backgroundColor: 'pink',
             }}
           ></div>
@@ -690,6 +692,7 @@ export const BuyerChat = () => {
                 }
               }}
             />
+            <input ref={hiddenInputRef} className="hidden-input" />
           </ChatTextareaWrapper>
           <button style={{ margin: '0', padding: '0' }} onClick={handleSubmit}>
             <SearchIcon InputValid={inputValid} />
@@ -846,6 +849,14 @@ const ChatTextareaWrapper = styled.div`
   width: 78.66%;
   border-radius: 1.2rem;
   box-sizing: border-box;
+  position: relative;
+  .hidden-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    background-color: transparent;
+    pointer-events: none;
+  }
 `;
 
 const ChatTextarea = styled.textarea`
