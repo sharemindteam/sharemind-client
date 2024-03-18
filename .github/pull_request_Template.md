@@ -13,6 +13,12 @@
 PR 내용을 작성해주세요.
 <br>
 
+## Related Issues
+
+<br>
+관련된 이슈 number를 작성해주세요.
+<br>
+
 ## To Reveiwer
 
 <br>
