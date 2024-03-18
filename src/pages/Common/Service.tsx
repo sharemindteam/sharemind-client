@@ -2,7 +2,7 @@ import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Space } from 'components/Common/Space';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Green, Grey2, Grey3, Grey6, LightGreen } from 'styles/color';
 import { Body3, Body4, Caption1, Caption2, Heading } from 'styles/font';
 import SharemindLogo from 'assets/icons/logo.png';
@@ -20,6 +20,16 @@ import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Characters } from 'utils/Characters';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+const slideArray = [
+  '연애갈등',
+  '이별/재회',
+  '여자심리',
+  '남자심리',
+  '썸/연애시작',
+  '짝사랑',
+  '권태기',
+  '기타',
+];
 function Service() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -118,111 +128,32 @@ function Service() {
             </div>
 
             <div className="slide-category">
-              <div className="slide1">
-                <SlideList>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={1} />
-                    </div>
-                    <Heading>연애갈등</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={2} />
-                    </div>
-                    <Heading>이별/재회</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={3} />
-                    </div>
-                    <Heading>여자심리</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={4} />
-                    </div>
-                    <Heading>남자심리</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={5} />
-                    </div>
-                    <div></div>
-                    <Heading>썸/연애시작</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={6} />
-                    </div>
-                    <Heading>짝사랑</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={7} />
-                    </div>
-                    <Heading>권태기</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={8} />
-                    </div>
-                    <Heading>기타</Heading>
-                  </SliderItem>
-                </SlideList>
-              </div>
-              <div className="slide2">
-                <SlideList>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={5} />
-                    </div>
-                    <Heading>썸/연애시작</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={6} />
-                    </div>
-                    <Heading>짝사랑</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={7} />
-                    </div>
-                    <Heading>권태기</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={8} />
-                    </div>
-                    <Heading>기타</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={1} />
-                    </div>
-                    <Heading>연애갈등</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={2} />
-                    </div>
-                    <Heading>이별/재회</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={3} />
-                    </div>
-                    <Heading>여자심리</Heading>
-                  </SliderItem>
-                  <SliderItem>
-                    <div className="char">
-                      <Characters number={4} />
-                    </div>
-                    <Heading>남자심리</Heading>
-                  </SliderItem>
-                </SlideList>
-              </div>
+              <SlideList>
+                {Array.from({ length: 2 * 8 }, (_, i) => (i % 8) + 1).map(
+                  (item) => (
+                    <SliderItem>
+                      <div className="char">
+                        <Characters number={item} />
+                        {/* 1~8 */}
+                      </div>
+                      <Heading>{slideArray[item - 1]}</Heading>
+                    </SliderItem>
+                  ),
+                )}
+              </SlideList>
+              <SlideReverseList>
+                {Array.from({ length: 2 * 8 }, (_, i) => (i % 8) + 4).map(
+                  (item) => (
+                    <SliderItem>
+                      <div className="char">
+                        {/* 0~7 */}
+                        <Characters number={((item + 3) % 8) + 1} />
+                      </div>
+                      <Heading>{slideArray[(item + 3) % 8]}</Heading>
+                    </SliderItem>
+                  ),
+                )}
+              </SlideReverseList>
             </div>
 
             <div className="service-point">
@@ -373,9 +304,10 @@ const ServicePageContainer = styled.div`
   .slide-category {
     background-color: ${Grey6};
     height: 21.7rem;
+    width: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
     justify-content: center;
   }
   .service-point {
@@ -403,16 +335,9 @@ const ServicePageContainer = styled.div`
     display: flex;
     align-items: center;
   }
-  .slide1 {
-    width: 100%;
-    overflow: scroll;
-  }
-  .slide2 {
-    width: 100%;
-    overflow: scroll;
-  }
+
   .char {
-    width: 8rem;
+    width: 10rem;
   }
 `;
 
@@ -451,21 +376,49 @@ const ProcedureImg2 = styled.img`
   width: 31rem;
 `;
 
+const loopAnimation = keyframes`
+  from{
+    transform: translateX(0);
+  }
+  to{
+    transform: translateX(-50%);
+  }
+`;
+
 const SlideList = styled.div`
   display: flex;
-  gap: 1rem;
-  width: 200rem;
+  width: fit-content;
+  align-items: center;
+  animation-name: ${loopAnimation};
+  animation-duration: 10s;
+  animation-direction: reverse;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+`;
+
+const SlideReverseList = styled.div`
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  animation-name: ${loopAnimation};
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 `;
 
 const SliderItem = styled.div`
-  width: 19rem;
+  width: 23rem;
   height: 8rem;
+  margin: 1rem;
   background-color: white;
   border-radius: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.9rem;
+  gap: 1rem;
+  .char {
+    height: 100%;
+  }
 `;
 
 const FinalBox = styled.div`
