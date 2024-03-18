@@ -66,7 +66,9 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
 
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
-    stompClient.current = Stomp.over(socket);
+    stompClient.current = Stomp.over(() => {
+      return socket;
+    });
     // 연결
     stompClient.current.connect(
       {

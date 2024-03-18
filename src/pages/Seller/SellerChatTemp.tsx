@@ -48,8 +48,10 @@ export const SellerChatTemp = () => {
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   const { stompClient } = useStompContext();
+
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
   const preventScrollRef = useRef(true); // message 변경 시 모바일에서 오버 스크롤로 인해 여러번 불리는 오류 발생, scrollintoview 완료 전까지 observe 막기
   const isLastElem = useRef(false); //마지막 채팅인지 확인
@@ -274,7 +276,10 @@ export const SellerChatTemp = () => {
       sendMessage();
       setInput('');
     }
-    if (inputRef.current) {
+    if (inputRef.current && hiddenInputRef.current) {
+      // hiddenInput에 focus를 옮기고, 다시 input으로 옮기는 방식을 사용하여
+      // ios 환경에서 한글(받침없는 글자) 입력시 buffer가 남아있는 문제를 해결했음
+      hiddenInputRef.current.focus();
       inputRef.current.focus();
     }
     if (inputRef.current) inputRef.current.style.height = '2.4rem';
@@ -596,6 +601,7 @@ export const SellerChatTemp = () => {
                     }
                   }}
                 />
+                <input ref={hiddenInputRef} className="hidden-input" />
               </ChatTextareaWrapper>
               <button
                 style={{ margin: '0', padding: '0' }}
@@ -765,6 +771,14 @@ const ChatTextareaWrapper = styled.div`
   width: 78.66%;
   border-radius: 1.2rem;
   box-sizing: border-box;
+  position: relative;
+  .hidden-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    background-color: transparent;
+    pointer-events: none;
+  }
 `;
 
 const ChatTextarea = styled.textarea`
