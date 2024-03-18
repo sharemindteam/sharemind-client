@@ -48,6 +48,8 @@ export const BuyerPwChange = () => {
     };
     const res: any = await patchAuthPassword(body);
     if (res.status === 200) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       navigate('/login');
     } else if (res.response.status === 400) {
       alert(res.response.data.message);
