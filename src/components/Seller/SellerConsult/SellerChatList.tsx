@@ -117,11 +117,11 @@ function SellerChatList({
                     consultId: null,
                   };
                   //add roomIds for unsubscribe
-                  roomIdsRef.current.push(notification.chatId);
+                  roomIdsRef.current.unshift(notification.chatId);
 
                   cardDataRef.current = [
-                    ...cardDataRef.current,
                     addedChatRoomItem,
+                    ...cardDataRef.current,
                   ];
 
                   setConsultInfo(cardDataRef.current);
