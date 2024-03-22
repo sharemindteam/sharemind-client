@@ -9,13 +9,15 @@ import { useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState } from 'utils/atom';
 import SellerLetterList from './SellerLetterList';
 import SellerChatList from './SellerChatList';
+import SellerOpenConsultList from './SellerOpenConsultList';
 interface ConsultTypeProps {
   isActive: boolean;
+  isLong?: boolean;
 }
 
 export const SellerConsultSection = () => {
-  // 편지 탭과 채팅 탭
-  const [isLetterActive, setIsLetterActive] = useState<boolean>(true);
+  // 편지 탭, 채팅 탭, 공개상담탭 -> 0, 1, 2
+  const [consultTabStatus, setConsultTabStatus] = useState<number>(0);
   // 완료된 상담 제외, 포함
   const [isIncludeCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
@@ -28,20 +30,29 @@ export const SellerConsultSection = () => {
       <ConsultSortingMenu>
         <div className="row1">
           <ConsultType
-            isActive={isLetterActive}
+            isActive={consultTabStatus === 0}
             onClick={() => {
-              setIsLetterActive(true);
+              setConsultTabStatus(0);
             }}
           >
             편지
           </ConsultType>
           <ConsultType
-            isActive={!isLetterActive}
+            isActive={consultTabStatus === 1}
             onClick={() => {
-              setIsLetterActive(false);
+              setConsultTabStatus(1);
             }}
           >
             채팅
+          </ConsultType>
+          <ConsultType
+            isLong={true}
+            isActive={consultTabStatus === 2}
+            onClick={() => {
+              setConsultTabStatus(2);
+            }}
+          >
+            공개상담
           </ConsultType>
           <SortingType
             onClick={() => {
@@ -64,23 +75,31 @@ export const SellerConsultSection = () => {
               cursor: 'pointer',
             }}
           >
-            <CircleCheckIcon fill={isIncludeCompleteConsult ? Grey5 : Green} />
-            <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
+            {consultTabStatus !== 2 && (
+              <>
+                <CircleCheckIcon
+                  fill={isIncludeCompleteConsult ? Grey5 : Green}
+                />
+                <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
+              </>
+            )}
           </div>
         </div>
       </ConsultSortingMenu>
-      {isLetterActive ? (
+      {consultTabStatus === 0 ? (
         <SellerLetterList
           sortType={sortType}
           setSortType={setSortType}
           isIncludeCompleteConsult={isIncludeCompleteConsult}
         />
-      ) : (
+      ) : consultTabStatus === 1 ? (
         <SellerChatList
           sortType={sortType}
           setSortType={setSortType}
           isIncludeCompleteConsult={isIncludeCompleteConsult}
         />
+      ) : (
+        <SellerOpenConsultList />
       )}
     </>
   );
@@ -108,7 +127,7 @@ const ConsultSortingMenu = styled.div`
 
 const ConsultType = styled.div<ConsultTypeProps>`
   display: flex;
-  width: 5.7rem;
+  width: ${(props) => (props.isLong ? '8rem' : '5.6rem')};
   height: 3.4rem;
   cursor: pointer;
   justify-content: center;
