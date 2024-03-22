@@ -5,6 +5,9 @@ import { useLayoutEffect, useState } from 'react';
 import { consultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getLettersCustomers } from 'api/get';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
+import { Heading } from 'styles/font';
+
 interface BuyerLetterSectionProps {
   sortType: number;
   isChecked: boolean;
@@ -62,25 +65,34 @@ export const BuyerLetterSection = ({
     );
   } else {
     return (
-      <BuyerLetterSectionWrapper>
-        {cardData.map((value) => {
-          return (
-            <ConsultCard
-              consultStyle={value.consultStyle}
-              id={value.id}
-              latestMessageContent={value.latestMessageContent}
-              latestMessageIsCustomer={value.latestMessageIsCustomer}
-              latestMessageUpdatedAt={value.latestMessageUpdatedAt}
-              opponentNickname={value.opponentNickname}
-              status={value.status}
-              unreadMessageCount={value.unreadMessageCount}
-              reviewCompleted={value.reviewCompleted}
-              consultId={value.consultId}
-              isLetter={true}
-            />
-          );
-        })}
-      </BuyerLetterSectionWrapper>
+      <>
+        {cardData.length !== 0 ? (
+          <BuyerLetterSectionWrapper>
+            {cardData.map((value) => {
+              return (
+                <ConsultCard
+                  consultStyle={value.consultStyle}
+                  id={value.id}
+                  latestMessageContent={value.latestMessageContent}
+                  latestMessageIsCustomer={value.latestMessageIsCustomer}
+                  latestMessageUpdatedAt={value.latestMessageUpdatedAt}
+                  opponentNickname={value.opponentNickname}
+                  status={value.status}
+                  unreadMessageCount={value.unreadMessageCount}
+                  reviewCompleted={value.reviewCompleted}
+                  consultId={value.consultId}
+                  isLetter={true}
+                />
+              );
+            })}
+          </BuyerLetterSectionWrapper>
+        ) : (
+          <EmptyWrapper>
+            <EmptyIcon />
+            <Heading>아직 진행한 상담이 없어요</Heading>
+          </EmptyWrapper>
+        )}{' '}
+      </>
     );
   }
 };
@@ -91,4 +103,14 @@ const BuyerLetterSectionWrapper = styled.section`
   gap: 0.8rem;
   align-items: center;
   padding: 1.2rem 0;
+`;
+
+const EmptyIcon = styled(Empty)`
+  padding: 4.7rem 4.41rem 4.603rem 4.5rem;
+`;
+const EmptyWrapper = styled.div`
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
