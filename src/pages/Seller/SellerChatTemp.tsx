@@ -53,7 +53,7 @@ export const SellerChatTemp = () => {
   const { stompClient } = useStompContext();
 
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
-  const preventScrollRef = useRef(true); // message 변경 시 모바일에서 오버 스크롤로 인해 여러번 불리는 오류 발생, scrollintoview 완료 전까지 observe 막기
+
   const isLastElem = useRef(false); //마지막 채팅인지 확인
   const lastRef = useRef<HTMLDivElement>(null); // 마지막 채팅 box ref
   const newMessageRef = useRef(true); // 새로운 메세지인지 이전 메세지 fetch인지
@@ -300,17 +300,9 @@ export const SellerChatTemp = () => {
       !isLastElem.current &&
       !isInitialLoading &&
       preventRef.current
-      // &&preventScrollRef.current
     ) {
       preventRef.current = false;
-      // preventScrollRef.current = false;
-      // console.log(`관측: ${messages[0].messageId}`);
       await getChatMessages(messages[0].messageId);
-      // console.log('fetch 완료');
-      // setTimeout(() => {
-      //   preventRef.current = true;
-      // }, 100);
-      // console.log(`관측: ${messages[0].messageId}`);
       preventRef.current = true;
     }
   };
@@ -369,9 +361,6 @@ export const SellerChatTemp = () => {
         block: 'start', // 페이지 하단으로 스크롤하도록 지정합니다.
       });
     }
-    // console.log('스크롤 완료');
-    //scrollIntoView 완료 후 다시 관측가능
-    // preventScrollRef.current = true;
   }, [messages]);
   //상담 start request 관련 처리
   useEffect(() => {
@@ -397,7 +386,7 @@ export const SellerChatTemp = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [time]);
+  }, [chatStatus, time]);
 
   if (isInitialLoading) {
     return (
@@ -405,7 +394,7 @@ export const SellerChatTemp = () => {
         <HeaderWrapper border={false}>
           <BackIcon
             onClick={() => {
-              navigate('/minder/consult');
+              navigate(-1);
             }}
           />
           <Heading color={Grey1}></Heading>
@@ -418,7 +407,7 @@ export const SellerChatTemp = () => {
         <HeaderWrapper border={false}>
           <BackIcon
             onClick={() => {
-              navigate('/minder/consult');
+              navigate(-1);
             }}
           />
           <Heading color={Grey1}>{opponentName}</Heading>
