@@ -103,7 +103,6 @@ export const SellerMypageModifyProfile = () => {
           navigate('/seller/mypage/viewProfile');
         } else {
           const profileRes: any = await getProfiles();
-          console.log(profileRes);
           const data = profileRes.data;
           if (profileRes?.response?.status === 404) {
             alert('판매 정보가 등록되어 있지 않습니다.');

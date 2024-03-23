@@ -70,7 +70,6 @@ export const SellerChatTemp = () => {
         params,
       });
       if (res.status === 200) {
-        // console.log(res.data);
         if (res.data.length !== 0) {
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
