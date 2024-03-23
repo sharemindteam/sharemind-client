@@ -48,7 +48,7 @@ export const SellerConsultSection = () => {
             }}
           >
             <Button2 color={Grey3}>
-              {sortType === 0 ? '최근순' : '읽지 않은 순'}
+              {sortType === 0 ? '최근순' : '읽지않은순'}
             </Button2>
             <DownArrowIcon />
           </SortingType>
