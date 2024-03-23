@@ -71,7 +71,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
           if (isBuyer) {
             navigate('/open-consult');
           } else {
-            navigate('/minder/consult');
+            navigate('/minder/open-consult');
           }
         }}
       >
