@@ -6,7 +6,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { ConsultInfoList } from 'utils/type';
+import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
@@ -82,23 +82,23 @@ function SellerLetterList({
               <NoConsultText>아직 진행한 상담이 없어요</NoConsultText>
             </NoConsultSection>
           ) : (
-            consultInfo?.map((item: any) => (
+            consultInfo.map((item: ConsultInfoItem) => (
               <OngoingCounsultBox
-                consultStatus={item?.status}
-                counselorName={item?.opponentNickname}
-                beforeMinutes={item?.latestMessageUpdatedAt}
+                consultStatus={item.status}
+                counselorName={item.opponentNickname}
+                beforeMinutes={item.latestMessageUpdatedAt}
                 content={
-                  item?.status === '질문 대기'
+                  item.status === '질문 대기'
                     ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요! '
-                    : item?.lastMessageContent
+                    : item?.latestMessageContent
                 }
-                key={item?.id}
+                key={item.id}
                 counselorprofileStatus={consultStyleToCharNum(
-                  item?.consultStyle,
+                  item.consultStyle,
                 )}
-                newMessageCounts={item?.unreadMessageCount}
+                newMessageCounts={item.unreadMessageCount}
                 onClick={() => {
-                  navigate(`/minder/letter/${item?.id}`);
+                  navigate(`/minder/letter/${item.id}`);
                 }}
               />
             ))
