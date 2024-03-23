@@ -23,13 +23,10 @@ export const SellerConsultSection = () => {
     handleChatClick,
     searchParams,
     setSearchParams,
-    // isChecked,
-    // setIsChecked,
+    isChecked,
+    setIsChecked,
   } = useConsultParams();
 
-  // 완료된 상담 제외, 포함
-  const [isIncludeCompleteConsult, setIsIncludeCompleteConsult] =
-    useState<boolean>(false);
   // 모달 열지 말지
   const setIsModalOpen = useSetRecoilState<boolean>(isConsultModalOpenState);
   return (
@@ -57,13 +54,15 @@ export const SellerConsultSection = () => {
           <div
             className="row2-1"
             onClick={() => {
-              setIsIncludeCompleteConsult(!isIncludeCompleteConsult);
+              setIsChecked(!isChecked);
+              searchParams.set('check', String(!isChecked));
+              setSearchParams(searchParams);
             }}
             style={{
               cursor: 'pointer',
             }}
           >
-            <CircleCheckIcon fill={isIncludeCompleteConsult ? Grey5 : Green} />
+            <CircleCheckIcon fill={isChecked ? Green : Grey5} />
             <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
           </div>
         </div>
@@ -74,7 +73,7 @@ export const SellerConsultSection = () => {
           setSortType={setSortType}
           searchParams={searchParams}
           setSearchParams={setSearchParams}
-          isIncludeCompleteConsult={isIncludeCompleteConsult}
+          isChecked={isChecked}
         />
       ) : (
         <SellerChatList
@@ -82,7 +81,7 @@ export const SellerConsultSection = () => {
           setSortType={setSortType}
           searchParams={searchParams}
           setSearchParams={setSearchParams}
-          isIncludeCompleteConsult={isIncludeCompleteConsult}
+          isChecked={isChecked}
         />
       )}
     </>

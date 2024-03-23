@@ -18,14 +18,14 @@ import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
 interface SellerConsultProps {
   sortType: number;
   setSortType: React.Dispatch<React.SetStateAction<number>>;
-  isIncludeCompleteConsult: boolean;
+  isChecked: boolean;
   searchParams: URLSearchParams;
   setSearchParams: SetURLSearchParams;
 }
 
 function SellerChatList({
   sortType,
-  isIncludeCompleteConsult,
+  isChecked,
   setSortType,
   searchParams,
   setSearchParams,
@@ -181,7 +181,7 @@ function SellerChatList({
   const fetchChatData = useCallback(async () => {
     setIsLoading(true);
     const params = {
-      filter: !isIncludeCompleteConsult,
+      filter: isChecked,
       sortType: sortType === 0 ? 'latest' : 'unread',
     };
 
@@ -203,7 +203,7 @@ function SellerChatList({
     } finally {
       setIsLoading(false);
     }
-  }, [isIncludeCompleteConsult, navigate, setIsLoading, sortType]);
+  }, [isChecked, navigate, setIsLoading, sortType]);
 
   useEffect(() => {
     fetchChatData();

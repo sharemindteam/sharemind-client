@@ -14,14 +14,14 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 interface SellerConsultProps {
   sortType: number;
   setSortType: React.Dispatch<React.SetStateAction<number>>;
-  isIncludeCompleteConsult: boolean;
+  isChecked: boolean;
   searchParams: URLSearchParams;
   setSearchParams: SetURLSearchParams;
 }
 
 function SellerLetterList({
   sortType,
-  isIncludeCompleteConsult,
+  isChecked,
   setSortType,
   searchParams,
   setSearchParams,
@@ -36,16 +36,17 @@ function SellerLetterList({
   const fetchLetterData = useCallback(async () => {
     setIsLoading(true);
     const params = {
-      filter: !isIncludeCompleteConsult,
+      filter: isChecked,
       sortType: sortType === 0 ? 'latest' : 'unread',
     };
     let res: any;
     try {
       res = await getConselorLetters({ params });
+      console.log(res.data);
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);
-      } else if (res?.response?.status === 403) {
+      } else if (res.response.status === 403) {
         // 판매 정보를 등록하지 않았을 경우
         alert('판매 정보를 등록해주세요.');
         navigate('/minder/mypage/viewProfile');
@@ -57,7 +58,7 @@ function SellerLetterList({
     } finally {
       setIsLoading(false);
     }
-  }, [isIncludeCompleteConsult, navigate, setIsLoading, sortType]);
+  }, [isChecked, navigate, setIsLoading, sortType]);
   useEffect(() => {
     fetchLetterData();
   }, [fetchLetterData]);
