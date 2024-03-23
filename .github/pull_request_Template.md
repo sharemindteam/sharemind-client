@@ -7,7 +7,7 @@
 
 <br>
 
-## Describtion
+## Description
 
 <br>
 PR 내용을 작성해주세요.
