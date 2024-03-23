@@ -9,13 +9,26 @@ import { useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState } from 'utils/atom';
 import SellerLetterList from './SellerLetterList';
 import SellerChatList from './SellerChatList';
+import { useConsultParams } from 'hooks/useConsultParams';
 interface ConsultTypeProps {
   isActive: boolean;
 }
 
 export const SellerConsultSection = () => {
+  const {
+    isLetter,
+    // sortType,
+    // setSortType,
+    handleLetterClick,
+    handleChatClick,
+    // searchParams,
+    // setSearchParams,
+    // isChecked,
+    // setIsChecked,
+  } = useConsultParams();
+
   // 편지 탭과 채팅 탭
-  const [isLetterActive, setIsLetterActive] = useState<boolean>(true);
+  // const [isLetter, setIsLetter] = useState<boolean>(true);
   // 완료된 상담 제외, 포함
   const [isIncludeCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
@@ -27,20 +40,10 @@ export const SellerConsultSection = () => {
     <>
       <ConsultSortingMenu>
         <div className="row1">
-          <ConsultType
-            isActive={isLetterActive}
-            onClick={() => {
-              setIsLetterActive(true);
-            }}
-          >
+          <ConsultType isActive={isLetter} onClick={handleLetterClick}>
             편지
           </ConsultType>
-          <ConsultType
-            isActive={!isLetterActive}
-            onClick={() => {
-              setIsLetterActive(false);
-            }}
-          >
+          <ConsultType isActive={!isLetter} onClick={handleChatClick}>
             채팅
           </ConsultType>
           <SortingType
@@ -69,7 +72,7 @@ export const SellerConsultSection = () => {
           </div>
         </div>
       </ConsultSortingMenu>
-      {isLetterActive ? (
+      {isLetter ? (
         <SellerLetterList
           sortType={sortType}
           setSortType={setSortType}

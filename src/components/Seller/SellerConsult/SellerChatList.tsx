@@ -41,7 +41,7 @@ function SellerChatList({
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
    */
   const cardDataRef = useRef<ConsultInfoItem[]>([]);
-  const { stompClient } = useStompContext();
+  const { stompClient, isConnected } = useStompContext();
   //채팅 readId, 가장 최근 unread message, 정렬 업데이트
   const updateChatData = (
     chatId: number,
@@ -172,7 +172,7 @@ function SellerChatList({
         );
       }
     };
-  }, [stompClient]);
+  }, [stompClient, isConnected]);
 
   const fetchChatData = useCallback(async () => {
     setIsLoading(true);
