@@ -11,12 +11,17 @@ export const useConsultParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const typeParam = searchParams.get('type');
   const sortParam = searchParams.get('sort');
+  const checkParam = searchParams.get('check');
+  // if there is any query string, set letter, unread, checked
   const initialIsLetter = typeParam === 'chat' ? false : true;
   const initialSortType = sortParam === 'unread' ? 1 : 0;
+  const initialIsChecked = checkParam === 'false' ? false : true;
   /** is current tag is Letter or not */
   const [isLetter, setIsLetter] = useState<boolean>(initialIsLetter);
   /** sortType by number 0 : 최신순 1: 읽지 않은 순 */
   const [sortType, setSortType] = useState<number>(initialSortType);
+  /** 완료 제외 체크 여부 */
+  const [isChecked, setIsChecked] = useState<boolean>(initialIsChecked);
 
   const handleLetterClick = () => {
     setIsLetter(true);
@@ -30,16 +35,6 @@ export const useConsultParams = () => {
     setSearchParams(searchParams);
   };
 
-  /** set values from query string in first mount */
-  //   useEffect(() => {
-  //     if (consultParam === 'letter' || consultParam === null) {
-  //     } else if (consultParam === 'chat') {
-  //     } else {
-  //       searchParams.delete('type');
-  //       setSearchParams(searchParams);
-  //     }
-  //   }, []);
-
   return {
     isLetter,
     sortType,
@@ -48,5 +43,7 @@ export const useConsultParams = () => {
     handleChatClick,
     searchParams,
     setSearchParams,
+    isChecked,
+    setIsChecked,
   };
 };

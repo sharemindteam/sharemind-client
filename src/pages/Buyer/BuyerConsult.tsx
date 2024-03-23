@@ -41,10 +41,12 @@ export const BuyerConsult = () => {
     handleChatClick,
     searchParams,
     setSearchParams,
+    isChecked,
+    setIsChecked,
   } = useConsultParams();
 
   // const [isLetter, setIsLetter] = useState<boolean>(true); //편지 채팅 여부
-  const [isChecked, setIsChecked] = useState<boolean>(false); //완료 제외 체크 여부
+  // const [isChecked, setIsChecked] = useState<boolean>(false); //완료 제외 체크 여부
   // const [sortType, setSortType] = useState<number>(0); //0 : 최신순 1:읽지 않은 순
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
@@ -88,6 +90,8 @@ export const BuyerConsult = () => {
           style={{ cursor: 'pointer' }}
           onClick={() => {
             setIsChecked(!isChecked);
+            searchParams.set('check', String(!isChecked));
+            setSearchParams(searchParams);
           }}
         >
           {isChecked ? <CheckIcon /> : <NonCheckIcon />}
