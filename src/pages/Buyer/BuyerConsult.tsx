@@ -39,11 +39,11 @@ export const BuyerConsult = () => {
     setSortType,
     handleLetterClick,
     handleChatClick,
+    searchParams,
+    setSearchParams,
   } = useConsultParams();
 
   // const [isLetter, setIsLetter] = useState<boolean>(true); //편지 채팅 여부
-  const [letterColor, setLetterColor] = useState<string>(Green);
-  const [chattingColor, setChattingColor] = useState<string>(Grey1);
   const [isChecked, setIsChecked] = useState<boolean>(false); //완료 제외 체크 여부
   // const [sortType, setSortType] = useState<number>(0); //0 : 최신순 1:읽지 않은 순
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
@@ -106,7 +106,12 @@ export const BuyerConsult = () => {
               setIsModalOpen(false);
             }}
           />
-          <ConsultModal sortType={sortType} setSortType={setSortType} />
+          <ConsultModal
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
         </>
       ) : null}
     </Wrapper>

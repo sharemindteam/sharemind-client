@@ -96,7 +96,6 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
     connectChat();
     // Provider 언마운트 시 연결 해제
     return () => {
-      console.log('pre unmount');
       if (stompClient.current) {
         stompClient.current.disconnect();
         setIsConnected(false);
