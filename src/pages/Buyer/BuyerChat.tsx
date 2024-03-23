@@ -448,7 +448,7 @@ export const BuyerChat = () => {
       <HeaderWrapper border={false}>
         <BackIcon
           onClick={() => {
-            navigate('/consult');
+            navigate(-1);
           }}
         />
         <Heading color={Grey1}>{counselorInfo?.nickname}</Heading>

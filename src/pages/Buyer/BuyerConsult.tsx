@@ -13,6 +13,7 @@ import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-c
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { BuyerChatSection } from 'components/Buyer/BuyerConsult/BuyerChatSection';
 import { BuyerLetterSection } from 'components/Buyer/BuyerConsult/BuyerLetterSection';
+import { useConsultParams } from 'hooks/useConsultParams';
 
 export interface consultApiObject {
   consultStyle: string;
@@ -29,13 +30,22 @@ export interface consultApiObject {
 
 export const BuyerConsult = () => {
   const navigate = useNavigate();
+
   const sortList = ['최근순', '읽지않은순'];
 
-  const [isLetter, setIsLetter] = useState<boolean>(true); //편지 채팅 여부
+  const {
+    isLetter,
+    sortType,
+    setSortType,
+    handleLetterClick,
+    handleChatClick,
+  } = useConsultParams();
+
+  // const [isLetter, setIsLetter] = useState<boolean>(true); //편지 채팅 여부
   const [letterColor, setLetterColor] = useState<string>(Green);
   const [chattingColor, setChattingColor] = useState<string>(Grey1);
   const [isChecked, setIsChecked] = useState<boolean>(false); //완료 제외 체크 여부
-  const [sortType, setSortType] = useState<number>(0); //0 : 최신순 1:읽지 않은 순
+  // const [sortType, setSortType] = useState<number>(0); //0 : 최신순 1:읽지 않은 순
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   ); // Modal 여부(recoil)
@@ -54,25 +64,11 @@ export const BuyerConsult = () => {
       <div className="options">
         <div className="select">
           <div className="select-button">
-            <SelectButton
-              isSelected={isLetter}
-              onClick={() => {
-                setIsLetter(true);
-                setLetterColor(Green);
-                setChattingColor(Grey1);
-              }}
-            >
-              <Button2 color={letterColor}>편지</Button2>
+            <SelectButton isSelected={isLetter} onClick={handleLetterClick}>
+              <Button2 color={isLetter ? Green : Grey1}>편지</Button2>
             </SelectButton>
-            <SelectButton
-              isSelected={!isLetter}
-              onClick={() => {
-                setIsLetter(false);
-                setLetterColor(Grey1);
-                setChattingColor(Green);
-              }}
-            >
-              <Button2 color={chattingColor}>채팅</Button2>
+            <SelectButton isSelected={!isLetter} onClick={handleChatClick}>
+              <Button2 color={isLetter ? Grey1 : Green}>채팅</Button2>
             </SelectButton>
           </div>
           <div

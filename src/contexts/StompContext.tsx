@@ -94,10 +94,12 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     connectChat();
-    // 컴포넌트 언마운트 시 연결 해제
+    // Provider 언마운트 시 연결 해제
     return () => {
+      console.log('pre unmount');
       if (stompClient.current) {
         stompClient.current.disconnect();
+        setIsConnected(false);
         console.log('WebSocket disconnected');
       }
     };
