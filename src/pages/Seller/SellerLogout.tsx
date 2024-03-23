@@ -1,3 +1,4 @@
+import { patchAuthSignOut } from 'api/patch';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,29 @@ import { Characters } from 'utils/Characters';
 
 export const SellerLogout = () => {
   const navigate = useNavigate();
+
+  const patchSingOut = async (
+    accessTokenValue: string | null,
+    refreshTokenValue: string | null,
+  ) => {
+    if (accessTokenValue === null) {
+      return;
+    }
+
+    try {
+      const body = {
+        accessToken: accessTokenValue,
+        refreshToken: refreshTokenValue,
+      };
+      await patchAuthSignOut(body);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      navigate('/mypage');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -39,9 +63,9 @@ export const SellerLogout = () => {
             backgroundColor={LightGreen}
             color={Green}
             onClick={() => {
-              localStorage.removeItem('accessToken');
-              localStorage.removeItem('refreshToken');
-              navigate('/minder/mypage');
+              const accessTokenValue = localStorage.getItem('accessToken');
+              const refreshTokenValue = localStorage.getItem('refreshToken');
+              patchSingOut(accessTokenValue, refreshTokenValue);
             }}
           />
         </div>
