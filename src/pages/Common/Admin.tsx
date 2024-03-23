@@ -96,7 +96,6 @@ export const Admin = () => {
         try {
           const res: any = await getAdminsRefundWaiting();
           if (res.status === 200) {
-            console.log(res.data);
             setRefundData(res.data);
             setValid(true);
           } else if (res.response.status === 403) {

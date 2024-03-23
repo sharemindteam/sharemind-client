@@ -78,7 +78,6 @@ export const BuyerChat = () => {
         params,
       });
       if (res.status === 200) {
-        // console.log(res.data);
         if (res.data.length !== 0) {
           //새 메세지 도착이 아닌 이전 메시지 fetch
           newMessageRef.current = false;
@@ -123,7 +122,6 @@ export const BuyerChat = () => {
       //마지막에 닿았을 때, 상담사 info 가져옴
       const res: any = await getCounselorsChats(chatId, { params });
       if (res.status === 200) {
-        // console.log(res.data);
         setCounselorInfo(res.data);
       } else if (res.response.status === 404) {
         alert(res.response.data.message);
@@ -145,7 +143,6 @@ export const BuyerChat = () => {
         function (statusUpdate) {
           console.log('Status Update: ', statusUpdate.body);
           const arrivedMessage = JSON.parse(statusUpdate.body);
-          // console.log(arrivedMessage);
 
           if (
             arrivedMessage.chatWebsocketStatus ===
@@ -262,7 +259,6 @@ export const BuyerChat = () => {
         function (message) {
           //받은 message 정보
           const arrivedMessage = JSON.parse(message.body);
-          // console.log(arrivedMessage);
           //새 메세지 도착으로 분류
           newMessageRef.current = true;
           setMessages((prevMessages) => [
@@ -353,11 +349,7 @@ export const BuyerChat = () => {
     ) {
       preventRef.current = false;
       preventScrollRef.current = false;
-      // observer.unobserve(entry[0].target);
-      // console.log(`관측 시작: ${messages[0].messageId}`);
       await getChatMessages(messages[0].messageId);
-      // await pending();
-      // console.log(`관측 종료: ${messages[0].messageId}`);
       preventRef.current = true;
     }
   };

@@ -60,7 +60,6 @@ export const SellerVerifyQuiz = () => {
                   let newArray = [...choiceNumberList];
                   newArray[quizLevel - 1] = idx + 1;
                   setChoiceNumberList(newArray);
-                  console.log(newArray);
                 }}
               >
                 {item}

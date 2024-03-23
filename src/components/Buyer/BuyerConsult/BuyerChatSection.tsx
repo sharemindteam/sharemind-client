@@ -148,7 +148,6 @@ export const BuyerChatSection = ({
     sendConnectRequest();
 
     return () => {
-      console.log('unmount');
       if (roomIdsRef.current) {
         roomIdsRef.current.forEach((value) => {
           stompClient.current?.unsubscribe(
