@@ -1,7 +1,5 @@
-// import { useStompContext } from 'contexts/StompContext';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Green, Grey1 } from 'styles/color';
 
 // The setSearchParams function works like navigate, but only for the search portion of the URL. Also note that the second arg to setSearchParams is the same type as the second arg to navigate.
 // https://reactrouter.com/en/main/hooks/use-search-params

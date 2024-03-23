@@ -4,7 +4,6 @@ import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
 
-import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState } from 'utils/atom';
 import SellerLetterList from './SellerLetterList';
