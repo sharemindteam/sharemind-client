@@ -17,23 +17,19 @@ interface ConsultTypeProps {
 export const SellerConsultSection = () => {
   const {
     isLetter,
-    // sortType,
-    // setSortType,
+    sortType,
+    setSortType,
     handleLetterClick,
     handleChatClick,
-    // searchParams,
-    // setSearchParams,
+    searchParams,
+    setSearchParams,
     // isChecked,
     // setIsChecked,
   } = useConsultParams();
 
-  // 편지 탭과 채팅 탭
-  // const [isLetter, setIsLetter] = useState<boolean>(true);
   // 완료된 상담 제외, 포함
   const [isIncludeCompleteConsult, setIsIncludeCompleteConsult] =
     useState<boolean>(false);
-  // 최근순, 읽지 않은 순
-  const [sortType, setSortType] = useState<number>(0);
   // 모달 열지 말지
   const setIsModalOpen = useSetRecoilState<boolean>(isConsultModalOpenState);
   return (
@@ -76,12 +72,16 @@ export const SellerConsultSection = () => {
         <SellerLetterList
           sortType={sortType}
           setSortType={setSortType}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
           isIncludeCompleteConsult={isIncludeCompleteConsult}
         />
       ) : (
         <SellerChatList
           sortType={sortType}
           setSortType={setSortType}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
           isIncludeCompleteConsult={isIncludeCompleteConsult}
         />
       )}

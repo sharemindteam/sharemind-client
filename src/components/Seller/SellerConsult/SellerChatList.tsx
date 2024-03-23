@@ -1,7 +1,7 @@
 import { getChatsMinder } from 'api/get';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { SetURLSearchParams, useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
@@ -19,12 +19,16 @@ interface SellerConsultProps {
   sortType: number;
   setSortType: React.Dispatch<React.SetStateAction<number>>;
   isIncludeCompleteConsult: boolean;
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
 }
 
 function SellerChatList({
   sortType,
   isIncludeCompleteConsult,
   setSortType,
+  searchParams,
+  setSearchParams,
 }: SellerConsultProps) {
   const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -250,7 +254,12 @@ function SellerChatList({
                   setScrollLock(false);
                 }}
               />
-              <ConsultModal sortType={sortType} setSortType={setSortType} />
+              <ConsultModal
+                sortType={sortType}
+                setSortType={setSortType}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+              />
             </>
           ) : null}
         </ConsultBoxList>
