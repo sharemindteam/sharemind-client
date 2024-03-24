@@ -37,7 +37,7 @@ export const BuyerConsult = () => {
     sortType,
     setSortType,
     handleLetterClick,
-    handleOpenChatClick,
+    handleOpenConsultClick,
     handleChatClick,
     searchParams,
     setSearchParams,
@@ -80,10 +80,10 @@ export const BuyerConsult = () => {
               </Button2>
             </SelectButton>
             <SelectButton
-              isSelected={consultType === 'open-chat'}
-              onClick={handleOpenChatClick}
+              isSelected={consultType === 'open-consult'}
+              onClick={handleOpenConsultClick}
             >
-              <Button2 color={consultType === 'open-chat' ? Green : Grey1}>
+              <Button2 color={consultType === 'open-consult' ? Green : Grey1}>
                 공개상담
               </Button2>
             </SelectButton>

@@ -23,7 +23,7 @@ export const SellerConsultSection = () => {
     setSortType,
     handleLetterClick,
     handleChatClick,
-    handleOpenChatClick,
+    handleOpenConsultClick,
     searchParams,
     setSearchParams,
     isChecked,
@@ -50,8 +50,8 @@ export const SellerConsultSection = () => {
           </ConsultType>
           <ConsultType
             isLong={true}
-            isActive={consultType === 'open-chat'}
-            onClick={handleOpenChatClick}
+            isActive={consultType === 'open-consult'}
+            onClick={handleOpenConsultClick}
           >
             공개상담
           </ConsultType>
@@ -66,7 +66,7 @@ export const SellerConsultSection = () => {
             <DownArrowIcon />
           </SortingType>
         </div>
-        {!(consultType === 'open-chat') && (
+        {!(consultType === 'open-consult') && (
           <div className="row2">
             <div
               className="row2-1"
@@ -102,7 +102,12 @@ export const SellerConsultSection = () => {
           isChecked={isChecked}
         />
       ) : (
-        <SellerOpenConsultList />
+        <SellerOpenConsultList
+          sortType={sortType}
+          setSortType={setSortType}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
       )}
     </>
   );

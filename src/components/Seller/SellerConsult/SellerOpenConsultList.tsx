@@ -11,8 +11,31 @@ import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
 import { Space } from 'components/Common/Space';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
-function SellerOpenConsultList() {
+import { SetURLSearchParams } from 'react-router-dom';
+import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { BackDrop } from 'components/Common/BackDrop';
+import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
+
+interface SellerConsultOpenProps {
+  sortType: number;
+  setSortType: React.Dispatch<React.SetStateAction<number>>;
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
+}
+
+function SellerOpenConsultList({
+  sortType,
+  setSortType,
+  searchParams,
+  setSearchParams,
+}: SellerConsultOpenProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
+    isConsultModalOpenState,
+  );
+  const setScrollLock = useSetRecoilState(scrollLockState);
+
   const fetchOpenConsultData = async () => {};
   return (
     <>
@@ -77,6 +100,23 @@ function SellerOpenConsultList() {
           </SellerOpenConsultCard>
         </SellerOpenConsultCardList>
       )}
+
+      {isModalOpen ? (
+        <>
+          <BackDrop
+            onClick={() => {
+              setIsModalOpen(false);
+              setScrollLock(false);
+            }}
+          />
+          <ConsultModal
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
+        </>
+      ) : null}
     </>
   );
 }

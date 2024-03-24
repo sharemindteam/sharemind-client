@@ -33,8 +33,8 @@ export const useConsultParams = () => {
     setSearchParams(searchParams);
   };
 
-  const handleOpenChatClick = () => {
-    setConsultType('open-chat');
+  const handleOpenConsultClick = () => {
+    setConsultType('open-consult');
     searchParams.set('type', 'open-consult');
     setSearchParams(searchParams);
   };
@@ -44,7 +44,7 @@ export const useConsultParams = () => {
     sortType,
     setSortType,
     handleLetterClick,
-    handleOpenChatClick,
+    handleOpenConsultClick,
     handleChatClick,
     searchParams,
     setSearchParams,
