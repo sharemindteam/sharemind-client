@@ -29,7 +29,7 @@ export const BuyerChatSection = ({
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
    */
   const cardDataRef = useRef<consultApiObject[]>([]);
-  const { stompClient } = useStompContext();
+  const { stompClient, isConnected } = useStompContext();
   //채팅 readId, 가장 최근 unread message, 정렬 업데이트
   const updateChatData = (
     chatId: number,
@@ -106,11 +106,11 @@ export const BuyerChatSection = ({
                     consultId: null,
                   };
                   //add roomIds for unsubscribe
-                  roomIdsRef.current.push(notification.chatId);
+                  roomIdsRef.current.unshift(notification.chatId);
 
                   cardDataRef.current = [
-                    ...cardDataRef.current,
                     addedChatRoomItem,
+                    ...cardDataRef.current,
                   ];
 
                   setCardData(cardDataRef.current);
@@ -148,6 +148,7 @@ export const BuyerChatSection = ({
     sendConnectRequest();
 
     return () => {
+      console.log('unmount');
       if (roomIdsRef.current) {
         roomIdsRef.current.forEach((value) => {
           stompClient.current?.unsubscribe(
@@ -161,7 +162,7 @@ export const BuyerChatSection = ({
         );
       }
     };
-  }, [stompClient]);
+  }, [stompClient, isConnected]);
 
   useLayoutEffect(() => {
     const fetchData = async () => {

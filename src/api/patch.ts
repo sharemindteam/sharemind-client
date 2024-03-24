@@ -27,6 +27,9 @@ export const patchAuthFindId = async (body: any) =>
 //비밀번호 찾기
 export const patchAuthFindPassword = async (body: any) =>
   await patchPublicInstance('/auth/find-password', body);
+//로그아웃
+export const patchAuthSignOut = async (body: any) =>
+  await patchInstance('/auth/signOut', body);
 
 //Counselor Controller
 //카테고리/들준마 상담사 리스트 반환

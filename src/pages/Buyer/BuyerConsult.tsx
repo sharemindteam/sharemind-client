@@ -1,6 +1,5 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -13,6 +12,7 @@ import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-c
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { BuyerChatSection } from 'components/Buyer/BuyerConsult/BuyerChatSection';
 import { BuyerLetterSection } from 'components/Buyer/BuyerConsult/BuyerLetterSection';
+import { useConsultParams } from 'hooks/useConsultParams';
 
 export interface consultApiObject {
   consultStyle: string;
@@ -29,13 +29,22 @@ export interface consultApiObject {
 
 export const BuyerConsult = () => {
   const navigate = useNavigate();
+
   const sortList = ['최근순', '읽지않은순'];
 
-  const [isLetter, setIsLetter] = useState<boolean>(true); //편지 채팅 여부
-  const [letterColor, setLetterColor] = useState<string>(Green);
-  const [chattingColor, setChattingColor] = useState<string>(Grey1);
-  const [isChecked, setIsChecked] = useState<boolean>(false); //완료 제외 체크 여부
-  const [sortType, setSortType] = useState<number>(0); //0 : 최신순 1:읽지 않은 순
+  const {
+    consultType,
+    sortType,
+    setSortType,
+    handleLetterClick,
+    handleOpenConsultClick,
+    handleChatClick,
+    searchParams,
+    setSearchParams,
+    isChecked,
+    setIsChecked,
+  } = useConsultParams();
+
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   ); // Modal 여부(recoil)
@@ -55,24 +64,28 @@ export const BuyerConsult = () => {
         <div className="select">
           <div className="select-button">
             <SelectButton
-              isSelected={isLetter}
-              onClick={() => {
-                setIsLetter(true);
-                setLetterColor(Green);
-                setChattingColor(Grey1);
-              }}
+              isSelected={consultType === 'letter'}
+              onClick={handleLetterClick}
             >
-              <Button2 color={letterColor}>편지</Button2>
+              <Button2 color={consultType === 'letter' ? Green : Grey1}>
+                편지
+              </Button2>
             </SelectButton>
             <SelectButton
-              isSelected={!isLetter}
-              onClick={() => {
-                setIsLetter(false);
-                setLetterColor(Grey1);
-                setChattingColor(Green);
-              }}
+              isSelected={consultType === 'chat'}
+              onClick={handleChatClick}
             >
-              <Button2 color={chattingColor}>채팅</Button2>
+              <Button2 color={consultType === 'chat' ? Green : Grey1}>
+                채팅
+              </Button2>
+            </SelectButton>
+            <SelectButton
+              isSelected={consultType === 'open-consult'}
+              onClick={handleOpenConsultClick}
+            >
+              <Button2 color={consultType === 'open-consult' ? Green : Grey1}>
+                공개상담
+              </Button2>
             </SelectButton>
           </div>
           <div
@@ -92,16 +105,20 @@ export const BuyerConsult = () => {
           style={{ cursor: 'pointer' }}
           onClick={() => {
             setIsChecked(!isChecked);
+            searchParams.set('check', String(!isChecked));
+            setSearchParams(searchParams);
           }}
         >
           {isChecked ? <CheckIcon /> : <NonCheckIcon />}
           <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
         </div>
       </div>
-      {isLetter ? (
+      {consultType === 'letter' ? (
         <BuyerLetterSection sortType={sortType} isChecked={isChecked} />
-      ) : (
+      ) : consultType === 'chat' ? (
         <BuyerChatSection sortType={sortType} isChecked={isChecked} />
+      ) : (
+        '컴포넌트 만들면 후에 추가'
       )}
       {isModalOpen ? (
         <>
@@ -110,7 +127,12 @@ export const BuyerConsult = () => {
               setIsModalOpen(false);
             }}
           />
-          <ConsultModal sortType={sortType} setSortType={setSortType} />
+          <ConsultModal
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
         </>
       ) : null}
     </Wrapper>
@@ -144,7 +166,7 @@ const Wrapper = styled.div`
     gap: 0.4rem;
   }
 `;
-const SelectButton = styled.div<{ isSelected: boolean }>`
+const SelectButton = styled.div<{ isSelected: boolean; isLong?: boolean }>`
   background-color: ${(props) => (props.isSelected ? LightGreen : Grey6)};
   cursor: pointer;
   padding: 0.8rem 1.6rem;

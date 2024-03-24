@@ -4,25 +4,32 @@ import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
 
-import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState } from 'utils/atom';
 import SellerLetterList from './SellerLetterList';
 import SellerChatList from './SellerChatList';
 import SellerOpenConsultList from './SellerOpenConsultList';
+import { useConsultParams } from 'hooks/useConsultParams';
+import { useState } from 'react';
 interface ConsultTypeProps {
   isActive: boolean;
   isLong?: boolean;
 }
 
 export const SellerConsultSection = () => {
-  // 편지 탭, 채팅 탭, 공개상담탭 -> 0, 1, 2
-  const [consultTabStatus, setConsultTabStatus] = useState<number>(0);
-  // 완료된 상담 제외, 포함
-  const [isIncludeCompleteConsult, setIsIncludeCompleteConsult] =
-    useState<boolean>(false);
-  // 최근순, 읽지 않은 순
-  const [sortType, setSortType] = useState<number>(0);
+  const {
+    consultType,
+    sortType,
+    setSortType,
+    handleLetterClick,
+    handleChatClick,
+    handleOpenConsultClick,
+    searchParams,
+    setSearchParams,
+    isChecked,
+    setIsChecked,
+  } = useConsultParams();
+
   // 모달 열지 말지
   const setIsModalOpen = useSetRecoilState<boolean>(isConsultModalOpenState);
   return (
@@ -30,27 +37,21 @@ export const SellerConsultSection = () => {
       <ConsultSortingMenu>
         <div className="row1">
           <ConsultType
-            isActive={consultTabStatus === 0}
-            onClick={() => {
-              setConsultTabStatus(0);
-            }}
+            isActive={consultType === 'letter'}
+            onClick={handleLetterClick}
           >
             편지
           </ConsultType>
           <ConsultType
-            isActive={consultTabStatus === 1}
-            onClick={() => {
-              setConsultTabStatus(1);
-            }}
+            isActive={consultType === 'chat'}
+            onClick={handleChatClick}
           >
             채팅
           </ConsultType>
           <ConsultType
             isLong={true}
-            isActive={consultTabStatus === 2}
-            onClick={() => {
-              setConsultTabStatus(2);
-            }}
+            isActive={consultType === 'open-consult'}
+            onClick={handleOpenConsultClick}
           >
             공개상담
           </ConsultType>
@@ -60,46 +61,53 @@ export const SellerConsultSection = () => {
             }}
           >
             <Button2 color={Grey3}>
-              {sortType === 0 ? '최근순' : '읽지 않은 순'}
+              {sortType === 0 ? '최근순' : '읽지않은순'}
             </Button2>
             <DownArrowIcon />
           </SortingType>
         </div>
-        <div className="row2">
-          <div
-            className="row2-1"
-            onClick={() => {
-              setIsIncludeCompleteConsult(!isIncludeCompleteConsult);
-            }}
-            style={{
-              cursor: 'pointer',
-            }}
-          >
-            {consultTabStatus !== 2 && (
-              <>
-                <CircleCheckIcon
-                  fill={isIncludeCompleteConsult ? Grey5 : Green}
-                />
-                <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
-              </>
-            )}
+        {!(consultType === 'open-consult') && (
+          <div className="row2">
+            <div
+              className="row2-1"
+              onClick={() => {
+                setIsChecked(!isChecked);
+                searchParams.set('check', String(!isChecked));
+                setSearchParams(searchParams);
+              }}
+              style={{
+                cursor: 'pointer',
+              }}
+            >
+              <CircleCheckIcon fill={isChecked ? Green : Grey5} />
+              <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
+            </div>
           </div>
-        </div>
+        )}
       </ConsultSortingMenu>
-      {consultTabStatus === 0 ? (
+      {consultType === 'letter' ? (
         <SellerLetterList
           sortType={sortType}
           setSortType={setSortType}
-          isIncludeCompleteConsult={isIncludeCompleteConsult}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          isChecked={isChecked}
         />
-      ) : consultTabStatus === 1 ? (
+      ) : consultType === 'chat' ? (
         <SellerChatList
           sortType={sortType}
           setSortType={setSortType}
-          isIncludeCompleteConsult={isIncludeCompleteConsult}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+          isChecked={isChecked}
         />
       ) : (
-        <SellerOpenConsultList />
+        <SellerOpenConsultList
+          sortType={sortType}
+          setSortType={setSortType}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
       )}
     </>
   );
