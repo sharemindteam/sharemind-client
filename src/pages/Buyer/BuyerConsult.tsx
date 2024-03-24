@@ -13,6 +13,7 @@ import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { BuyerChatSection } from 'components/Buyer/BuyerConsult/BuyerChatSection';
 import { BuyerLetterSection } from 'components/Buyer/BuyerConsult/BuyerLetterSection';
 import { useConsultParams } from 'hooks/useConsultParams';
+import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenConsultSection';
 
 export interface consultApiObject {
   consultStyle: string;
@@ -118,7 +119,7 @@ export const BuyerConsult = () => {
       ) : consultType === 'chat' ? (
         <BuyerChatSection sortType={sortType} isChecked={isChecked} />
       ) : (
-        '컴포넌트 만들면 후에 추가'
+        <BuyerOpenConsultSection />
       )}
       {isModalOpen ? (
         <>

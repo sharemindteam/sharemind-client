@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function BuyerOpenConsult() {
-  return (
-    <div>BuyerOpenConsult</div>
-  )
+  return <div>BuyerOpenConsult</div>;
 }
 
-export default BuyerOpenConsult
+export default BuyerOpenConsult;
