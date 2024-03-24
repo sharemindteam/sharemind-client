@@ -9,7 +9,9 @@ import { isBuyPopupOpenState, isSendPopupOpenState } from 'utils/atom';
 function IsBuyPopup() {
   const navigate = useNavigate();
   const setIsSendPopupOpen = useSetRecoilState(isBuyPopupOpenState);
-  const handleBuyConsult = () => {};
+  const handleBuyConsult = () => {
+    navigate('/openConsultRequest');
+  };
   return (
     <IsSendModalBox>
       <ModalBox>

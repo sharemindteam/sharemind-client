@@ -47,6 +47,8 @@ import { BuyerQuit } from 'pages/Buyer/BuyerQuit';
 import { SellerChatTemp } from 'pages/Seller/SellerChatTemp';
 import BuyerOpenConsult from 'pages/Buyer/BuyerOpenConsult';
 import SellerOpenConsult from 'pages/Seller/SellerOpenConsult';
+import { BuyerOpenConsultRequest } from 'pages/Buyer/BuyerOpenConsultRequest';
+import { BuyerOpenPaymentDetail } from 'pages/Buyer/BuyerOpenPaymentDetail';
 const Router = () => {
   return (
     <Routes>
@@ -62,6 +64,11 @@ const Router = () => {
       <Route path="/categorySearch" element={<BuyerCategoryResult />} />
       <Route path="/search/result" element={<BuyerSearchResult />} />
       <Route path="/consultRequest" element={<BuyerConsultRequest />} />
+
+      <Route path="/openConsultRequest" element={<BuyerOpenConsultRequest />} />
+
+      <Route path="/openPaymentDetail" element={<BuyerOpenPaymentDetail />} />
+
       <Route path="/paymentDetail/:id" element={<BuyerPaymentDetail />} />
       <Route path="/paymentComplete" element={<BuyerPaymentComplete />} />
       <Route path="/counselors" element={<BuyerAvailCounselor />} />
