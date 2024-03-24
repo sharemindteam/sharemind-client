@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
@@ -11,6 +11,8 @@ import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
 import { Body1, Caption1, Caption2 } from 'styles/font';
 import { Space } from 'components/Common/Space';
 function MainQuestionSection() {
+  const [isSave, setIsSave] = useState<boolean>(false);
+  const [isLike, setIsLike] = useState<boolean>(false);
   return (
     <MainQuestionWrapper>
       <MainQuestionText>
@@ -39,11 +41,37 @@ function MainQuestionSection() {
       </MainQuestionText>
       <ButtonList>
         <ButtonItem>
-          <HeartEmptyIcon />
+          {isLike ? (
+            <HeartIcon
+              onClick={() => {
+                setIsLike(false);
+              }}
+            />
+          ) : (
+            <HeartEmptyIcon
+              onClick={() => {
+                setIsLike(true);
+              }}
+            />
+          )}
+
           <Caption1 color={Grey2}>11</Caption1>
         </ButtonItem>
         <ButtonItem>
-          <SaveEmptyIcon />
+          {isSave ? (
+            <SaveResizeIcon
+              onClick={() => {
+                setIsSave(false);
+              }}
+            />
+          ) : (
+            <SaveEmptyIcon
+              onClick={() => {
+                setIsSave(true);
+              }}
+            />
+          )}
+
           <Caption1 color={Grey2}>0</Caption1>
         </ButtonItem>
       </ButtonList>
@@ -108,4 +136,8 @@ const ButtonItem = styled.div`
   gap: 0.4rem;
 `;
 
+const SaveResizeIcon = styled(SaveIcon)`
+  width: 2rem;
+  height: 2rem;
+`;
 export default MainQuestionSection;
