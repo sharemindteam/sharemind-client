@@ -196,28 +196,6 @@ export const BuyerLetterWrite = () => {
           }}
           tagStatus={tagStatus}
         />
-        <ButtonWrapper>
-          <Button
-            text="임시저장"
-            width="42.66%"
-            height="5.2rem"
-            backgroundColor={LightGreen}
-            color={saveButtonColor}
-            isActive={isActiveSaveButton}
-            onClick={() => {
-              setIsActiveSaveModal(true);
-            }}
-          />
-          <Button
-            text="제출하기"
-            width="42.66%"
-            height="5.2rem"
-            isActive={isActivePostButton}
-            onClick={() => {
-              setIsActivePostModal(true);
-            }}
-          />
-        </ButtonWrapper>
       </div>
       {isModalOpen ? (
         <>
@@ -282,6 +260,28 @@ export const BuyerLetterWrite = () => {
           }}
         />
       ) : null}
+      <ButtonWrapper>
+        <Button
+          text="임시저장"
+          width="42.66%"
+          height="5.2rem"
+          backgroundColor={LightGreen}
+          color={saveButtonColor}
+          isActive={isActiveSaveButton}
+          onClick={() => {
+            setIsActiveSaveModal(true);
+          }}
+        />
+        <Button
+          text="제출하기"
+          width="42.66%"
+          height="5.2rem"
+          isActive={isActivePostButton}
+          onClick={() => {
+            setIsActivePostModal(true);
+          }}
+        />
+      </ButtonWrapper>
     </Wrapper>
   );
 };

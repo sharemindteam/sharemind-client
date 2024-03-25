@@ -4,28 +4,32 @@ import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
-import { isBuyPopupOpenState, isSendPopupOpenState } from 'utils/atom';
+import {
+  isBuyPopupOpenState,
+  isPostPopupOpenState,
+  isSendPopupOpenState,
+} from 'utils/atom';
 
-function IsBuyPopup() {
+function FinalWritePopup() {
   const navigate = useNavigate();
-  const setIsSendPopupOpen = useSetRecoilState(isBuyPopupOpenState);
-  const handleBuyConsult = () => {
-    setIsSendPopupOpen(false);
-    navigate('/openConsultRequest');
+  const setIsPostPopupOpen = useSetRecoilState(isPostPopupOpenState);
+  const handlePost = () => {
+    setIsPostPopupOpen(false);
+    navigate('/consult/?type=open-consult');
   };
   return (
     <IsSendModalBox>
       <ModalBox>
-        <Body1>상담권 구매 후 글을 작성할 수 있어요.</Body1>
+        <Body1>게시 후 더이상 수정 또는 삭제가 불가능해요.</Body1>
         <ButtonWrapper>
           <NoButton
             onClick={() => {
-              setIsSendPopupOpen(false);
+              setIsPostPopupOpen(false);
             }}
           >
             닫기
           </NoButton>
-          <YesButton onClick={handleBuyConsult}>구매하기</YesButton>
+          <YesButton onClick={handlePost}>게시하기</YesButton>
         </ButtonWrapper>
       </ModalBox>
     </IsSendModalBox>
@@ -95,4 +99,4 @@ const YesButton = styled.div`
   background-color: ${Green};
   box-sizing: border-box;
 `;
-export default IsBuyPopup;
+export default FinalWritePopup;
