@@ -63,7 +63,6 @@ export const BuyerChatSection = ({
         '/queue/chattings/connect/customers/',
         (rooms) => {
           const response = JSON.parse(rooms.body);
-
           roomIdsRef.current = response.roomIds;
 
           response.roomIds.forEach((chatId: number) => {
@@ -151,15 +150,16 @@ export const BuyerChatSection = ({
       if (roomIdsRef.current) {
         roomIdsRef.current.forEach((value) => {
           stompClient.current?.unsubscribe(
-            '/queue/chattings/connect/customers/' + value,
+            '/queue/chatMessages/customers/' + value,
           );
         });
       }
       if (userIdRef.current) {
         stompClient.current?.unsubscribe(
-          '/queue/chattings/connect/customers/' + userIdRef.current,
+          '/queue/chattings/notifications/customers/' + userIdRef.current,
         );
       }
+      stompClient.current?.unsubscribe('/queue/chattings/connect/customers/');
     };
   }, [stompClient, isConnected]);
 
