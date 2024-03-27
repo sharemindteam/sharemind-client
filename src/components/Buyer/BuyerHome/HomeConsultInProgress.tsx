@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { getConsultsCustomers } from 'api/get';
 interface Response {
   id: number;
-  consultStyle: string;
+  consultStyle: string; 
   status: string;
   opponentNickname: string;
   latestMessageUpdatedAt: string;
