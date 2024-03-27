@@ -78,7 +78,7 @@ function SellerChatList({
         '/queue/chattings/connect/counselors/',
         (rooms) => {
           const response = JSON.parse(rooms.body);
-
+          console.log(response.roomIds);
           roomIdsRef.current = response.roomIds;
 
           response.roomIds.forEach((chatId: number) => {
@@ -166,15 +166,16 @@ function SellerChatList({
       if (roomIdsRef.current) {
         roomIdsRef.current.forEach((value) => {
           stompClient.current?.unsubscribe(
-            '/queue/chattings/connect/counselors/' + value,
+            '/queue/chatMessages/counselors/' + value,
           );
         });
       }
       if (userIdRef.current) {
         stompClient.current?.unsubscribe(
-          '/queue/chattings/connect/counselors/' + userIdRef.current,
+          '/queue/chattings/notifications/counselors/' + userIdRef.current,
         );
       }
+      stompClient.current?.unsubscribe('/queue/chattings/connect/counselors/');
     };
   }, [stompClient, isConnected]);
 
