@@ -44,6 +44,21 @@ export const isOutPopupOpenState = atom({
   default: false,
 });
 
+export const isSendPopupOpenState = atom({
+  key: 'isOutPopupOpenState',
+  default: false,
+});
+
+export const isBuyPopupOpenState = atom({
+  key: 'isBuyPopupOpenState',
+  default: false,
+});
+
+export const isPostPopupOpenState = atom ({
+  key: 'isPostPopupOpenState',
+  default:false,
+}) 
+
 export const isSuccessUpdateState = atom({
   key: 'isSuccessUpdateState',
   default: false,

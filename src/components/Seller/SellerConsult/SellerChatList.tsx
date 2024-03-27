@@ -1,7 +1,7 @@
 import { getChatsMinder } from 'api/get';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { SetURLSearchParams, useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
@@ -18,13 +18,17 @@ import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
 interface SellerConsultProps {
   sortType: number;
   setSortType: React.Dispatch<React.SetStateAction<number>>;
-  isIncludeCompleteConsult: boolean;
+  isChecked: boolean;
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
 }
 
 function SellerChatList({
   sortType,
-  isIncludeCompleteConsult,
+  isChecked,
   setSortType,
+  searchParams,
+  setSearchParams,
 }: SellerConsultProps) {
   const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -41,7 +45,7 @@ function SellerChatList({
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
    */
   const cardDataRef = useRef<ConsultInfoItem[]>([]);
-  const { stompClient } = useStompContext();
+  const { stompClient, isConnected } = useStompContext();
   //채팅 readId, 가장 최근 unread message, 정렬 업데이트
   const updateChatData = (
     chatId: number,
@@ -117,11 +121,11 @@ function SellerChatList({
                     consultId: null,
                   };
                   //add roomIds for unsubscribe
-                  roomIdsRef.current.push(notification.chatId);
+                  roomIdsRef.current.unshift(notification.chatId);
 
                   cardDataRef.current = [
-                    ...cardDataRef.current,
                     addedChatRoomItem,
+                    ...cardDataRef.current,
                   ];
 
                   setConsultInfo(cardDataRef.current);
@@ -172,12 +176,12 @@ function SellerChatList({
         );
       }
     };
-  }, [stompClient]);
+  }, [stompClient, isConnected]);
 
   const fetchChatData = useCallback(async () => {
     setIsLoading(true);
     const params = {
-      filter: !isIncludeCompleteConsult,
+      filter: isChecked,
       sortType: sortType === 0 ? 'latest' : 'unread',
     };
 
@@ -199,7 +203,7 @@ function SellerChatList({
     } finally {
       setIsLoading(false);
     }
-  }, [isIncludeCompleteConsult, navigate, setIsLoading, sortType]);
+  }, [isChecked, navigate, setIsLoading, sortType]);
 
   useEffect(() => {
     fetchChatData();
@@ -250,7 +254,12 @@ function SellerChatList({
                   setScrollLock(false);
                 }}
               />
-              <ConsultModal sortType={sortType} setSortType={setSortType} />
+              <ConsultModal
+                sortType={sortType}
+                setSortType={setSortType}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+              />
             </>
           ) : null}
         </ConsultBoxList>

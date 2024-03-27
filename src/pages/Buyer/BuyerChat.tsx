@@ -53,7 +53,7 @@ export const BuyerChat = () => {
     null,
   );
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  const [startRequestActive, setStartRequestActive] = useState<boolean>(true);
+
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const hiddenInputRef = useRef<HTMLInputElement>(null);
@@ -448,7 +448,7 @@ export const BuyerChat = () => {
       <HeaderWrapper border={false}>
         <BackIcon
           onClick={() => {
-            navigate('/consult');
+            navigate(-1);
           }}
         />
         <Heading color={Grey1}>{counselorInfo?.nickname}</Heading>

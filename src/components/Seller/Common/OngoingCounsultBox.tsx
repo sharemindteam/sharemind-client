@@ -27,7 +27,7 @@ interface OngoingCounsultBoxProps {
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
   reviewCompleted?: boolean;
-  isChat: boolean;
+  isChat?: boolean;
 }
 function OngoingCounsultBox({
   categoryStatus,

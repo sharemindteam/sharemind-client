@@ -62,7 +62,7 @@ export const BuyerPwChange = () => {
     } else {
       setValid(false);
     }
-  }, [pw.isValid, newPw.isValid, newPwCheck.isValid]);
+  }, [pw.isValid, newPw.isValid, newPwCheck.isValid, newPw.typeValid]);
 
   useEffect(() => {
     // 첫 마운트 시에는 error 색상 안되게 처리
@@ -108,7 +108,7 @@ export const BuyerPwChange = () => {
       setCorrectState('invalid');
       newPwCheck.setIsValid(false);
     }
-  }, [newPw.value, newPwCheck.value]);
+  }, [newPw, newPw.value, newPwCheck, newPwCheck.value, pw]);
 
   return (
     <Wrapper>

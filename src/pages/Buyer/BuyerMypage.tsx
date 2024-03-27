@@ -47,7 +47,7 @@ export const BuyerMypage = () => {
             navigate('/share');
           }}
         />
-        <TabA1 isBuyer={true} initState={3} />
+        <TabA1 isBuyer={true} initState={4} />
       </>
     );
   } else {
@@ -59,7 +59,7 @@ export const BuyerMypage = () => {
             navigate('/share');
           }}
         />
-        <TabA1 isBuyer={true} initState={3} />
+        <TabA1 isBuyer={true} initState={4} />
         {IsLogin ? (
           <>
             <UserCard>
