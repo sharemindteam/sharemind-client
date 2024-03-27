@@ -1,7 +1,7 @@
 import { ContentTag } from 'pages/Seller/SellerHome';
 import styled from 'styled-components';
 import { Black, Grey3, Grey6, Red } from 'styles/color';
-import { Body1, Body2, Body3, Body4, Heading } from 'styles/font';
+import { Body1, Body2, Body3, Body4, Heading, Subtitle } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { ReactComponent as ReviewHeart } from 'assets/icons/review-heart.svg';
 import { useNavigate } from 'react-router-dom';
@@ -36,15 +36,15 @@ export const ConsultReviewSection = () => {
       >
         {reviewData?.length === 0 ? (
           <>
-            <Heading color={Black}>받은 리뷰</Heading>
+            <Subtitle color={Black}>받은 리뷰</Subtitle>
             <Body1 color={Red} margin="0px auto 0px 0px">
               0
             </Body1>
           </>
         ) : (
-          <Heading color={Black} margin="0px auto 0px 0px">
+          <Subtitle color={Black} margin="0px auto 0px 0px">
             받은 리뷰
-          </Heading>
+          </Subtitle>
         )}
         <RightArrow />
       </ContentTag>

@@ -141,8 +141,7 @@ export const BuyerConsult = () => {
 };
 const Wrapper = styled.div`
   .options {
-    height: 8rem;
-    padding: 0.4rem 2rem;
+    padding: 0.8rem 2rem 0rem;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;

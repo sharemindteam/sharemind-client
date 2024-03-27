@@ -110,13 +110,13 @@ function OngoingCounsultBox({
 const OngoingCounsultBoxWrapper = styled.div`
   width: calc(100% - 4rem);
   box-sizing: border-box;
-  padding: 1.4rem 1.6rem 1.4rem 1.6rem;
+  padding: 1.6rem;
   display: flex;
   position: relative;
   flex-direction: column;
   gap: 0.4rem;
   cursor: pointer;
-  border-radius: 0.4rem;
+  border-radius: 1.2rem;
   background-color: ${Grey6};
   margin: 0 2rem;
   .button {
