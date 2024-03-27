@@ -78,7 +78,6 @@ function SellerChatList({
         '/queue/chattings/connect/counselors/',
         (rooms) => {
           const response = JSON.parse(rooms.body);
-          console.log(response.roomIds);
           roomIdsRef.current = response.roomIds;
 
           response.roomIds.forEach((chatId: number) => {
