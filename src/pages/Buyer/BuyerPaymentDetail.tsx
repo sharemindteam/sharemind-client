@@ -57,10 +57,12 @@ export const BuyerPaymentDetail = () => {
       const res: any = await postConsults(body);
       if (res.status === 201) {
         navigate('/paymentComplete');
-      } else if (res.response.status === 400) {
-        alert('프로필 심사가 진행 중이거나 상담 유형이 존재하지 않습니다.');
-      } else if (res.response.status === 404) {
-        alert('마인더 혹은 상담이 존재하지 않습니다.');
+      } else if (res.response.status === 400 || res.response.status === 404) {
+        const errMessage = res.response.data.message.substring(
+          0,
+          res.response.data.message.indexOf('.') + 1,
+        );
+        alert(errMessage);
       }
     } catch (e) {
       alert(e);
