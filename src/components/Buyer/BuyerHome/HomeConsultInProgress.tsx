@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { getConsultsCustomers } from 'api/get';
 interface Response {
   id: number;
-  consultStyle: string;
+  consultStyle: string; 
   status: string;
   opponentNickname: string;
   latestMessageUpdatedAt: string;
@@ -89,12 +89,14 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 1.2rem;
+  margin: 1.2rem 0 2.2rem;
   .nav-consult {
-    width: 100%;
-    height: 4.4rem;
     display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2.2rem 3.2rem 1.2rem 2rem;
     justify-content: space-between;
+    align-items: center;
     cursor: pointer;
     margin-bottom: 0.4rem;
   }
@@ -103,10 +105,7 @@ const NavConsult = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin-top: 0.9rem;
-  margin-left: 2rem;
+  margin: 0px auto 0px 0px
 `;
 const MoreIcon = styled(More)`
-  margin-right: 3.8rem;
-  margin-top: 1.5rem;
 `;

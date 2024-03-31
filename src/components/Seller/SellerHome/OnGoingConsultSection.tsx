@@ -2,7 +2,7 @@ import { ContentTag } from 'pages/Seller/SellerHome';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Black, Green, Grey4, Red } from 'styles/color';
-import { Body1, Body3, Heading } from 'styles/font';
+import { Body1, Body3, Heading, Subtitle } from 'styles/font';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { useNavigate } from 'react-router-dom';
@@ -35,7 +35,7 @@ function OnGoingConsultSection() {
           navigate('/minder/consult');
         }}
       >
-        <Heading color={Black}>진행중인 상담</Heading>
+        <Subtitle color={Black}>진행중인 상담</Subtitle>
         <Body1 color={Red} margin="0px auto 0px 0px">
           {totalNum}
         </Body1>

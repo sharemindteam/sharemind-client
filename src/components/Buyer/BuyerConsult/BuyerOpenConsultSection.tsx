@@ -30,7 +30,7 @@ function BuyerOpenConsultSection() {
   const [isBuyPopupOpen, setIsBuyPopupOpen] =
     useRecoilState(isBuyPopupOpenState);
   const handleWritePostButton = () => {
-      setIsBuyPopupOpen(true);
+    setIsBuyPopupOpen(true);
   };
   return (
     <>
@@ -99,7 +99,7 @@ function BuyerOpenConsultSection() {
 
 const BuyerOpenConsultCardList = styled.div`
   display: flex;
-  margin: 0 2rem;
+  margin: 1.2rem 2rem;
   flex-direction: column;
   align-items: flex-start;
   gap: 1.2rem;

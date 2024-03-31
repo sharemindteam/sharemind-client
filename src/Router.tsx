@@ -50,6 +50,7 @@ import SellerOpenConsult from 'pages/Seller/SellerOpenConsult';
 import { BuyerOpenConsultRequest } from 'pages/Buyer/BuyerOpenConsultRequest';
 import { BuyerOpenPaymentDetail } from 'pages/Buyer/BuyerOpenPaymentDetail';
 import BuyerWriteOpenConsult from 'pages/Buyer/BuyerWriteOpenConsult';
+import BuyerOpenConsultDetail from 'pages/Buyer/BuyerOpenConsultDetail';
 const Router = () => {
   return (
     <Routes>
@@ -60,6 +61,7 @@ const Router = () => {
       <Route path="/" element={<BuyerHome />} />
       <Route path="/consult" element={<BuyerConsult />} />
       <Route path="/open-consult" element={<BuyerOpenConsult />} />
+      <Route path="/open-consult/:id" element={<BuyerOpenConsultDetail />} />
       <Route path="/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/search" element={<BuyerSearch />} />
       <Route path="/categorySearch" element={<BuyerCategoryResult />} />

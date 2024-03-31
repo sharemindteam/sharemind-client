@@ -147,12 +147,11 @@ const ConsultType = styled.div<ConsultTypeProps>`
   line-height: 110%;
   background: ${(props) => (props.isActive ? LightGreen : Grey6)};
   color: ${(props) => (props.isActive ? Green : Black)};
+  margin-top: 0.2rem;
 `;
 const SortingType = styled.div`
   display: flex;
   margin-left: auto;
-  margin-right: 0.8rem;
-  align-items: center;
   gap: 0.4rem;
   cursor: pointer;
 `;

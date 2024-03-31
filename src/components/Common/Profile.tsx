@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Button } from './Button';
-import { Black, Green, Grey6, LightGreen,  White } from 'styles/color';
+import { Black, Green, Grey6, LightGreen, White } from 'styles/color';
 import { Button2, Caption2, Subtitle } from 'styles/font';
 import { ReactComponent as InfoIcon } from 'assets/icons/info.svg';
 import { ReactComponent as ReciptIcon } from 'assets/icons/recipt.svg';
@@ -208,10 +208,11 @@ const ServiceItem = styled.div`
   display: flex;
   background-color: ${White};
   font-size: 16px;
+  line-height: 150%;
   font-style: normal;
   font-weight: 400;
   cursor: pointer;
-  padding: 1.7rem;
+  padding: 1.2rem 2rem;
   border-bottom: 1px solid ${Grey6};
   align-items: center;
 `;
