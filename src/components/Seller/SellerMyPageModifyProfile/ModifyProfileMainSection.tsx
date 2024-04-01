@@ -562,6 +562,7 @@ const ExperienceTextArea = styled.textarea`
   height: 44rem;
   border: none;
   resize: none;
+  font-family: Pretendard;
   background-color: ${Grey6};
   box-sizing: border-box;
   padding: 1.6rem;
