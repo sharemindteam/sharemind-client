@@ -123,6 +123,7 @@ export const ModifyProfileMainSection = ({
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useRecoilState<boolean>(
     isUpdateModalOpenState,
   );
+  console.log(category);
   useEffect(() => {
     try {
       category?.setViewValue(categoryInputMaker(selectCategory ?? ['']));

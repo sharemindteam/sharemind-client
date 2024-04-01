@@ -211,6 +211,7 @@ export const LetterWriteMainSection = ({
               }
             }}
           />
+          <Space height='5rem'/>
           <BottomButtonGroup>
             <SaveButton
               onClick={() => {
@@ -287,6 +288,7 @@ const TextArea = styled.textarea`
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 400;
+  font-family: Pretendard; 
   line-height: 150%; /* 2.4rem */
   border: none;
   &:focus {

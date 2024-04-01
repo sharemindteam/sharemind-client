@@ -314,7 +314,6 @@ const TextArea = styled.textarea<{ tagStatus: number }>`
   &::placeholder{
     color: ${Grey3};
   }
-  font-family: Pretendard;
   color:  #33333a;
   font-size: 1.6rem;
   font-style: normal;
@@ -331,6 +330,7 @@ const TextArea = styled.textarea<{ tagStatus: number }>`
   box-sizing: border-box;
   white-space: pre-wrap; 
   ${(props) => (props.tagStatus === 2 ? 'margin-top:1.2rem' : null)};
+  
 `;
 const ButtonWrapper = styled.div`
   @media (max-width: 767px) {

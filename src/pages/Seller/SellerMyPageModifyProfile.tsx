@@ -31,7 +31,7 @@ const categoryList = {
   '이별/재회': 2,
   여자심리: 3,
   남자심리: 4,
-  '썸/연애초기': 5,
+  '썸/연애시작': 5,
   짝사랑: 6,
   권태기: 7,
   기타: 8,
@@ -40,6 +40,7 @@ const categoryList = {
 export const SellerMypageModifyProfile = () => {
   // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
   const [selectCategory, setSelectCategory] = useState<number[]>([]);
+  console.log(selectCategory);
   // 상담 스타일 string
   const [selectStyle, setSelectStyle] = useState<string>('');
   // 상담 방식 enum List
