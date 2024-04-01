@@ -23,7 +23,7 @@ export const BuyerChatSection = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const roomIdsRef = useRef<number[]>([]); //unmout 시 unsubscibe를 위함
-  const userIdRef = useRef<number>(0);
+  const userIdRef = useRef<number>(-1);
   /* non-react callback은 static copy of the state만 본다고한다.
    * 따라서 useRef로 함께 관리한다
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
@@ -58,6 +58,10 @@ export const BuyerChatSection = ({
   };
 
   useEffect(() => {
+    if (!isConnected) {
+      return;
+    }
+
     if (stompClient.current) {
       stompClient.current.subscribe(
         '/queue/chattings/connect/customers/',
@@ -147,14 +151,13 @@ export const BuyerChatSection = ({
     sendConnectRequest();
 
     return () => {
-      if (roomIdsRef.current) {
-        roomIdsRef.current.forEach((value) => {
-          stompClient.current?.unsubscribe(
-            '/queue/chatMessages/customers/' + value,
-          );
-        });
-      }
-      if (userIdRef.current) {
+      console.log('effect callback');
+      roomIdsRef.current.forEach((value) => {
+        stompClient.current?.unsubscribe(
+          '/queue/chatMessages/customers/' + value,
+        );
+      });
+      if (userIdRef.current !== -1) {
         stompClient.current?.unsubscribe(
           '/queue/chattings/notifications/customers/' + userIdRef.current,
         );
