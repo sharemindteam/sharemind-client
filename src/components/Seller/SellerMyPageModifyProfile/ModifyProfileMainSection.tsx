@@ -1,3 +1,4 @@
+import React from 'react';
 import Input from 'components/Common/Input';
 import styled from 'styled-components';
 import {
@@ -65,7 +66,6 @@ function convertObjectToString(schedule: any) {
   // 각 요일에 대해 반복
   daysOfWeek.forEach((day) => {
     const timeRanges = schedule[day];
-
     if (timeRanges && timeRanges.length > 0) {
       // 각 시간 범위를 형식에 맞게 조합
       const formattedTimeRanges = timeRanges.map((range: any) =>
@@ -93,7 +93,7 @@ function convertTimeRange2(input: string) {
   }
 }
 
-export const ModifyProfileMainSection = ({
+function ModifyProfileMainSection({
   selectCategory,
   selectStyle,
   selectType,
@@ -109,7 +109,7 @@ export const ModifyProfileMainSection = ({
   experience,
   isNoProfile,
   selectAvailableTime,
-}: ModifyProfileMainSectionProps) => {
+}: ModifyProfileMainSectionProps) {
   const navigate = useNavigate();
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
     isCategoryModalOpenState,
@@ -123,7 +123,6 @@ export const ModifyProfileMainSection = ({
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useRecoilState<boolean>(
     isUpdateModalOpenState,
   );
-  console.log(category);
   useEffect(() => {
     try {
       category?.setViewValue(categoryInputMaker(selectCategory ?? ['']));
@@ -482,7 +481,7 @@ export const ModifyProfileMainSection = ({
       />
     </ModifyProfileMainSectionWrapper>
   );
-};
+}
 
 const ModifyProfileMainSectionWrapper = styled.section`
   display: flex;
@@ -617,3 +616,5 @@ const OneLinerInput = styled.div`
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   `;
+
+export default React.memo(ModifyProfileMainSection);

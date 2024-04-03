@@ -67,10 +67,9 @@ function SetChatTimeSection({
     useRecoilState(isTimeModalOpenState);
   const [isOutPopupOpen, setIsOutPopupOpen] =
     useRecoilState(isOutPopupOpenState);
-  const scrollRef = useRef();
 
   return (
-    <Wrapper ref={scrollRef}>
+    <Wrapper>
       <ScrollContainer>
         {isOutPopupOpen && <IsOutPopup />}
         {isTimeModalOpen && (
@@ -273,4 +272,4 @@ const CheckIcon2 = styled(CheckIcon2SVG)`
   cursor: pointer;
 `;
 
-export default SetChatTimeSection;
+export default React.memo(SetChatTimeSection);

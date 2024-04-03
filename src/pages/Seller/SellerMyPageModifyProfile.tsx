@@ -3,7 +3,7 @@ import { Space } from 'components/Common/Space';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import IsOutPopup from 'components/Seller/SellerMyPageModifyProfile/IsOutPopup';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
-import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
+import ModifyProfileMainSection from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
 import SetChatTimeSection, {
   SelectedTimeList,
 } from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';

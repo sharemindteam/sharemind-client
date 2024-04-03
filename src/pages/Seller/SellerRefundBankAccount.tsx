@@ -1,3 +1,4 @@
+import { patchCounselorsAccount } from 'api/patch';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { BackDrop } from 'components/Common/BackDrop';
 import { Button } from 'components/Common/Button';
@@ -45,10 +46,16 @@ function SellerRefundBankAccount() {
     setAccountNum(sanitizedValue);
   };
 
-  const handlePostAccountInfo = () => {
+  const handlePostAccountInfo = async () => {
     // 임시조건
     if (accountNum !== '' && bankType !== '' && owner !== '') {
-      //서버로 POST
+      const body = {
+        account: accountNum,
+        bank: bankType,
+        accountHolder: owner,
+      };
+      await patchCounselorsAccount(body);
+      navigate('/minder');
     }
   };
 
@@ -109,7 +116,6 @@ function SellerRefundBankAccount() {
           isActive={isActiveFisnishButton ? true : false}
           onClick={() => {
             handlePostAccountInfo();
-            navigate('/minder/setting');
           }}
         />
       </BottomButtonWrapper>
