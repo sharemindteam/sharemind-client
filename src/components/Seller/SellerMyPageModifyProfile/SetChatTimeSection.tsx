@@ -4,7 +4,6 @@ import { Black, Green, Grey1, Grey3, Grey4, Grey5 } from 'styles/color';
 import { ReactComponent as CheckIcon2SVG } from 'assets/icons/icon-check2.svg';
 import { ReactComponent as PlusIconSVG } from 'assets/icons/icon-plus.svg';
 import { ReactComponent as MinusIconSVG } from 'assets/icons/icon-minus.svg';
-import { Body1 } from 'styles/font';
 import Input from 'components/Common/Input';
 import TimeSelectModal from './TimeSelectModal';
 import { useRecoilState } from 'recoil';
@@ -67,9 +66,15 @@ function SetChatTimeSection({
     useRecoilState(isTimeModalOpenState);
   const [isOutPopupOpen, setIsOutPopupOpen] =
     useRecoilState(isOutPopupOpenState);
-
+  const scrollTopRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (scrollTopRef) {
+      scrollTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, []);
   return (
     <Wrapper>
+      <div ref={scrollTopRef} />
       <ScrollContainer>
         {isOutPopupOpen && <IsOutPopup />}
         {isTimeModalOpen && (

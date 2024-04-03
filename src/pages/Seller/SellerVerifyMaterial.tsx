@@ -16,13 +16,12 @@ export const SellerVerifyMaterial = () => {
     isTakingQuizModalOpenState,
   );
 
-  const containerRef = useRef(null);
-  
+  const topRef = useRef<HTMLDivElement | null>(null);
+
   const { pathname } = useLocation();
   useEffect(() => {
-    if (containerRef.current) {
-      // console.log('hello');
-      // containerRef.current.scrollTop = 0;
+    if (topRef.current) {
+      topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   }, [pathname]);
 
@@ -36,8 +35,8 @@ export const SellerVerifyMaterial = () => {
         </>
       )}
 
-      <VerifyMaterialContainer ref={containerRef}>
-        <div className="top-container"></div>
+      <VerifyMaterialContainer>
+        <div className="top-container" ref={topRef}></div>
         <Routes>
           <Route path="first" element={<FirstMaterial />} />
           <Route path="/second" element={<SecondMaterial />} />
