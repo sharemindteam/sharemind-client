@@ -13,6 +13,7 @@ import { useRecoilState } from 'recoil';
 import { isCustomerState } from 'utils/atom';
 import { useLocation } from 'react-router-dom';
 import { postPublicReissue } from 'api/post';
+import { getCookie, setCookie } from 'utils/cookie';
 /*connected to server undefined doesn't mean that something is wrong. This 
 line appears every time.
 https://stackoverflow.com/questions/46662524/java-spring-boot-websocket-communication-with-js
@@ -51,12 +52,12 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
   const reissueToken = async () => {
     try {
       const tokenResponse: any = await postPublicReissue({
-        refreshToken: localStorage.getItem('refreshToken'),
+        refreshToken: getCookie('refreshToken'),
       });
       if (tokenResponse.status === 200) {
         const { accessToken, refreshToken } = tokenResponse.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        setCookie('accessToken', accessToken);
+        setCookie('refreshToken', refreshToken);
         connectChat();
       }
     } catch (error) {
@@ -72,7 +73,7 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
     // 연결
     stompClient.current.connect(
       {
-        Authorization: localStorage.getItem('accessToken'),
+        Authorization: getCookie('accessToken'),
         isCustomer: isCustomer,
       },
       (frame: any) => {

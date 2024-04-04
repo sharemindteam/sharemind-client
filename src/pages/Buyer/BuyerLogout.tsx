@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Green, Grey1, LightGreen } from 'styles/color';
 import { Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
+import { getCookie, removeCookie } from 'utils/cookie';
 
 export const BuyerLogout = () => {
   const navigate = useNavigate();
@@ -27,8 +28,8 @@ export const BuyerLogout = () => {
         refreshToken: refreshTokenValue,
       };
       await patchAuthSignOut(body);
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      removeCookie('accessToken');
+      removeCookie('refreshToken');
       stompClient.current?.disconnect();
       navigate('/mypage');
     } catch (e) {
@@ -67,8 +68,8 @@ export const BuyerLogout = () => {
             backgroundColor={LightGreen}
             color={Green}
             onClick={() => {
-              const accessTokenValue = localStorage.getItem('accessToken');
-              const refreshTokenValue = localStorage.getItem('refreshToken');
+              const accessTokenValue = getCookie('accessToken');
+              const refreshTokenValue = getCookie('refreshToken');
               patchSingOut(accessTokenValue, refreshTokenValue);
             }}
           />

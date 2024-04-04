@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
+import { removeCookie } from 'utils/cookie';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 
 export const BuyerPwChange = () => {
@@ -48,8 +49,8 @@ export const BuyerPwChange = () => {
     };
     const res: any = await patchAuthPassword(body);
     if (res.status === 200) {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      removeCookie('accessToken');
+      removeCookie('refreshToken');
       navigate('/login');
     } else if (res.response.status === 400) {
       alert(res.response.data.message);
