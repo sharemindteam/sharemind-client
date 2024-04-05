@@ -5,6 +5,7 @@ import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import PwInput from 'components/Buyer/Common/PwInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { Button } from 'components/Common/Button';
+import { useDebounce } from 'hooks/useDebounce';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -29,9 +30,12 @@ export const BuyerPwChange = () => {
   //최종 완료 valid 여부
   const [valid, setValid] = useState<boolean>(false);
 
-  const pwCorrectCheck = async () => {
+  /**
+   *
+   */
+  const postPasswordCheck = async (pwInput: string) => {
     const body = {
-      password: pw.value,
+      password: pwInput,
     };
     const res: any = await postPassword(body);
     if (res.status === 200) {
@@ -40,6 +44,11 @@ export const BuyerPwChange = () => {
       pw.setIsValid(false);
     }
   };
+
+  const pwDebounce = useDebounce((pwInput: string) => {
+    postPasswordCheck(pwInput);
+  }, 300);
+
   const handlePwChangeClick = async () => {
     const body = {
       password: newPw.value,
@@ -62,6 +71,7 @@ export const BuyerPwChange = () => {
     }
   }, [pw.isValid, newPw.isValid, newPwCheck.isValid, newPw.typeValid]);
 
+  /** new password and new password valid check logic */
   useEffect(() => {
     if (passwordTypeValid(newPw.value)) {
       setTypeColor(SafeColor);
@@ -93,7 +103,7 @@ export const BuyerPwChange = () => {
       setCorrectState('invalid');
       newPwCheck.setIsValid(false);
     }
-  }, [newPw, newPw.value, newPwCheck, newPwCheck.value, pw]);
+  }, [newPw, newPw.value, newPwCheck, newPwCheck.value]);
 
   return (
     <Wrapper>
@@ -113,10 +123,12 @@ export const BuyerPwChange = () => {
             </Body1>
             <PwInput
               value={pw.value}
-              onChange={pw.onChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                pw.setValue(e.target.value);
+                pwDebounce(e.target.value);
+              }}
               width="33.5rem"
               height="4.8rem"
-              onBlur={pwCorrectCheck}
             />
             {pw.isValid ? null : (
               <div className="caption">
@@ -124,7 +136,6 @@ export const BuyerPwChange = () => {
               </div>
             )}
           </div>
-
           <div className="card-wrapper">
             <Body1 color={Grey3} margin="0.2rem 0">
               새 비밀번호
