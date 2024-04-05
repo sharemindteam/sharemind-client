@@ -14,6 +14,16 @@ import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 
+//
+//
+//
+
+const PW_CHECK_DEBOUNCE_DELAY = 300;
+
+//
+//
+//
+
 export const BuyerPwChange = () => {
   const navigate = useNavigate();
 
@@ -55,7 +65,7 @@ export const BuyerPwChange = () => {
    */
   const pwDebounce = useDebounce((pwInput: string) => {
     postPasswordCheck(pwInput);
-  }, 300);
+  }, PW_CHECK_DEBOUNCE_DELAY);
 
   /**
    *
