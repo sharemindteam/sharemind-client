@@ -1,11 +1,11 @@
 import { patchAuthPassword } from 'api/patch';
 import { postPassword } from 'api/post';
+import { usePwChangeInput } from 'components/Buyer/BuyerPwChange/usePwChangeInput';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import PwInput from 'components/Buyer/Common/PwInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { Button } from 'components/Common/Button';
-import { useInput } from 'hooks/useInput';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
@@ -13,21 +13,19 @@ import { Body1, Caption2, Heading } from 'styles/font';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 
 export const BuyerPwChange = () => {
-  //첫렌더 시 예외처리
-  const isInitialRender = useRef(true);
   const navigate = useNavigate();
   //비밀번호 변경
-  const pw = useInput('');
-  const newPw = useInput('');
-  const newPwCheck = useInput('');
+  const pw = usePwChangeInput('');
+  const newPw = usePwChangeInput('');
+  const newPwCheck = usePwChangeInput('');
   //caption color
   const [typeColor, setTypeColor] = useState<string>(Grey4);
   const [lengthColor, setLengthColor] = useState<string>(Grey4);
   const [correctColor, setCorrectColor] = useState<string>(Grey4);
   //각 input caption icon의 상태 / common valid invalid
-  const [typeState, setTypeState] = useState<string>('');
-  const [lengthState, setLengthState] = useState<string>('');
-  const [correctState, setCorrectState] = useState<string>('');
+  const [typeState, setTypeState] = useState<string>('common');
+  const [lengthState, setLengthState] = useState<string>('common');
+  const [correctState, setCorrectState] = useState<string>('common');
   //최종 완료 valid 여부
   const [valid, setValid] = useState<boolean>(false);
 
@@ -65,19 +63,6 @@ export const BuyerPwChange = () => {
   }, [pw.isValid, newPw.isValid, newPwCheck.isValid, newPw.typeValid]);
 
   useEffect(() => {
-    // 첫 마운트 시에는 error 색상 안되게 처리
-    if (isInitialRender.current) {
-      setTypeColor(Grey4);
-      setLengthColor(Grey4);
-      setCorrectColor(Grey4);
-      //첫 마운트 시 icon 상태도 common
-      setTypeState('common');
-      setLengthState('common');
-      setCorrectState('common');
-      pw.setIsValid(true);
-      isInitialRender.current = false;
-      return;
-    }
     if (passwordTypeValid(newPw.value)) {
       setTypeColor(SafeColor);
       setTypeState('valid');
@@ -122,7 +107,6 @@ export const BuyerPwChange = () => {
       </HeaderWrapper>
       <div className="body-wrapper">
         <div>
-          {/* 비밀번호 일치 여부는 추후 setTimeout으로 api 호출로 확인 */}
           <div className="card-wrapper">
             <Body1 color={Grey3} margin="0.2rem 0">
               현재 비밀번호
