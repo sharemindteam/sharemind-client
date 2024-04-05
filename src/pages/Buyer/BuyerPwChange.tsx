@@ -8,6 +8,7 @@ import { Button } from 'components/Common/Button';
 import { useDebounce } from 'hooks/useDebounce';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUpdateEffect } from 'react-use';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
@@ -15,19 +16,23 @@ import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 
 export const BuyerPwChange = () => {
   const navigate = useNavigate();
-  //비밀번호 변경
+
+  //input values
   const pw = usePwChangeInput('');
   const newPw = usePwChangeInput('');
   const newPwCheck = usePwChangeInput('');
+
   //caption color
   const [typeColor, setTypeColor] = useState<string>(Grey4);
   const [lengthColor, setLengthColor] = useState<string>(Grey4);
   const [correctColor, setCorrectColor] = useState<string>(Grey4);
-  //각 input caption icon의 상태 / common valid invalid
+
+  //icon status (common valid invalid)
   const [typeState, setTypeState] = useState<string>('common');
   const [lengthState, setLengthState] = useState<string>('common');
   const [correctState, setCorrectState] = useState<string>('common');
-  //최종 완료 valid 여부
+
+  //final valid
   const [valid, setValid] = useState<boolean>(false);
 
   /**
@@ -45,10 +50,16 @@ export const BuyerPwChange = () => {
     }
   };
 
+  /**
+   *
+   */
   const pwDebounce = useDebounce((pwInput: string) => {
     postPasswordCheck(pwInput);
   }, 300);
 
+  /**
+   *
+   */
   const handlePwChangeClick = async () => {
     const body = {
       password: newPw.value,
@@ -62,6 +73,7 @@ export const BuyerPwChange = () => {
       alert(res.response.data.message);
     }
   };
+
   useEffect(() => {
     //세 case 모두 valid할 시 다음으로 넘어감
     if (pw.isValid && newPw.typeValid && newPwCheck.isValid) {
@@ -72,38 +84,57 @@ export const BuyerPwChange = () => {
   }, [pw.isValid, newPw.isValid, newPwCheck.isValid, newPw.typeValid]);
 
   /** new password and new password valid check logic */
-  useEffect(() => {
-    if (passwordTypeValid(newPw.value)) {
-      setTypeColor(SafeColor);
-      setTypeState('valid');
-      newPw.setTypeValid(true);
-    } else {
-      setTypeColor(ErrorColor);
-      setTypeState('invalid');
-      newPw.setTypeValid(false);
+  useUpdateEffect(() => {
+    /** check which value is changed */
+    const newPwChanged = newPw.prevValue !== newPw.value;
+    const newPwCheckChanged = newPwCheck.prevValue !== newPwCheck.value;
+
+    /** check if new pw's combination valid */
+    if (newPwChanged) {
+      if (passwordTypeValid(newPw.value)) {
+        setTypeColor(SafeColor);
+        setTypeState('valid');
+        newPw.setTypeValid(true);
+      } else {
+        setTypeColor(ErrorColor);
+        setTypeState('invalid');
+        newPw.setTypeValid(false);
+      }
     }
-    if (passwordLengthValid(newPw.value)) {
-      setLengthColor(SafeColor);
-      setLengthState('valid');
-      newPw.setLengthValid(true);
-    } else {
-      setLengthColor(ErrorColor);
-      setLengthState('invalid');
-      newPw.setLengthValid(false);
+
+    /** check if new pw over 10 letters */
+    if (newPwChanged) {
+      if (passwordLengthValid(newPw.value)) {
+        setLengthColor(SafeColor);
+        setLengthState('valid');
+        newPw.setLengthValid(true);
+      } else {
+        setLengthColor(ErrorColor);
+        setLengthState('invalid');
+        newPw.setLengthValid(false);
+      }
     }
-    if (
-      newPw.value.trim() === newPwCheck.value.trim() &&
-      newPw.value.trim() !== ''
-    ) {
-      setCorrectColor(SafeColor);
-      setCorrectState('valid');
-      newPwCheck.setIsValid(true);
-    } else {
-      setCorrectColor(ErrorColor);
-      setCorrectState('invalid');
-      newPwCheck.setIsValid(false);
+
+    /** check if new pw equal new pw check */
+    if (newPwChanged || newPwCheckChanged) {
+      if (
+        newPw.value.trim() === newPwCheck.value.trim() &&
+        newPw.value.trim() !== ''
+      ) {
+        setCorrectColor(SafeColor);
+        setCorrectState('valid');
+        newPwCheck.setIsValid(true);
+      } else {
+        setCorrectColor(ErrorColor);
+        setCorrectState('invalid');
+        newPwCheck.setIsValid(false);
+      }
     }
   }, [newPw, newPw.value, newPwCheck, newPwCheck.value]);
+
+  //
+  //
+  //
 
   return (
     <Wrapper>
@@ -124,13 +155,14 @@ export const BuyerPwChange = () => {
             <PwInput
               value={pw.value}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                pw.handleFirstChange();
                 pw.setValue(e.target.value);
                 pwDebounce(e.target.value);
               }}
               width="33.5rem"
               height="4.8rem"
             />
-            {pw.isValid ? null : (
+            {pw.isValid || !pw.isFocused ? null : (
               <div className="caption">
                 <Caption2 color={ErrorColor}>비밀번호 불일치</Caption2>
               </div>

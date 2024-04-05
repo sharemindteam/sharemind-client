@@ -1,4 +1,9 @@
-import { useState, Dispatch, SetStateAction, useRef } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
+import { usePrevious } from 'react-use';
+
+//
+//
+//
 
 type UsePwChangeInputResult = {
   value: string;
@@ -11,12 +16,16 @@ type UsePwChangeInputResult = {
   typeValid: boolean;
   setTypeValid: Dispatch<SetStateAction<boolean>>;
   isFocused: boolean;
-  setIsFocused: Dispatch<SetStateAction<boolean>>;
   lengthValid: boolean;
   setLengthValid: Dispatch<SetStateAction<boolean>>;
-  initialRenderRef: React.MutableRefObject<boolean>;
+  handleFirstChange: () => void;
+  prevValue: string;
 };
-//input만 사용할 시 해당 커스텀훅 사용
+
+//
+//
+//
+
 export const usePwChangeInput = (initialValue: string) => {
   const [value, setValue] = useState<string>(initialValue);
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -24,10 +33,27 @@ export const usePwChangeInput = (initialValue: string) => {
   const [typeValid, setTypeValid] = useState<boolean>(false);
   //10자 이상
   const [lengthValid, setLengthValid] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
-  const initialRenderRef = useRef(true);
+  const prevValue = usePrevious(value);
 
+  /**
+   *
+   */
+  const handleFirstChange = () => {
+    if (!isFocused) {
+      setIsFocused(true);
+    }
+  };
+
+  /**
+   *
+   * @param e
+   */
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isFocused) {
+      setIsFocused(true);
+    }
     setValue(e.target.value);
   };
 
@@ -43,8 +69,10 @@ export const usePwChangeInput = (initialValue: string) => {
     setValue,
     typeValid,
     setTypeValid,
+    isFocused,
     lengthValid,
     setLengthValid,
-    initialRenderRef,
+    handleFirstChange,
+    prevValue,
   } as UsePwChangeInputResult;
 };
