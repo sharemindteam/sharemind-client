@@ -12,8 +12,10 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { useStompContext } from 'contexts/StompContext';
 import { convertChatListDate } from 'utils/convertDate';
 import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
-//buyer consult에 저장돼있고, 나중에 type으로 뺴고 consultinfoLIst 지우기
-//consultinfolist type에 더미값 들어가 있음
+
+//
+//
+//
 
 interface SellerConsultProps {
   sortType: number;
@@ -23,6 +25,10 @@ interface SellerConsultProps {
   setSearchParams: SetURLSearchParams;
 }
 
+//
+//
+//
+
 function SellerChatList({
   sortType,
   isChecked,
@@ -30,13 +36,14 @@ function SellerChatList({
   searchParams,
   setSearchParams,
 }: SellerConsultProps) {
+  const navigate = useNavigate();
+  const setScrollLock = useSetRecoilState(scrollLockState);
+
   const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
-  const setScrollLock = useSetRecoilState(scrollLockState);
-  const navigate = useNavigate();
 
   const roomIdsRef = useRef<number[]>([]); //unmout 시 unsubscibe를 위함
   const userIdRef = useRef<number>(-1);
@@ -46,7 +53,10 @@ function SellerChatList({
    */
   const cardDataRef = useRef<ConsultInfoItem[]>([]);
   const { stompClient, isConnected } = useStompContext();
-  //채팅 readId, 가장 최근 unread message, 정렬 업데이트
+
+  /**
+   * 새로운 채팅 도착 시 업데이트
+   */
   const updateChatData = (
     chatId: number,
     content: string,
@@ -72,6 +82,32 @@ function SellerChatList({
       setConsultInfo(updatedCardData);
     }
   };
+
+  /**
+   * 채팅방 생성 시 chat data add
+   */
+  const addChatData = (notification: any) => {
+    //add cardData
+    const addedChatRoomItem: ConsultInfoItem = {
+      consultStyle: notification.consultStyle,
+      id: notification.chatId,
+      latestMessageContent: `${notification.opponentNickname}님께 고민 내용을 남겨 주세요. ${notification.opponentNickname}님이 24시간 이내 답장을 드릴 거예요.`,
+      latestMessageIsCustomer: null,
+      latestMessageUpdatedAt: convertChatListDate(notification.createTime),
+      opponentNickname: notification.opponentNickname,
+      status: '상담 대기',
+      unreadMessageCount: 0,
+      reviewCompleted: null,
+      consultId: null,
+    };
+    //add roomIds for unsubscribe
+    roomIdsRef.current.unshift(notification.chatId);
+
+    cardDataRef.current = [addedChatRoomItem, ...cardDataRef.current];
+
+    setConsultInfo(cardDataRef.current);
+  };
+
   useEffect(() => {
     if (!isConnected) {
       return;
@@ -108,31 +144,7 @@ function SellerChatList({
                 if (
                   notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
                 ) {
-                  //add cardData
-                  const addedChatRoomItem: ConsultInfoItem = {
-                    consultStyle: notification.consultStyle,
-                    id: notification.chatId,
-                    latestMessageContent: `${notification.opponentNickname}님께 고민 내용을 남겨 주세요. ${notification.opponentNickname}님이 24시간 이내 답장을 드릴 거예요.`,
-                    latestMessageIsCustomer: null,
-                    latestMessageUpdatedAt: convertChatListDate(
-                      notification.createTime,
-                    ),
-                    opponentNickname: notification.opponentNickname,
-                    status: '상담 대기',
-                    unreadMessageCount: 0,
-                    reviewCompleted: null,
-                    consultId: null,
-                  };
-                  //add roomIds for unsubscribe
-                  roomIdsRef.current.unshift(notification.chatId);
-
-                  cardDataRef.current = [
-                    addedChatRoomItem,
-                    ...cardDataRef.current,
-                  ];
-
-                  setConsultInfo(cardDataRef.current);
-
+                  addChatData(notification);
                   //subscribe new chatroom
                   stompClient.current?.subscribe(
                     '/queue/chatMessages/counselors/' + notification.chatId,
