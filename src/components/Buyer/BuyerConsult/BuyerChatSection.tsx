@@ -3,23 +3,31 @@ import styled from 'styled-components';
 import { ConsultCard } from 'components/Buyer/Common/ConsultCard';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { consultApiObject } from 'pages/Buyer/BuyerConsult';
-import { getChatsCustomers } from 'api/get';
+import { getChatsCustomers, getCustomers } from 'api/get';
 import { useStompContext } from 'contexts/StompContext';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Heading } from 'styles/font';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { convertChatListDate } from 'utils/convertDate';
+
+//
+//
+//
+
 interface BuyerChatSectionProps {
   sortType: number;
   isChecked: boolean;
 }
+
+//
+//
+//
 
 export const BuyerChatSection = ({
   sortType,
   isChecked,
 }: BuyerChatSectionProps) => {
   const [cardData, setCardData] = useState<consultApiObject[]>([]); //card에 넘길 데이터
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const roomIdsRef = useRef<number[]>([]); //unmout 시 unsubscibe를 위함
@@ -30,7 +38,10 @@ export const BuyerChatSection = ({
    */
   const cardDataRef = useRef<consultApiObject[]>([]);
   const { stompClient, isConnected } = useStompContext();
-  //채팅 readId, 가장 최근 unread message, 정렬 업데이트
+
+  /**
+   * 채팅 readId, 가장 최근 unread message, 정렬 업데이트
+   */
   const updateChatData = (
     chatId: number,
     content: string,
@@ -57,85 +68,34 @@ export const BuyerChatSection = ({
     }
   };
 
+  /**
+   * 채팅방 생성 시 chat data add
+   */
+  const addChatData = (notification: any) => {
+    //add cardData
+    const addedChatRoomItem: consultApiObject = {
+      consultStyle: notification.consultStyle,
+      id: notification.chatId,
+      latestMessageContent: `${notification.opponentNickname}님께 고민 내용을 남겨 주세요. ${notification.opponentNickname}님이 24시간 이내 답장을 드릴 거예요.`,
+      latestMessageIsCustomer: null,
+      latestMessageUpdatedAt: convertChatListDate(notification.createTime),
+      opponentNickname: notification.opponentNickname,
+      status: '상담 대기',
+      unreadMessageCount: 0,
+      reviewCompleted: null,
+      consultId: null,
+    };
+    //add roomIds for unsubscribe
+    roomIdsRef.current.unshift(notification.chatId);
+
+    cardDataRef.current = [addedChatRoomItem, ...cardDataRef.current];
+
+    setCardData(cardDataRef.current);
+  };
+
   useEffect(() => {
     if (!isConnected) {
       return;
-    }
-
-    if (stompClient.current) {
-      stompClient.current.subscribe(
-        '/queue/chattings/connect/customers/',
-        (rooms) => {
-          const response = JSON.parse(rooms.body);
-          roomIdsRef.current = response.roomIds;
-
-          response.roomIds.forEach((chatId: number) => {
-            //모든 채팅방 subscribe
-            stompClient.current?.subscribe(
-              '/queue/chatMessages/customers/' + chatId,
-              (message) => {
-                const response = JSON.parse(message.body);
-                updateChatData(
-                  chatId,
-                  response.content,
-                  convertChatListDate(response.sendTime),
-                );
-              },
-            );
-          });
-          if (response.userId !== null) {
-            userIdRef.current = response.userId;
-            //채팅방 생성, 종료 readid tab 갱신
-            stompClient.current?.subscribe(
-              '/queue/chattings/notifications/customers/' + response.userId,
-              (message) => {
-                const notification = JSON.parse(message.body);
-                if (
-                  notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
-                ) {
-                  //add cardData
-                  const addedChatRoomItem: consultApiObject = {
-                    consultStyle: notification.consultStyle,
-                    id: notification.chatId,
-                    latestMessageContent: `${notification.opponentNickname}님께 고민 내용을 남겨 주세요. ${notification.opponentNickname}님이 24시간 이내 답장을 드릴 거예요.`,
-                    latestMessageIsCustomer: null,
-                    latestMessageUpdatedAt: convertChatListDate(
-                      notification.createTime,
-                    ),
-                    opponentNickname: notification.opponentNickname,
-                    status: '상담 대기',
-                    unreadMessageCount: 0,
-                    reviewCompleted: null,
-                    consultId: null,
-                  };
-                  //add roomIds for unsubscribe
-                  roomIdsRef.current.unshift(notification.chatId);
-
-                  cardDataRef.current = [
-                    addedChatRoomItem,
-                    ...cardDataRef.current,
-                  ];
-
-                  setCardData(cardDataRef.current);
-
-                  //subscribe new chatroom
-                  stompClient.current?.subscribe(
-                    '/queue/chatMessages/customers/' + notification.chatId,
-                    (message) => {
-                      const response = JSON.parse(message.body);
-                      updateChatData(
-                        notification.chatId,
-                        response.content,
-                        convertChatListDate(response.sendTime),
-                      );
-                    },
-                  );
-                }
-              },
-            );
-          }
-        },
-      );
     }
 
     const sendConnectRequest = () => {
@@ -148,10 +108,79 @@ export const BuyerChatSection = ({
       }
     };
 
-    sendConnectRequest();
+    const getCustomerUserIdAndSubscribe = async () => {
+      try {
+        const response: any = await getCustomers();
+        userIdRef.current = response.data;
+        subscribeChatList();
+        sendConnectRequest();
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    const subscribeChatList = () => {
+      if (stompClient.current) {
+        // 이거 전에 먼저 userId 를 받고 userId 기준으로 subscribe 한다.
+        stompClient.current.subscribe(
+          `/queue/chattings/connect/customers/${userIdRef.current}`,
+          (rooms) => {
+            const response = JSON.parse(rooms.body);
+            roomIdsRef.current = response.roomIds;
+            response.roomIds.forEach((chatId: number) => {
+              //모든 채팅방 subscribe
+              stompClient.current?.subscribe(
+                '/queue/chatMessages/customers/' + chatId,
+                (message) => {
+                  const response = JSON.parse(message.body);
+                  updateChatData(
+                    chatId,
+                    response.content,
+                    convertChatListDate(response.sendTime),
+                  );
+                },
+              );
+            });
+            if (response.userId !== null) {
+              // userIdRef.current = response.userId;
+              //채팅방 생성, 종료 readid tab 갱신
+              stompClient.current?.subscribe(
+                '/queue/chattings/notifications/customers/' + response.userId,
+                (message) => {
+                  const notification = JSON.parse(message.body);
+                  if (
+                    notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
+                  ) {
+                    addChatData(notification);
+
+                    //subscribe new chatroom
+                    stompClient.current?.subscribe(
+                      '/queue/chatMessages/customers/' + notification.chatId,
+                      (message) => {
+                        const response = JSON.parse(message.body);
+                        updateChatData(
+                          notification.chatId,
+                          response.content,
+                          convertChatListDate(response.sendTime),
+                        );
+                      },
+                    );
+                  }
+                },
+              );
+            }
+          },
+        );
+      }
+    };
+
+    getCustomerUserIdAndSubscribe();
+
+    //
+    //
+    //
 
     return () => {
-      console.log('effect callback');
       roomIdsRef.current.forEach((value) => {
         stompClient.current?.unsubscribe(
           '/queue/chatMessages/customers/' + value,

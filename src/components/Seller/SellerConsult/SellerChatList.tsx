@@ -1,4 +1,4 @@
-import { getChatsMinder } from 'api/get';
+import { getChatsMinder, getCounselors } from 'api/get';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SetURLSearchParams, useNavigate } from 'react-router-dom';
@@ -12,8 +12,10 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { useStompContext } from 'contexts/StompContext';
 import { convertChatListDate } from 'utils/convertDate';
 import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
-//buyer consult에 저장돼있고, 나중에 type으로 뺴고 consultinfoLIst 지우기
-//consultinfolist type에 더미값 들어가 있음
+
+//
+//
+//
 
 interface SellerConsultProps {
   sortType: number;
@@ -23,6 +25,10 @@ interface SellerConsultProps {
   setSearchParams: SetURLSearchParams;
 }
 
+//
+//
+//
+
 function SellerChatList({
   sortType,
   isChecked,
@@ -30,13 +36,14 @@ function SellerChatList({
   searchParams,
   setSearchParams,
 }: SellerConsultProps) {
+  const navigate = useNavigate();
+  const setScrollLock = useSetRecoilState(scrollLockState);
+
   const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
-  const setScrollLock = useSetRecoilState(scrollLockState);
-  const navigate = useNavigate();
 
   const roomIdsRef = useRef<number[]>([]); //unmout 시 unsubscibe를 위함
   const userIdRef = useRef<number>(-1);
@@ -46,7 +53,10 @@ function SellerChatList({
    */
   const cardDataRef = useRef<ConsultInfoItem[]>([]);
   const { stompClient, isConnected } = useStompContext();
-  //채팅 readId, 가장 최근 unread message, 정렬 업데이트
+
+  /**
+   * 새로운 채팅 도착 시 업데이트
+   */
   const updateChatData = (
     chatId: number,
     content: string,
@@ -72,87 +82,40 @@ function SellerChatList({
       setConsultInfo(updatedCardData);
     }
   };
+
+  /**
+   * 채팅방 생성 시 chat data add
+   */
+  const addChatData = (notification: any) => {
+    //add cardData
+    const addedChatRoomItem: ConsultInfoItem = {
+      consultStyle: notification.consultStyle,
+      id: notification.chatId,
+      latestMessageContent: `${notification.opponentNickname}님께 고민 내용을 남겨 주세요. ${notification.opponentNickname}님이 24시간 이내 답장을 드릴 거예요.`,
+      latestMessageIsCustomer: null,
+      latestMessageUpdatedAt: convertChatListDate(notification.createTime),
+      opponentNickname: notification.opponentNickname,
+      status: '상담 대기',
+      unreadMessageCount: 0,
+      reviewCompleted: null,
+      consultId: null,
+    };
+    //add roomIds for unsubscribe
+    roomIdsRef.current.unshift(notification.chatId);
+
+    cardDataRef.current = [addedChatRoomItem, ...cardDataRef.current];
+
+    setConsultInfo(cardDataRef.current);
+  };
+
   useEffect(() => {
     if (!isConnected) {
       return;
     }
 
-    if (stompClient.current) {
-      stompClient.current.subscribe(
-        '/queue/chattings/connect/counselors/',
-        (rooms) => {
-          const response = JSON.parse(rooms.body);
-          roomIdsRef.current = response.roomIds;
-
-          response.roomIds.forEach((chatId: number) => {
-            //모든 채팅방 subscribe
-            stompClient.current?.subscribe(
-              '/queue/chatMessages/counselors/' + chatId,
-              (message) => {
-                const response = JSON.parse(message.body);
-                updateChatData(
-                  chatId,
-                  response.content,
-                  convertChatListDate(response.sendTime),
-                );
-              },
-            );
-          });
-          if (response.userId !== null) {
-            userIdRef.current = response.userId;
-            //채팅방 생성, 종료 readid tab 갱신
-            stompClient.current?.subscribe(
-              '/queue/chattings/notifications/counselors/' + response.userId,
-              (message) => {
-                const notification = JSON.parse(message.body);
-                if (
-                  notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
-                ) {
-                  //add cardData
-                  const addedChatRoomItem: ConsultInfoItem = {
-                    consultStyle: notification.consultStyle,
-                    id: notification.chatId,
-                    latestMessageContent: `${notification.opponentNickname}님께 고민 내용을 남겨 주세요. ${notification.opponentNickname}님이 24시간 이내 답장을 드릴 거예요.`,
-                    latestMessageIsCustomer: null,
-                    latestMessageUpdatedAt: convertChatListDate(
-                      notification.createTime,
-                    ),
-                    opponentNickname: notification.opponentNickname,
-                    status: '상담 대기',
-                    unreadMessageCount: 0,
-                    reviewCompleted: null,
-                    consultId: null,
-                  };
-                  //add roomIds for unsubscribe
-                  roomIdsRef.current.unshift(notification.chatId);
-
-                  cardDataRef.current = [
-                    addedChatRoomItem,
-                    ...cardDataRef.current,
-                  ];
-
-                  setConsultInfo(cardDataRef.current);
-
-                  //subscribe new chatroom
-                  stompClient.current?.subscribe(
-                    '/queue/chatMessages/counselors/' + notification.chatId,
-                    (message) => {
-                      const response = JSON.parse(message.body);
-                      updateChatData(
-                        notification.chatId,
-                        response.content,
-                        convertChatListDate(response.sendTime),
-                      );
-                    },
-                  );
-                }
-              },
-            );
-          }
-        },
-      );
-    }
-
+    /**
+     *
+     */
     const sendConnectRequest = () => {
       if (stompClient.current) {
         stompClient.current.send(
@@ -163,7 +126,75 @@ function SellerChatList({
       }
     };
 
-    sendConnectRequest();
+    const getCounselorUserIdAndSubscribe = async () => {
+      try {
+        const response: any = await getCounselors();
+        userIdRef.current = response.data;
+        subscribeChatList();
+        sendConnectRequest();
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    const subscribeChatList = () => {
+      if (stompClient.current) {
+        stompClient.current.subscribe(
+          `/queue/chattings/connect/counselors/${userIdRef.current}`,
+          (rooms) => {
+            const response = JSON.parse(rooms.body);
+            roomIdsRef.current = response.roomIds;
+
+            response.roomIds.forEach((chatId: number) => {
+              //모든 채팅방 subscribe
+              stompClient.current?.subscribe(
+                '/queue/chatMessages/counselors/' + chatId,
+                (message) => {
+                  const response = JSON.parse(message.body);
+                  updateChatData(
+                    chatId,
+                    response.content,
+                    convertChatListDate(response.sendTime),
+                  );
+                },
+              );
+            });
+            if (response.userId !== null) {
+              //채팅방 생성, 종료 readid tab 갱신
+              stompClient.current?.subscribe(
+                '/queue/chattings/notifications/counselors/' + response.userId,
+                (message) => {
+                  const notification = JSON.parse(message.body);
+                  if (
+                    notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
+                  ) {
+                    addChatData(notification);
+                    //subscribe new chatroom
+                    stompClient.current?.subscribe(
+                      '/queue/chatMessages/counselors/' + notification.chatId,
+                      (message) => {
+                        const response = JSON.parse(message.body);
+                        updateChatData(
+                          notification.chatId,
+                          response.content,
+                          convertChatListDate(response.sendTime),
+                        );
+                      },
+                    );
+                  }
+                },
+              );
+            }
+          },
+        );
+      }
+    };
+
+    getCounselorUserIdAndSubscribe();
+
+    //
+    //
+    //
 
     return () => {
       roomIdsRef.current.forEach((value) => {
