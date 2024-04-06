@@ -160,7 +160,6 @@ function SellerChatList({
               );
             });
             if (response.userId !== null) {
-              userIdRef.current = response.userId;
               //채팅방 생성, 종료 readid tab 갱신
               stompClient.current?.subscribe(
                 '/queue/chattings/notifications/counselors/' + response.userId,
