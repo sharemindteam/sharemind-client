@@ -176,6 +176,10 @@ export const BuyerChatSection = ({
 
     getCustomerUserIdAndSubscribe();
 
+    //
+    //
+    //
+
     return () => {
       roomIdsRef.current.forEach((value) => {
         stompClient.current?.unsubscribe(
