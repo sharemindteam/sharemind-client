@@ -1,4 +1,4 @@
-import { getChatsMinder } from 'api/get';
+import { getChatsMinder, getCounselors } from 'api/get';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SetURLSearchParams, useNavigate } from 'react-router-dom';
@@ -113,58 +113,9 @@ function SellerChatList({
       return;
     }
 
-    if (stompClient.current) {
-      stompClient.current.subscribe(
-        '/queue/chattings/connect/counselors/',
-        (rooms) => {
-          const response = JSON.parse(rooms.body);
-          roomIdsRef.current = response.roomIds;
-
-          response.roomIds.forEach((chatId: number) => {
-            //모든 채팅방 subscribe
-            stompClient.current?.subscribe(
-              '/queue/chatMessages/counselors/' + chatId,
-              (message) => {
-                const response = JSON.parse(message.body);
-                updateChatData(
-                  chatId,
-                  response.content,
-                  convertChatListDate(response.sendTime),
-                );
-              },
-            );
-          });
-          if (response.userId !== null) {
-            userIdRef.current = response.userId;
-            //채팅방 생성, 종료 readid tab 갱신
-            stompClient.current?.subscribe(
-              '/queue/chattings/notifications/counselors/' + response.userId,
-              (message) => {
-                const notification = JSON.parse(message.body);
-                if (
-                  notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
-                ) {
-                  addChatData(notification);
-                  //subscribe new chatroom
-                  stompClient.current?.subscribe(
-                    '/queue/chatMessages/counselors/' + notification.chatId,
-                    (message) => {
-                      const response = JSON.parse(message.body);
-                      updateChatData(
-                        notification.chatId,
-                        response.content,
-                        convertChatListDate(response.sendTime),
-                      );
-                    },
-                  );
-                }
-              },
-            );
-          }
-        },
-      );
-    }
-
+    /**
+     *
+     */
     const sendConnectRequest = () => {
       if (stompClient.current) {
         stompClient.current.send(
@@ -175,7 +126,76 @@ function SellerChatList({
       }
     };
 
-    sendConnectRequest();
+    const getCounselorUserIdAndSubscribe = async () => {
+      try {
+        const response: any = await getCounselors();
+        userIdRef.current = response.data;
+        subscribeChatList();
+        sendConnectRequest();
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    const subscribeChatList = () => {
+      if (stompClient.current) {
+        stompClient.current.subscribe(
+          '/queue/chattings/connect/counselors/',
+          (rooms) => {
+            const response = JSON.parse(rooms.body);
+            roomIdsRef.current = response.roomIds;
+
+            response.roomIds.forEach((chatId: number) => {
+              //모든 채팅방 subscribe
+              stompClient.current?.subscribe(
+                '/queue/chatMessages/counselors/' + chatId,
+                (message) => {
+                  const response = JSON.parse(message.body);
+                  updateChatData(
+                    chatId,
+                    response.content,
+                    convertChatListDate(response.sendTime),
+                  );
+                },
+              );
+            });
+            if (response.userId !== null) {
+              userIdRef.current = response.userId;
+              //채팅방 생성, 종료 readid tab 갱신
+              stompClient.current?.subscribe(
+                '/queue/chattings/notifications/counselors/' + response.userId,
+                (message) => {
+                  const notification = JSON.parse(message.body);
+                  if (
+                    notification.chatRoomWebsocketStatus === 'CHAT_ROOM_CREATE'
+                  ) {
+                    addChatData(notification);
+                    //subscribe new chatroom
+                    stompClient.current?.subscribe(
+                      '/queue/chatMessages/counselors/' + notification.chatId,
+                      (message) => {
+                        const response = JSON.parse(message.body);
+                        updateChatData(
+                          notification.chatId,
+                          response.content,
+                          convertChatListDate(response.sendTime),
+                        );
+                      },
+                    );
+                  }
+                },
+              );
+            }
+          },
+        );
+      }
+    };
+
+    getCounselorUserIdAndSubscribe();
+
+    //
+    //
+    //
 
     return () => {
       roomIdsRef.current.forEach((value) => {
