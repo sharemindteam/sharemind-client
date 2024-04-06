@@ -15,6 +15,7 @@ export const BuyerOpenConsultRequest = () => {
   const handleNextClick = () => {
     if (buttonAcitve) {
       if (isOpenConsult) {
+        navigate('/paymentFinish')
       } else {
         navigate('/openPaymentDetail');
       }

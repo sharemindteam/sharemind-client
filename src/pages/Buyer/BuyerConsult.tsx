@@ -89,30 +89,33 @@ export const BuyerConsult = () => {
               </Button2>
             </SelectButton>
           </div>
+          {consultType !== 'open-consult' && (
+            <div
+              className="select-wrapper"
+              onClick={() => {
+                setIsModalOpen(true);
+                setScrollLock(true);
+              }}
+            >
+              <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+              <Down />
+            </div>
+          )}
+        </div>
+        {consultType !== 'open-consult' && (
           <div
-            className="select-wrapper"
+            className="exception-toggle"
+            style={{ cursor: 'pointer' }}
             onClick={() => {
-              setIsModalOpen(true);
-              setScrollLock(true);
+              setIsChecked(!isChecked);
+              searchParams.set('check', String(!isChecked));
+              setSearchParams(searchParams);
             }}
           >
-            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-            <Down />
+            {isChecked ? <CheckIcon /> : <NonCheckIcon />}
+            <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
           </div>
-        </div>
-
-        <div
-          className="exception-toggle"
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            setIsChecked(!isChecked);
-            searchParams.set('check', String(!isChecked));
-            setSearchParams(searchParams);
-          }}
-        >
-          {isChecked ? <CheckIcon /> : <NonCheckIcon />}
-          <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
-        </div>
+        )}
       </div>
       {consultType === 'letter' ? (
         <BuyerLetterSection sortType={sortType} isChecked={isChecked} />

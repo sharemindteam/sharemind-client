@@ -102,6 +102,9 @@ export const getCounselorsChats = async (chatId: string, params: any) =>
 export const getPaymentsCustomers = async (params: any) =>
   await getInstance('/payments/customers', params);
 
+export const getCounselorsAccount = async () =>
+  await getInstance('/counselors/account');
+  
 export const getPaymentsMinder = async (params: any) =>
   await getInstance('/payments/counselors', params);
 

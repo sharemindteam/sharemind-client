@@ -30,7 +30,7 @@ export const BuyerOpenPaymentDetail = () => {
               상담 유형
             </Body1>
 
-            <Body1>공개상담 - 공개</Body1>
+            <Body1>공개상담 - 비공개</Body1>
           </div>
         </Box>
         <Box>

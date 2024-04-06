@@ -7,6 +7,7 @@ import { Green } from 'styles/color';
 import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import OpenConsultList from 'components/Buyer/BuyerOpenConsult/OpenConsultList';
 import HotOpenConsultList from 'components/Buyer/BuyerOpenConsult/HotOpenConsultList';
+import { Button } from 'components/Common/Button';
 function BuyerOpenConsult() {
   const navigate = useNavigate();
   return (
@@ -25,9 +26,14 @@ function BuyerOpenConsult() {
         <OpenConsultList />
       </section>
       <CreateConsultButtonWrapper>
-        <CreateConsultButton onClick={() => {}}>
-          <WriteIcon />
-        </CreateConsultButton>
+        <Button
+          text="공개상담 신청하기"
+          width="100%"
+          height="5.2rem"
+          onClick={() => {
+            navigate('/openConsultRequest');
+          }}
+        />
       </CreateConsultButtonWrapper>
     </Wrapper>
   );
@@ -41,21 +47,14 @@ const Wrapper = styled.div`
     width: calc(100% - 2rem);
   }
 `;
-const CreateConsultButton = styled.button`
-  width: 5.8rem;
-  height: 5.8rem;
-  border-radius: 100%;
-  background-color: ${Green};
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.25);
-  align-self: flex-end;
-`;
+
 const CreateConsultButtonWrapper = styled.div`
   width: 100%;
-  padding: 0 3.3rem;
+  padding: 0 2rem;
   box-sizing: border-box;
   display: flex;
   position: fixed;
-  bottom: 3.5rem;
+  bottom: 1.5rem;
   flex-direction: column;
   @media (min-width: 768px) {
     width: 375px;

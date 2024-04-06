@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
-import { Body1, Caption1, Caption2 } from 'styles/font';
+import { Body1, Body3, Body4, Caption1, Caption2 } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import {
   isBuyPopupOpenState,
@@ -20,9 +20,13 @@ import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import { Space } from 'components/Common/Space';
 import { BackDrop } from 'components/Common/BackDrop';
 import IsBuyPopup from './IsBuyPopup';
+import { Button } from 'components/Common/Button';
+import { useNavigate } from 'react-router-dom';
+import { BottomButton } from 'components/Seller/Common/BottomButton';
 
 function BuyerOpenConsultSection() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
@@ -80,6 +84,14 @@ function BuyerOpenConsultSection() {
             <TimeLeft>8분 전</TimeLeft>
           </BuyerOpenConsultCard>
           {/* 상담카드 부분 */}
+          <BuyerPendingOpenConsultCard>
+            <Body1>상담 글을 작성해주세요!</Body1>
+            <Body3>
+              결제 후 작성 전 <br />
+              공개상담 글을 작성해보세요~
+            </Body3>
+            <Button text="상담 글 작성하기" width="100%" height="4rem"></Button>
+          </BuyerPendingOpenConsultCard>
         </BuyerOpenConsultCardList>
       )}{' '}
       {isBuyPopupOpen && (
@@ -89,9 +101,14 @@ function BuyerOpenConsultSection() {
         </>
       )}
       <CreateConsultButtonWrapper>
-        <CreateConsultButton onClick={handleWritePostButton}>
-          <WriteIcon />
-        </CreateConsultButton>
+        <Button
+          text="공개상담 신청하기"
+          width="100%"
+          height="5.2rem"
+          onClick={() => {
+            navigate('/openConsultRequest');
+          }}
+        />
       </CreateConsultButtonWrapper>
     </>
   );
@@ -103,6 +120,18 @@ const BuyerOpenConsultCardList = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1.2rem;
+`;
+
+const BuyerPendingOpenConsultCard = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 1.6rem;
+  gap: 0.8rem;
+  position: relative;
+  background-color: ${Grey6};
+  border-radius: 1.2rem;
 `;
 
 const BuyerOpenConsultCard = styled.div`
@@ -172,11 +201,11 @@ const CreateConsultButton = styled.button`
 `;
 const CreateConsultButtonWrapper = styled.div`
   width: 100%;
-  padding: 0 3.3rem;
+  padding: 0 2rem;
   box-sizing: border-box;
   display: flex;
   position: fixed;
-  bottom: 3.5rem;
+  bottom: 1.5rem;
   flex-direction: column;
   @media (min-width: 768px) {
     width: 375px;
