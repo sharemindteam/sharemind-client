@@ -12,6 +12,7 @@ import { useState } from 'react';
 import PwInput from 'components/Buyer/Common/PwInput';
 import { Space } from 'components/Common/Space';
 import { useStompContext } from 'contexts/StompContext';
+import { setCookie } from 'utils/cookie';
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
@@ -35,11 +36,8 @@ export const BuyerLogin = () => {
       if (res.status === 200) {
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           res.data;
-        // instance.defaults.headers.common['Authorization'] = `${newAccessToken}`;
-        // setCookie('accessToken', newAccessToken, { path: '/' });
-        // setCookie('refreshToken', newRefreshToken, { path: '/' });
-        localStorage.setItem('accessToken', newAccessToken);
-        localStorage.setItem('refreshToken', newRefreshToken);
+        setCookie('accessToken', newAccessToken, { path: '/' });
+        setCookie('refreshToken', newRefreshToken, { path: '/' });
         connectChat();
         navigate('/share');
       } else if (res.response.status === 400) {

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Green, LightGreen, White } from 'styles/color';
 import { checkedNumberState, quitLongReasonState } from 'utils/atom';
 import { quitReasons } from 'utils/constant';
+import { getCookie, removeCookie } from 'utils/cookie';
 interface QuitFooterProps {
   reasonSelected: boolean;
   setReasonSelected: Dispatch<SetStateAction<boolean>>;
@@ -23,14 +24,14 @@ export const QuitFooter = ({
       const body = {
         shortReason: quitReasons[checkedNumber],
         longReason: quitReasonInput,
-        accessToken: localStorage.getItem('accessToken'),
-        refreshToken: localStorage.getItem('refreshToken'),
+        accessToken: getCookie('accessToken'),
+        refreshToken: getCookie('refreshToken'),
       };
       const res: any = await deleteAuthQuit(body);
       if (res.status === 200) {
         alert('탈퇴 완료되었습니다');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        removeCookie('accessToken');
+        removeCookie('refreshToken');
         navigate('/share');
       } else if (res.response.status === 400) {
         alert(
