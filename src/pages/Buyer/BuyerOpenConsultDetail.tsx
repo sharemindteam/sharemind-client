@@ -1,9 +1,12 @@
-import React from 'react'
+import OpenConsultHeader from 'components/Buyer/BuyerOpenConsultDetail/OpenConsultHeader';
+import React from 'react';
 
 function BuyerOpenConsultDetail() {
   return (
-    <div>BuyerOpenConsultDetail</div>
-  )
+    <>
+      <OpenConsultHeader />
+    </>
+  );
 }
 
-export default BuyerOpenConsultDetail
+export default BuyerOpenConsultDetail;

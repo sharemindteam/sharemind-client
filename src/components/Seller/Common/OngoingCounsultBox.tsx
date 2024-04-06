@@ -112,7 +112,9 @@ const OngoingCounsultBoxWrapper = styled.div`
   box-sizing: border-box;
   padding: 1.6rem;
   display: flex;
+
   position: relative;
+  z-index: 1;
   flex-direction: column;
   gap: 0.4rem;
   cursor: pointer;

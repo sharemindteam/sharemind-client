@@ -1,3 +1,5 @@
+import { getCounselorsAccount } from 'api/get';
+import { patchCounselorsAccount } from 'api/patch';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { BackDrop } from 'components/Common/BackDrop';
 import { Button } from 'components/Common/Button';
@@ -17,7 +19,7 @@ import { isBankModalOpenState } from 'utils/atom';
 function SellerRefundBankAccount() {
   const navigate = useNavigate();
   const [accountNum, setAccountNum] = useState('');
-  const [bankType, setBankType] = useState('');
+  const [bankType, setBankType] = useState(null);
   const [owner, setOwner] = useState('');
   // 은행 모달
   const [isBankModalOpen, setIsBankModalOpen] =
@@ -26,11 +28,24 @@ function SellerRefundBankAccount() {
   const [isActiveFisnishButton, setIsActiveFinishButton] = useState(false);
   useEffect(() => {
     // API 요청
-    setAccountNum('12345678900');
-    setBankType('우리은행');
-    setOwner('김고민');
+    // setAccountNum('12345678900');
+    // setBankType('우리은행');
+    // setOwner('김고민');
+    // const res= getCounselorsAccount()
+    const fetchAccountData = async () => {
+      try {
+        const res = await getCounselorsAccount();
+        if (res.status === 200) {
+          setAccountNum(res.data.account);
+          setBankType(res.data.bank);
+          setOwner(res.data.accountHolder);
+        }
+      } catch (err) {
+        alert(err);
+      }
+    };
+    fetchAccountData();
   }, []);
-
   useEffect(() => {
     if (accountNum !== '' && bankType !== '' && owner !== '') {
       setIsActiveFinishButton(true);
@@ -45,10 +60,16 @@ function SellerRefundBankAccount() {
     setAccountNum(sanitizedValue);
   };
 
-  const handlePostAccountInfo = () => {
+  const handlePostAccountInfo = async () => {
     // 임시조건
     if (accountNum !== '' && bankType !== '' && owner !== '') {
-      //서버로 POST
+      const body = {
+        account: accountNum,
+        bank: bankType,
+        accountHolder: owner,
+      };
+      await patchCounselorsAccount(body);
+      navigate('/minder/mypage');
     }
   };
 
@@ -73,6 +94,7 @@ function SellerRefundBankAccount() {
             padding="1rem 1.6rem"
             value={accountNum}
             onChange={handleAccountNumChange}
+            placeholder="계좌번호를 입력해주세요 (숫자만)"
           />
         </div>
         <div className="bank-type">
@@ -82,8 +104,8 @@ function SellerRefundBankAccount() {
               setIsBankModalOpen(true);
             }}
           >
-            <BankIcon bankType={bankType} />
-            <Body1>{bankType}</Body1>
+            {bankType && <BankIcon bankType={bankType} />}
+            <Body1>{bankType ?? '은행을 선택해주세요.'}</Body1>
           </BankTypeInput>
         </div>
         <div className="name">
@@ -97,6 +119,7 @@ function SellerRefundBankAccount() {
             height="4.8rem"
             isBoxSizing={true}
             padding="1rem 1.6rem"
+            placeholder="예금주명을 입력해주세요. (예: 김00)"
           />
         </div>
       </Form>
@@ -109,7 +132,6 @@ function SellerRefundBankAccount() {
           isActive={isActiveFisnishButton ? true : false}
           onClick={() => {
             handlePostAccountInfo();
-            navigate('/minder/setting');
           }}
         />
       </BottomButtonWrapper>
