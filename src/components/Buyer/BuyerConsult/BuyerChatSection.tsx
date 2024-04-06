@@ -112,7 +112,6 @@ export const BuyerChatSection = ({
       try {
         const response: any = await getCustomers();
         userIdRef.current = response.data;
-        console.log(userIdRef.current);
         subscribeChatList();
         sendConnectRequest();
       } catch (e) {
@@ -123,13 +122,11 @@ export const BuyerChatSection = ({
     const subscribeChatList = () => {
       if (stompClient.current) {
         // 이거 전에 먼저 userId 를 받고 userId 기준으로 subscribe 한다.
-        console.log('start subscribe');
         stompClient.current.subscribe(
           `/queue/chattings/connect/customers/${userIdRef.current}`,
           (rooms) => {
             const response = JSON.parse(rooms.body);
             roomIdsRef.current = response.roomIds;
-            console.log(response);
             response.roomIds.forEach((chatId: number) => {
               //모든 채팅방 subscribe
               stompClient.current?.subscribe(
@@ -180,7 +177,6 @@ export const BuyerChatSection = ({
     getCustomerUserIdAndSubscribe();
 
     return () => {
-      console.log('effect callback');
       roomIdsRef.current.forEach((value) => {
         stompClient.current?.unsubscribe(
           '/queue/chatMessages/customers/' + value,
