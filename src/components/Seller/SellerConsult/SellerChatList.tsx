@@ -140,7 +140,7 @@ function SellerChatList({
     const subscribeChatList = () => {
       if (stompClient.current) {
         stompClient.current.subscribe(
-          '/queue/chattings/connect/counselors/',
+          `/queue/chattings/connect/counselors/${userIdRef.current}`,
           (rooms) => {
             const response = JSON.parse(rooms.body);
             roomIdsRef.current = response.roomIds;
