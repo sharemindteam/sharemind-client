@@ -2,7 +2,6 @@ import { getPaymentsCustomers } from 'api/get';
 import { PaymentCard } from 'components/Buyer/BuyerPayment/PaymentCard';
 import { PaymentModal } from 'components/Buyer/BuyerPayment/PaymentModal';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useDebounce } from 'hooks/useDebounce';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,6 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey5, White } from 'styles/color';
 import { Button2, Heading } from 'styles/font';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isPaymentModalOpenState, scrollLockState } from 'utils/atom';
 import { PaymentInfo } from 'utils/type';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현

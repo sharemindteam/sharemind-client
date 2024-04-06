@@ -1,40 +1,57 @@
 import { patchAuthPassword } from 'api/patch';
 import { postPassword } from 'api/post';
+import { usePwChangeInput } from 'components/Buyer/BuyerPwChange/usePwChangeInput';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import PwInput from 'components/Buyer/Common/PwInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { Button } from 'components/Common/Button';
-import { useInput } from 'hooks/useInput';
-import { useEffect, useRef, useState } from 'react';
+import { useDebounce } from 'hooks/useDebounce';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUpdateEffect } from 'react-use';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
 import { removeCookie } from 'utils/cookie';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 
+//
+//
+//
+
+const PW_CHECK_DEBOUNCE_DELAY = 300;
+
+//
+//
+//
+
 export const BuyerPwChange = () => {
-  //첫렌더 시 예외처리
-  const isInitialRender = useRef(true);
   const navigate = useNavigate();
-  //비밀번호 변경
-  const pw = useInput('');
-  const newPw = useInput('');
-  const newPwCheck = useInput('');
+
+  //input values
+  const pw = usePwChangeInput('');
+  const newPw = usePwChangeInput('');
+  const newPwCheck = usePwChangeInput('');
+
   //caption color
   const [typeColor, setTypeColor] = useState<string>(Grey4);
   const [lengthColor, setLengthColor] = useState<string>(Grey4);
   const [correctColor, setCorrectColor] = useState<string>(Grey4);
-  //각 input caption icon의 상태 / common valid invalid
-  const [typeState, setTypeState] = useState<string>('');
-  const [lengthState, setLengthState] = useState<string>('');
-  const [correctState, setCorrectState] = useState<string>('');
-  //최종 완료 valid 여부
+
+  //icon status (common valid invalid)
+  const [typeState, setTypeState] = useState<string>('common');
+  const [lengthState, setLengthState] = useState<string>('common');
+  const [correctState, setCorrectState] = useState<string>('common');
+
+  //final valid
   const [valid, setValid] = useState<boolean>(false);
 
-  const pwCorrectCheck = async () => {
+  /**
+   *
+   */
+  const postPasswordCheck = async (pwInput: string) => {
     const body = {
-      password: pw.value,
+      password: pwInput,
     };
     const res: any = await postPassword(body);
     if (res.status === 200) {
@@ -43,6 +60,17 @@ export const BuyerPwChange = () => {
       pw.setIsValid(false);
     }
   };
+
+  /**
+   *
+   */
+  const pwDebounce = useDebounce((pwInput: string) => {
+    postPasswordCheck(pwInput);
+  }, PW_CHECK_DEBOUNCE_DELAY);
+
+  /**
+   *
+   */
   const handlePwChangeClick = async () => {
     const body = {
       password: newPw.value,
@@ -56,6 +84,7 @@ export const BuyerPwChange = () => {
       alert(res.response.data.message);
     }
   };
+
   useEffect(() => {
     //세 case 모두 valid할 시 다음으로 넘어감
     if (pw.isValid && newPw.typeValid && newPwCheck.isValid) {
@@ -65,51 +94,58 @@ export const BuyerPwChange = () => {
     }
   }, [pw.isValid, newPw.isValid, newPwCheck.isValid, newPw.typeValid]);
 
-  useEffect(() => {
-    // 첫 마운트 시에는 error 색상 안되게 처리
-    if (isInitialRender.current) {
-      setTypeColor(Grey4);
-      setLengthColor(Grey4);
-      setCorrectColor(Grey4);
-      //첫 마운트 시 icon 상태도 common
-      setTypeState('common');
-      setLengthState('common');
-      setCorrectState('common');
-      pw.setIsValid(true);
-      isInitialRender.current = false;
-      return;
+  /** new password and new password valid check logic */
+  useUpdateEffect(() => {
+    /** check which value is changed */
+    const newPwChanged = newPw.prevValue !== newPw.value;
+    const newPwCheckChanged = newPwCheck.prevValue !== newPwCheck.value;
+
+    /** check if new pw's combination valid */
+    if (newPwChanged) {
+      if (passwordTypeValid(newPw.value)) {
+        setTypeColor(SafeColor);
+        setTypeState('valid');
+        newPw.setTypeValid(true);
+      } else {
+        setTypeColor(ErrorColor);
+        setTypeState('invalid');
+        newPw.setTypeValid(false);
+      }
     }
-    if (passwordTypeValid(newPw.value)) {
-      setTypeColor(SafeColor);
-      setTypeState('valid');
-      newPw.setTypeValid(true);
-    } else {
-      setTypeColor(ErrorColor);
-      setTypeState('invalid');
-      newPw.setTypeValid(false);
+
+    /** check if new pw over 10 letters */
+    if (newPwChanged) {
+      if (passwordLengthValid(newPw.value)) {
+        setLengthColor(SafeColor);
+        setLengthState('valid');
+        newPw.setLengthValid(true);
+      } else {
+        setLengthColor(ErrorColor);
+        setLengthState('invalid');
+        newPw.setLengthValid(false);
+      }
     }
-    if (passwordLengthValid(newPw.value)) {
-      setLengthColor(SafeColor);
-      setLengthState('valid');
-      newPw.setLengthValid(true);
-    } else {
-      setLengthColor(ErrorColor);
-      setLengthState('invalid');
-      newPw.setLengthValid(false);
+
+    /** check if new pw equal new pw check */
+    if (newPwChanged || newPwCheckChanged) {
+      if (
+        newPw.value.trim() === newPwCheck.value.trim() &&
+        newPw.value.trim() !== ''
+      ) {
+        setCorrectColor(SafeColor);
+        setCorrectState('valid');
+        newPwCheck.setIsValid(true);
+      } else {
+        setCorrectColor(ErrorColor);
+        setCorrectState('invalid');
+        newPwCheck.setIsValid(false);
+      }
     }
-    if (
-      newPw.value.trim() === newPwCheck.value.trim() &&
-      newPw.value.trim() !== ''
-    ) {
-      setCorrectColor(SafeColor);
-      setCorrectState('valid');
-      newPwCheck.setIsValid(true);
-    } else {
-      setCorrectColor(ErrorColor);
-      setCorrectState('invalid');
-      newPwCheck.setIsValid(false);
-    }
-  }, [newPw, newPw.value, newPwCheck, newPwCheck.value, pw]);
+  }, [newPw, newPw.value, newPwCheck, newPwCheck.value]);
+
+  //
+  //
+  //
 
   return (
     <Wrapper>
@@ -123,25 +159,26 @@ export const BuyerPwChange = () => {
       </HeaderWrapper>
       <div className="body-wrapper">
         <div>
-          {/* 비밀번호 일치 여부는 추후 setTimeout으로 api 호출로 확인 */}
           <div className="card-wrapper">
             <Body1 color={Grey3} margin="0.2rem 0">
               현재 비밀번호
             </Body1>
             <PwInput
               value={pw.value}
-              onChange={pw.onChange}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                pw.handleFirstChange();
+                pw.setValue(e.target.value);
+                pwDebounce(e.target.value);
+              }}
               width="33.5rem"
               height="4.8rem"
-              onBlur={pwCorrectCheck}
             />
-            {pw.isValid ? null : (
+            {pw.isValid || !pw.isFocused ? null : (
               <div className="caption">
                 <Caption2 color={ErrorColor}>비밀번호 불일치</Caption2>
               </div>
             )}
           </div>
-
           <div className="card-wrapper">
             <Body1 color={Grey3} margin="0.2rem 0">
               새 비밀번호
