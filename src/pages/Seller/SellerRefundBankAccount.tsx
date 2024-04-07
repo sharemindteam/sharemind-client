@@ -34,7 +34,7 @@ function SellerRefundBankAccount() {
     // const res= getCounselorsAccount()
     const fetchAccountData = async () => {
       try {
-        const res = await getCounselorsAccount();
+        const res:any = await getCounselorsAccount();
         if (res.status === 200) {
           setAccountNum(res.data.account);
           setBankType(res.data.bank);

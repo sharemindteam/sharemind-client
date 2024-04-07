@@ -73,11 +73,14 @@ const Router = () => {
       <Route path="/openConsultRequest" element={<BuyerOpenConsultRequest />} />
 
       <Route path="/openPaymentDetail" element={<BuyerOpenPaymentDetail />} />
-      <Route path="/writeOpenConsult" element={<BuyerWriteOpenConsult />} />
+      <Route
+        path="/writeOpenConsult/:postId"
+        element={<BuyerWriteOpenConsult />}
+      />
 
       <Route path="/paymentDetail/:id" element={<BuyerPaymentDetail />} />
       <Route path="/paymentComplete" element={<BuyerPaymentComplete />} />
-      <Route path="/paymentFinish" element={<BuyerFinishPayment/>} />
+      <Route path="/paymentFinish" element={<BuyerFinishPayment />} />
       <Route path="/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/mypage" element={<BuyerMypage />} />
       <Route path="/reviewManage" element={<BuyerReviewManage />} />

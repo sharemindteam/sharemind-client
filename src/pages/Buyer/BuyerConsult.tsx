@@ -27,6 +27,19 @@ export interface consultApiObject {
   reviewCompleted: boolean | null;
   consultId: number | null;
 }
+export interface openConsultApiObject {
+  postId: number;
+  title: string;
+  content: string;
+  isPublic: boolean;
+  isLiked: boolean;
+  totalLike: number;
+  isScrapped: boolean;
+  totalScrap: number;
+  totalComment: number;
+  updatedAt: string;
+  finishedAt: string;
+}
 
 export const BuyerConsult = () => {
   const navigate = useNavigate();
@@ -102,27 +115,26 @@ export const BuyerConsult = () => {
             </div>
           )}
         </div>
-        {consultType !== 'open-consult' && (
-          <div
-            className="exception-toggle"
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              setIsChecked(!isChecked);
-              searchParams.set('check', String(!isChecked));
-              setSearchParams(searchParams);
-            }}
-          >
-            {isChecked ? <CheckIcon /> : <NonCheckIcon />}
-            <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
-          </div>
-        )}
+
+        <div
+          className="exception-toggle"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            setIsChecked(!isChecked);
+            searchParams.set('check', String(!isChecked));
+            setSearchParams(searchParams);
+          }}
+        >
+          {isChecked ? <CheckIcon /> : <NonCheckIcon />}
+          <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
+        </div>
       </div>
       {consultType === 'letter' ? (
         <BuyerLetterSection sortType={sortType} isChecked={isChecked} />
       ) : consultType === 'chat' ? (
         <BuyerChatSection sortType={sortType} isChecked={isChecked} />
       ) : (
-        <BuyerOpenConsultSection />
+        <BuyerOpenConsultSection isChecked={isChecked} />
       )}
       {isModalOpen ? (
         <>

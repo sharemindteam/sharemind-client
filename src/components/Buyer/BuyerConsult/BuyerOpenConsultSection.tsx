@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
@@ -23,8 +23,12 @@ import IsBuyPopup from './IsBuyPopup';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import { BottomButton } from 'components/Seller/Common/BottomButton';
-
-function BuyerOpenConsultSection() {
+import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
+import { getCustomerOpenConsultList } from 'api/get';
+interface BuyerOpenConsultSectionProps {
+  isChecked: boolean;
+}
+function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
@@ -36,6 +40,29 @@ function BuyerOpenConsultSection() {
   const handleWritePostButton = () => {
     setIsBuyPopupOpen(true);
   };
+  const [cardData, setCardData] = useState<openConsultApiObject[]>([]);
+  useEffect(() => {
+    const fetchOpenConsult = async () => {
+      setIsLoading(true);
+      try {
+        const params = {
+          filter: isChecked,
+          postId: 0,
+        };
+        const res: any = await getCustomerOpenConsultList({ params });
+        if (res.status === 200) {
+          setCardData(res.data);
+        } else if (res.response.status === 404) {
+          alert('존재하지 않는 회원입니다.');
+        }
+      } catch (err) {
+        alert(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchOpenConsult();
+  }, [isChecked]);
   return (
     <>
       {isLoading ? (
@@ -51,47 +78,60 @@ function BuyerOpenConsultSection() {
       ) : (
         <BuyerOpenConsultCardList>
           {/* 상담카드 부분 */}
-          <BuyerOpenConsultCard>
-            <div className="row1">
-              <Body1>이거 권태기 증상 맞나요?</Body1>
-              <PrivateSign>
-                <LockIcon />
-                <Caption1 color={Grey3}>비공개</Caption1>
-              </PrivateSign>
-            </div>
-            <Space height="1.2rem" />
-            <div className="row2">
-              요즘따라 여자친구가 먼저 만나자고 이야기도 안 하고 만나면
-              피곤하다고만 해요. 스킨십도 하려고 하지 않고 인생이 재미가
-              없다네요.. 그런데 여자친구가 다른 남자 인스타 피드에는 좋아요를
-              눌러요... 이거 여자친구가 권태기가 맞는 걸까요? 맞다면 어떻게
-              이야기를 꺼내면 좋을까요? 너무 힘듭니다..
-            </div>
-            <div className="row3">
-              <IconItem>
-                <HeartResizeIcon />
-                <Caption1 color={Grey2}>28</Caption1>
-              </IconItem>
-              <IconItem>
-                <SaveIcon />
-                <Caption1 color={Grey2}>28</Caption1>
-              </IconItem>
-              <IconItem>
-                <CommentIcon />
-                <Caption1 color={Grey2}>28</Caption1>
-              </IconItem>
-            </div>
-            <TimeLeft>8분 전</TimeLeft>
-          </BuyerOpenConsultCard>
+          {cardData?.map((item) => {
+            if (item.title === null) {
+              return (
+                <BuyerPendingOpenConsultCard>
+                  <Body1>상담 글을 작성해주세요!</Body1>
+                  <Body3>
+                    결제 후 작성 전 <br />
+                    공개상담 글을 작성해보세요~
+                  </Body3>
+                  <Button
+                    text="상담 글 작성하기"
+                    width="100%"
+                    height="4rem"
+                    onClick={() => {
+                      navigate(`/writeOpenConsult/${item.postId}`);
+                    }}
+                  ></Button>
+                </BuyerPendingOpenConsultCard>
+              );
+            } else {
+              return (
+                <BuyerOpenConsultCard>
+                  <div className="row1">
+                    <Body1>{item?.title}</Body1>
+                    {!item?.isPublic && (
+                      <PrivateSign>
+                        <LockIcon />
+                        <Caption1 color={Grey3}>비공개</Caption1>
+                      </PrivateSign>
+                    )}
+                  </div>
+                  <Space height="1.2rem" />
+                  <div className="row2">{item?.content}</div>
+                  <div className="row3">
+                    <IconItem>
+                      <HeartResizeIcon />
+                      <Caption1 color={Grey2}>{item?.totalLike}</Caption1>
+                    </IconItem>
+                    <IconItem>
+                      <SaveIcon />
+                      <Caption1 color={Grey2}>{item?.totalScrap}</Caption1>
+                    </IconItem>
+                    <IconItem>
+                      <CommentIcon />
+                      <Caption1 color={Grey2}>{item?.totalComment}</Caption1>
+                    </IconItem>
+                  </div>
+                  <TimeLeft>{item?.updatedAt}</TimeLeft>
+                </BuyerOpenConsultCard>
+              );
+            }
+          })}
+
           {/* 상담카드 부분 */}
-          <BuyerPendingOpenConsultCard>
-            <Body1>상담 글을 작성해주세요!</Body1>
-            <Body3>
-              결제 후 작성 전 <br />
-              공개상담 글을 작성해보세요~
-            </Body3>
-            <Button text="상담 글 작성하기" width="100%" height="4rem"></Button>
-          </BuyerPendingOpenConsultCard>
         </BuyerOpenConsultCardList>
       )}{' '}
       {isBuyPopupOpen && (

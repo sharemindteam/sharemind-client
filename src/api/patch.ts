@@ -68,3 +68,7 @@ export const patchSearchWordsResults = async (sortType: string, body: any) =>
 //찜하기 추가
 export const patchWishLists = async (counselorId: number) =>
   await patchInstance(`/wishLists?counselorId=${counselorId}`);
+
+export const patchOpenConsult = async (body: any) => {
+  await patchInstance(`/posts`, body);
+};

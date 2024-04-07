@@ -1,5 +1,6 @@
+import { patchOpenConsult } from 'api/patch';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
@@ -9,13 +10,29 @@ import {
   isPostPopupOpenState,
   isSendPopupOpenState,
 } from 'utils/atom';
+import { convertCategoryEnum } from 'utils/convertCategoryEnum';
+interface FianlWritePopupProps {
+  title: string;
+  content: string;
+  category: string;
+}
 
-function FinalWritePopup() {
+function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
   const navigate = useNavigate();
   const setIsPostPopupOpen = useSetRecoilState(isPostPopupOpenState);
-  const handlePost = () => {
+  const { postId } = useParams();
+  const handlePost = async () => {
     setIsPostPopupOpen(false);
-    navigate('/consult/?type=open-consult');
+    const body = {
+      postId: postId,
+      consultCategory: convertCategoryEnum(category),
+      title: title,
+      content: content,
+      isCompleted: true,
+    };
+
+    await patchOpenConsult(body);
+    // navigate('/consult/?type=open-consult');
   };
   return (
     <IsSendModalBox>

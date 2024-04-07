@@ -104,7 +104,7 @@ export const getPaymentsCustomers = async (params: any) =>
 
 export const getCounselorsAccount = async () =>
   await getInstance('/counselors/account');
-  
+
 export const getPaymentsMinder = async (params: any) =>
   await getInstance('/payments/counselors', params);
 
@@ -116,3 +116,10 @@ export const getMinderReviews = async (params: any) =>
   await getInstance('/reviews/counselors', params);
 export const getMinderReviewsHome = async () =>
   await getInstance('/reviews/counselors/home');
+
+// Post Controller
+// 일대다상담 컨트롤러
+export const getCustomerOpenConsultList = async (params: any) =>
+  await getInstance('/posts/customers', params);
+export const getCustomerPublicConsultList = async (params: any) =>
+  await getInstance('/posts/customers/public', params);

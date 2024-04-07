@@ -49,6 +49,7 @@ function BuyerWriteOpenConsult() {
   const [isActivePostButton, setIsActivePostButton] = useState(false);
   const [saveButtonColor, setSaveButtonColor] = useState<string>(White);
   //input 값
+  const [titleInput, setTitleInput] = useState<string>('');
   const [input, setInput] = useState<string>('');
 
   const [isActivePostModal, setIsActivePostModal] = useState(false);
@@ -88,7 +89,13 @@ function BuyerWriteOpenConsult() {
             <Body3 color={Green}>{categoryList[categoryType]}</Body3>
             <DownIcon />
           </CategoryDropDown>
-          <TitleInput placeholder="제목" />
+          <TitleInput
+            placeholder="제목"
+            value={titleInput}
+            onChange={(e) => {
+              setTitleInput(e.target.value);
+            }}
+          />
           <TextArea
             value={input}
             placeholder="고민 내용을 남겨주세요."
@@ -132,7 +139,11 @@ function BuyerWriteOpenConsult() {
                 setScrollLock(false);
               }}
             />
-            <FinalWritePopup />
+            <FinalWritePopup
+              title={titleInput}
+              content={input}
+              category={categoryList[categoryType]}
+            />
           </>
         )}
         {isModalOpen ? (

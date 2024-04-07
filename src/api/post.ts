@@ -46,3 +46,9 @@ export const postIsPassQuiz = async (body: any, parmas: any) =>
 //찜하기 목록 가져오기
 export const postWishLists = async (body: any) =>
   await postInstance('/wishLists', body);
+
+// Post controller
+// 일대다상담
+
+export const postOpenConsult = async (body: any) =>
+  await postInstance('/posts', body);

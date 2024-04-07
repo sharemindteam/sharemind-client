@@ -13,7 +13,7 @@ export const BuyerOpenPaymentDetail = () => {
   const handlePaymentClick = () => {
     navigate('/paymentComplete');
   };
-  return (
+  return (  
     <Wrapper>
       <HeaderWrapper>
         <BackIcon
