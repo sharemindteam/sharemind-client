@@ -13,3 +13,9 @@ export const deleteSearchWords = async (body: any) =>
 //검색 결과 반환
 export const deleteWishLists = async (counselorId: number) =>
   await deleteInstance(`/wishLists?counselorId=${counselorId}`);
+
+export const deletePostScrap = async (postId: any) =>
+  await deleteInstance(`/postScraps/${postId}`);
+
+export const deletePostLikes = async (postId: any) =>
+  await deleteInstance(`/postLikes/${postId}`);

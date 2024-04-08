@@ -52,3 +52,13 @@ export const postWishLists = async (body: any) =>
 
 export const postOpenConsult = async (body: any) =>
   await postInstance('/posts', body);
+
+// PostLike Controller
+
+export const postLikeOpenConsult = async (postId: any) =>
+  await postInstance(`/postLikes/${postId}`, {});
+
+export const postScrapOpenConsult = async (postId: any) =>
+  await postInstance(`/postLikes/${postId}`, {});
+
+// export const s;

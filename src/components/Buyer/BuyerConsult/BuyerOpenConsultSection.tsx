@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
-import { Body1, Body3, Body4, Caption1, Caption2 } from 'styles/font';
+import { Body1, Body3, Body4, Caption1, Caption2, Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import {
   isBuyPopupOpenState,
@@ -22,6 +22,7 @@ import { BackDrop } from 'components/Common/BackDrop';
 import IsBuyPopup from './IsBuyPopup';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { BottomButton } from 'components/Seller/Common/BottomButton';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getCustomerOpenConsultList } from 'api/get';
@@ -78,63 +79,69 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
       ) : (
         <BuyerOpenConsultCardList>
           {/* 상담카드 부분 */}
-          {cardData?.map((item) => {
-            if (item.title === null) {
-              return (
-                <BuyerPendingOpenConsultCard>
-                  <Body1>상담 글을 작성해주세요!</Body1>
-                  <Body3>
-                    결제 후 작성 전 <br />
-                    공개상담 글을 작성해보세요~
-                  </Body3>
-                  <Button
-                    text="상담 글 작성하기"
-                    width="100%"
-                    height="4rem"
+          {cardData.length === 0 ? (
+            <EmptyWrapper>
+              <EmptyIcon />
+              <Heading>아직 진행한 상담이 없어요</Heading>
+            </EmptyWrapper>
+          ) : (
+            cardData?.map((item) => {
+              if (item.title === null) {
+                return (
+                  <BuyerPendingOpenConsultCard>
+                    <Body1>상담 글을 작성해주세요!</Body1>
+                    <Body3>
+                      결제 후 작성 전 <br />
+                      공개상담 글을 작성해보세요~
+                    </Body3>
+                    <Button
+                      text="상담 글 작성하기"
+                      width="100%"
+                      height="4rem"
+                      onClick={() => {
+                        navigate(`/writeOpenConsult/${item.postId}`);
+                      }}
+                    ></Button>
+                  </BuyerPendingOpenConsultCard>
+                );
+              } else {
+                return (
+                  <BuyerOpenConsultCard
                     onClick={() => {
-                      navigate(`/writeOpenConsult/${item.postId}`);
+                      navigate(`/open-consult/${item.postId}`);
                     }}
-                  ></Button>
-                </BuyerPendingOpenConsultCard>
-              );
-            } else {
-              return (
-                <BuyerOpenConsultCard
-                  onClick={() => {
-                    navigate(`/open-consult/${item.postId}`);
-                  }}
-                >
-                  <div className="row1">
-                    <Body1>{item?.title}</Body1>
-                    {!item?.isPublic && (
-                      <PrivateSign>
-                        <LockIcon />
-                        <Caption1 color={Grey3}>비공개</Caption1>
-                      </PrivateSign>
-                    )}
-                  </div>
-                  <Space height="1.2rem" />
-                  <div className="row2">{item?.content}</div>
-                  <div className="row3">
-                    <IconItem>
-                      <HeartResizeIcon />
-                      <Caption1 color={Grey2}>{item?.totalLike}</Caption1>
-                    </IconItem>
-                    <IconItem>
-                      <SaveIcon />
-                      <Caption1 color={Grey2}>{item?.totalScrap}</Caption1>
-                    </IconItem>
-                    <IconItem>
-                      <CommentIcon />
-                      <Caption1 color={Grey2}>{item?.totalComment}</Caption1>
-                    </IconItem>
-                  </div>
-                  <TimeLeft>{item?.updatedAt}</TimeLeft>
-                </BuyerOpenConsultCard>
-              );
-            }
-          })}
-
+                  >
+                    <div className="row1">
+                      <Body1>{item?.title}</Body1>
+                      {!item?.isPublic && (
+                        <PrivateSign>
+                          <LockIcon />
+                          <Caption1 color={Grey3}>비공개</Caption1>
+                        </PrivateSign>
+                      )}
+                    </div>
+                    <Space height="1.2rem" />
+                    <div className="row2">{item?.content}</div>
+                    <div className="row3">
+                      <IconItem>
+                        <HeartResizeIcon />
+                        <Caption1 color={Grey2}>{item?.totalLike}</Caption1>
+                      </IconItem>
+                      <IconItem>
+                        <SaveIcon />
+                        <Caption1 color={Grey2}>{item?.totalScrap}</Caption1>
+                      </IconItem>
+                      <IconItem>
+                        <CommentIcon />
+                        <Caption1 color={Grey2}>{item?.totalComment}</Caption1>
+                      </IconItem>
+                    </div>
+                    <TimeLeft>{item?.updatedAt}</TimeLeft>
+                  </BuyerOpenConsultCard>
+                );
+              }
+            })
+          )}
           {/* 상담카드 부분 */}
         </BuyerOpenConsultCardList>
       )}{' '}
@@ -262,6 +269,16 @@ const CreateConsultButtonWrapper = styled.div`
   @media (min-width: 768px) {
     width: 375px;
   }
+`;
+
+const EmptyIcon = styled(Empty)`
+  padding: 4.7rem 4.41rem 4.603rem 4.5rem;
+`;
+const EmptyWrapper = styled.div`
+  margin: 10vh auto 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export default BuyerOpenConsultSection;
