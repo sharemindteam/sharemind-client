@@ -99,7 +99,11 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
               );
             } else {
               return (
-                <BuyerOpenConsultCard>
+                <BuyerOpenConsultCard
+                  onClick={() => {
+                    navigate(`/open-consult/${item.postId}`);
+                  }}
+                >
                   <div className="row1">
                     <Body1>{item?.title}</Body1>
                     {!item?.isPublic && (
@@ -176,12 +180,20 @@ const BuyerPendingOpenConsultCard = styled.div`
 
 const BuyerOpenConsultCard = styled.div`
   width: 100%;
+  cursor: pointer;
   height: 14rem;
   position: relative;
   background-color: ${Grey6};
   padding: 1.6rem;
   box-sizing: border-box;
   border-radius: 1.2rem;
+  .row1 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-height: 5rem;
+    overflow: hidden;
+  }
   .row2 {
     display: -webkit-box;
     max-height: 4.7rem;

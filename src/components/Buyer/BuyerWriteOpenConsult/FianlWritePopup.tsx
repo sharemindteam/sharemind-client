@@ -32,7 +32,7 @@ function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
     };
 
     await patchOpenConsult(body);
-    // navigate('/consult/?type=open-consult');
+    navigate('/consult/?type=open-consult');
   };
   return (
     <IsSendModalBox>

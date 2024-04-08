@@ -17,6 +17,7 @@ import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenCons
 
 export interface consultApiObject {
   consultStyle: string;
+  consultCategory: string;
   id: number;
   latestMessageContent: string | null;
   latestMessageIsCustomer: boolean | null;
@@ -38,7 +39,8 @@ export interface openConsultApiObject {
   totalScrap: number;
   totalComment: number;
   updatedAt: string;
-  finishedAt: string;
+  finishedAt?: string;
+  consultCategory?: string;
 }
 
 export const BuyerConsult = () => {

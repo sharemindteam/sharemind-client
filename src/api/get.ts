@@ -119,6 +119,9 @@ export const getMinderReviewsHome = async () =>
 
 // Post Controller
 // 일대다상담 컨트롤러
+
+export const getOneOpenConsult = async (id: string | undefined  ) =>
+  await getInstance(`/posts/${id}`);
 export const getCustomerOpenConsultList = async (params: any) =>
   await getInstance('/posts/customers', params);
 export const getCustomerPublicConsultList = async (params: any) =>
