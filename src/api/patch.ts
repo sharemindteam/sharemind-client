@@ -3,6 +3,9 @@ import { patchInstance, patchPublicInstance } from './axios';
 //admin 미결제 상담 승인
 export const patchAdminsUnpaidConsults = async (consultId: number) =>
   await patchInstance(`/admins/unpaid-consults/${consultId}`);
+
+export const patchAdminsUnpaidPosts = async (postId: number) =>
+  await patchInstance(`/admins/unpaid-posts/${postId}`);
 //admin 프로필 수정 승인
 export const patchAdminsPendingProfiles = async (
   counselorId: number,

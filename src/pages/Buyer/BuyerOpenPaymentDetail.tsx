@@ -6,14 +6,20 @@ import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
+import { postOpenConsult } from 'api/post';
 
 export const BuyerOpenPaymentDetail = () => {
   const navigate = useNavigate();
   const [buttonSelect, setButtonSelect] = useState<number>(0);
-  const handlePaymentClick = () => {
+  const handlePaymentClick = async () => {
+    const body = {
+      cost: 500,
+      isPublic: false,
+    };
+    await postOpenConsult(body);
     navigate('/paymentComplete');
   };
-  return (  
+  return (
     <Wrapper>
       <HeaderWrapper>
         <BackIcon

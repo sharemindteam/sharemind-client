@@ -2,6 +2,8 @@ import { getInstance, getPublicInstance } from './axios';
 //admin
 export const getAdminsUnpaidConsults = async () =>
   await getInstance('/admins/unpaid-consults');
+export const getAdminsUnpaidPosts = async () =>
+  await getInstance(`/admins/unpaid-posts`);
 export const getAdminsPedningProfilse = async () =>
   await getInstance('/admins/pending-profiles');
 export const getAdminsRefundWaiting = async () =>
@@ -120,7 +122,7 @@ export const getMinderReviewsHome = async () =>
 // Post Controller
 // 일대다상담 컨트롤러
 
-export const getOneOpenConsult = async (id: string | undefined  ) =>
+export const getOneOpenConsult = async (id: string | undefined) =>
   await getInstance(`/posts/${id}`);
 export const getCustomerOpenConsultList = async (params: any) =>
   await getInstance('/posts/customers', params);
