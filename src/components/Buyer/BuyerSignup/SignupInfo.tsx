@@ -133,6 +133,12 @@ export const SignupInfo = ({
             setEmailErrorCaption(res.response.data.message);
           }
         }
+      } else if (res.response.status === 409) {
+        if (res.response.data.errorName === 'RECOVERY_EMAIL_ALREADY_EXIST') {
+          alert('이미 등록된 복구 이메일입니다.');
+          setEmailErrorState(true);
+          setEmailErrorCaption(res.response.data.message);
+        }
       }
     } catch (ex) {
       alert('인증 번호 확인 과정에서 오류가 발생했습니다.');

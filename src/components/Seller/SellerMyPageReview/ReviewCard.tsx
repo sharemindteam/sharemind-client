@@ -9,7 +9,7 @@ import { isReviewComplaintOpenState } from 'utils/atom';
 import { BackDrop } from 'components/Common/BackDrop';
 import { ReviewComplaintMenu } from './ReviewComplaintMenu';
 export interface ReviewCardProps {
-  id: string;
+  id: number;
   name: string;
   iconType: number;
   consultType: string;
@@ -65,7 +65,7 @@ export const ReviewCard = ({
           </div>
           <div className="price">
             <Body3 color={Grey3}>상담가격</Body3>
-            <Body3>{price}</Body3>
+            <Body3>{price}원</Body3>
           </div>
           <div className="rating">
             <Body3 color={Grey3}>별점</Body3>

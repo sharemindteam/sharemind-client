@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { postPublicReissue, postReissue } from './post';
+import { getCookie, setCookie } from 'utils/cookie';
 // axios 인스턴스 생성
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
-    Authorization: `${localStorage.getItem('accessToken')}`,
+    Authorization: `${getCookie('accessToken')}`,
   },
 });
 instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+  const token = getCookie('accessToken');
   config.headers.Authorization = token;
 
   return config;
@@ -29,12 +30,12 @@ instance.interceptors.response.use(
       const originRequest = config;
       try {
         const tokenResponse: any = await postReissue({
-          refreshToken: localStorage.getItem('refreshToken'),
+          refreshToken: getCookie('refreshToken'),
         });
         if (tokenResponse.status === 200) {
           const { accessToken, refreshToken } = tokenResponse.data;
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
+          setCookie('accessToken', accessToken);
+          setCookie('refreshToken', refreshToken);
           axios.defaults.headers.common.Authorization = `${accessToken}`;
           originRequest.headers.Authorization = `${accessToken}`;
           return instance(originRequest);
@@ -56,11 +57,11 @@ instance.interceptors.response.use(
 export const publicInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
-    Authorization: `${localStorage.getItem('accessToken')}`,
+    Authorization: `${getCookie('accessToken')}`,
   },
 });
 publicInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+  const token = getCookie('accessToken');
   config.headers.Authorization = token;
 
   return config;
@@ -81,12 +82,12 @@ publicInstance.interceptors.response.use(
       const originRequest = config;
       try {
         const tokenResponse: any = await postPublicReissue({
-          refreshToken: localStorage.getItem('refreshToken'),
+          refreshToken: getCookie('refreshToken'),
         });
         if (tokenResponse.status === 200) {
           const { accessToken, refreshToken } = tokenResponse.data;
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
+          setCookie('accessToken', accessToken);
+          setCookie('refreshToken', refreshToken);
           axios.defaults.headers.common.Authorization = `${accessToken}`;
           originRequest.headers.Authorization = `${accessToken}`;
           return axios(originRequest);

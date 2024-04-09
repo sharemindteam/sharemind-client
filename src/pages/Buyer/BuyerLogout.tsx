@@ -1,13 +1,42 @@
+import { patchAuthSignOut } from 'api/patch';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
+import { useStompContext } from 'contexts/StompContext';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, LightGreen } from 'styles/color';
 import { Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
+import { getCookie, removeCookie } from 'utils/cookie';
 
 export const BuyerLogout = () => {
   const navigate = useNavigate();
+
+  const { stompClient } = useStompContext();
+
+  const patchSingOut = async (
+    accessTokenValue: string | null,
+    refreshTokenValue: string | null,
+  ) => {
+    if (accessTokenValue === null) {
+      return;
+    }
+
+    try {
+      const body = {
+        accessToken: accessTokenValue,
+        refreshToken: refreshTokenValue,
+      };
+      await patchAuthSignOut(body);
+      removeCookie('accessToken');
+      removeCookie('refreshToken');
+      stompClient.current?.disconnect();
+      navigate('/mypage');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -39,11 +68,9 @@ export const BuyerLogout = () => {
             backgroundColor={LightGreen}
             color={Green}
             onClick={() => {
-              localStorage.removeItem('accessToken');
-              localStorage.removeItem('refreshToken');
-              // removeCookie('accessToken');
-              // removeCookie('refreshToken');
-              navigate('/mypage');
+              const accessTokenValue = getCookie('accessToken');
+              const refreshTokenValue = getCookie('refreshToken');
+              patchSingOut(accessTokenValue, refreshTokenValue);
             }}
           />
         </div>

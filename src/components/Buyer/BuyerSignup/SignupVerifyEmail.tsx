@@ -118,13 +118,17 @@ export const SignupVerifyEmail = ({
       } else if (res.response.status === 400) {
         setErrorMessageColor(ErrorColor);
         setIsEmailError(true);
-        if (res.response.data.errorName === 'EMAIL_ALREADY_EXIST') {
-          setErrorMessage(res.response.data.message.split(' : ')[0]);
-        } else if (res.response.data.errorName === 'BAD_REQUEST') {
+        if (res.response.data.errorName === 'BAD_REQUEST') {
           setErrorMessage(res.response.data.message + '.');
         } else if (
           res.response.data.errorName === 'CODE_REQUEST_COUNT_EXCEED'
         ) {
+          setErrorMessage(res.response.data.message.split(' : ')[0]);
+        }
+      } else if (res.response.status === 409) {
+        setErrorMessageColor(ErrorColor);
+        setIsEmailError(true);
+        if (res.response.data.errorName === 'EMAIL_ALREADY_EXIST') {
           setErrorMessage(res.response.data.message.split(' : ')[0]);
         }
       }

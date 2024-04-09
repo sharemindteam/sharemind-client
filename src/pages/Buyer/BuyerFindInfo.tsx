@@ -23,6 +23,7 @@ export const BuyerFindInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const patchFindId = async () => {
     setIsLoading(true);
+    setIsActiveModal(false);
     if (isLoading) {
       return;
     }
@@ -32,7 +33,7 @@ export const BuyerFindInfo = () => {
       };
       const res: any = await patchAuthFindId(body);
       if (res.status === 200) {
-        setModalMessage('복구 이메일로 아이디 정보가 전송되었습니다.');
+        setModalMessage('이메일로 아이디 정보가 전송되었습니다.');
         setIsActiveModal(true);
       } else if (res.response.status === 400) {
         setModalMessage('올바르지 않은 복구 이메일 형식입니다.');
@@ -49,19 +50,20 @@ export const BuyerFindInfo = () => {
   };
   const patchFindPassword = async () => {
     setIsLoading(true);
+    setIsActiveModal(false);
     if (isLoading) {
       return;
     }
     try {
       const body = {
-        recoveryEmail: recoveryEmail.value,
+        email: email.value,
       };
       const res: any = await patchAuthFindPassword(body);
       if (res.status === 200) {
-        setModalMessage('복구 이메일로 아이디 정보가 전송되었습니다.');
+        setModalMessage('이메일로 아이디 정보가 전송되었습니다.');
         setIsActiveModal(true);
       } else if (res.response.status === 400) {
-        setModalMessage('올바르지 않은 복구 이메일 형식입니다.');
+        setModalMessage('올바르지 않은 이메일 형식입니다.');
         setIsActiveModal(true);
       } else if (res.response.status === 404) {
         setModalMessage('존재하지 않는 복구 이메일입니다.');
@@ -128,7 +130,7 @@ export const BuyerFindInfo = () => {
               text="다음"
               width="33.5rem"
               height="5.2rem"
-              isActive={recoveryEmail.isValid}
+              isActive={recoveryEmail.isValid && !isLoading}
               onClick={() => {
                 patchFindId();
               }}
@@ -157,7 +159,7 @@ export const BuyerFindInfo = () => {
               text="다음"
               width="33.5rem"
               height="5.2rem"
-              isActive={email.isValid}
+              isActive={email.isValid && !isLoading}
               onClick={() => {
                 patchFindPassword();
               }}

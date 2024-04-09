@@ -1,18 +1,26 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
-import { SetStateAction, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { SetStateAction, useState } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
+import { SetURLSearchParams } from 'react-router-dom';
 interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
 }
 
 //최근순 읽지않은순 modal
-export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
+export const ConsultModal = ({
+  sortType,
+  setSortType,
+  searchParams,
+  setSearchParams,
+}: SortModalProps) => {
   //modal 여부
   const [isModalOpen, setIsModalOpen] = useRecoilState(isConsultModalOpenState);
   //여기서 unmount 시 sortType 바꾸고 새로 request
@@ -34,6 +42,8 @@ export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
         className="row"
         onClick={() => {
           setSortType(0);
+          searchParams.set('sort', 'latest');
+          setSearchParams(searchParams);
           setIsModalOpen(false);
           setScrollLock(false);
         }}
@@ -51,6 +61,8 @@ export const ConsultModal = ({ sortType, setSortType }: SortModalProps) => {
         className="row"
         onClick={() => {
           setSortType(1);
+          searchParams.set('sort', 'unread');
+          setSearchParams(searchParams);
           setIsModalOpen(false);
           setScrollLock(false);
         }}

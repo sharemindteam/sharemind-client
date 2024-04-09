@@ -16,9 +16,10 @@ import { TagA2Consult } from 'components/Common/TagA2Consult';
 import { Button } from 'components/Common/Button';
 import { TagA2Cartegory } from 'components/Common/TagA2Cartegory';
 import { useNavigate } from 'react-router-dom';
+import { CartegoryState, ConsultState } from 'utils/type';
 interface OngoingCounsultBoxProps {
   categoryStatus?: string;
-  consultStatus?: string;
+  consultStatus: string;
   counselorName: string | undefined;
   beforeMinutes: string | null;
   content: string | null;
@@ -26,12 +27,14 @@ interface OngoingCounsultBoxProps {
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
   reviewCompleted?: boolean;
+  isChat?: boolean;
 }
 function OngoingCounsultBox({
   categoryStatus,
   consultStatus,
   counselorName,
   beforeMinutes,
+  isChat,
   counselorprofileStatus,
   content,
   newMessageCounts = 0,
@@ -44,12 +47,15 @@ function OngoingCounsultBox({
       <div className="flex-1">
         {categoryStatus && (
           <div className="button">
-            <TagA2Cartegory tagType={categoryStatus} bgColorType={2} />
+            <TagA2Cartegory
+              tagType={categoryStatus as CartegoryState}
+              bgColorType={2}
+            />
           </div>
         )}
         {consultStatus && (
           <div className="button">
-            <TagA2Consult tagType={consultStatus} />
+            <TagA2Consult tagType={consultStatus as ConsultState} />
           </div>
         )}
         <div className="flex-1-1">
@@ -93,12 +99,11 @@ function OngoingCounsultBox({
           }}
         />
       )}
-      {newMessageCounts !== 0 ||
-        (newMessageCounts !== null && (
-          <NewMessageCounts>
-            <Caption2 color={White}>{newMessageCounts}</Caption2>
-          </NewMessageCounts>
-        ))}
+      {newMessageCounts !== 0 && newMessageCounts !== null && (
+        <NewMessageCounts>
+          <Caption2 color={White}>{newMessageCounts}</Caption2>
+        </NewMessageCounts>
+      )}
     </OngoingCounsultBoxWrapper>
   );
 }

@@ -25,7 +25,6 @@ export const PaymentModal = ({
   const handleCancelPayment = async () => {
     try {
       const res: any = await patchPaymentsCustomers(clickedPaymentId);
-      console.log(res);
       if (res.status === 200) {
         const updatedPaymentData = paymentData.filter(
           (item) => item.paymentId !== clickedPaymentId,

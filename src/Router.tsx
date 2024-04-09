@@ -45,6 +45,8 @@ import { BuyerChat } from 'pages/Buyer/BuyerChat';
 import Service from 'pages/Common/Service';
 import { BuyerQuit } from 'pages/Buyer/BuyerQuit';
 import { SellerChatTemp } from 'pages/Seller/SellerChatTemp';
+import BuyerOpenConsult from 'pages/Buyer/BuyerOpenConsult';
+import SellerOpenConsult from 'pages/Seller/SellerOpenConsult';
 const Router = () => {
   return (
     <Routes>
@@ -54,6 +56,7 @@ const Router = () => {
       <Route path="/share" element={<BuyerHome />} />
       <Route path="/" element={<BuyerHome />} />
       <Route path="/consult" element={<BuyerConsult />} />
+      <Route path="/open-consult" element={<BuyerOpenConsult />} />
       <Route path="/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/search" element={<BuyerSearch />} />
       <Route path="/categorySearch" element={<BuyerCategoryResult />} />
@@ -108,6 +111,7 @@ const Router = () => {
       />
 
       <Route path="/minder/consult" element={<SellerConsult />} />
+      <Route path="/minder/open-consult" element={<SellerOpenConsult />} />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/minder/mypage" element={<SellerMypage />} />
 

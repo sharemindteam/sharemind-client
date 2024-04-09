@@ -43,7 +43,7 @@ export const SellerMypage = () => {
           navigate('/minder');
         }}
       />
-      <TabA1 isBuyer={false} initState={3} />
+      <TabA1 isBuyer={false} initState={4} />
       {isLoading ? (
         <div
           style={{

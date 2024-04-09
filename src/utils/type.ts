@@ -34,15 +34,17 @@ export type Review = {
   reviewId: number;
 };
 
-type ConsultInfoItem = {
+export type ConsultInfoItem = {
   consultStyle: string;
   id: number;
   latestMessageContent: string | null;
   latestMessageIsCustomer: boolean | null;
   latestMessageUpdatedAt: string | null;
-  opponentNickname: '사용자928380';
-  status: '질문 대기';
-  unreadMessageCount: null;
+  opponentNickname: string;
+  status: string;
+  unreadMessageCount: number | null;
+  reviewCompleted: boolean | null;
+  consultId: number | null;
 };
 
 export interface GetMessagesType {
