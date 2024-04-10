@@ -50,6 +50,10 @@ const categoryList: CategoryList = {
   기타: 8,
 };
 
+//
+//
+//
+
 export const SellerMypageModifyProfile = () => {
   // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
   const [selectCategory, setSelectCategory] = useState<number[]>([]);
@@ -186,6 +190,11 @@ export const SellerMypageModifyProfile = () => {
     };
     fetchProfile();
   }, []);
+
+  //
+  //
+  //
+
   return (
     <>
       <ModifyProfileHeader
