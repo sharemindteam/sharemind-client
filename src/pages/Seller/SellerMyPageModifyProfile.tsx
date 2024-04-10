@@ -14,7 +14,7 @@ import { useCustomSelect } from 'hooks/useCustomSelect';
 import { useInput } from 'hooks/useInput';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import {
@@ -54,15 +54,26 @@ export const SellerMypageModifyProfile = () => {
     SUN: [],
   });
   // 모달 띄워주는 여부
-  const isCategoryModalOpen = useRecoilValue<boolean>(isCategoryModalOpenState);
-  const isStyleModalOpen = useRecoilValue<boolean>(isStyleModalOpenState);
-  const isTypeModalOpen = useRecoilValue<boolean>(isTypeOpenModalState);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState<boolean>(
+    isCategoryModalOpenState,
+  );
+  const [isStyleModalOpen, setIsStyleModalOpen] = useRecoilState<boolean>(
+    isStyleModalOpenState,
+  );
+  const [isTypeModalOpen, setIsTypeModalOpen] =
+    useRecoilState<boolean>(isTypeOpenModalState);
 
-  const isUpdateModalOpen = useRecoilValue<boolean>(isUpdateModalOpenState);
-  const isBankModalOpen = useRecoilValue<boolean>(isBankModalOpenState);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useRecoilState<boolean>(
+    isUpdateModalOpenState,
+  );
+  const [isBankModalOpen, setIsBankModalOpen] =
+    useRecoilState<boolean>(isBankModalOpenState);
 
-  const isSucessUpdate = useRecoilValue<boolean>(isSuccessUpdateState);
-  const isOutPopupOpen = useRecoilValue(isOutPopupOpenState);
+  const [isOutPopupOpen, setIsOutPopupOpen] =
+    useRecoilState(isOutPopupOpenState);
+
+  const [isSucessUpdate, setIsSucessUpdate] =
+    useRecoilState<boolean>(isSuccessUpdateState);
   // 채팅 상담시간 페이지로 이동할지여부
   const [isSetChatTime, setIsSetChatTime] = useState<boolean>(false);
 
