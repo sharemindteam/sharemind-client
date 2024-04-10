@@ -85,47 +85,46 @@ export const SellerMypageModifyProfile = () => {
     const fetchProfile = async () => {
       try {
         const profileLevel: any = await getMyInfo();
-        if (profileLevel?.data?.profileStatus === 'NO_PROFILE') {
+        if (profileLevel.data.profileStatus === 'NO_PROFILE') {
           setIsNoProfile(true);
           setIsLoading(false);
-        } else if (profileLevel?.data?.profileStatus === 'EVALUATION_PENDING') {
+        } else if (profileLevel.data.profileStatus === 'EVALUATION_PENDING') {
           alert('판매 정보 검토 중이니 조금만 기다려주세요!');
           navigate('/seller/mypage/viewProfile');
         } else {
           const profileRes: any = await getProfiles();
           const data = profileRes.data;
-          if (profileRes?.response?.status === 404) {
+          if (profileRes.response.status === 404) {
             alert('판매 정보가 등록되어 있지 않습니다.');
             navigate('/seller/mypage');
           }
-          nickname.setValue(data?.nickname);
-          category.setViewValue(data?.consultCategories.join(', '));
+          nickname.setValue(data.nickname);
+          category.setViewValue(data.consultCategories.join(', '));
           setSelectCategory(
-            data?.consultCategories.map((item: any) => categoryList[item]),
+            data.consultCategories.map((item: any) => categoryList[item]),
           );
-          style.setViewValue(data?.consultStyle);
-          setSelectStyle(data?.consultStyle);
+          style.setViewValue(data.consultStyle);
+          setSelectStyle(data.consultStyle);
 
-          type.setViewValue(data?.consultTypes.join(', '));
-          setSelectType(data?.consultTypes);
-          // availableTime.setViewValue(data?.consultTimes);
-          data?.consultCosts?.편지 &&
+          type.setViewValue(data.consultTypes.join(', '));
+          setSelectType(data.consultTypes);
+          data.consultCosts.편지 &&
             letterPrice.setValue(
-              String(data?.consultCosts?.편지)?.replace(
+              String(data.consultCosts.편지).replace(
                 /\B(?=(\d{3})+(?!\d))/g,
                 ',',
               ),
             );
-          data?.consultCosts?.채팅 &&
+          data.consultCosts.채팅 &&
             chatPrice.setValue(
-              String(data?.consultCosts?.채팅)?.replace(
+              String(data.consultCosts.채팅).replace(
                 /\B(?=(\d{3})+(?!\d))/g,
                 ',',
               ),
             );
-          setSelectedTimeList({ ...selectedTimeList, ...data?.consultTimes });
-          oneLiner.setValue(data?.introduction);
-          experience.setValue(data?.experience);
+          setSelectedTimeList({ ...selectedTimeList, ...data.consultTimes });
+          oneLiner.setValue(data.introduction);
+          experience.setValue(data.experience);
           setIsLoading(false);
         }
       } catch (err) {
