@@ -1,6 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { ReactComponent as XIcon } from 'assets/icons/icon-x.svg';
 import { Heading } from 'styles/font';
