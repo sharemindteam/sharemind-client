@@ -92,6 +92,9 @@ export const SellerMypageModifyProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  /**
+   *
+   */
   const handleClickBackdrop = () => {
     if (isCategoryModalOpen) {
       setIsCategoryModalOpen(false);
