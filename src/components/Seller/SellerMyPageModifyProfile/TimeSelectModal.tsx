@@ -1,6 +1,5 @@
-import { lightGreen } from '@mui/material/colors';
 import { Space } from 'components/Common/Space';
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import {
@@ -15,6 +14,11 @@ import {
 } from 'styles/color';
 import { Body1, Button2, Caption2 } from 'styles/font';
 import { isTimeModalOpenState } from 'utils/atom';
+
+//
+//
+//
+
 // 0부터 24까지 배열 생성
 const hourList = Array.from({ length: 25 }, (_, index) => index);
 interface SelectedTimeList {
