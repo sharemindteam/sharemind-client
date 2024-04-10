@@ -26,7 +26,20 @@ import {
   isTypeOpenModalState,
   isUpdateModalOpenState,
 } from 'utils/atom';
-const categoryList = {
+
+//
+//
+//
+
+interface CategoryList {
+  [key: string]: number;
+}
+
+//
+//
+//
+
+const categoryList: CategoryList = {
   연애갈등: 1,
   '이별/재회': 2,
   여자심리: 3,
@@ -136,7 +149,7 @@ export const SellerMypageModifyProfile = () => {
           nickname.setValue(data?.nickname);
           category.setViewValue(data?.consultCategories.join(', '));
           setSelectCategory(
-            data?.consultCategories.map((item) => categoryList[item]),
+            data?.consultCategories.map((item: string) => categoryList[item]),
           );
           style.setViewValue(data?.consultStyle);
           setSelectStyle(data?.consultStyle);
