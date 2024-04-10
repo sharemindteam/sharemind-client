@@ -1,23 +1,33 @@
-import { useNavigate } from 'react-router-dom';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { ReactComponent as XIcon } from 'assets/icons/icon-x.svg';
 import { Heading } from 'styles/font';
 import { TabB2 } from 'components/Common/TabB2';
-import { SetStateAction } from 'react';
 import { isOutPopupOpenState } from 'utils/atom';
 import { useSetRecoilState } from 'recoil';
+
+//
+//
+//
+
 interface ModifyProfileHeaderProps {
   isSetChatTime: boolean;
-  setIsSetChatTime: React.Dispatch<SetStateAction<boolean>>;
   isNoProfile: boolean;
 }
+
+//
+//
+//
+
 export const ModifyProfileHeader = ({
   isSetChatTime,
-  setIsSetChatTime,
   isNoProfile,
 }: ModifyProfileHeaderProps) => {
-  const navigate = useNavigate();
   const setIsOutPopupOpen = useSetRecoilState(isOutPopupOpenState);
+
+  //
+  //
+  //
+
   return (
     <TabB2>
       <div className="left-icon">
@@ -31,7 +41,6 @@ export const ModifyProfileHeader = ({
           <LeftArrowIcon
             onClick={() => {
               setIsOutPopupOpen(true);
-              // navigate('/seller/mypage/viewProfile');
             }}
           />
         )}
