@@ -81,6 +81,7 @@ export const SellerMypageModifyProfile = () => {
   const [isNoProfile, setIsNoProfile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -94,14 +95,14 @@ export const SellerMypageModifyProfile = () => {
         } else {
           const profileRes: any = await getProfiles();
           const data = profileRes.data;
-          if (profileRes?.response?.status === 404) {
+          if (profileRes.response?.status === 404) {
             alert('판매 정보가 등록되어 있지 않습니다.');
             navigate('/seller/mypage');
           }
           nickname.setValue(data?.nickname);
           category.setViewValue(data?.consultCategories.join(', '));
           setSelectCategory(
-            data?.consultCategories.map((item: any) => categoryList[item]),
+            data?.consultCategories.map((item) => categoryList[item]),
           );
           style.setViewValue(data?.consultStyle);
           setSelectStyle(data?.consultStyle);
