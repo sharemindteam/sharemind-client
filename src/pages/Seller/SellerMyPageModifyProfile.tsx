@@ -72,8 +72,7 @@ export const SellerMypageModifyProfile = () => {
   const [isOutPopupOpen, setIsOutPopupOpen] =
     useRecoilState(isOutPopupOpenState);
 
-  const [isSucessUpdate, setIsSucessUpdate] =
-    useRecoilState<boolean>(isSuccessUpdateState);
+  const isSucessUpdate = useRecoilValue<boolean>(isSuccessUpdateState);
   // 채팅 상담시간 페이지로 이동할지여부
   const [isSetChatTime, setIsSetChatTime] = useState<boolean>(false);
 
