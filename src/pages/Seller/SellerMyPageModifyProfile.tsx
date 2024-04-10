@@ -133,6 +133,13 @@ export const SellerMypageModifyProfile = () => {
     }
   };
 
+  /**
+   *
+   */
+  const handleSelectTimeCloseClick = () => {
+    setIsSetChatTime(false);
+  };
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -200,7 +207,7 @@ export const SellerMypageModifyProfile = () => {
       <ModifyProfileHeader
         isNoProfile={isNoProfile}
         isSetChatTime={isSetChatTime}
-        setIsSetChatTime={setIsSetChatTime}
+        handleSelectTimeCloseClick={handleSelectTimeCloseClick}
       />
       {isLoading ? (
         <>

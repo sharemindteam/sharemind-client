@@ -12,6 +12,7 @@ import { useSetRecoilState } from 'recoil';
 interface ModifyProfileHeaderProps {
   isSetChatTime: boolean;
   isNoProfile: boolean;
+  handleSelectTimeCloseClick: () => void;
 }
 
 //
@@ -21,6 +22,7 @@ interface ModifyProfileHeaderProps {
 export const ModifyProfileHeader = ({
   isSetChatTime,
   isNoProfile,
+  handleSelectTimeCloseClick,
 }: ModifyProfileHeaderProps) => {
   const setIsOutPopupOpen = useSetRecoilState(isOutPopupOpenState);
 
@@ -32,11 +34,7 @@ export const ModifyProfileHeader = ({
     <TabB2>
       <div className="left-icon">
         {isSetChatTime ? (
-          <XIcon
-            onClick={() => {
-              setIsOutPopupOpen(true);
-            }}
-          />
+          <XIcon onClick={handleSelectTimeCloseClick} />
         ) : (
           <LeftArrowIcon
             onClick={() => {
