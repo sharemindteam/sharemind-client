@@ -93,6 +93,27 @@ export const SellerMypageModifyProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  const handleClickBackdrop = () => {
+    if (isCategoryModalOpen) {
+      setIsCategoryModalOpen(false);
+    }
+    if (isOutPopupOpen) {
+      setIsOutPopupOpen(false);
+    }
+    if (isStyleModalOpen) {
+      setIsStyleModalOpen(false);
+    }
+    if (isTypeModalOpen) {
+      setIsTypeModalOpen(false);
+    }
+    if (isBankModalOpen) {
+      setIsBankModalOpen(false);
+    }
+    if (isUpdateModalOpen) {
+      setIsUpdateModalOpen(false);
+    }
+  };
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -196,7 +217,7 @@ export const SellerMypageModifyProfile = () => {
       isTypeModalOpen ||
       isBankModalOpen ||
       isUpdateModalOpen ? (
-        <BackDrop />
+        <BackDrop onClick={handleClickBackdrop} />
       ) : null}
       {isCategoryModalOpen && (
         <CategoryModal
