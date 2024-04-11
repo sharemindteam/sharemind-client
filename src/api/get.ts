@@ -119,12 +119,35 @@ export const getMinderReviews = async (params: any) =>
 export const getMinderReviewsHome = async () =>
   await getInstance('/reviews/counselors/home');
 
-// Post Controller
 // 일대다상담 컨트롤러
 
+// Comment Controller
+
+export const getCounselorsComments = async (postId: any) =>
+  await getInstance(`/comments/counselors/${postId}`);
+export const getCustomersComments = async (postId: any) =>
+  await getInstance(`/comments/customers/${postId}`);
+
+// Post Controller
 export const getOneOpenConsult = async (id: string | undefined) =>
   await getInstance(`/posts/${id}`);
+
+export const getCounselorsOpenConsultList = async (params: any) =>
+  await getInstance(`/posts/counselors`, params);
+export const getCounselorsOneConsult = async (postId: any) =>
+  await getInstance(`/posts/counselors/${postId}`);
+
+export const getCounselorsRandomConsult = async () =>
+  await getInstance(`/posts/counselors/random`);
+
 export const getCustomerOpenConsultList = async (params: any) =>
   await getInstance('/posts/customers', params);
+
+export const getCustomerPopularConsultList = async (params: any) =>
+  await getInstance('/posts/customers/public/likes', params);
+
 export const getCustomerPublicConsultList = async (params: any) =>
   await getInstance('/posts/customers/public', params);
+
+export const getOpenConsultDraft = async (postId: any) =>
+  await getInstance(`/posts/drafts/${postId}`);

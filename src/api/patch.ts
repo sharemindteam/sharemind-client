@@ -72,6 +72,14 @@ export const patchSearchWordsResults = async (sortType: string, body: any) =>
 export const patchWishLists = async (counselorId: number) =>
   await patchInstance(`/wishLists?counselorId=${counselorId}`);
 
+//일대다상담
+
+//Comment Controller
+
+export const patchAdoptComment = async (postId: any) =>
+  await patchInstance(`/comments/customers/${postId}`);
+
+//Post Controller
 export const patchOpenConsult = async (body: any) => {
   await patchInstance(`/posts`, body);
 };

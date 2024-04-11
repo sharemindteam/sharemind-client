@@ -47,9 +47,18 @@ export const postIsPassQuiz = async (body: any, parmas: any) =>
 export const postWishLists = async (body: any) =>
   await postInstance('/wishLists', body);
 
-// Post controller
 // 일대다상담
 
+// Comment Controller
+export const postComment = async (body) =>
+  await postInstance('/comments/counselors', body);
+
+// CommentLike Controller
+
+export const postLikeComment = async (commentId: any) =>
+  await postInstance(`/commentLikes/${commentId}`, {});
+
+// Post Controller
 export const postOpenConsult = async (body: any) =>
   await postInstance('/posts', body);
 
@@ -58,7 +67,6 @@ export const postOpenConsult = async (body: any) =>
 export const postLikeOpenConsult = async (postId: any) =>
   await postInstance(`/postLikes/${postId}`, {});
 
+// PostScrap Controller
 export const postScrapOpenConsult = async (postId: any) =>
-  await postInstance(`/postLikes/${postId}`, {});
-
-// export const s;
+  await postInstance(`/postScraps/${postId}`, {});

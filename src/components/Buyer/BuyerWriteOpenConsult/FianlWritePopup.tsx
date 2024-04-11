@@ -30,7 +30,6 @@ function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
       content: content,
       isCompleted: true,
     };
-
     await patchOpenConsult(body);
     navigate('/consult/?type=open-consult');
   };

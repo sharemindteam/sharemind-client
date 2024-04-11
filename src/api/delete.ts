@@ -17,5 +17,14 @@ export const deleteWishLists = async (counselorId: number) =>
 export const deletePostScrap = async (postId: any) =>
   await deleteInstance(`/postScraps/${postId}`);
 
+// 일대다상담
+// CommentLike Controller
+export const deleteCommentLikes = async (commentId: any) =>
+  await deleteInstance(`/commentLikes/${commentId}`);
+// PostLike Controller
 export const deletePostLikes = async (postId: any) =>
   await deleteInstance(`/postLikes/${postId}`);
+
+// PostScrap Controller
+export const deletePostScraps = async (postId: any) =>
+  await deleteInstance(`/postScraps/${postId}`);
