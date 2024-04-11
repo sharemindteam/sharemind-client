@@ -41,4 +41,4 @@ const LeftArrow = styled(LeftArrowIcon)`
   left: 2rem;
 `;
 
-export default OpenConsultHeader;
+export default React.memo(OpenConsultHeader);

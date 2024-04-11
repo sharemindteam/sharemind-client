@@ -128,7 +128,10 @@ const Router = () => {
       />
 
       <Route path="/minder/consult" element={<SellerConsult />} />
-      <Route path="/minder/open-consult" element={<SellerOpenConsult />} />
+      <Route
+        path="/minder/open-consult/:consultid"
+        element={<SellerOpenConsult />}
+      />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/minder/mypage" element={<SellerMypage />} />
 

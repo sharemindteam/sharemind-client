@@ -1,29 +1,60 @@
+import { postComment } from 'api/post';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { isSendPopupOpenState } from 'utils/atom';
 
-function IsSendPopup() {
-  const navigate = useNavigate();
+interface IsSendPopupProps {
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function IsSendPopup({ text, setText }: IsSendPopupProps) {
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
-  const handleSendContent = () => {};
+  const { consultid } = useParams();
+  const handleSendContent = async () => {
+    const body = {
+      postId: consultid,
+      content: text,
+    };
+    try {
+      const res: any = await postComment(body);
+      console.log(res);
+      if (res?.status === 200 || res.status === 201) {
+        setText('');
+        setIsSendPopupOpen(false);
+      } else if (res?.response?.status === 400) {
+        console.log(400);
+        setIsSendPopupOpen(false);
+        if (res?.response.data.errorName === 'COUNSELOR_AND_CUSTOMER_SAME') {
+          alert('본인에게는 상담 신청과 댓글 작성을 할 수 없습니다.');
+        } else if (
+          res?.response.data.errorName === 'COMMENT_ALREADY_REGISTERED'
+        ) {
+          alert('상담사 당 댓글은 한번씩만 작성할 수 있습니다.');
+        }
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
   return (
     <IsSendModalBox>
       <ModalBox>
-        <Body1>설정을 저장하지 않고 나가시겠습니까?</Body1>
-        <Body3 color={Grey4}>저장하지 않으면 작성한 설정이 초기화됩니다.</Body3>
+        <Body1>답장을 보낼까요?</Body1>
+        <Body3 color={Grey4}>보낸 후엔 수정할 수 없어요.</Body3>
         <ButtonWrapper>
           <NoButton
             onClick={() => {
               setIsSendPopupOpen(false);
             }}
           >
-            아니오
+            취소
           </NoButton>
-          <YesButton onClick={handleSendContent}>예</YesButton>
+          <YesButton onClick={handleSendContent}>보내기</YesButton>
         </ButtonWrapper>
       </ModalBox>
     </IsSendModalBox>
