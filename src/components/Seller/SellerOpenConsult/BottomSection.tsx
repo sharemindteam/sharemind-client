@@ -6,9 +6,11 @@ import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
 import { Green, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isSendPopupOpenState } from 'utils/atom';
-
-function BottomSection() {
-  const [isReplying, setIsReplying] = useState(false);
+interface BottomSectionProps {
+  isReplying: boolean;
+  setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
+}
+function BottomSection({ isReplying, setIsReplying }: BottomSectionProps) {
   const [text, setText] = useState<string>('');
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
   return (

@@ -15,7 +15,7 @@ function OpenConsultHeader() {
           navigate('/minder');
         }}
       />
-      <Heading>상담 상세</Heading>
+      <Heading>공개 상담</Heading>
     </OpenConsultHeaderWrapper>
   );
 }

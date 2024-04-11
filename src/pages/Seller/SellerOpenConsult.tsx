@@ -5,19 +5,25 @@ import IsSendPopup from 'components/Seller/SellerOpenConsult/IsSendPopup';
 import MainQuestionSection from 'components/Seller/SellerOpenConsult/MainQuestionSection';
 import MainQuestion from 'components/Seller/SellerOpenConsult/MainQuestionSection';
 import OpenConsultHeader from 'components/Seller/SellerOpenConsult/OpenConsultHeader';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { isSendPopupOpenState } from 'utils/atom';
 
 function SellerOpenConsult() {
   const isSendPopupOpen = useRecoilValue(isSendPopupOpenState);
-
+  const [isReplying, setIsReplying] = useState(false);
   return (
     <>
-      <OpenConsultHeader />
-      <MainQuestionSection />
-      <CommentListSection />
-      <BottomSection />
+      <div
+        onClick={() => {
+          setIsReplying(false);
+        }}
+      >
+        <OpenConsultHeader />
+        <MainQuestionSection />
+        <CommentListSection />
+      </div>
+      <BottomSection isReplying={isReplying} setIsReplying={setIsReplying} />
       {isSendPopupOpen && (
         <>
           <IsSendPopup />
