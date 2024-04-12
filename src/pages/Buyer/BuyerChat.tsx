@@ -37,18 +37,21 @@ import {
 
 import { ChatCounselorInfoBox } from 'components/Buyer/BuyerChat/ChatCounselorInfoBox';
 import { useStompContext } from 'contexts/StompContext';
+import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 
 export const BuyerChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const chatId = id || '';
 
+  const { time, setTime } = useChatRequestTime();
+
   //states
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>(''); //입력
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
-  const [time, setTime] = useState<string>('');
+
   const [counselorInfo, setCounselorInfo] = useState<ChatCounselorInfo | null>(
     null,
   );
@@ -411,29 +414,6 @@ export const BuyerChat = () => {
     //scrollIntoView 완료 후 다시 관측가능
     preventScrollRef.current = true;
   }, [messages]);
-
-  //상담 start request 관련 처리
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const [minutes, seconds] = time.split(':').map(parseFloat);
-      let totalSeconds = minutes * 60 + seconds;
-
-      if (totalSeconds <= 0) {
-        clearInterval(timer);
-      } else {
-        totalSeconds--;
-        const newMinutes = Math.floor(totalSeconds / 60);
-        const newSeconds = totalSeconds % 60;
-        setTime(
-          `${String(newMinutes).padStart(2, '0')} : ${String(
-            newSeconds,
-          ).padStart(2, '0')}`,
-        );
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [time]);
 
   return (
     <Wrapper onTouchStart={handleTouchStart}>

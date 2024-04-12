@@ -30,6 +30,7 @@ import { ChatAlertModal } from 'components/Seller/SellerChat/ChatAlertModal';
 import { BackDrop } from 'components/Common/BackDrop';
 import { ChatReportModal } from 'components/Seller/SellerChat/ChatReportModal';
 import { useStompContext } from 'contexts/StompContext';
+import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 
 //
 //
@@ -40,12 +41,14 @@ const SellerChat = () => {
   const { id } = useParams();
   const chatId = id || '';
 
+  const { time, setTime } = useChatRequestTime();
+
   //states
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>(''); //입력
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
   const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
-  const [time, setTime] = useState<string>('');
+
   const [chatStatus, setChatStatus] = useState<string>('');
   const [opponentName, setOpponentName] = useState<string>('');
   const [alertModalActive, setAlertModalActive] = useState<boolean>(false);
@@ -366,31 +369,6 @@ const SellerChat = () => {
       });
     }
   }, [messages]);
-  //상담 start request 관련 처리
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const [minutes, seconds] = time.split(':').map(parseFloat);
-      let totalSeconds = minutes * 60 + seconds;
-
-      if (totalSeconds <= 0) {
-        if (chatStatus === '상담 시작 요청') {
-          setChatStatus('상담 대기');
-        }
-        clearInterval(timer);
-      } else {
-        totalSeconds--;
-        const newMinutes = Math.floor(totalSeconds / 60);
-        const newSeconds = totalSeconds % 60;
-        setTime(
-          `${String(newMinutes).padStart(2, '0')} : ${String(
-            newSeconds,
-          ).padStart(2, '0')}`,
-        );
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [chatStatus, time]);
 
   if (isInitialLoading) {
     return (
