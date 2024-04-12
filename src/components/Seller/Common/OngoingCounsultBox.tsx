@@ -59,9 +59,9 @@ function OngoingCounsultBox({
           </div>
         )}
         <div className="flex-1-1">
-          <Name color={consultStatus === '상담 종료' ? Grey3 : Black}>
+          <Body1 color={consultStatus === '상담 종료' ? Grey3 : Black}>
             {counselorName}
-          </Name>
+          </Body1>
           <Circle />
           <MinutesBefore color={consultStatus === '상담 종료' ? Grey4 : Grey2}>
             {beforeMinutes}
@@ -139,8 +139,6 @@ const OngoingCounsultBoxWrapper = styled.div`
     gap: 1.2rem;
   }
 `;
-
-const Name = styled(Body1)``;
 
 const Circle = styled.div`
   width: 0.2rem;
