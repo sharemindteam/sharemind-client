@@ -171,4 +171,5 @@ const NewMessageCounts = styled.div`
   align-items: center;
   background-color: ${Green};
 `;
+
 export default OngoingCounsultBox;
