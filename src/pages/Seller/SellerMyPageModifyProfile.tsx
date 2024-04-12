@@ -14,7 +14,7 @@ import { useCustomSelect } from 'hooks/useCustomSelect';
 import { useInput } from 'hooks/useInput';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import {
@@ -26,7 +26,20 @@ import {
   isTypeOpenModalState,
   isUpdateModalOpenState,
 } from 'utils/atom';
-const categoryList = {
+
+//
+//
+//
+
+interface CategoryList {
+  [key: string]: number;
+}
+
+//
+//
+//
+
+const categoryList: CategoryList = {
   연애갈등: 1,
   '이별/재회': 2,
   여자심리: 3,
@@ -36,6 +49,10 @@ const categoryList = {
   권태기: 7,
   기타: 8,
 };
+
+//
+//
+//
 
 export const SellerMypageModifyProfile = () => {
   // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
@@ -69,10 +86,10 @@ export const SellerMypageModifyProfile = () => {
   const [isBankModalOpen, setIsBankModalOpen] =
     useRecoilState<boolean>(isBankModalOpenState);
 
-  const [isSucessUpdate, setIsUpdateSuccess] =
-    useRecoilState<boolean>(isSuccessUpdateState);
   const [isOutPopupOpen, setIsOutPopupOpen] =
     useRecoilState(isOutPopupOpenState);
+
+  const isSucessUpdate = useRecoilValue<boolean>(isSuccessUpdateState);
   // 채팅 상담시간 페이지로 이동할지여부
   const [isSetChatTime, setIsSetChatTime] = useState<boolean>(false);
 
@@ -91,6 +108,38 @@ export const SellerMypageModifyProfile = () => {
   const [isNoProfile, setIsNoProfile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
+  /**
+   *
+   */
+  const handleClickBackdrop = () => {
+    if (isCategoryModalOpen) {
+      setIsCategoryModalOpen(false);
+    }
+    if (isOutPopupOpen) {
+      setIsOutPopupOpen(false);
+    }
+    if (isStyleModalOpen) {
+      setIsStyleModalOpen(false);
+    }
+    if (isTypeModalOpen) {
+      setIsTypeModalOpen(false);
+    }
+    if (isBankModalOpen) {
+      setIsBankModalOpen(false);
+    }
+    if (isUpdateModalOpen) {
+      setIsUpdateModalOpen(false);
+    }
+  };
+
+  /**
+   *
+   */
+  const handleSelectTimeCloseClick = () => {
+    setIsSetChatTime(false);
+  };
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -104,14 +153,14 @@ export const SellerMypageModifyProfile = () => {
         } else {
           const profileRes: any = await getProfiles();
           const data = profileRes.data;
-          if (profileRes?.response?.status === 404) {
+          if (profileRes.response?.status === 404) {
             alert('판매 정보가 등록되어 있지 않습니다.');
             navigate('/seller/mypage');
           }
           nickname.setValue(data?.nickname);
           category.setViewValue(data?.consultCategories.join(', '));
           setSelectCategory(
-            data?.consultCategories.map((item: any) => categoryList[item]),
+            data?.consultCategories.map((item: string) => categoryList[item]),
           );
           style.setViewValue(data?.consultStyle);
           setSelectStyle(data?.consultStyle);
@@ -148,12 +197,17 @@ export const SellerMypageModifyProfile = () => {
     };
     fetchProfile();
   }, []);
+
+  //
+  //
+  //
+
   return (
     <>
       <ModifyProfileHeader
         isNoProfile={isNoProfile}
         isSetChatTime={isSetChatTime}
-        setIsSetChatTime={setIsSetChatTime}
+        handleSelectTimeCloseClick={handleSelectTimeCloseClick}
       />
       {isLoading ? (
         <>
@@ -194,7 +248,7 @@ export const SellerMypageModifyProfile = () => {
       isTypeModalOpen ||
       isBankModalOpen ||
       isUpdateModalOpen ? (
-        <BackDrop />
+        <BackDrop onClick={handleClickBackdrop} />
       ) : null}
       {isCategoryModalOpen && (
         <CategoryModal

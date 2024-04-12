@@ -1,19 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Black, Green, Grey1, Grey3, Grey4, Grey5 } from 'styles/color';
 import { ReactComponent as CheckIcon2SVG } from 'assets/icons/icon-check2.svg';
 import { ReactComponent as PlusIconSVG } from 'assets/icons/icon-plus.svg';
 import { ReactComponent as MinusIconSVG } from 'assets/icons/icon-minus.svg';
-import { Body1 } from 'styles/font';
 import Input from 'components/Common/Input';
 import TimeSelectModal from './TimeSelectModal';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { isOutPopupOpenState, isTimeModalOpenState } from 'utils/atom';
 import { BackDrop } from 'components/Common/BackDrop';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { formatTimeRange } from 'utils/formatTimeRange';
 import IsOutPopup from './IsOutPopup';
+
+//
+//
+//
+
 const dayEngtoKor: Record<string, string> = {
   MON: '월',
   TUE: '화',
@@ -23,7 +27,17 @@ const dayEngtoKor: Record<string, string> = {
   SAT: '토',
   SUN: '일',
 };
+
+//
+//
+//
+
+//TODO: move to util file
 const dayList: string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+
+//
+//
+//
 export interface SelectedTimeList {
   [key: string]: string[];
 }
@@ -31,6 +45,11 @@ export interface SelectedTimeList {
 interface IsSelected {
   [key: string]: boolean;
 }
+
+//
+//
+//
+
 function SetChatTimeSection({
   setSelectedList,
   setIsSetChatTime,
@@ -65,9 +84,12 @@ function SetChatTimeSection({
 
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
-  const [isOutPopupOpen, setIsOutPopupOpen] =
-    useRecoilState(isOutPopupOpenState);
-  const scrollRef = useRef();
+  const isOutPopupOpen = useRecoilValue(isOutPopupOpenState);
+  const scrollRef = useRef(null);
+
+  //
+  //
+  //
 
   return (
     <Wrapper ref={scrollRef}>
