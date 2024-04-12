@@ -148,14 +148,12 @@ const Circle = styled.div`
 `;
 
 const Content = styled(Body3)`
-  text-overflow: ellipsis;
   width: calc(100% - 9rem);
+  max-height: 4.6rem;
   display: -webkit-box;
-  height: 4.7rem;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  align-self: flex-end;
-  margin-bottom: 0.4rem;
+  margin-top: 0.5rem;
   -webkit-line-clamp: 2;
 `;
 
