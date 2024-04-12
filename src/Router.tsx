@@ -36,7 +36,6 @@ import { BuyerPaymentDetail } from 'pages/Buyer/BuyerPaymentDetail';
 import { BuyerPaymentComplete } from 'pages/Buyer/BuyerPaymentComplete';
 import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
 import SellerRefundBankAccount from 'pages/Seller/SellerRefundBankAccount';
-import SellerChat from 'pages/Seller/SellerChat';
 import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
@@ -44,7 +43,7 @@ import { Admin } from 'pages/Common/Admin';
 import { BuyerChat } from 'pages/Buyer/BuyerChat';
 import Service from 'pages/Common/Service';
 import { BuyerQuit } from 'pages/Buyer/BuyerQuit';
-import { SellerChatTemp } from 'pages/Seller/SellerChatTemp';
+import SellerChat from 'pages/Seller/SellerChat';
 import BuyerOpenConsult from 'pages/Buyer/BuyerOpenConsult';
 import SellerOpenConsult from 'pages/Seller/SellerOpenConsult';
 const Router = () => {
@@ -99,7 +98,7 @@ const Router = () => {
 
       {/* 판매자 : 상담 */}
       {/* 판매자 : 채팅 */}
-      <Route path="/minder/chat/:id" element={<SellerChatTemp />} />
+      <Route path="/minder/chat/:id" element={<SellerChat />} />
 
       {/* 판매자 : 편지 */}
       {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}
