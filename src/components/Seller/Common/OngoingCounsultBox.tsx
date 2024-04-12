@@ -63,9 +63,9 @@ function OngoingCounsultBox({
             {counselorName}
           </Body1>
           <Circle />
-          <MinutesBefore color={consultStatus === '상담 종료' ? Grey4 : Grey2}>
+          <Caption2 color={consultStatus === '상담 종료' ? Grey4 : Grey2}>
             {beforeMinutes}
-          </MinutesBefore>
+          </Caption2>
         </div>
 
         {/* 상담사 프로필 상태에 따른 캐릭터 이미지 */}
@@ -146,7 +146,6 @@ const Circle = styled.div`
   border-radius: 100%;
   background-color: ${Grey3};
 `;
-const MinutesBefore = styled(Caption2)``;
 
 const Content = styled(Body3)`
   text-overflow: ellipsis;
