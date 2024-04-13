@@ -22,7 +22,6 @@ import {
 } from 'styles/color';
 import { BackIcon } from 'components/Buyer/Common/Header';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
 import { getChatMessagesCustomers, getCounselorsChats } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
@@ -38,6 +37,7 @@ import {
 import { ChatCounselorInfoBox } from 'components/Buyer/BuyerChat/ChatCounselorInfoBox';
 import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
+import BuyerChatFooter from 'components/Buyer/BuyerChat/BuyerChatFooter';
 
 export const BuyerChat = () => {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export const BuyerChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>(''); //입력
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
-  const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
+  const [isTyping, setIsTyping] = useState<boolean>(false); //입력 있을 시 버튼 색상
 
   const [counselorInfo, setCounselorInfo] = useState<ChatCounselorInfo | null>(
     null,
@@ -340,9 +340,18 @@ export const BuyerChat = () => {
     }
   };
 
+  const handleFooterChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+    //textarea 높이 동적할당
+    e.target.style.height = '2.4rem';
+    e.target.style.height = e.target.scrollHeight / 10 + 'rem';
+    if (e.target.scrollHeight / 10 <= 7.3) {
+      sectionPaddingRef.current = e.target.scrollHeight / 10;
+    }
+  };
   //무한스크롤 관련 함수
   //useIntersection에서 unobserve되는지 확인
-  const onIntersect: IntersectionObserverCallback = async (entry, observer) => {
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
       !isLastElem &&
@@ -394,9 +403,9 @@ export const BuyerChat = () => {
   //보내기 버튼 색상처리
   useEffect(() => {
     if (input.trim() !== '') {
-      setInputValid(true);
+      setIsTyping(true);
     } else {
-      setInputValid(false);
+      setIsTyping(false);
     }
   }, [input]);
   // // messages 새로 업데이트 됐을 때 11 index에 해당하는 message top으로
@@ -634,43 +643,14 @@ export const BuyerChat = () => {
           }
         })}
       </SectionWrapper>
-
-      <FooterWrapper>
-        <div className="message-form">
-          <ChatTextareaWrapper>
-            <ChatTextarea
-              rows={1}
-              ref={inputRef}
-              placeholder="메세지"
-              value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                //textarea 높이 동적할당
-                e.target.style.height = '2.4rem';
-                e.target.style.height = e.target.scrollHeight / 10 + 'rem';
-                if (e.target.scrollHeight / 10 <= 7.3) {
-                  sectionPaddingRef.current = e.target.scrollHeight / 10;
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.nativeEvent.isComposing) return; //key 조합 감지
-                // 모바일 환경이 아닐 때에는 enter로 전송, shift + enter로 줄바꿈
-                if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                  if (e.key === 'Enter' && e.shiftKey) return;
-                  else if (e.key === 'Enter') {
-                    handleSubmit();
-                    e.preventDefault();
-                  }
-                }
-              }}
-            />
-            <input ref={hiddenInputRef} className="hidden-input" />
-          </ChatTextareaWrapper>
-          <button style={{ margin: '0', padding: '0' }} onClick={handleSubmit}>
-            <SearchIcon InputValid={inputValid} />
-          </button>
-        </div>
-      </FooterWrapper>
+      <BuyerChatFooter
+        input={input}
+        isTyping={isTyping}
+        inputRef={inputRef}
+        hiddenInputRef={hiddenInputRef}
+        onChange={handleFooterChange}
+        handleSubmit={handleSubmit}
+      />
     </Wrapper>
   );
   // }
@@ -700,8 +680,6 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
   top: 0;
   z-index: 999;
 `;
-//max-height: calc(100% - 13.1rem);
-//height: calc(100% - 13.1rem);
 
 const SectionWrapper = styled.section<{ inputHeight: number }>`
   display: flex;
@@ -728,33 +706,6 @@ const SectionWrapper = styled.section<{ inputHeight: number }>`
     align-items: end;
     padding: 0.4rem 0 0.4rem 2rem;
   }
-`;
-const FooterWrapper = styled.footer`
-  position: fixed;
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  background-color: ${White};
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .message-form {
-    padding: 0.8rem 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-  }
-`;
-const SearchIcon = styled(Search)<{ InputValid: boolean }>`
-  fill: ${(props) => (props.InputValid ? Green : Grey3)};
-  padding: 1rem 0.4rem 1rem 0.8rem;
-  cursor: pointer;
 `;
 
 const CustomerChatBox = styled.div`
@@ -814,42 +765,4 @@ const StartButton = styled.button`
   gap: 0.8rem;
   justify-content: center;
   align-items: center;
-`;
-const ChatTextareaWrapper = styled.div`
-  padding: 1.2rem 0.8rem 1.2rem 1.2rem;
-  background-color: ${Grey6};
-  width: 78.66%;
-  border-radius: 1.2rem;
-  box-sizing: border-box;
-  position: relative;
-  .hidden-input {
-    position: absolute;
-    width: 0;
-    height: 0;
-    background-color: transparent;
-    pointer-events: none;
-  }
-`;
-
-const ChatTextarea = styled.textarea`
-  resize: none;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  font-family: Pretendard;
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 150%;
-  color: ${Grey1};
-  &::placeholder {
-    color: ${Grey3};
-  }
-  padding: 0;
-  margin: 0;
-  max-height: 7.2rem;
-  width: 100%;
-  background-color: ${Grey6};
-  box-sizing: border-box;
 `;
