@@ -3,7 +3,7 @@ import { Body2, Caption1, Caption2, Heading } from 'styles/font';
 import { ChatMessage } from 'utils/type';
 import styled from 'styled-components';
 import {
-  Green,
+  // Green,
   Grey1,
   Grey3,
   Grey4,
@@ -13,7 +13,7 @@ import {
 } from 'styles/color';
 import { BackIcon } from 'components/Buyer/Common/Header';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
+// import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import { formattedMessage } from 'utils/formattedMessage';
 import { getChatMessagesCounselors, getChatsCounselors } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
@@ -31,6 +31,7 @@ import { BackDrop } from 'components/Common/BackDrop';
 import { ChatReportModal } from 'components/Seller/SellerChat/ChatReportModal';
 import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
+import SellerChatFooter from 'components/Seller/SellerChat/SellerChatFooter';
 
 //
 //
@@ -47,12 +48,16 @@ const SellerChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>(''); //입력
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
-  const [inputValid, setInputValid] = useState<boolean>(false); //입력 있을 시 버튼 색상
+  const [isTyping, setIsTyping] = useState<boolean>(false); //입력 있을 시 버튼 색상
 
   const [chatStatus, setChatStatus] = useState<string>('');
   const [opponentName, setOpponentName] = useState<string>('');
   const [alertModalActive, setAlertModalActive] = useState<boolean>(false);
   const [alertModalTime, setAlertModalTime] = useState<string>('');
+  //
+  //
+  //
+
   //useRefs
   const inputRef = useRef<HTMLTextAreaElement>(null); //input ref 높이 초기화를 위함
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
@@ -129,6 +134,7 @@ const SellerChat = () => {
       alert(e);
     }
   };
+
   const connectChat = () => {
     if (stompClient.current) {
       // 구독
@@ -242,6 +248,7 @@ const SellerChat = () => {
       );
     }
   };
+
   const sendMessage = () => {
     if (stompClient.current) {
       stompClient.current.send(
@@ -292,6 +299,7 @@ const SellerChat = () => {
     if (inputRef.current) inputRef.current.style.height = '2.4rem';
     if (sectionPaddingRef.current) sectionPaddingRef.current = 2.4;
   };
+
   //모바일에서 터치가 일어나면 키보드 숨김
   const handleTouchStart = (e: any) => {
     if (!e.target.closest('footer')) {
@@ -299,6 +307,20 @@ const SellerChat = () => {
       inputRef.current?.blur();
     }
   };
+
+  /**
+   *
+   */
+  const handleFooterChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+    //textarea 높이 동적할당
+    e.target.style.height = '2.4rem';
+    e.target.style.height = e.target.scrollHeight / 10 + 'rem';
+    if (e.target.scrollHeight / 10 <= 7.3) {
+      sectionPaddingRef.current = e.target.scrollHeight / 10;
+    }
+  };
+
   //무한스크롤 관련 함수
   //useIntersection에서 unobserve되는지 확인
   const onIntersect: IntersectionObserverCallback = async (entry) => {
@@ -313,6 +335,7 @@ const SellerChat = () => {
       preventRef.current = true;
     }
   };
+
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
@@ -354,11 +377,12 @@ const SellerChat = () => {
   //보내기 버튼 색상처리
   useEffect(() => {
     if (input.trim() !== '') {
-      setInputValid(true);
+      setIsTyping(true);
     } else {
-      setInputValid(false);
+      setIsTyping(false);
     }
   }, [input]);
+
   // messages 새로 업데이트 됐을 때 11 index에 해당하는 message top으로
   useLayoutEffect(() => {
     if (!newMessageRef.current) {
@@ -541,47 +565,14 @@ const SellerChat = () => {
           })}
         </SectionWrapper>
         {chatStatus !== '상담 종료' ? (
-          <FooterWrapper>
-            <div className="message-form">
-              <ChatTextareaWrapper>
-                <ChatTextarea
-                  rows={1}
-                  ref={inputRef}
-                  placeholder="메세지"
-                  value={input}
-                  onChange={(e) => {
-                    setInput(e.target.value);
-                    //textarea 높이 동적할당
-                    e.target.style.height = '2.4rem';
-                    e.target.style.height = e.target.scrollHeight / 10 + 'rem';
-                    if (e.target.scrollHeight / 10 <= 7.3) {
-                      sectionPaddingRef.current = e.target.scrollHeight / 10;
-                    }
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.nativeEvent.isComposing) return; //key 조합 감지
-                    // 모바일 환경이 아닐 때에는 enter로 전송, shift + enter로 줄바꿈
-                    if (
-                      !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-                    ) {
-                      if (e.key === 'Enter' && e.shiftKey) return;
-                      else if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleSubmit();
-                      }
-                    }
-                  }}
-                />
-                <input ref={hiddenInputRef} className="hidden-input" />
-              </ChatTextareaWrapper>
-              <button
-                style={{ margin: '0', padding: '0' }}
-                onClick={handleSubmit}
-              >
-                <SearchIcon InputValid={inputValid} />
-              </button>
-            </div>
-          </FooterWrapper>
+          <SellerChatFooter
+            input={input}
+            isTyping={isTyping}
+            inputRef={inputRef}
+            hiddenInputRef={hiddenInputRef}
+            onChange={handleFooterChange}
+            handleSubmit={handleSubmit}
+          />
         ) : (
           <ChatReportModal />
         )}
@@ -620,6 +611,11 @@ const SellerChat = () => {
     );
   }
 };
+
+//
+//
+//
+
 const Wrapper = styled.main`
   height: 100%;
   width: 100%;
@@ -679,34 +675,7 @@ const SectionWrapper = styled.section<{
     padding: 0.4rem 0 0.4rem 2rem;
   }
 `;
-const FooterWrapper = styled.footer`
-  position: fixed;
-  z-index: 999;
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  background-color: ${White};
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-  .message-form {
-    padding: 0.8rem 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-  }
-`;
-const SearchIcon = styled(Search)<{ InputValid: boolean }>`
-  fill: ${(props) => (props.InputValid ? Green : Grey3)};
-  padding: 1rem 0.4rem 1rem 0.8rem;
-  cursor: pointer;
-`;
 const CustomerChatBox = styled.div`
   background-color: ${LightGreenChat};
   border-radius: 1rem 0 1rem 1rem;
@@ -715,6 +684,7 @@ const CustomerChatBox = styled.div`
   max-width: 27.5rem;
   word-wrap: break-word;
 `;
+
 const CounselorChatBox = styled.div`
   background-color: ${White};
   border-radius: 0 1rem 1rem 1rem;
@@ -732,45 +702,6 @@ const AlertChatBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const ChatTextareaWrapper = styled.div`
-  padding: 1.2rem 0.8rem 1.2rem 1.2rem;
-  background-color: ${Grey6};
-  width: 78.66%;
-  border-radius: 1.2rem;
-  box-sizing: border-box;
-  position: relative;
-  .hidden-input {
-    position: absolute;
-    width: 0;
-    height: 0;
-    background-color: transparent;
-    pointer-events: none;
-  }
-`;
-
-const ChatTextarea = styled.textarea`
-  resize: none;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  font-family: Pretendard;
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 150%;
-  color: ${Grey1};
-  &::placeholder {
-    color: ${Grey3};
-  }
-  padding: 0;
-  margin: 0;
-  max-height: 7.2rem;
-  width: 100%;
-  background-color: ${Grey6};
-  box-sizing: border-box;
 `;
 
 export default SellerChat;
