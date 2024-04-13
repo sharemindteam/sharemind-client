@@ -435,10 +435,7 @@ export const BuyerChat = () => {
         <Heading color={Grey1}>{counselorInfo?.nickname}</Heading>
       </HeaderWrapper>
       <Space width="100%" height="5.2rem" />
-      <SectionWrapper
-        inputHeight={sectionPaddingRef.current}
-        className="chat-section"
-      >
+      <SectionWrapper inputHeight={sectionPaddingRef.current}>
         <div className="counselor-info-container">
           {isLastElem && counselorInfo !== null && (
             <ChatCounselorInfoBox info={counselorInfo} />
