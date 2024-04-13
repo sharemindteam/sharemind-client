@@ -6,6 +6,7 @@ import { ConsultCard } from '../Common/ConsultCard';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getConsultsCustomers } from 'api/get';
+import { useStompContext } from 'contexts/StompContext';
 interface Response {
   id: number;
   consultStyle: string;
@@ -26,23 +27,40 @@ interface Data {
 }
 export const HomeConsultInProgress = () => {
   const navigate = useNavigate();
+
+  const { stompClient } = useStompContext();
+
   const [data, setData] = useState<Data>();
   const [isLogined, setIsLogined] = useState<boolean>(false);
+
+  const connectConsultInProgress = () => {
+    if (stompClient.current) {
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      const res: any = await getConsultsCustomers();
-      if (res.status === 200) {
-        setData(res.data);
-        setIsLogined(true);
-      } else if (res.response.status === 401) {
-        setIsLogined(false);
+      try {
+        const res: any = await getConsultsCustomers();
+        if (res.status === 200) {
+          setData(res.data);
+          setIsLogined(true);
+
+          if (res.data.responses[0].isChat) {
+            connectConsultInProgress();
+          }
+        } else if (res.response.status === 401) {
+          setIsLogined(false);
+        }
+      } catch (e) {
+        console.log(e);
       }
     };
     fetchData();
   }, []);
-  //  || data === undefined
+
   if (!isLogined || !data || !data.responses) {
-    return <></>;
+    return;
   } else {
     return (
       <Wrapper>
