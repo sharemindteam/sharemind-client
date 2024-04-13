@@ -44,21 +44,17 @@ export const HomeConsultInProgress = () => {
           '/queue/chatMessages/customers/' + id,
           (message) => {
             const response = JSON.parse(message.body);
-            console.log(response);
-            if (consultCard) {
-              setConsultCard((prevCardItem) => {
-                if (prevCardItem) {
-                  return {
-                    ...prevCardItem,
-                    latestMessageContent: response.content,
-                    unreadMessageCount: prevCardItem.unreadMessageCount + 1,
-                    latestMessageUpdatedAt: convertChatListDate(
-                      response.sendTime,
-                    ),
-                  } as ConsultItem;
-                }
-              });
-            }
+            setConsultCard((prevCardItem) => {
+              console.log(prevCardItem);
+              return {
+                ...prevCardItem,
+                latestMessageContent: response.content,
+                unreadMessageCount: prevCardItem
+                  ? prevCardItem.unreadMessageCount + 1
+                  : 0,
+                latestMessageUpdatedAt: convertChatListDate(response.sendTime),
+              } as ConsultItem;
+            });
           },
         );
       }
@@ -96,7 +92,7 @@ export const HomeConsultInProgress = () => {
         );
       }
     };
-  }, [stompClient, isConnected, consultCard]);
+  }, [stompClient, isConnected]);
 
   if (!isLogined || !totalOngoing || !consultCard) {
     return <></>;
