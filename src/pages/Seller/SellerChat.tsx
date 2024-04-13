@@ -394,6 +394,10 @@ const SellerChat = () => {
     }
   }, [messages]);
 
+  //
+  //
+  //
+
   if (isInitialLoading) {
     return (
       <>
