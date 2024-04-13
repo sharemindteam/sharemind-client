@@ -14,7 +14,7 @@ import { convertChatListDate } from 'utils/convertDate';
 //
 //
 
-interface BuyerChatSectionProps {
+interface BuyerConsultChatSectionProps {
   sortType: number;
   isChecked: boolean;
 }
@@ -23,10 +23,10 @@ interface BuyerChatSectionProps {
 //
 //
 
-export const BuyerChatSection = ({
+export const BuyerConsultChatSection = ({
   sortType,
   isChecked,
-}: BuyerChatSectionProps) => {
+}: BuyerConsultChatSectionProps) => {
   const [cardData, setCardData] = useState<consultApiObject[]>([]); //card에 넘길 데이터
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -242,7 +242,7 @@ export const BuyerChatSection = ({
   } else {
     if (cardData.length !== 0) {
       return (
-        <BuyerChatSectionWrapper>
+        <BuyerConsultChatSectionWrapper>
           {cardData.map((value) => {
             return (
               <ConsultCard
@@ -261,7 +261,7 @@ export const BuyerChatSection = ({
               />
             );
           })}
-        </BuyerChatSectionWrapper>
+        </BuyerConsultChatSectionWrapper>
       );
     } else {
       return (
@@ -273,7 +273,7 @@ export const BuyerChatSection = ({
     }
   }
 };
-const BuyerChatSectionWrapper = styled.section`
+const BuyerConsultChatSectionWrapper = styled.section`
   margin-bottom: 2rem;
   display: flex;
   flex-direction: column;

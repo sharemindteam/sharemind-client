@@ -8,15 +8,15 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { Heading } from 'styles/font';
 
-interface BuyerLetterSectionProps {
+interface BuyerConsultLetterSectionProps {
   sortType: number;
   isChecked: boolean;
 }
 
-export const BuyerLetterSection = ({
+export const BuyerConsultLetterSection = ({
   sortType,
   isChecked,
-}: BuyerLetterSectionProps) => {
+}: BuyerConsultLetterSectionProps) => {
   const [cardData, setCardData] = useState<consultApiObject[]>([]); //card에 넘길 데이터
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -67,7 +67,7 @@ export const BuyerLetterSection = ({
     return (
       <>
         {cardData.length !== 0 ? (
-          <BuyerLetterSectionWrapper>
+          <BuyerConsultLetterSectionWrapper>
             {cardData.map((value) => {
               return (
                 <ConsultCard
@@ -85,7 +85,7 @@ export const BuyerLetterSection = ({
                 />
               );
             })}
-          </BuyerLetterSectionWrapper>
+          </BuyerConsultLetterSectionWrapper>
         ) : (
           <EmptyWrapper>
             <EmptyIcon />
@@ -96,7 +96,7 @@ export const BuyerLetterSection = ({
     );
   }
 };
-const BuyerLetterSectionWrapper = styled.section`
+const BuyerConsultLetterSectionWrapper = styled.section`
   margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
