@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey3, Grey4, Grey6 } from 'styles/color';
 import { Body1, Button2, Caption2 } from 'styles/font';
@@ -44,7 +44,7 @@ export const CategoryModal = ({
     setSelectCategory(modalCategory);
     setIsCategoryModalOpen(false);
   };
- 
+
   return (
     <Wrapper visible={isCategoryModalOpen}>
       <div className="bar-wrapper">

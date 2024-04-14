@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components';
-import { Green } from 'styles/color';
 
 export const LoadingSpinner = () => {
   return (
