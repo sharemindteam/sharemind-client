@@ -20,7 +20,7 @@ import { useParams } from 'react-router-dom';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useRecoilValue } from 'recoil';
 
-interface commentApiObject {
+export interface commentApiObject {
   nickName: string;
   content: string;
   isLiked: boolean;

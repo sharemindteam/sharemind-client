@@ -1,29 +1,20 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
-import { Body1, Body3, Body4, Caption1, Caption2, Heading } from 'styles/font';
+import { Body1, Body3, Caption1, Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
-import {
-  isBuyPopupOpenState,
-  isConsultModalOpenState,
-  scrollLockState,
-} from 'utils/atom';
+import { isBuyPopupOpenState, isConsultModalOpenState } from 'utils/atom';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
-import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save3.svg';
 import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
-import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import { Space } from 'components/Common/Space';
 import { BackDrop } from 'components/Common/BackDrop';
 import IsBuyPopup from './IsBuyPopup';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
-import { BottomButton } from 'components/Seller/Common/BottomButton';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getCustomerOpenConsultList } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
@@ -34,15 +25,9 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
-    isConsultModalOpenState,
-  );
-  const setScrollLock = useSetRecoilState(scrollLockState);
   const [isBuyPopupOpen, setIsBuyPopupOpen] =
     useRecoilState(isBuyPopupOpenState);
-  const handleWritePostButton = () => {
-    setIsBuyPopupOpen(true);
-  };
+
   const preventRef = useRef(true);
 
   const onIntersect: IntersectionObserverCallback = async (entry) => {
@@ -117,14 +102,23 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
             cardData?.map((item) => {
               if (item.title === null) {
                 return (
-                  <BuyerPendingOpenConsultCard>
-                    <Body1>상담 글을 작성해주세요!</Body1>
+                  <BuyerPendingOpenConsultCard key={item.postId}>
+                    <Body1>
+                      {item.isCompleted === null
+                        ? '상담 글을 작성해주세요!'
+                        : '임시저장된 글입니다.'}
+                    </Body1>
                     <Body3>
-                      결제 후 작성 전 <br />
-                      공개상담 글을 작성해보세요~
+                      {item.isCompleted === null
+                        ? '결제 후 작성전'
+                        : '이어서 작성하기'}
                     </Body3>
                     <Button
-                      text="상담 글 작성하기"
+                      text={
+                        item.isCompleted === null
+                          ? '상담 글 작성하기'
+                          : '이어서 작성하기'
+                      }
                       width="100%"
                       height="4rem"
                       onClick={() => {
@@ -136,8 +130,9 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
               } else {
                 return (
                   <BuyerOpenConsultCard
+                    key={item.postId}
                     onClick={() => {
-                      navigate(`/open-consult/${item.postId}`);
+                      navigate(`/open-consult/${item.postId}?isMine=true`);
                     }}
                   >
                     <div className="row1">

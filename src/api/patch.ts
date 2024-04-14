@@ -76,8 +76,8 @@ export const patchWishLists = async (counselorId: number) =>
 
 //Comment Controller
 
-export const patchAdoptComment = async (postId: any) =>
-  await patchInstance(`/comments/customers/${postId}`);
+export const patchAdoptComment = async (postId: any, params: any) =>
+  await patchInstance(`/comments/customers/${postId}`, params);
 
 //Post Controller
 export const patchOpenConsult = async (body: any) => {

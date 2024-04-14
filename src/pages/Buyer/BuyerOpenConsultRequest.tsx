@@ -39,7 +39,7 @@ export const BuyerOpenConsultRequest = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/consult');
+            navigate('/consult?type=open-consult');
           }}
         />
         <Heading color={Grey1}>일대다상담 신청하기</Heading>

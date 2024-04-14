@@ -14,9 +14,6 @@ export const deleteSearchWords = async (body: any) =>
 export const deleteWishLists = async (counselorId: number) =>
   await deleteInstance(`/wishLists?counselorId=${counselorId}`);
 
-export const deletePostScrap = async (postId: any) =>
-  await deleteInstance(`/postScraps/${postId}`);
-
 // 일대다상담
 // CommentLike Controller
 export const deleteCommentLikes = async (commentId: any) =>

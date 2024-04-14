@@ -1,6 +1,6 @@
 import { lightGreen } from '@mui/material/colors';
 import { light } from '@mui/material/styles/createPalette';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   Green,
@@ -10,6 +10,8 @@ import {
   Grey6,
   LightGreen,
   LightRed,
+  Red,
+  White,
 } from 'styles/color';
 import { Body1, Body3, Body4, Caption1, Caption2 } from 'styles/font';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
@@ -18,71 +20,99 @@ import { ReactComponent as SettingIcon } from 'assets/icons/icon-option.svg';
 import { ReactComponent as GreenCheckIcon } from 'assets/icons/icon-green-check.svg';
 import { Characters } from 'utils/Characters';
 import { Space } from 'components/Common/Space';
+import {
+  getCounselorsComments,
+  getCustomerIsWriter,
+  getCustomersComments,
+} from 'api/get';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
+import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentListSection';
+import { BackDrop } from 'components/Common/BackDrop';
+import IsPickPopup from './IsPickPopup';
 
 function CommentListSection() {
+  const [commentCard, setCommendCard] = useState<commentApiObject[]>([]);
+  const [isMyPost, setIsMyPost] = useState<boolean>(false);
+  const [isPickPopup, setIsPickPopup] = useState<boolean>(false);
+  const [pickedCommentId, setPickedCommentId] = useState<string | undefined>();
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchComment = async () => {
+      try {
+        const res: any = await getCustomersComments(id);
+        if (res.status === 200) {
+          setCommendCard(res.data);
+          const res2: any = await getCustomerIsWriter(id);
+          if (res2.status === 200) setIsMyPost(res.data);
+          else if (res2?.response.status === 404) {
+            alert('존재하지 않는 게시물입니다.');
+            navigate('/open-consult');
+          }
+        } else if (res?.response.status === 400) {
+          alert('접근 권한이 없는 게시물입니다.');
+          navigate('/open-consult');
+        }
+      } catch (err) {
+        alert(err);
+        navigate('/open-consult');
+      }
+    };
+    fetchComment();
+  }, [id]);
   return (
-    <CommentListSectionWrapper>
-      {/* 댓글 리스트 , 최대 5개까지*/}
-      <CommentCard>
-        <div className="flex1">
-          <Characters number={1} width="3.2rem" height="3.3rem" />
-          <Body1>연애상담마스터</Body1>
-          <Circle />
-          <Caption2>11:23</Caption2>
-          <SettingButton />
-        </div>
+    <>
+      {isPickPopup && (
+        <>
+          <BackDrop />
+          <IsPickPopup
+            isPickPopup={isPickPopup}
+            setIsPickPopup={setIsPickPopup}
+            pickedCommentId={pickedCommentId}
+          />
+        </>
+      )}
 
-        <Body3 color={Grey1}>
-          권태기 증상이 맞는 것 같네요. 속상하시겠지만, 대화를 통해 충분히
-          극복하실 수 있어요. 어쩌구 저쩌구.
-        </Body3>
-        <LikeButton>
-          <HeartIcon />
-          <Caption1 color={Grey2}>28</Caption1>
-        </LikeButton>
-      </CommentCard>
-      <CommentCard>
-        <div className="flex1">
-          <Characters number={1} width="3.2rem" height="3.3rem" />
-          <Body1>연애상담마스터</Body1>
-          <Circle />
-          <Caption2>11:23</Caption2>
-          <SettingButton />
-        </div>
+      <CommentListSectionWrapper>
+        {/* 댓글 리스트 , 최대 5개까지*/}
+        {commentCard?.map((item) => (
+          <CommentCard>
+            <div className="flex1">
+              <Characters number={1} width="3.2rem" height="3.3rem" />
+              <Body1>{item.nickName}</Body1>
+              <Circle />
+              <Caption2>{item.updatedAt}</Caption2>
+              <SettingButton />
+            </div>
+            <Body3 color={Grey1}>{item.content}</Body3>
+            <LikeButton>
+              <HeartIcon />
+              <Caption1 color={Grey2}>{item.totalLike}</Caption1>
+            </LikeButton>
+            {/* {isMyPost && (
+              <SelectButton
+                onClick={() => {
+                  setPickedCommentId(item.id);
+                  setIsPickPopup(true);
+                }}
+              >
+                <GreenCheckIcon />
+                <Caption1>이 답변 채택하기</Caption1>
+              </SelectButton>
+            )} */}
 
-        <Body3 color={Grey1}>
-          권태기 증상이 맞는 것 같네요. 속상하시겠지만, 대화를 통해 충분히
-          극복하실 수 있어요. 어쩌구 저쩌구.
-        </Body3>
-        <LikeButton>
-          <HeartIcon />
-          <Caption1 color={Grey2}>28</Caption1>
-        </LikeButton>
-        <SelectButton>
-          <GreenCheckIcon />
-          <Caption1>이 답변 채택하기</Caption1>
-        </SelectButton>
-      </CommentCard>{' '}
-      <CommentCard>
-        <div className="flex1">
-          <Characters number={1} width="3.2rem" height="3.3rem" />
-          <Body1>연애상담마스터</Body1>
-          <Circle />
-          <Caption2>11:23</Caption2>
-          <SettingButton />
-        </div>
+            <SharePickButton>
+              <CheckIcon />
+              <Caption1 color={White}>셰어 Pick</Caption1>
+            </SharePickButton>
+          </CommentCard>
+        ))}
 
-        <Body3 color={Grey1}>
-          권태기 증상이 맞는 것 같네요. 속상하시겠지만, 대화를 통해 충분히
-          극복하실 수 있어요. 어쩌구 저쩌구.
-        </Body3>
-        <LikeButton>
-          <HeartEmptyIcon />
-          <Caption1 color={Grey2}>28</Caption1>
-        </LikeButton>
-      </CommentCard>
-      <Space height="10rem" />
-    </CommentListSectionWrapper>
+        <Space height="10rem" />
+      </CommentListSectionWrapper>
+    </>
   );
 }
 
@@ -133,6 +163,18 @@ const CommentCard = styled.div`
     height: 3.3rem;
     align-items: center;
   }
+`;
+
+const SharePickButton = styled.div`
+  display: flex;
+  border-radius: 0.8rem;
+  position: absolute;
+  bottom: 1.2rem;
+  right: 1.6rem;
+  padding: 0.6rem 0.8rem;
+  align-items: center;
+  background: ${Red};
+  gap: 0.4rem;
 `;
 
 const LikeButton = styled.div`

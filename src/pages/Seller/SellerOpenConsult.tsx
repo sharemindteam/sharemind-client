@@ -32,7 +32,7 @@ function SellerOpenConsult() {
       />
       {isSendPopupOpen && (
         <>
-          <IsSendPopup text={text} setText={setText} />
+          <IsSendPopup text={text} setText={setText} setIsReplying={setIsReplying} />
           <BackDrop />
         </>
       )}

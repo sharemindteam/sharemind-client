@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
@@ -15,25 +15,99 @@ import {
   openConsultApiObject,
 } from 'pages/Buyer/BuyerConsult';
 import { getOneOpenConsult } from 'api/get';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { postLikeOpenConsult, postScrapOpenConsult } from 'api/post';
+import { deletePostLikes, deletePostScraps } from 'api/delete';
 function MainQuestionSection() {
   const [isSave, setIsSave] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [card, setCard] = useState<openConsultApiObject>();
+  // 보내기 중복 방지
+  const [isSending, setIsSending] = useState<boolean>(false);
   const { id } = useParams();
+  const navigate = useNavigate();
+  const handleClickLikeButton = useCallback(
+    async (e: React.MouseEvent<HTMLElement>) => {
+      e.stopPropagation();
+      if (isSending) {
+        return;
+      } else {
+        if (isLike) {
+          setIsSending(true);
+          const res: any = await deletePostLikes(id);
+          if (res.response?.status === 400) {
+            alert('이미 좋아요를 취소한 게시물입니다.');
+          } else if (res.response?.status === 404) {
+            alert('존재하지 않은 게시물입니다.');
+            navigate('/open-consult');
+          }
+          setIsLike(false);
+          setIsSending(false);
+        } else {
+          setIsSending(true);
+          const res: any = await postLikeOpenConsult(id);
+          if (res.response?.status === 400) {
+            alert('이미 좋아요를 누른 게시물입니다.');
+          } else if (res.response?.status === 404) {
+            alert('존재하지 않은 게시물입니다.');
+            navigate('/open-consult');
+          }
+          setIsLike(true);
+          setIsSending(false);
+        }
+      }
+    },
+    [id, isLike, isSending],
+  );
+
+  const handleClickScrapButton = useCallback(
+    async (e: React.MouseEvent<HTMLElement>) => {
+      e.stopPropagation();
+      if (isSending) {
+        return;
+      } else {
+        if (isSave  ) {
+          setIsSending(true);
+          const res: any = await deletePostScraps(id);
+          if (res.response?.status === 400) {
+            alert('이미 저장 취소한 게시물입니다.');
+          } else if (res.response?.status === 404) {
+            alert('존재하지 않은 게시물입니다.');
+            navigate('/open-consult');
+          }
+          setIsSave(false);
+          setIsSending(false);
+        } else {
+          setIsSending(true);
+          const res: any = await postScrapOpenConsult(id);
+          if (res.response?.status === 400) {
+            alert('이미 저장한 게시물입니다.');
+          } else if (res.response?.status === 404) {
+            alert('존재하지 않은 게시물입니다.');
+            navigate('/open-consult');
+          }
+          setIsSave(true);
+          setIsSending(false);
+        }
+      }
+    },
+    [id, isSave, isSending],
+  );
   useEffect(() => {
     const fetchOneConsult = async () => {
       try {
         const res: any = await getOneOpenConsult(id);
         if (res.status === 200) {
           setCard(res.data);
+          setIsLike(res.data.isLiked);
+          setIsSave(res.data.isScrapped);
         }
       } catch (err) {
         alert(err);
       }
     };
     fetchOneConsult();
-  }, []);
+  }, [isLike, isSave, id]);
   return (
     <MainQuestionWrapper>
       <MainQuestionText>
@@ -59,34 +133,18 @@ function MainQuestionSection() {
       <ButtonList>
         <ButtonItem>
           {isLike ? (
-            <HeartIcon
-              onClick={() => {
-                setIsLike(false);
-              }}
-            />
+            <HeartIcon onClick={handleClickLikeButton} />
           ) : (
-            <HeartEmptyIcon
-              onClick={() => {
-                setIsLike(true);
-              }}
-            />
+            <HeartEmptyIcon onClick={handleClickLikeButton} />
           )}
 
           <Caption1 color={Grey2}>{card?.totalLike}</Caption1>
         </ButtonItem>
         <ButtonItem>
           {isSave ? (
-            <SaveResizeIcon
-              onClick={() => {
-                setIsSave(false);
-              }}
-            />
+            <SaveResizeIcon onClick={handleClickScrapButton} />
           ) : (
-            <SaveEmptyIcon
-              onClick={() => {
-                setIsSave(true);
-              }}
-            />
+            <SaveEmptyIcon onClick={handleClickScrapButton} />
           )}
 
           <Caption1 color={Grey2}>{card?.totalScrap}</Caption1>

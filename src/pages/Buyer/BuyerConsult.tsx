@@ -33,8 +33,11 @@ export interface openConsultApiObject {
   title: string;
   content: string;
   isPublic: boolean;
+  isCompleted: null | boolean;
   isLiked: boolean;
   totalLike: number;
+  publishedAt: string;
+  isChosen: boolean;
   isScrapped: boolean;
   totalScrap: number;
   totalComment: number;

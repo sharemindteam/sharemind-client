@@ -51,7 +51,6 @@ import { BuyerOpenConsultRequest } from 'pages/Buyer/BuyerOpenConsultRequest';
 import { BuyerOpenPaymentDetail } from 'pages/Buyer/BuyerOpenPaymentDetail';
 import BuyerWriteOpenConsult from 'pages/Buyer/BuyerWriteOpenConsult';
 import BuyerOpenConsultDetail from 'pages/Buyer/BuyerOpenConsultDetail';
-import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenConsultSection';
 import BuyerFinishPayment from 'pages/Buyer/BuyerFinishPayment';
 const Router = () => {
   return (
