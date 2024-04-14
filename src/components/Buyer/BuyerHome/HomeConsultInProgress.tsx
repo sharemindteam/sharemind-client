@@ -39,13 +39,12 @@ export const HomeConsultInProgress = () => {
      *
      */
     const connectConsultInProgress = (id: number) => {
-      if (stompClient.current && isConnected) {
+      if (stompClient.current && isConnected && isLogined) {
         stompClient.current.subscribe(
           '/queue/chatMessages/customers/' + id,
           (message) => {
             const response = JSON.parse(message.body);
             setConsultCard((prevCardItem) => {
-              console.log(prevCardItem);
               return {
                 ...prevCardItem,
                 latestMessageContent: response.content,
@@ -86,13 +85,13 @@ export const HomeConsultInProgress = () => {
     fetchData();
 
     return () => {
-      if (stompClient.current && isConnected) {
+      if (stompClient.current && isConnected && isLogined) {
         stompClient.current?.unsubscribe(
           '/queue/chatMessages/customers/' + currentChatIdRef.current,
         );
       }
     };
-  }, [stompClient, isConnected]);
+  }, [stompClient, isConnected, isLogined]);
 
   if (!isLogined || !totalOngoing || !consultCard) {
     return <></>;
