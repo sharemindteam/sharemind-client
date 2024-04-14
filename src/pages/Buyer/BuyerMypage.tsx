@@ -14,7 +14,7 @@ import { getCustomersNickname } from 'api/get';
 export const BuyerMypage = () => {
   const navigate = useNavigate();
   //로그인 여부 temp
-  const [IsLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
   //로딩 state
   const [isLoading, setIsLoading] = useState<boolean>(true);
   //회원닉네임
@@ -60,7 +60,7 @@ export const BuyerMypage = () => {
           }}
         />
         <TabA1 isBuyer={true} initState={4} />
-        {IsLogin ? (
+        {isLogin ? (
           <>
             <UserCard>
               <div className="profile">
@@ -149,7 +149,7 @@ export const BuyerMypage = () => {
             서비스 소개
           </Body2>
         </div>
-        {IsLogin ? (
+        {isLogin ? (
           <>
             <div className="additional-box">
               <Body2 color={Grey1}>결제 문의</Body2>
