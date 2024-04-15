@@ -317,6 +317,7 @@ const TextArea = styled.textarea<{ tagStatus: number }>`
   color:  #33333a;
   font-size: 1.6rem;
   font-style: normal;
+  font-family:Pretendard;
   font-weight: 400;
   line-height: 150%; /* 2.4rem */
   border: none;

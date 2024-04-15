@@ -34,7 +34,11 @@ const OpenConsultHeaderWrapper = styled.div`
   padding: 1.2rem 2rem;
   background-color: ${White};
   justify-content: center;
-  position: sticky;
+  position: fixed;
+  @media (min-width: 768px) {
+    width: 37.5rem;
+  }
+  width: 100%;
   border-bottom: 1px solid rgba(242, 241, 248, 0.95);
   top: 0;
   z-index: 1000;
