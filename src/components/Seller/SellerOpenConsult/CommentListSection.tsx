@@ -19,6 +19,11 @@ import { getCounselorsComments } from 'api/get';
 import { useParams } from 'react-router-dom';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useRecoilValue } from 'recoil';
+import { convertCategoryEnum } from 'utils/convertCategoryEnum';
+import {
+  consultCategoryToCharNum,
+  consultStyleToCharNum,
+} from 'utils/convertStringToCharNum';
 
 export interface commentApiObject {
   commentId: string;
@@ -26,6 +31,7 @@ export interface commentApiObject {
   content: string;
   isLiked: boolean;
   totalLike: number;
+  consultStyle: string;
   updatedAt: string;
   isChosen: boolean;
 }
@@ -64,7 +70,11 @@ function CommentListSection() {
         return (
           <CommentCard key={idx}>
             <div className="flex1">
-              <Characters number={1} width="3.2rem" height="3.3rem" />
+              <Characters
+                number={consultStyleToCharNum(card.consultStyle) ?? 1}
+                width="3.2rem"
+                height="3.3rem"
+              />
               <Body1>{card.nickName}</Body1>
               <Circle />
               <Caption2>{card.updatedAt}</Caption2>
