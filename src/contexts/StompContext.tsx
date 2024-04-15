@@ -98,9 +98,10 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
       },
       (error: any) => {
         setIsConnected(false);
-        console.error(error);
         if (error.headers.message === 'UNAUTHORIZED') {
           reissueToken();
+        } else if (error.headers.message === '404 NOT_FOUND') {
+          console.error(error.command, error.headers.message);
         } else {
           alert(error);
         }
