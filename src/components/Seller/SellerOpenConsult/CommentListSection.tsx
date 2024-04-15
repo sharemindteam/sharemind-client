@@ -9,9 +9,8 @@ import {
   LightGreen,
   LightRed,
 } from 'styles/color';
-import { Body1, Body3, Body4, Caption1, Caption2 } from 'styles/font';
+import { Body1, Body3, Caption1, Caption2 } from 'styles/font';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
 import { ReactComponent as SettingIcon } from 'assets/icons/icon-option.svg';
 import { Characters } from 'utils/Characters';
 import { Space } from 'components/Common/Space';
@@ -19,6 +18,7 @@ import { getCounselorsComments } from 'api/get';
 import { useParams } from 'react-router-dom';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useRecoilValue } from 'recoil';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 
 export interface commentApiObject {
   commentId: string;
@@ -26,6 +26,7 @@ export interface commentApiObject {
   content: string;
   isLiked: boolean;
   totalLike: number;
+  consultStyle: string;
   updatedAt: string;
   isChosen: boolean;
 }
@@ -64,7 +65,11 @@ function CommentListSection() {
         return (
           <CommentCard key={idx}>
             <div className="flex1">
-              <Characters number={1} width="3.2rem" height="3.3rem" />
+              <Characters
+                number={consultStyleToCharNum(card.consultStyle) ?? 1}
+                width="3.2rem"
+                height="3.3rem"
+              />
               <Body1>{card.nickName}</Body1>
               <Circle />
               <Caption2>{card.updatedAt}</Caption2>

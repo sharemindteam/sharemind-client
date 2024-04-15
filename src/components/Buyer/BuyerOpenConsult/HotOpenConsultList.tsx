@@ -52,6 +52,7 @@ const HotList = styled.div`
 
 const HotTitleItem = styled.div`
   padding: 1.2rem 1.6rem;
+  cursor: pointer;
   background-color: ${Grey6};
   border-radius: 1.2rem;
 `;

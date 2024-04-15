@@ -1,8 +1,6 @@
 import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentListSection';
 import React, {
-  MouseEventHandler,
   useCallback,
-  useEffect,
   useState,
 } from 'react';
 import styled from 'styled-components';
@@ -16,6 +14,7 @@ import { ReactComponent as GreenCheckIcon } from 'assets/icons/icon-green-check.
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
 import { deleteCommentLikes } from 'api/delete';
 import { postLikeComment } from 'api/post';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 interface CommentCardProps {
   item: commentApiObject;
   isMyPost: boolean;
@@ -67,7 +66,11 @@ function CommentCard({
   return (
     <CommentCardWrapper>
       <div className="flex1">
-        <Characters number={1} width="3.2rem" height="3.3rem" />
+        <Characters
+          number={consultStyleToCharNum(item.consultStyle) ?? 1}
+          width="3.2rem"
+          height="3.3rem"
+        />
         <Body1>{item.nickName}</Body1>
         <Circle />
         <Caption2>{item.updatedAt}</Caption2>
