@@ -19,10 +19,10 @@ function BuyerOpenConsult() {
         }}
       />
       <TabA1 isBuyer={true} initState={3} />
-      <section className="fire">
+      <section className="hot-consult-list">
         <HotOpenConsultList />
       </section>
-      <section className="consult-list">
+      <section className="open-consult-list">
         <OpenConsultList />
       </section>
       <CreateConsultButtonWrapper>
@@ -40,7 +40,7 @@ function BuyerOpenConsult() {
 }
 
 const Wrapper = styled.div`
-  section.fire {
+  section.hot-consult-list {
     height: 4.6rem;
     margin: 1.2rem 0rem 1.2rem 2rem;
     overflow: hidden;

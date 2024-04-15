@@ -1,5 +1,10 @@
 import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentListSection';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6, Red, White } from 'styles/color';
 import { Body1, Body3, Caption1, Caption2 } from 'styles/font';
@@ -10,59 +15,54 @@ import { ReactComponent as SettingIcon } from 'assets/icons/icon-option.svg';
 import { ReactComponent as GreenCheckIcon } from 'assets/icons/icon-green-check.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
 import { deleteCommentLikes } from 'api/delete';
-import { useNavigate, useParams } from 'react-router-dom';
 import { postLikeComment } from 'api/post';
-import { getCustomersComments } from 'api/get';
 interface CommentCardProps {
   item: commentApiObject;
   isMyPost: boolean;
   setIsPickPopup: React.Dispatch<React.SetStateAction<boolean>>;
   setPickedCommentId: React.Dispatch<React.SetStateAction<string>>;
+  isEndConsult: boolean | undefined;
 }
 function CommentCard({
   item,
   isMyPost,
   setPickedCommentId,
   setIsPickPopup,
+  isEndConsult,
 }: CommentCardProps) {
   const [isLike, setIsLike] = useState<boolean>(item.isLiked);
   // 보내기 중복 방지
   const [isSending, setIsSending] = useState<boolean>(false);
   const [isFirstRendering, setIsFirstRendering] = useState<boolean>(true);
-  const { id } = useParams();
-  const handleClickLikeButton = useCallback(
-    async (e: React.MouseEvent<HTMLElement>) => {
-      e.stopPropagation();
-      if (isSending) {
-        return;
-      } else {
-        if (isLike) {
-          setIsSending(true);
-          const res: any = await deleteCommentLikes(item.commentId);
-          if (res.response?.status === 400) {
-            alert('이미 좋아요를 취소한 댓글입니다.');
-          } else if (res.response?.status === 404) {
-            alert('존재하지 않은 댓글입니다.');
-          }
-          setIsLike(false);
-          setIsSending(false);
-          setIsFirstRendering(false);
-        } else {
-          setIsSending(true);
-          const res: any = await postLikeComment(item.commentId);
-          if (res.response?.status === 400) {
-            alert('이미 좋아요를 누른 댓글입니다.');
-          } else if (res.response?.status === 404) {
-            alert('존재하지 않은 댓글입니다.');
-          }
-          setIsLike(true);
-          setIsSending(false);
-          setIsFirstRendering(false);
+  const handleClickLikeButton = useCallback(async () => {
+    if (isSending) {
+      return;
+    } else {
+      if (isLike) {
+        setIsSending(true);
+        const res: any = await deleteCommentLikes(item.commentId);
+        if (res.response?.status === 400) {
+          alert('이미 좋아요를 취소한 댓글입니다.');
+        } else if (res.response?.status === 404) {
+          alert('존재하지 않은 댓글입니다.');
         }
+        setIsLike(false);
+        setIsSending(false);
+        setIsFirstRendering(false);
+      } else {
+        setIsSending(true);
+        const res: any = await postLikeComment(item.commentId);
+        if (res.response?.status === 400) {
+          alert('이미 좋아요를 누른 댓글입니다.');
+        } else if (res.response?.status === 404) {
+          alert('존재하지 않은 댓글입니다.');
+        }
+        setIsLike(true);
+        setIsSending(false);
+        setIsFirstRendering(false);
       }
-    },
-    [item, isLike],
-  );
+    }
+  }, [item, isLike]);
 
   return (
     <CommentCardWrapper>
@@ -88,7 +88,7 @@ function CommentCard({
             : item.totalLike}
         </Caption1>
       </LikeButton>
-      {isMyPost && !item.isChosen && (
+      {isMyPost && !item.isChosen && !isEndConsult && (
         <SelectButton
           onClick={() => {
             setPickedCommentId(item.commentId);

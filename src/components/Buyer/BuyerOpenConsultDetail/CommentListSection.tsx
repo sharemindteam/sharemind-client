@@ -10,8 +10,13 @@ import CommentCard from './CommentCard';
 
 function CommentListSection() {
   const [commentCard, setCommendCard] = useState<commentApiObject[]>([]);
+  // 내 게시물인지 아닌지
   const [isMyPost, setIsMyPost] = useState<boolean>(false);
+  // 팝업 창 열지 말지
   const [isPickPopup, setIsPickPopup] = useState<boolean>(false);
+  // 상담이 종료되었는지 여부 (채택된 댓글이 있는가)
+  const [isEndConsult, setIsEndConsult] = useState<boolean | undefined>();
+  // 선택한 댓글 아이디 (좋아요, 채택)
   const [pickedCommentId, setPickedCommentId] = useState<string>('');
   const { id } = useParams();
   const navigate = useNavigate();
@@ -22,6 +27,11 @@ function CommentListSection() {
         const res: any = await getCustomersComments(id);
         if (res.status === 200) {
           setCommendCard(res.data);
+          for (let obj of res.data) {
+            if (obj.hasOwnProperty('isChosen') && obj.isChosen === true) {
+              setIsEndConsult(true);
+            }
+          }
           const res2: any = await getCustomerIsWriter(id);
           if (res2.status === 200) setIsMyPost(res.data);
           else if (res2?.response.status === 404) {
@@ -59,6 +69,7 @@ function CommentListSection() {
             key={item.commentId}
             item={item}
             isMyPost={isMyPost}
+            isEndConsult={isEndConsult}
             setIsPickPopup={setIsPickPopup}
             setPickedCommentId={setPickedCommentId}
           />

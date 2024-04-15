@@ -31,7 +31,6 @@ function OpenConsultList() {
     };
     fetchOpenConsultData();
   }, []);
-  console.log(cardData);
   return (
     <div>
       <BuyerOpenConsultCardList>
