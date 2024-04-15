@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { Body1, Caption1, Caption2 } from 'styles/font';
@@ -14,59 +14,106 @@ import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import { Space } from 'components/Common/Space';
 import { BackDrop } from 'components/Common/BackDrop';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
-import { getCustomerPublicConsultList } from 'api/get';
+import {
+  getCustomerOpenConsultList,
+  getCustomerPublicConsultList,
+} from 'api/get';
+import { useNavigate } from 'react-router-dom';
+import useIntersectionObserver from 'hooks/useIntersectionObserver';
 
 function OpenConsultList() {
   const [cardData, setCardData] = useState<openConsultApiObject[]>([]);
-  useEffect(() => {
-    const fetchOpenConsultData = async () => {
+  const preventRef = useRef(true);
+  const navigate = useNavigate();
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
+    if (entry[0].isIntersecting && !isLastElem && preventRef.current) {
+      preventRef.current = false;
+      await fetchOpenConsult(
+        cardData[cardData.length - 1]?.postId,
+        cardData[cardData.length - 1]?.finishedAt,
+      );
+      preventRef.current = true;
+    }
+  };
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.8,
+    onIntersect,
+  });
+  const fetchOpenConsult = async (lastId: number, lastDate: string) => {
+    try {
       const params = {
-        postId: '0',
-        finishedAt: new Date().toISOString().slice(0, 19),
+        postId: lastId,
+        finishedAt: lastDate,
       };
       const res: any = await getCustomerPublicConsultList({ params });
+
       if (res.status === 200) {
-        setCardData(res.data);
+        if (res.data.length !== 0) {
+          if (lastId === 0) {
+            setCardData(res.data);
+          } else {
+            const updatedReviews = [...cardData, ...res.data];
+            setCardData(updatedReviews);
+          }
+        } else {
+          setIsLastElem(true);
+        }
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 회원입니다.');
+        navigate('/login');
       }
-    };
-    fetchOpenConsultData();
+    } catch (err) {
+      alert(err);
+    } finally {
+      if (lastId === 0) {
+        setIsLoading(false);
+      }
+    }
+  };
+  useLayoutEffect(() => {
+    fetchOpenConsult(0, new Date().toISOString().slice(0, 19));
   }, []);
   return (
     <div>
       <BuyerOpenConsultCardList>
         {/* 상담카드 부분 */}
-        <BuyerOpenConsultCard>
-          <div className="row1">
-            <Body1>이거 권태기 증상 맞나요?</Body1>
-            <PrivateSign>
-              <LockIcon />
-              <Caption1 color={Grey3}>비공개</Caption1>
-            </PrivateSign>
-          </div>
-          <Space height="1.2rem" />
-          <div className="row2">
-            요즘따라 여자친구가 먼저 만나자고 이야기도 안 하고 만나면
-            피곤하다고만 해요. 스킨십도 하려고 하지 않고 인생이 재미가
-            없다네요.. 그런데 여자친구가 다른 남자 인스타 피드에는 좋아요를
-            눌러요... 이거 여자친구가 권태기가 맞는 걸까요? 맞다면 어떻게
-            이야기를 꺼내면 좋을까요? 너무 힘듭니다..
-          </div>
-          <div className="row3">
-            <IconItem>
-              <HeartResizeIcon />
-              <Caption1 color={Grey2}>28</Caption1>
-            </IconItem>
-            <IconItem>
-              <SaveIcon />
-              <Caption1 color={Grey2}>28</Caption1>
-            </IconItem>
-            <IconItem>
-              <CommentIcon />
-              <Caption1 color={Grey2}>28</Caption1>
-            </IconItem>
-          </div>
-          <TimeLeft>8분 전</TimeLeft>
-        </BuyerOpenConsultCard>
+        {cardData.map((item) => (
+          <BuyerOpenConsultCard
+            onClick={() => {
+              navigate(`/open-consult/${item.postId}`);
+            }}
+          >
+            <div className="row1">
+              <Body1>{item.title}</Body1>
+            </div>
+            <Space height="1.2rem" />
+            <div className="row2">{item.content}</div>
+            <div className="row3">
+              <IconItem>
+                <HeartResizeIcon />
+                <Caption1 color={Grey2}>{item.totalLike}</Caption1>
+              </IconItem>
+              <IconItem>
+                <SaveIcon />
+                <Caption1 color={Grey2}>{item.totalScrap}</Caption1>
+              </IconItem>
+              <IconItem>
+                <CommentIcon />
+                <Caption1 color={Grey2}>{item.totalComment}</Caption1>
+              </IconItem>
+            </div>
+            <TimeLeft>{item.updatedAt}</TimeLeft>
+          </BuyerOpenConsultCard>
+        ))}
+        {!isLastElem ? (
+          <div ref={setTarget} style={{ height: '3.5rem' }} />
+        ) : (
+          <div style={{ height: '3.5rem' }} />
+        )}
         {/* 상담카드 부분 */}
       </BuyerOpenConsultCardList>
     </div>
@@ -83,11 +130,20 @@ const BuyerOpenConsultCardList = styled.div`
 const BuyerOpenConsultCard = styled.div`
   width: 100%;
   height: 14rem;
+  cursor: pointer;
   position: relative;
   background-color: ${Grey6};
   padding: 1.6rem;
   box-sizing: border-box;
   border-radius: 1.2rem;
+  .row1 {
+    width: calc(100% - 5rem);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-height: 5rem;
+    overflow: hidden;
+  }
   .row2 {
     display: -webkit-box;
     max-height: 4.7rem;

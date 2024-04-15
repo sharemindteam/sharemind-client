@@ -1,23 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FireIcon } from 'assets/icons/icon-fire.svg';
 import { Body3, Body4 } from 'styles/font';
 import { Grey6 } from 'styles/color';
+import { getCustomerPopularConsultList } from 'api/get';
+import { useNavigate } from 'react-router-dom';
+interface apiHotConsultObj {
+  postId: number;
+  title: string;
+}
 function HotOpenConsultList() {
+  const [hotConsultList, setHotConsultList] = useState<apiHotConsultObj[]>([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchHotConsultList = async () => {
+      const res: any = await getCustomerPopularConsultList();
+      setHotConsultList(res.data);
+    };
+    fetchHotConsultList();
+  }, []);
   return (
     <HotList>
       <FireIconWrapper>
         <FireIcon />
       </FireIconWrapper>
-      <HotTitleItem>
-        <Body4>이거 권태기 증상 맞나요?</Body4>
-      </HotTitleItem>
-      <HotTitleItem>
-        <Body4>이거 권태기 증상 맞나요?</Body4>
-      </HotTitleItem>
-      <HotTitleItem>
-        <Body4>이거 권태기 증상 맞나요?</Body4>
-      </HotTitleItem>
+      {hotConsultList.map((item) => (
+        <HotTitleItem
+          onClick={() => {
+            navigate(`/open-consult/${item.postId}`);
+          }}
+        >
+          <Body4>
+            {item.title.length > 19
+              ? item.title.slice(0, 19) + '...'
+              : item.title}
+          </Body4>
+        </HotTitleItem>
+      ))}
     </HotList>
   );
 }

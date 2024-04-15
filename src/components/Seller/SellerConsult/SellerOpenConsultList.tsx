@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6, Red, White } from 'styles/color';
-import { Body1, Caption1, Caption2 } from 'styles/font';
+import { Body1, Caption1, Caption2, Heading } from 'styles/font';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
 import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
@@ -19,6 +19,7 @@ import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getCounselorsOpenConsultList } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 
 interface SellerConsultOpenProps {
   sortType: number;
@@ -114,6 +115,13 @@ function SellerOpenConsultList({
               내가 댓글을 작성한 글의 목록입니다.
             </Caption2>
           </GuideMessage>
+
+          {openConsultList.length === 0 && (
+            <EmptyWrapper>
+              <EmptyIcon />
+              <Heading>아직 답변한 상담이 없어요</Heading>
+            </EmptyWrapper>
+          )}
           {openConsultList.map((item) => (
             <SellerOpenConsultCard
               onClick={() => {
@@ -270,7 +278,15 @@ const IconItem = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
-
+const EmptyIcon = styled(Empty)`
+  padding: 4.7rem 4.41rem 4.603rem 4.5rem;
+`;
+const EmptyWrapper = styled.div`
+  margin: 10vh auto 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const Circle = styled.div`
   width: 0.2rem;
   height: 0.2rem;

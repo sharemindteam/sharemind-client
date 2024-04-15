@@ -40,7 +40,6 @@ const categoryList = {
 export const SellerMypageModifyProfile = () => {
   // 상담 카테고리 enum List,, 후에 POST할 때 Mapping 필요
   const [selectCategory, setSelectCategory] = useState<number[]>([]);
-  console.log(selectCategory);
   // 상담 스타일 string
   const [selectStyle, setSelectStyle] = useState<string>('');
   // 상담 방식 enum List
@@ -104,7 +103,6 @@ export const SellerMypageModifyProfile = () => {
           navigate('/seller/mypage/viewProfile');
         } else {
           const profileRes: any = await getProfiles();
-          console.log(profileRes);
           const data = profileRes.data;
           if (profileRes?.response?.status === 404) {
             alert('판매 정보가 등록되어 있지 않습니다.');

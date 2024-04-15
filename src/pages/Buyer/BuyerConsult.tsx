@@ -42,7 +42,7 @@ export interface openConsultApiObject {
   totalScrap: number;
   totalComment: number;
   updatedAt: string;
-  finishedAt?: string;
+  finishedAt: string;
   consultCategory?: string;
 }
 

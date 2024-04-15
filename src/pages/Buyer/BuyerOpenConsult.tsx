@@ -10,6 +10,7 @@ import HotOpenConsultList from 'components/Buyer/BuyerOpenConsult/HotOpenConsult
 import { Button } from 'components/Common/Button';
 function BuyerOpenConsult() {
   const navigate = useNavigate();
+  
   return (
     <Wrapper>
       <Header
