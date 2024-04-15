@@ -59,13 +59,13 @@ function OngoingCounsultBox({
           </div>
         )}
         <div className="flex-1-1">
-          <Name color={consultStatus === '상담 종료' ? Grey3 : Black}>
+          <Body1 color={consultStatus === '상담 종료' ? Grey3 : Black}>
             {counselorName}
-          </Name>
+          </Body1>
           <Circle />
-          <MinutesBefore color={consultStatus === '상담 종료' ? Grey4 : Grey2}>
+          <Caption2 color={consultStatus === '상담 종료' ? Grey4 : Grey2}>
             {beforeMinutes}
-          </MinutesBefore>
+          </Caption2>
         </div>
 
         {/* 상담사 프로필 상태에 따른 캐릭터 이미지 */}
@@ -142,25 +142,20 @@ const OngoingCounsultBoxWrapper = styled.div`
   }
 `;
 
-const Name = styled(Body1)``;
-
 const Circle = styled.div`
   width: 0.2rem;
   height: 0.2rem;
   border-radius: 100%;
   background-color: ${Grey3};
 `;
-const MinutesBefore = styled(Caption2)``;
 
 const Content = styled(Body3)`
-  text-overflow: ellipsis;
   width: calc(100% - 9rem);
+  max-height: 4.6rem;
   display: -webkit-box;
-  height: 4.7rem;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  align-self: flex-end;
-  margin-bottom: 0.4rem;
+  margin-top: 0.5rem;
   -webkit-line-clamp: 2;
 `;
 
@@ -176,4 +171,5 @@ const NewMessageCounts = styled.div`
   align-items: center;
   background-color: ${Green};
 `;
+
 export default OngoingCounsultBox;

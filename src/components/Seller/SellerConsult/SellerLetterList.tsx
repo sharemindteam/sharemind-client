@@ -42,7 +42,6 @@ function SellerLetterList({
     let res: any;
     try {
       res = await getConselorLetters({ params });
-      console.log(res.data);
       if (res.status === 200) {
         const data: ConsultInfoList = res.data;
         setConsultInfo(data);

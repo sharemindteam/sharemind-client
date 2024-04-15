@@ -10,8 +10,8 @@ import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.svg';
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
-import { BuyerChatSection } from 'components/Buyer/BuyerConsult/BuyerChatSection';
-import { BuyerLetterSection } from 'components/Buyer/BuyerConsult/BuyerLetterSection';
+import { BuyerConsultChatSection } from 'components/Buyer/BuyerConsult/BuyerConsultChatSection';
+import { BuyerConsultLetterSection } from 'components/Buyer/BuyerConsult/BuyerConsultLetterSection';
 import { useConsultParams } from 'hooks/useConsultParams';
 import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenConsultSection';
 
@@ -135,9 +135,9 @@ export const BuyerConsult = () => {
         </div>
       </div>
       {consultType === 'letter' ? (
-        <BuyerLetterSection sortType={sortType} isChecked={isChecked} />
+        <BuyerConsultLetterSection sortType={sortType} isChecked={isChecked} />
       ) : consultType === 'chat' ? (
-        <BuyerChatSection sortType={sortType} isChecked={isChecked} />
+        <BuyerConsultChatSection sortType={sortType} isChecked={isChecked} />
       ) : (
         <BuyerOpenConsultSection isChecked={isChecked} />
       )}

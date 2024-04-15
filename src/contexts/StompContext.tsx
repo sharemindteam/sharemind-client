@@ -13,10 +13,15 @@ import { useRecoilState } from 'recoil';
 import { isCustomerState } from 'utils/atom';
 import { useLocation } from 'react-router-dom';
 import { postPublicReissue } from 'api/post';
+import { getCookie, setCookie } from 'utils/cookie';
 /*connected to server undefined doesn't mean that something is wrong. This 
 line appears every time.
 https://stackoverflow.com/questions/46662524/java-spring-boot-websocket-communication-with-js
 */
+
+//
+//
+//
 
 interface StompProviderType {
   stompClient: MutableRefObject<CompatClient | null>;
@@ -25,12 +30,21 @@ interface StompProviderType {
   // disconnect: () => void;
   // sendMessage: (message: Message) => void;
 }
+
+//
+//
+//
+
 // StompProvider 컨텍스트 생성
 export const StompContext = createContext<StompProviderType>(
   {} as StompProviderType,
 );
 // 커스텀 훅을 사용하여 컨텍스트 값에 접근
 export const useStompContext = () => useContext(StompContext);
+
+//
+//
+//
 
 // StompProvider 컴포넌트 정의
 export const StompProvider: React.FC<{ children: ReactNode }> = ({
@@ -51,19 +65,22 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
   const reissueToken = async () => {
     try {
       const tokenResponse: any = await postPublicReissue({
-        refreshToken: localStorage.getItem('refreshToken'),
+        refreshToken: getCookie('refreshToken'),
       });
       if (tokenResponse.status === 200) {
         const { accessToken, refreshToken } = tokenResponse.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        setCookie('accessToken', accessToken);
+        setCookie('refreshToken', refreshToken);
         connectChat();
       }
     } catch (error) {
-      console.log('socket unauthorized');
+      console.error(error);
     }
   };
 
+  /**
+   *
+   */
   const connectChat = () => {
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(() => {
@@ -72,7 +89,7 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
     // 연결
     stompClient.current.connect(
       {
-        Authorization: localStorage.getItem('accessToken'),
+        Authorization: getCookie('accessToken'),
         isCustomer: isCustomer,
       },
       (frame: any) => {
@@ -83,6 +100,8 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
         setIsConnected(false);
         if (error.headers.message === 'UNAUTHORIZED') {
           reissueToken();
+        } else if (error.headers.message === '404 NOT_FOUND') {
+          console.error(error.command, error.headers.message);
         } else {
           alert(error);
         }
@@ -92,18 +111,26 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
     stompClient.current.reconnect_delay = 100;
   };
 
+  //
+  //
+  //
   useEffect(() => {
     connectChat();
     // Provider 언마운트 시 연결 해제
     return () => {
       if (stompClient.current) {
-        stompClient.current.disconnect();
+        if (stompClient.current.connected) {
+          stompClient.current.disconnect();
+        }
         setIsConnected(false);
         console.log('WebSocket disconnected');
       }
     };
   }, [isCustomer]); // 한 번만 실행
-  //Context 객체의 Provider 컴포넌트
+
+  //
+  // Context 객체의 Provider 컴포넌트
+  //
   return (
     <StompContext.Provider value={{ stompClient, connectChat, isConnected }}>
       {children}

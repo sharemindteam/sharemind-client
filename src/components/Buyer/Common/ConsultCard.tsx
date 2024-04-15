@@ -1,5 +1,14 @@
 import styled from 'styled-components';
-import { Black, Green, Grey1, Grey2, Grey6, White } from 'styles/color';
+import {
+  Black,
+  Green,
+  Grey1,
+  Grey2,
+  Grey3,
+  Grey4,
+  Grey6,
+  White,
+} from 'styles/color';
 import { Body1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { TagA2Consult } from '../../Common/TagA2Consult';
@@ -36,6 +45,8 @@ export const ConsultCard = ({
 }: ConsultCardProps) => {
   const navigate = useNavigate();
   const consultStatus = status as ConsultState;
+  const isBlur: boolean =
+    consultStatus === '상담 종료' || consultStatus === '상담 취소';
   if (unreadMessageCount === null) {
     unreadMessageCount = 0;
   }
@@ -43,6 +54,11 @@ export const ConsultCard = ({
     e?.stopPropagation();
     navigate('/reviewManage');
   };
+
+  //
+  //
+  //
+
   return (
     <Wrapper
       onClick={() => {
@@ -57,20 +73,28 @@ export const ConsultCard = ({
         <ConsultStateBox>
           <div className="col1">
             <TagA2Consult tagType={consultStatus} />
-            <Characters
-              number={consultStyleToCharNum(consultStyle)}
-              width="5.4rem"
-              height="5.1rem"
-            />
+            <div
+              style={{
+                opacity: `${isBlur ? '0.5' : '1'}`,
+              }}
+            >
+              <Characters
+                number={consultStyleToCharNum(consultStyle)}
+                width="5.4rem"
+                height="5.1rem"
+              />
+            </div>
           </div>
           <div className="col2">
             <div className="col2-row1">
               <div className="name-row">
-                <Body1 color={Black}>{opponentNickname}</Body1>
+                <Body1 color={isBlur ? Grey3 : Black}>{opponentNickname}</Body1>
                 {latestMessageUpdatedAt !== null && (
                   <>
-                    <Caption2 color={Grey2}>•</Caption2>
-                    <Caption2 color={Grey2}>{latestMessageUpdatedAt}</Caption2>
+                    <Caption2 color={isBlur ? Grey4 : Grey2}>•</Caption2>
+                    <Caption2 color={isBlur ? Grey4 : Grey2}>
+                      {latestMessageUpdatedAt}
+                    </Caption2>
                   </>
                 )}
               </div>
@@ -81,7 +105,9 @@ export const ConsultCard = ({
               ) : null}
             </div>
             {latestMessageContent !== null ? (
-              <CardText color={Grey1}>{latestMessageContent}</CardText>
+              <CardText color={isBlur ? Grey3 : Grey1}>
+                {latestMessageContent}
+              </CardText>
             ) : (
               <CardText color={Grey1}>
                 {opponentNickname}님께 고민 내용을 남겨 주세요.{' '}
@@ -109,7 +135,7 @@ export const ConsultCard = ({
 const Wrapper = styled.div`
   width: 89%;
   background-color: ${Grey6};
-  border-radius: 1.2rem;
+  border-radius: 0.75rem;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -158,14 +184,14 @@ const ConsultStateBox = styled.div`
     align-items: center;
   }
 `;
-export const CardText = styled.div`
+export const CardText = styled.div<{ color: string }>`
   width: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   -webkit-line-clamp: 2;
   font-family: Pretendard;
-  color: ${Grey1};
+  color: ${(props) => props.color};
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 155%;

@@ -9,6 +9,7 @@ export const passwordTypeValid = (str: string) => {
     return false;
   }
 };
+
 //10자 이상 여부
 export const passwordLengthValid = (str: string) => {
   const pwRegExp = /^[A-Za-z\d\W_]{10,}$/;
