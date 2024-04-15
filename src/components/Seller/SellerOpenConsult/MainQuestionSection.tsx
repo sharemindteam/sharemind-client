@@ -9,9 +9,10 @@ import { Space } from 'components/Common/Space';
 import { getCounselorsOneConsult } from 'api/get';
 import { useParams } from 'react-router-dom';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
+import { formattedMessage } from 'utils/formattedMessage';
 function MainQuestionSection() {
   const { consultid } = useParams();
-  const [card, setCard] = useState<openConsultApiObject>({});
+  const [card, setCard] = useState<openConsultApiObject | undefined>(undefined);
   useEffect(() => {
     const fetchOneConsult = async () => {
       try {
@@ -27,8 +28,8 @@ function MainQuestionSection() {
     <MainQuestionWrapper>
       <MainQuestionText>
         <div className="row1">
-          <Body1>{card.title}</Body1>
-          {!card.isPublic && (
+          <Body1>{card?.title}</Body1>
+          {!card?.isPublic && (
             <PrivateSign>
               <LockIcon />
               <Caption1 color={Grey3}>비공개</Caption1>
@@ -36,23 +37,23 @@ function MainQuestionSection() {
           )}
         </div>
         <Space height="1.2rem" />
-        <div className="row2">{card.content}</div>
+        <div className="row2">{formattedMessage(card?.content)}</div>
         <Space height="0.8rem" />
         <div className="row3">
-          <Caption2 color={Grey2}>{card.updatedAt}</Caption2>
+          <Caption2 color={Grey2}>{card?.updatedAt}</Caption2>
           <Circle />
-          <Caption2 color={Grey2}>{card.consultCategory}</Caption2>
+          <Caption2 color={Grey2}>{card?.consultCategory}</Caption2>
         </div>
         <Space height="1rem" />
       </MainQuestionText>
       <ButtonList>
         <ButtonItem>
           <HeartIcon />
-          <Caption1 color={Grey2}>{card.totalLike}</Caption1>
+          <Caption1 color={Grey2}>{card?.totalLike}</Caption1>
         </ButtonItem>
         <ButtonItem>
           <SaveResizeIcon />
-          <Caption1 color={Grey2}>{card.totalScrap}</Caption1>
+          <Caption1 color={Grey2}>{card?.totalScrap}</Caption1>
         </ButtonItem>
       </ButtonList>
     </MainQuestionWrapper>

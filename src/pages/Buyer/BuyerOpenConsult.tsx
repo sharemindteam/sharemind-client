@@ -3,14 +3,11 @@ import { TabA1 } from 'components/Common/TabA1';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Green } from 'styles/color';
-import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import OpenConsultList from 'components/Buyer/BuyerOpenConsult/OpenConsultList';
 import HotOpenConsultList from 'components/Buyer/BuyerOpenConsult/HotOpenConsultList';
 import { Button } from 'components/Common/Button';
 function BuyerOpenConsult() {
   const navigate = useNavigate();
-  
   return (
     <Wrapper>
       <Header

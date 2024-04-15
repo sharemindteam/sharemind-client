@@ -13,6 +13,7 @@ import { getOneOpenConsult } from 'api/get';
 import { useNavigate, useParams } from 'react-router-dom';
 import { postLikeOpenConsult, postScrapOpenConsult } from 'api/post';
 import { deletePostLikes, deletePostScraps } from 'api/delete';
+import { formattedMessage } from 'utils/formattedMessage';
 function MainQuestionSection() {
   const [isSave, setIsSave] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
@@ -21,73 +22,65 @@ function MainQuestionSection() {
   const [isSending, setIsSending] = useState<boolean>(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const handleClickLikeButton = useCallback(
-    async (e: React.MouseEvent<HTMLElement>) => {
-      e.stopPropagation();
-      if (isSending) {
-        return;
-      } else {
-        if (isLike) {
-          setIsSending(true);
-          const res: any = await deletePostLikes(id);
-          if (res.response?.status === 400) {
-            alert('이미 좋아요를 취소한 게시물입니다.');
-          } else if (res.response?.status === 404) {
-            alert('존재하지 않은 게시물입니다.');
-            navigate('/open-consult');
-          }
-          setIsLike(false);
-          setIsSending(false);
-        } else {
-          setIsSending(true);
-          const res: any = await postLikeOpenConsult(id);
-          if (res.response?.status === 400) {
-            alert('이미 좋아요를 누른 게시물입니다.');
-          } else if (res.response?.status === 404) {
-            alert('존재하지 않은 게시물입니다.');
-            navigate('/open-consult');
-          }
-          setIsLike(true);
-          setIsSending(false);
+  const handleClickLikeButton = useCallback(async () => {
+    if (isSending) {
+      return;
+    } else {
+      if (isLike) {
+        setIsSending(true);
+        const res: any = await deletePostLikes(id);
+        if (res.response?.status === 400) {
+          alert('이미 좋아요를 취소한 게시물입니다.');
+        } else if (res.response?.status === 404) {
+          alert('존재하지 않은 게시물입니다.');
+          navigate('/open-consult');
         }
+        setIsLike(false);
+        setIsSending(false);
+      } else {
+        setIsSending(true);
+        const res: any = await postLikeOpenConsult(id);
+        if (res.response?.status === 400) {
+          alert('이미 좋아요를 누른 게시물입니다.');
+        } else if (res.response?.status === 404) {
+          alert('존재하지 않은 게시물입니다.');
+          navigate('/open-consult');
+        }
+        setIsLike(true);
+        setIsSending(false);
       }
-    },
-    [id, isLike, isSending],
-  );
+    }
+  }, [id, isLike, isSending]);
 
-  const handleClickScrapButton = useCallback(
-    async (e: React.MouseEvent<HTMLElement>) => {
-      e.stopPropagation();
-      if (isSending) {
-        return;
-      } else {
-        if (isSave) {
-          setIsSending(true);
-          const res: any = await deletePostScraps(id);
-          if (res.response?.status === 400) {
-            alert('이미 저장 취소한 게시물입니다.');
-          } else if (res.response?.status === 404) {
-            alert('존재하지 않은 게시물입니다.');
-            navigate('/open-consult');
-          }
-          setIsSave(false);
-          setIsSending(false);
-        } else {
-          setIsSending(true);
-          const res: any = await postScrapOpenConsult(id);
-          if (res.response?.status === 400) {
-            alert('이미 저장한 게시물입니다.');
-          } else if (res.response?.status === 404) {
-            alert('존재하지 않은 게시물입니다.');
-            navigate('/open-consult');
-          }
-          setIsSave(true);
-          setIsSending(false);
+  const handleClickScrapButton = useCallback(async () => {
+    if (isSending) {
+      return;
+    } else {
+      if (isSave) {
+        setIsSending(true);
+        const res: any = await deletePostScraps(id);
+        if (res.response?.status === 400) {
+          alert('이미 저장 취소한 게시물입니다.');
+        } else if (res.response?.status === 404) {
+          alert('존재하지 않은 게시물입니다.');
+          navigate('/open-consult');
         }
+        setIsSave(false);
+        setIsSending(false);
+      } else {
+        setIsSending(true);
+        const res: any = await postScrapOpenConsult(id);
+        if (res.response?.status === 400) {
+          alert('이미 저장한 게시물입니다.');
+        } else if (res.response?.status === 404) {
+          alert('존재하지 않은 게시물입니다.');
+          navigate('/open-consult');
+        }
+        setIsSave(true);
+        setIsSending(false);
       }
-    },
-    [id, isSave, isSending],
-  );
+    }
+  }, [id, isSave, isSending]);
   useEffect(() => {
     const fetchOneConsult = async () => {
       try {
@@ -116,7 +109,7 @@ function MainQuestionSection() {
           )}
         </div>
         <Space height="1.2rem" />
-        <div className="row2">{card?.content}</div>
+        <div className="row2">{formattedMessage(card?.content)}</div>
         <Space height="0.8rem" />
         <div className="row3">
           <Caption2 color={Grey2}>{card?.updatedAt}</Caption2>

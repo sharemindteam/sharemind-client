@@ -9,9 +9,8 @@ import {
   LightGreen,
   LightRed,
 } from 'styles/color';
-import { Body1, Body3, Body4, Caption1, Caption2 } from 'styles/font';
+import { Body1, Body3, Caption1, Caption2 } from 'styles/font';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
 import { ReactComponent as SettingIcon } from 'assets/icons/icon-option.svg';
 import { Characters } from 'utils/Characters';
 import { Space } from 'components/Common/Space';
@@ -19,11 +18,7 @@ import { getCounselorsComments } from 'api/get';
 import { useParams } from 'react-router-dom';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useRecoilValue } from 'recoil';
-import { convertCategoryEnum } from 'utils/convertCategoryEnum';
-import {
-  consultCategoryToCharNum,
-  consultStyleToCharNum,
-} from 'utils/convertStringToCharNum';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 
 export interface commentApiObject {
   commentId: string;

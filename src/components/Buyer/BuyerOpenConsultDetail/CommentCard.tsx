@@ -1,8 +1,6 @@
 import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentListSection';
 import React, {
-  MouseEventHandler,
   useCallback,
-  useEffect,
   useState,
 } from 'react';
 import styled from 'styled-components';
