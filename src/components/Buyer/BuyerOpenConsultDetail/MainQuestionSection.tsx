@@ -5,15 +5,10 @@ import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
 import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
-import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
 import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save3.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
 import { Body1, Caption1, Caption2 } from 'styles/font';
 import { Space } from 'components/Common/Space';
-import {
-  consultApiObject,
-  openConsultApiObject,
-} from 'pages/Buyer/BuyerConsult';
+import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getOneOpenConsult } from 'api/get';
 import { useNavigate, useParams } from 'react-router-dom';
 import { postLikeOpenConsult, postScrapOpenConsult } from 'api/post';
@@ -66,7 +61,7 @@ function MainQuestionSection() {
       if (isSending) {
         return;
       } else {
-        if (isSave  ) {
+        if (isSave) {
           setIsSending(true);
           const res: any = await deletePostScraps(id);
           if (res.response?.status === 400) {
