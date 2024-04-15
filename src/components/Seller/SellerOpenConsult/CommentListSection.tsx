@@ -1,6 +1,4 @@
-import { lightGreen } from '@mui/material/colors';
-import { light } from '@mui/material/styles/createPalette';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   Green,
@@ -17,70 +15,69 @@ import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
 import { ReactComponent as SettingIcon } from 'assets/icons/icon-option.svg';
 import { Characters } from 'utils/Characters';
 import { Space } from 'components/Common/Space';
+import { getCounselorsComments } from 'api/get';
+import { useParams } from 'react-router-dom';
+import { isSendPopupOpenState } from 'utils/atom';
+import { useRecoilValue } from 'recoil';
+
+export interface commentApiObject {
+  nickName: string;
+  content: string;
+  isLiked: boolean;
+  totalLike: number;
+  updatedAt: string;
+  isChosen: boolean;
+}
 
 function CommentListSection() {
+  const { consultid } = useParams();
+  const [commentCardList, setCommentCardList] = useState<commentApiObject[]>(
+    [],
+  );
+  const isSendPopupOpen = useRecoilValue(isSendPopupOpenState);
+
+  useEffect(() => {
+    const fetchCommentList = async () => {
+      try {
+        const res: any = await getCounselorsComments(consultid);
+        setCommentCardList(res.data);
+      } catch (err) {
+        alert(err);
+      }
+    };
+    fetchCommentList();
+  }, [consultid, isSendPopupOpen]);
   return (
     <CommentListSectionWrapper>
-      <CommentGuide $isGreen={true}>
-        <Caption1 color={Green}>
-          아직 답장한 마인더가 없어요! 가장 먼저 답장해보세요.
+      <CommentGuide $isGreen={commentCardList.length !== 5}>
+        <Caption1 color={commentCardList.length === 5 ? LightRed : Green}>
+          {commentCardList.length === 0
+            ? '아직 답장한 마인더가 없어요! 가장 먼저 답장해보세요.'
+            : commentCardList.length === 5
+            ? '이미 5개의 답장이 모두 달렸어요'
+            : 5 - commentCardList.length + '명의 마인더가 더 답장할 수 있어요.'}
         </Caption1>
       </CommentGuide>
       {/* 댓글 리스트 , 최대 5개까지*/}
-      <CommentCard>
-        <div className="flex1">
-          <Characters number={1} width="3.2rem" height="3.3rem" />
-          <Body1>연애상담마스터</Body1>
-          <Circle />
-          <Caption2>11:23</Caption2>
-          <SettingButton />
-        </div>
+      {commentCardList?.map((card, idx) => {
+        return (
+          <CommentCard key={idx}>
+            <div className="flex1">
+              <Characters number={1} width="3.2rem" height="3.3rem" />
+              <Body1>{card.nickName}</Body1>
+              <Circle />
+              <Caption2>{card.updatedAt}</Caption2>
+              <SettingButton />
+            </div>
+            <Body3 color={Grey1}>{card.content}</Body3>
+            <LikeButton>
+              <HeartIcon />
+              <Caption1 color={Grey2}>{card.totalLike}</Caption1>
+            </LikeButton>
+          </CommentCard>
+        );
+      })}
 
-        <Body3 color={Grey1}>
-          권태기 증상이 맞는 것 같네요. 속상하시겠지만, 대화를 통해 충분히
-          극복하실 수 있어요. 어쩌구 저쩌구.
-        </Body3>
-        <LikeButton>
-          <HeartIcon />
-          <Caption1 color={Grey2}>28</Caption1>
-        </LikeButton>
-      </CommentCard>
-      <CommentCard>
-        <div className="flex1">
-          <Characters number={1} width="3.2rem" height="3.3rem" />
-          <Body1>연애상담마스터</Body1>
-          <Circle />
-          <Caption2>11:23</Caption2>
-          <SettingButton />
-        </div>
-
-        <Body3 color={Grey1}>
-          권태기 증상이 맞는 것 같네요. 속상하시겠지만, 대화를 통해 충분히
-          극복하실 수 있어요. 어쩌구 저쩌구.
-        </Body3>
-        <LikeButton>
-          <HeartIcon />
-          <Caption1 color={Grey2}>28</Caption1>
-        </LikeButton>
-      </CommentCard>{' '}
-      <CommentCard>
-        <div className="flex1">
-          <Characters number={1} width="3.2rem" height="3.3rem" />
-          <Body1>연애상담마스터</Body1>
-          <Circle />
-          <Caption2>11:23</Caption2>
-          <SettingButton />
-        </div>
-
-        <Body3 color={Grey1}>
-          권태기 증상이 맞는 것 같네요. 속상하시겠지만, 대화를 통해 충분히
-          극복하실 수 있어요. 어쩌구 저쩌구.
-        </Body3>
-        <LikeButton>
-          <HeartEmptyIcon />
-          <Caption1 color={Grey2}>28</Caption1>
-        </LikeButton>
-      </CommentCard>
       <Space height="10rem" />
     </CommentListSectionWrapper>
   );
@@ -143,4 +140,4 @@ const SettingButton = styled(SettingIcon)`
   right: 2rem;
 `;
 
-export default CommentListSection;
+export default React.memo(CommentListSection);

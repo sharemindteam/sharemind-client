@@ -1,41 +1,83 @@
-import React, { useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
-import { Body1, Body3, Body4, Caption1, Caption2 } from 'styles/font';
+import { Body1, Body3, Caption1, Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
-import {
-  isBuyPopupOpenState,
-  isConsultModalOpenState,
-  scrollLockState,
-} from 'utils/atom';
+import { isBuyPopupOpenState, isConsultModalOpenState } from 'utils/atom';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
-import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save3.svg';
 import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
-import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import { Space } from 'components/Common/Space';
 import { BackDrop } from 'components/Common/BackDrop';
 import IsBuyPopup from './IsBuyPopup';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
-import { BottomButton } from 'components/Seller/Common/BottomButton';
-
-function BuyerOpenConsultSection() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
+import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
+import { getCustomerOpenConsultList } from 'api/get';
+import useIntersectionObserver from 'hooks/useIntersectionObserver';
+interface BuyerOpenConsultSectionProps {
+  isChecked: boolean;
+}
+function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
-    isConsultModalOpenState,
-  );
-  const setScrollLock = useSetRecoilState(scrollLockState);
   const [isBuyPopupOpen, setIsBuyPopupOpen] =
     useRecoilState(isBuyPopupOpenState);
-  const handleWritePostButton = () => {
-    setIsBuyPopupOpen(true);
+
+  const preventRef = useRef(true);
+
+  const onIntersect: IntersectionObserverCallback = async (entry) => {
+    if (entry[0].isIntersecting && !isLastElem && preventRef.current) {
+      preventRef.current = false;
+      await fetchOpenConsult(cardData[cardData.length - 1]?.postId);
+      preventRef.current = true;
+    }
   };
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.8,
+    onIntersect,
+  });
+  const [cardData, setCardData] = useState<openConsultApiObject[]>([]);
+  const fetchOpenConsult = async (lastId: number) => {
+    try {
+      const params = {
+        filter: isChecked,
+        postId: lastId,
+      };
+      const res: any = await getCustomerOpenConsultList({ params });
+
+      if (res.status === 200) {
+        if (res.data.length !== 0) {
+          if (lastId === 0) {
+            setCardData(res.data);
+          } else {
+            const updatedReviews = [...cardData, ...res.data];
+            setCardData(updatedReviews);
+          }
+        } else {
+          setIsLastElem(true);
+        }
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 회원입니다.');
+        navigate('/login');
+      }
+    } catch (err) {
+      alert(err);
+    } finally {
+      if (lastId === 0) {
+        setIsLoading(false);
+      }
+    }
+  };
+  useLayoutEffect(() => {
+    fetchOpenConsult(0);
+  }, [isChecked]);
   return (
     <>
       {isLoading ? (
@@ -51,49 +93,87 @@ function BuyerOpenConsultSection() {
       ) : (
         <BuyerOpenConsultCardList>
           {/* 상담카드 부분 */}
-          <BuyerOpenConsultCard>
-            <div className="row1">
-              <Body1>이거 권태기 증상 맞나요?</Body1>
-              <PrivateSign>
-                <LockIcon />
-                <Caption1 color={Grey3}>비공개</Caption1>
-              </PrivateSign>
-            </div>
-            <Space height="1.2rem" />
-            <div className="row2">
-              요즘따라 여자친구가 먼저 만나자고 이야기도 안 하고 만나면
-              피곤하다고만 해요. 스킨십도 하려고 하지 않고 인생이 재미가
-              없다네요.. 그런데 여자친구가 다른 남자 인스타 피드에는 좋아요를
-              눌러요... 이거 여자친구가 권태기가 맞는 걸까요? 맞다면 어떻게
-              이야기를 꺼내면 좋을까요? 너무 힘듭니다..
-            </div>
-            <div className="row3">
-              <IconItem>
-                <HeartResizeIcon />
-                <Caption1 color={Grey2}>28</Caption1>
-              </IconItem>
-              <IconItem>
-                <SaveIcon />
-                <Caption1 color={Grey2}>28</Caption1>
-              </IconItem>
-              <IconItem>
-                <CommentIcon />
-                <Caption1 color={Grey2}>28</Caption1>
-              </IconItem>
-            </div>
-            <TimeLeft>8분 전</TimeLeft>
-          </BuyerOpenConsultCard>
+          {cardData.length === 0 ? (
+            <EmptyWrapper>
+              <EmptyIcon />
+              <Heading>아직 진행한 상담이 없어요</Heading>
+            </EmptyWrapper>
+          ) : (
+            cardData?.map((item) => {
+              if (item.title === null) {
+                return (
+                  <BuyerPendingOpenConsultCard key={item.postId}>
+                    <Body1>
+                      {item.isCompleted === null
+                        ? '상담 글을 작성해주세요!'
+                        : '임시저장된 글입니다.'}
+                    </Body1>
+                    <Body3>
+                      {item.isCompleted === null
+                        ? '결제 후 작성전'
+                        : '이어서 작성하기'}
+                    </Body3>
+                    <Button
+                      text={
+                        item.isCompleted === null
+                          ? '상담 글 작성하기'
+                          : '이어서 작성하기'
+                      }
+                      width="100%"
+                      height="4rem"
+                      onClick={() => {
+                        navigate(`/writeOpenConsult/${item.postId}`);
+                      }}
+                    ></Button>
+                  </BuyerPendingOpenConsultCard>
+                );
+              } else {
+                return (
+                  <BuyerOpenConsultCard
+                    key={item.postId}
+                    onClick={() => {
+                      navigate(`/open-consult/${item.postId}?isMine=true`);
+                    }}
+                  >
+                    <div className="row1">
+                      <Body1>{item?.title}</Body1>
+                      {!item?.isPublic && (
+                        <PrivateSign>
+                          <LockIcon />
+                          <Caption1 color={Grey3}>비공개</Caption1>
+                        </PrivateSign>
+                      )}
+                    </div>
+                    <Space height="1.2rem" />
+                    <div className="row2">{item?.content}</div>
+                    <div className="row3">
+                      <IconItem>
+                        <HeartResizeIcon />
+                        <Caption1 color={Grey2}>{item?.totalLike}</Caption1>
+                      </IconItem>
+                      <IconItem>
+                        <SaveIcon />
+                        <Caption1 color={Grey2}>{item?.totalScrap}</Caption1>
+                      </IconItem>
+                      <IconItem>
+                        <CommentIcon />
+                        <Caption1 color={Grey2}>{item?.totalComment}</Caption1>
+                      </IconItem>
+                    </div>
+                    <TimeLeft>{item?.updatedAt}</TimeLeft>
+                  </BuyerOpenConsultCard>
+                );
+              }
+            })
+          )}
           {/* 상담카드 부분 */}
-          <BuyerPendingOpenConsultCard>
-            <Body1>상담 글을 작성해주세요!</Body1>
-            <Body3>
-              결제 후 작성 전 <br />
-              공개상담 글을 작성해보세요~
-            </Body3>
-            <Button text="상담 글 작성하기" width="100%" height="4rem"></Button>
-          </BuyerPendingOpenConsultCard>
         </BuyerOpenConsultCardList>
-      )}{' '}
+      )}
+      {!isLastElem ? (
+        <div ref={setTarget} style={{ height: '3.5rem' }} />
+      ) : (
+        <div style={{ height: '3.5rem' }} />
+      )}
       {isBuyPopupOpen && (
         <>
           <BackDrop />
@@ -136,12 +216,20 @@ const BuyerPendingOpenConsultCard = styled.div`
 
 const BuyerOpenConsultCard = styled.div`
   width: 100%;
+  cursor: pointer;
   height: 14rem;
   position: relative;
   background-color: ${Grey6};
   padding: 1.6rem;
   box-sizing: border-box;
   border-radius: 1.2rem;
+  .row1 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-height: 5rem;
+    overflow: hidden;
+  }
   .row2 {
     display: -webkit-box;
     max-height: 4.7rem;
@@ -210,6 +298,16 @@ const CreateConsultButtonWrapper = styled.div`
   @media (min-width: 768px) {
     width: 375px;
   }
+`;
+
+const EmptyIcon = styled(Empty)`
+  padding: 4.7rem 4.41rem 4.603rem 4.5rem;
+`;
+const EmptyWrapper = styled.div`
+  margin: 10vh auto 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export default BuyerOpenConsultSection;

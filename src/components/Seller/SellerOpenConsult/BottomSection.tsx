@@ -6,11 +6,34 @@ import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
 import { Green, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isSendPopupOpenState } from 'utils/atom';
-
-function BottomSection() {
-  const [isReplying, setIsReplying] = useState(false);
-  const [text, setText] = useState<string>('');
+import { useNavigate, useParams } from 'react-router-dom';
+interface BottomSectionProps {
+  isReplying: boolean;
+  setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+}
+function BottomSection({
+  isReplying,
+  setIsReplying,
+  text,
+  setText,
+}: BottomSectionProps) {
+  const navigate = useNavigate();
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
+  const { consultid } = useParams();
+  const handleNavigateRandomConsult = () => {
+    if (localStorage.getItem('randomConsult')) {
+      const randomNumList = JSON.parse(localStorage.getItem('randomConsult'));
+      const navigateId =
+        randomNumList[
+          (randomNumList.indexOf(parseInt(consultid)) + 1) %
+            randomNumList.length
+        ];
+      navigate(`/minder/open-consult/${navigateId}`);
+    }
+    // 그냥 open-consult id쳐서 들어왔을 경우 추후 예외처리..
+  };
   return (
     <BottomSectionWrapper>
       {isReplying ? (
@@ -28,7 +51,9 @@ function BottomSection() {
             fill={text.length > 0 ? Green : Grey3}
             onClick={() => {
               // sendMessage();
-              setIsSendPopupOpen(true);
+              if (text.length > 0) {
+                setIsSendPopupOpen(true);
+              }
             }}
           />
         </div>
@@ -40,7 +65,7 @@ function BottomSection() {
             backgroundColor={LightGreen}
             color={Green}
             height="5.2rem"
-            onClick={() => {}}
+            onClick={handleNavigateRandomConsult}
           />
           <Button
             text={'답장쓰기'}
@@ -103,7 +128,7 @@ const MessageTextArea = styled(reactTextareaAutosize)`
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 110%; /* 1.76rem */
+  line-height: 140%; /* 1.76rem */
   &:focus {
     border: none;
     outline: none;

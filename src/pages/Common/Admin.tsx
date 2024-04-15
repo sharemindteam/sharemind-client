@@ -2,11 +2,13 @@ import {
   getAdminsPedningProfilse,
   getAdminsRefundWaiting,
   getAdminsUnpaidConsults,
+  getAdminsUnpaidPosts,
 } from 'api/get';
 import {
   patchAdminsPendingProfiles,
   patchAdminsRefundWaiting,
   patchAdminsUnpaidConsults,
+  patchAdminsUnpaidPosts,
 } from 'api/patch';
 import { Button } from 'components/Common/Button';
 import { useEffect, useState } from 'react';
@@ -22,7 +24,16 @@ type Pay = {
   createdAt: string;
   customerName: string;
 };
+
 type PayArray = Pay[];
+
+type OpenPay = {
+  postId: number;
+  customerName: string;
+  cost: number;
+  isPublic: boolean;
+  createdAt: string;
+};
 type ConsultTimes = {
   [day: string]: string[];
 };
@@ -55,6 +66,8 @@ interface Refund {
 export const Admin = () => {
   const navigate = useNavigate();
   const [consultData, setConsultData] = useState<PayArray>([]);
+  const [openConsultData, setOpenConsultData] = useState<OpenPay[]>([]);
+  console.log(openConsultData);
   const [profileData, setProfileData] = useState<Counselor[]>([]);
   const [refundData, setRefundData] = useState<Refund[]>([]);
   const [valid, setValid] = useState<boolean>(false);
@@ -66,10 +79,15 @@ export const Admin = () => {
         //상담 결제 관리
         try {
           const res: any = await getAdminsUnpaidConsults();
-          if (res.status === 200) {
+          const res2: any = await getAdminsUnpaidPosts();
+          if (res.status === 200 && res2.status === 200) {
             setConsultData(res.data);
+            setOpenConsultData(res2.data);
             setValid(true);
-          } else if (res.response.status === 403) {
+          } else if (
+            res.response.status === 403 ||
+            res2.response.status === 403
+          ) {
             alert('접근 권한이 없습니다.');
             navigate('/login');
           }
@@ -110,6 +128,24 @@ export const Admin = () => {
     };
     fetchData();
   }, [pageState]);
+  const handleOpenConsultComplete = async (postId: number) => {
+    try {
+      const res: any = await patchAdminsUnpaidPosts(postId);
+      if (res.status === 200) {
+        alert('성공적으로 처리되었습니다.');
+        const newData = openConsultData.filter(
+          (iter) => iter.postId !== postId,
+        );
+        setOpenConsultData(newData);
+      } else if (res.response.status === 400) {
+        alert('이미 결제 완료된 상담입니다.');
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 상담 아이디로 요청되었습니다.');
+      }
+    } catch (err) {
+      alert('요청 도중 오류가 발생하였습니다.');
+    }
+  };
   const handleConsultComplete = async (consultId: number) => {
     try {
       const res: any = await patchAdminsUnpaidConsults(consultId);
@@ -128,6 +164,7 @@ export const Admin = () => {
       alert('요청 도중 오류가 발생하였습니다.');
     }
   };
+
   const handleCounselorComplete = async (
     counselorId: number,
     isPassed: boolean,
@@ -205,6 +242,26 @@ export const Admin = () => {
               }}
             />
           </ButtonWrapper>
+          {openConsultData.map((value) => {
+            return (
+              <Box>
+                <Caption1>{`게시물 ID : ${value.postId}`}</Caption1>
+                <Caption1>{`구매자 이름 : ${value.customerName}`}</Caption1>
+                <Caption1>{`공개 여부 : ${
+                  value.isPublic ? '공개' : '비공개'
+                }`}</Caption1>
+                <Caption1>{`가격 : ${value.cost.toLocaleString()}`}</Caption1>
+                <Caption1>{`createdAt : ${value.createdAt}`}</Caption1>
+                <Button
+                  text="결제완료"
+                  margin="1rem 0 0 0"
+                  onClick={() => {
+                    handleOpenConsultComplete(value.postId);
+                  }}
+                />
+              </Box>
+            );
+          })}
           {consultData.map((value) => {
             return (
               <Box>

@@ -17,6 +17,7 @@ import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenCons
 
 export interface consultApiObject {
   consultStyle: string;
+  consultCategory: string;
   id: number;
   latestMessageContent: string | null;
   latestMessageIsCustomer: boolean | null;
@@ -26,6 +27,23 @@ export interface consultApiObject {
   unreadMessageCount: number | null;
   reviewCompleted: boolean | null;
   consultId: number | null;
+}
+export interface openConsultApiObject {
+  postId: number;
+  title: string;
+  content: string;
+  isPublic: boolean;
+  isCompleted: null | boolean;
+  isLiked: boolean;
+  totalLike: number;
+  publishedAt: string;
+  isChosen: boolean;
+  isScrapped: boolean;
+  totalScrap: number;
+  totalComment: number;
+  updatedAt: string;
+  finishedAt?: string;
+  consultCategory?: string;
 }
 
 export const BuyerConsult = () => {
@@ -102,27 +120,26 @@ export const BuyerConsult = () => {
             </div>
           )}
         </div>
-        {consultType !== 'open-consult' && (
-          <div
-            className="exception-toggle"
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              setIsChecked(!isChecked);
-              searchParams.set('check', String(!isChecked));
-              setSearchParams(searchParams);
-            }}
-          >
-            {isChecked ? <CheckIcon /> : <NonCheckIcon />}
-            <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
-          </div>
-        )}
+
+        <div
+          className="exception-toggle"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            setIsChecked(!isChecked);
+            searchParams.set('check', String(!isChecked));
+            setSearchParams(searchParams);
+          }}
+        >
+          {isChecked ? <CheckIcon /> : <NonCheckIcon />}
+          <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
+        </div>
       </div>
       {consultType === 'letter' ? (
         <BuyerLetterSection sortType={sortType} isChecked={isChecked} />
       ) : consultType === 'chat' ? (
         <BuyerChatSection sortType={sortType} isChecked={isChecked} />
       ) : (
-        <BuyerOpenConsultSection />
+        <BuyerOpenConsultSection isChecked={isChecked} />
       )}
       {isModalOpen ? (
         <>

@@ -1,60 +1,52 @@
-import { postComment } from 'api/post';
+import { patchOpenConsult } from 'api/patch';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
-import { isSendPopupOpenState } from 'utils/atom';
-
-interface IsSendPopupProps {
-  text: string;
-  setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
-  setText: React.Dispatch<React.SetStateAction<string>>;
+import {
+  isBuyPopupOpenState,
+  isPostPopupOpenState,
+  isSavePopupOpenState,
+  isSendPopupOpenState,
+} from 'utils/atom';
+import { convertCategoryEnum } from 'utils/convertCategoryEnum';
+interface FianlSavePopupProps {
+  title: string;
+  content: string;
+  category: string;
 }
 
-function IsSendPopup({ text, setText, setIsReplying }: IsSendPopupProps) {
-  const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
-  const { consultid } = useParams();
-  const handleSendContent = async () => {
+function FinalSavePopup({ title, content, category }: FianlSavePopupProps) {
+  const navigate = useNavigate();
+  const setIsSavePopupOpen = useSetRecoilState(isSavePopupOpenState);
+  const { postId } = useParams();
+  const handlePost = async () => {
+    setIsSavePopupOpen(false);
     const body = {
-      postId: consultid,
-      content: text,
+      postId: postId,
+      consultCategory: convertCategoryEnum(category),
+      title: title,
+      content: content,
+      isCompleted: false,
     };
-    try {
-      const res: any = await postComment(body);
-      if (res?.status === 200 || res.status === 201) {
-        setText('');
-        setIsSendPopupOpen(false);
-        setIsReplying(false);
-      } else if (res?.response?.status === 400) {
-        setIsSendPopupOpen(false);
-        if (res?.response.data.errorName === 'COUNSELOR_AND_CUSTOMER_SAME') {
-          alert('본인에게는 상담 신청과 댓글 작성을 할 수 없습니다.');
-        } else if (
-          res?.response.data.errorName === 'COMMENT_ALREADY_REGISTERED'
-        ) {
-          alert('상담사 당 댓글은 한번씩만 작성할 수 있습니다.');
-        }
-      }
-    } catch (err) {
-      alert(err);
-    }
+    await patchOpenConsult(body);
+    navigate('/consult/?type=open-consult');
   };
   return (
     <IsSendModalBox>
       <ModalBox>
-        <Body1>답장을 보낼까요?</Body1>
-        <Body3 color={Grey4}>보낸 후엔 수정할 수 없어요.</Body3>
+        <Body1>임시저장 하시겠습니까?</Body1>
         <ButtonWrapper>
           <NoButton
             onClick={() => {
-              setIsSendPopupOpen(false);
+              setIsSavePopupOpen(false);
             }}
           >
-            취소
+            아니오
           </NoButton>
-          <YesButton onClick={handleSendContent}>보내기</YesButton>
+          <YesButton onClick={handlePost}>예</YesButton>
         </ButtonWrapper>
       </ModalBox>
     </IsSendModalBox>
@@ -62,7 +54,7 @@ function IsSendPopup({ text, setText, setIsReplying }: IsSendPopupProps) {
 }
 const IsSendModalBox = styled.div`
   width: 100%;
-  height: 15rem;
+  height: 12.8rem;
   z-index: 9999;
   display: flex;
   justify-content: center;
@@ -124,4 +116,4 @@ const YesButton = styled.div`
   background-color: ${Green};
   box-sizing: border-box;
 `;
-export default IsSendPopup;
+export default FinalSavePopup;

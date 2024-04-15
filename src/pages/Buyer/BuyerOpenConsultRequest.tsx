@@ -1,3 +1,4 @@
+import { postOpenConsult } from 'api/post';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import { useEffect, useState } from 'react';
@@ -12,10 +13,15 @@ export const BuyerOpenConsultRequest = () => {
   const [isNotOpenConsult, setIsNotOpenConsult] = useState<boolean>(false);
   const [buttonAcitve, setButtonAcitve] = useState<boolean>(false);
   const location = useLocation();
-  const handleNextClick = () => {
+  const handleNextClick = async () => {
     if (buttonAcitve) {
       if (isOpenConsult) {
-        navigate('/paymentFinish')
+        const body = {
+          cost: 0,
+          isPublic: true,
+        };
+        await postOpenConsult(body);
+        navigate('/paymentFinish');
       } else {
         navigate('/openPaymentDetail');
       }
@@ -33,7 +39,7 @@ export const BuyerOpenConsultRequest = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate("/consult");
+            navigate('/consult?type=open-consult');
           }}
         />
         <Heading color={Grey1}>일대다상담 신청하기</Heading>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { Body1, Caption1, Caption2 } from 'styles/font';
@@ -13,8 +13,25 @@ import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
 import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import { Space } from 'components/Common/Space';
 import { BackDrop } from 'components/Common/BackDrop';
+import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
+import { getCustomerPublicConsultList } from 'api/get';
 
 function OpenConsultList() {
+  const [cardData, setCardData] = useState<openConsultApiObject[]>([]);
+  useEffect(() => {
+    const fetchOpenConsultData = async () => {
+      const params = {
+        postId: '0',
+        finishedAt: new Date().toISOString().slice(0, 19),
+      };
+      const res: any = await getCustomerPublicConsultList({ params });
+      if (res.status === 200) {
+        setCardData(res.data);
+      }
+    };
+    fetchOpenConsultData();
+  }, []);
+  console.log(cardData);
   return (
     <div>
       <BuyerOpenConsultCardList>

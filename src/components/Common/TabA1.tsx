@@ -5,6 +5,7 @@ import { Subtitle } from 'styles/font';
 import { Black, Green, Grey6 } from 'styles/color';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getCounselorsRandomConsult } from 'api/get';
 interface TabA1Props {
   isBuyer: boolean;
   //넘어온 state는 홈이면 1, 상담이면 2, 내정보면 3(초깃값)
@@ -14,6 +15,17 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
   const navigate = useNavigate();
   const [tabState, setTabState] = useState<number>();
   const [color, setColor] = useState<string>();
+  const navigateOpenConsult = async () => {
+    try {
+      const res: any = await getCounselorsRandomConsult();
+      if (res.status === 200) {
+        localStorage.setItem('randomConsult', JSON.stringify(res.data));
+        navigate(`/minder/open-consult/${res.data[0]}`);
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
   useEffect(() => {
     setTabState(initState);
     if (isBuyer === true) {
@@ -71,7 +83,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
           if (isBuyer) {
             navigate('/open-consult');
           } else {
-            navigate('/minder/open-consult');
+            navigateOpenConsult();
           }
         }}
       >

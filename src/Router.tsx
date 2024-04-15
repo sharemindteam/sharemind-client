@@ -51,7 +51,6 @@ import { BuyerOpenConsultRequest } from 'pages/Buyer/BuyerOpenConsultRequest';
 import { BuyerOpenPaymentDetail } from 'pages/Buyer/BuyerOpenPaymentDetail';
 import BuyerWriteOpenConsult from 'pages/Buyer/BuyerWriteOpenConsult';
 import BuyerOpenConsultDetail from 'pages/Buyer/BuyerOpenConsultDetail';
-import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenConsultSection';
 import BuyerFinishPayment from 'pages/Buyer/BuyerFinishPayment';
 const Router = () => {
   return (
@@ -73,11 +72,14 @@ const Router = () => {
       <Route path="/openConsultRequest" element={<BuyerOpenConsultRequest />} />
 
       <Route path="/openPaymentDetail" element={<BuyerOpenPaymentDetail />} />
-      <Route path="/writeOpenConsult" element={<BuyerWriteOpenConsult />} />
+      <Route
+        path="/writeOpenConsult/:postId"
+        element={<BuyerWriteOpenConsult />}
+      />
 
       <Route path="/paymentDetail/:id" element={<BuyerPaymentDetail />} />
       <Route path="/paymentComplete" element={<BuyerPaymentComplete />} />
-      <Route path="/paymentFinish" element={<BuyerFinishPayment/>} />
+      <Route path="/paymentFinish" element={<BuyerFinishPayment />} />
       <Route path="/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/mypage" element={<BuyerMypage />} />
       <Route path="/reviewManage" element={<BuyerReviewManage />} />
@@ -125,7 +127,10 @@ const Router = () => {
       />
 
       <Route path="/minder/consult" element={<SellerConsult />} />
-      <Route path="/minder/open-consult" element={<SellerOpenConsult />} />
+      <Route
+        path="/minder/open-consult/:consultid"
+        element={<SellerOpenConsult />}
+      />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/minder/mypage" element={<SellerMypage />} />
 

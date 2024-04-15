@@ -10,6 +10,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   isLetterModalOpenState,
   isPostPopupOpenState,
+  isSavePopupOpenState,
   scrollLockState,
 } from 'utils/atom';
 import { BackDrop } from 'components/Common/BackDrop';
@@ -20,6 +21,8 @@ import { LetterLoadModal } from 'components/Buyer/BuyerLetterWrite/LetterLoadMod
 import { LetterSaveModal } from 'components/Buyer/BuyerLetterWrite/LetterSaveModal';
 import Input from 'components/Common/Input';
 import FinalWritePopup from 'components/Buyer/BuyerWriteOpenConsult/FianlWritePopup';
+import FinalSavePopup from 'components/Buyer/BuyerWriteOpenConsult/FinalSavePopup';
+import { getOneOpenConsult } from 'api/get';
 
 function BuyerWriteOpenConsult() {
   const navigate = useNavigate();
@@ -42,6 +45,9 @@ function BuyerWriteOpenConsult() {
   // 제출하기 팝업
   const [isPopupOpen, setIsPopupOpen] =
     useRecoilState<boolean>(isPostPopupOpenState);
+
+  const [isSavePopup, setIsSavePopupOpen] =
+    useRecoilState<boolean>(isSavePopupOpenState);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   // 임시저장, 전송하기 버튼 활성화여부
@@ -49,15 +55,25 @@ function BuyerWriteOpenConsult() {
   const [isActivePostButton, setIsActivePostButton] = useState(false);
   const [saveButtonColor, setSaveButtonColor] = useState<string>(White);
   //input 값
+  const [titleInput, setTitleInput] = useState<string>('');
   const [input, setInput] = useState<string>('');
-
-  const [isActivePostModal, setIsActivePostModal] = useState(false);
-  const [isActiveSaveModal, setIsActiveSaveModal] = useState(false);
-  const [isActiveLoadModal, setIsActiveLoadModal] = useState(false);
-  //임시저장 메세지 있는지 없는지 여부
-  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const { postId } = useParams();
   useEffect(() => {
-    if (input === '') {
+    const fetchDraftedData = async () => {
+      try {
+        const res: any = await getOneOpenConsult(postId);
+        if (res.status === 200) {
+          setTitleInput(res.data.title);
+          setInput(res.data.content);
+        }
+      } catch (err) {
+        alert(err);
+      }
+    };
+    fetchDraftedData();
+  }, []);
+  useEffect(() => {
+    if (input === '' || titleInput === '') {
       // 비어 있으면 전송못함
       setIsActivePostButton(false);
       setIsActiveSaveButton(false);
@@ -67,14 +83,14 @@ function BuyerWriteOpenConsult() {
       setIsActiveSaveButton(true);
       setSaveButtonColor(Green);
     }
-  }, [input]);
+  }, [input, titleInput]);
   return (
     <>
       <Wrapper>
         <HeaderWrapper>
           <BackIcon
             onClick={() => {
-              navigate(`/consult`);
+              navigate(`/consult?type=open-consult`);
             }}
           />
           <Heading color={Grey1}>고민 작성</Heading>
@@ -88,7 +104,13 @@ function BuyerWriteOpenConsult() {
             <Body3 color={Green}>{categoryList[categoryType]}</Body3>
             <DownIcon />
           </CategoryDropDown>
-          <TitleInput placeholder="제목" />
+          <TitleInput
+            placeholder="제목"
+            value={titleInput}
+            onChange={(e) => {
+              setTitleInput(e.target.value);
+            }}
+          />
           <TextArea
             value={input}
             placeholder="고민 내용을 남겨주세요."
@@ -109,7 +131,7 @@ function BuyerWriteOpenConsult() {
               color={saveButtonColor}
               isActive={isActiveSaveButton}
               onClick={() => {
-                setIsActiveSaveModal(true);
+                setIsSavePopupOpen(true);
               }}
             />
             <Button
@@ -132,7 +154,11 @@ function BuyerWriteOpenConsult() {
                 setScrollLock(false);
               }}
             />
-            <FinalWritePopup />
+            <FinalWritePopup
+              title={titleInput}
+              content={input}
+              category={categoryList[categoryType]}
+            />
           </>
         )}
         {isModalOpen ? (
@@ -152,6 +178,17 @@ function BuyerWriteOpenConsult() {
             />
           </>
         ) : null}
+
+        {isSavePopup && (
+          <>
+            <BackDrop />
+            <FinalSavePopup
+              title={titleInput}
+              content={input}
+              category={categoryList[categoryType]}
+            />
+          </>
+        )}
       </Wrapper>
     </>
   );
