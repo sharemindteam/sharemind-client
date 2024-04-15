@@ -143,11 +143,11 @@ export const getCounselorsRandomConsult = async () =>
 export const getCustomerOpenConsultList = async (params: any) =>
   await getInstance('/posts/customers', params);
 
-export const getCustomerPopularConsultList = async (params: any) =>
-  await getInstance('/posts/customers/public/likes', params);
+export const getCustomerPopularConsultList = async () =>
+  await getPublicInstance('/posts/customers/public/likes');
 
 export const getCustomerPublicConsultList = async (params: any) =>
-  await getInstance('/posts/customers/public', params);
+  await getPublicInstance('/posts/customers/public', params);
 
 export const getCustomerIsWriter = async (postId: any) =>
   await getInstance(`/posts/customers/public/${postId}`);

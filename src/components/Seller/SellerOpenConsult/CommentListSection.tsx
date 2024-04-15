@@ -21,6 +21,7 @@ import { isSendPopupOpenState } from 'utils/atom';
 import { useRecoilValue } from 'recoil';
 
 export interface commentApiObject {
+  commentId: string;
   nickName: string;
   content: string;
   isLiked: boolean;

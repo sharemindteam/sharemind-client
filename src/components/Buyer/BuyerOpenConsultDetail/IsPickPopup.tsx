@@ -1,10 +1,9 @@
 import { patchAdoptComment } from 'api/patch';
-import { postComment } from 'api/post';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
-import { Body1, Body3, Body4 } from 'styles/font';
+import { Body1, Body3 } from 'styles/font';
 
 interface IsPickPopupProps {
   isPickPopup: boolean;
@@ -12,15 +11,15 @@ interface IsPickPopupProps {
   pickedCommentId: string;
 }
 
-function IsPickPopup({ isPickPopup, setIsPickPopup }: IsPickPopupProps) {
+function IsPickPopup({
+  isPickPopup,
+  setIsPickPopup,
+  pickedCommentId,
+}: IsPickPopupProps) {
   const { id } = useParams();
   const adoptComment = async () => {
-    const params = {
-      commentId: 1,
-    };
-
     try {
-      const res: any = await patchAdoptComment(id, params);
+      const res: any = await patchAdoptComment(id, pickedCommentId);
       if (res.status === 200) {
         setIsPickPopup(false);
       }
