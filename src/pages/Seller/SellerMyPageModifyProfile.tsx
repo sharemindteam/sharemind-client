@@ -3,7 +3,7 @@ import { Space } from 'components/Common/Space';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import IsOutPopup from 'components/Seller/SellerMyPageModifyProfile/IsOutPopup';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
-import { ModifyProfileMainSection } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
+import ModifyProfileMainSection from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
 import SetChatTimeSection, {
   SelectedTimeList,
 } from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';
@@ -44,7 +44,7 @@ const categoryList: CategoryList = {
   '이별/재회': 2,
   여자심리: 3,
   남자심리: 4,
-  '썸/연애초기': 5,
+  '썸/연애시작': 5,
   짝사랑: 6,
   권태기: 7,
   기타: 8,

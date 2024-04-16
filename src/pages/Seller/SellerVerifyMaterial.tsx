@@ -5,7 +5,8 @@ import IsTakeQuizModal from 'components/Seller/SellerVerifyMaterial/IsTakeQuizMo
 import SecondMaterial from 'components/Seller/SellerVerifyMaterial/SecondMaterial';
 import ThirdMaterial from 'components/Seller/SellerVerifyMaterial/ThirdMaterial';
 import VerifyMaterialHeader from 'components/Seller/SellerVerifyMaterial/VerifyMaterialHeader';
-import { Route, Routes } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { isTakingQuizModalOpenState } from 'utils/atom';
@@ -14,6 +15,16 @@ export const SellerVerifyMaterial = () => {
   const [isTakingQuizModalOpen, setIsTakingQuizModalOpen] = useRecoilState(
     isTakingQuizModalOpenState,
   );
+
+  const topRef = useRef<HTMLDivElement | null>(null);
+
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [pathname]);
+
   return (
     <>
       <VerifyMaterialHeader />
@@ -23,7 +34,9 @@ export const SellerVerifyMaterial = () => {
           <IsTakeQuizModal />
         </>
       )}
+
       <VerifyMaterialContainer>
+        <div className="top-container" ref={topRef}></div>
         <Routes>
           <Route path="first" element={<FirstMaterial />} />
           <Route path="/second" element={<SecondMaterial />} />

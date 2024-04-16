@@ -13,3 +13,15 @@ export const deleteSearchWords = async (body: any) =>
 //검색 결과 반환
 export const deleteWishLists = async (counselorId: number) =>
   await deleteInstance(`/wishLists?counselorId=${counselorId}`);
+
+// 일대다상담
+// CommentLike Controller
+export const deleteCommentLikes = async (commentId: any) =>
+  await deleteInstance(`/commentLikes/${commentId}`);
+// PostLike Controller
+export const deletePostLikes = async (postId: any) =>
+  await deleteInstance(`/postLikes/${postId}`);
+
+// PostScrap Controller
+export const deletePostScraps = async (postId: any) =>
+  await deleteInstance(`/postScraps/${postId}`);

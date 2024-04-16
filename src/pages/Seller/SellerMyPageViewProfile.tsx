@@ -57,22 +57,23 @@ export const SellerMypageViewProfile = () => {
       ) : isNoProfile ? (
         <NoProfileSection />
       ) : (
-        <ViewProfileMainSection
-          profileIdentifier={3}
-          name={profile?.nickname}
-          category={profile?.consultCategories}
-          chatStyle={profile?.consultStyle}
-          type={profile?.consultTypes}
-          chatTime={profile?.consultTimes}
-          letterFee={profile?.consultCosts?.편지}
-          chatFee={profile?.consultCosts?.채팅}
-          oneLiner={profile?.introduction}
-          experience={profile?.experience}
-          isEvaluationPending={isEvaluationPending}
-          // accountNum="1234567890000"
-          // bankType="우리은행"
-          // bankOwner="정인영"
-        />
+        <div style={{ overflow: 'scroll', height: 'calc(100vh - 5.3rem)' }}>
+          <ViewProfileMainSection
+            name={profile?.nickname}
+            category={profile?.consultCategories}
+            chatStyle={profile?.consultStyle}
+            type={profile?.consultTypes}
+            chatTime={profile?.consultTimes}
+            letterFee={profile?.consultCosts?.편지}
+            chatFee={profile?.consultCosts?.채팅}
+            oneLiner={profile?.introduction}
+            experience={profile?.experience}
+            isEvaluationPending={isEvaluationPending}
+            // accountNum="1234567890000"
+            // bankType="우리은행"
+            // bankOwner="정인영"
+          />
+        </div>
       )}
     </>
   );

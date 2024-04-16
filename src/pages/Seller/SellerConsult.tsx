@@ -14,7 +14,12 @@ export const SellerConsult = () => {
         }}
       />
       <TabA1 isBuyer={false} initState={2} />
-      <SellerConsultSection />
+      <section
+        className="consult-container"
+        style={{ height: 'calc(100vh - 10.4rem)', overflow: 'scroll' }}
+      >
+        <SellerConsultSection />
+      </section>
     </>
   );
 };

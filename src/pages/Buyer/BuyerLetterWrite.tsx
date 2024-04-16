@@ -196,28 +196,6 @@ export const BuyerLetterWrite = () => {
           }}
           tagStatus={tagStatus}
         />
-        <ButtonWrapper>
-          <Button
-            text="임시저장"
-            width="42.66%"
-            height="5.2rem"
-            backgroundColor={LightGreen}
-            color={saveButtonColor}
-            isActive={isActiveSaveButton}
-            onClick={() => {
-              setIsActiveSaveModal(true);
-            }}
-          />
-          <Button
-            text="제출하기"
-            width="42.66%"
-            height="5.2rem"
-            isActive={isActivePostButton}
-            onClick={() => {
-              setIsActivePostModal(true);
-            }}
-          />
-        </ButtonWrapper>
       </div>
       {isModalOpen ? (
         <>
@@ -282,6 +260,28 @@ export const BuyerLetterWrite = () => {
           }}
         />
       ) : null}
+      <ButtonWrapper>
+        <Button
+          text="임시저장"
+          width="42.66%"
+          height="5.2rem"
+          backgroundColor={LightGreen}
+          color={saveButtonColor}
+          isActive={isActiveSaveButton}
+          onClick={() => {
+            setIsActiveSaveModal(true);
+          }}
+        />
+        <Button
+          text="제출하기"
+          width="42.66%"
+          height="5.2rem"
+          isActive={isActivePostButton}
+          onClick={() => {
+            setIsActivePostModal(true);
+          }}
+        />
+      </ButtonWrapper>
     </Wrapper>
   );
 };
@@ -314,10 +314,10 @@ const TextArea = styled.textarea<{ tagStatus: number }>`
   &::placeholder{
     color: ${Grey3};
   }
-  font-family: Pretendard;
   color:  #33333a;
   font-size: 1.6rem;
   font-style: normal;
+  font-family:Pretendard;
   font-weight: 400;
   line-height: 150%; /* 2.4rem */
   border: none;
@@ -331,6 +331,7 @@ const TextArea = styled.textarea<{ tagStatus: number }>`
   box-sizing: border-box;
   white-space: pre-wrap; 
   ${(props) => (props.tagStatus === 2 ? 'margin-top:1.2rem' : null)};
+  
 `;
 const ButtonWrapper = styled.div`
   @media (max-width: 767px) {

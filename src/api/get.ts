@@ -5,6 +5,8 @@ import { getInstance, getPublicInstance } from './axios';
  */
 export const getAdminsUnpaidConsults = async () =>
   await getInstance('/admins/unpaid-consults');
+export const getAdminsUnpaidPosts = async () =>
+  await getInstance(`/admins/unpaid-posts`);
 export const getAdminsPedningProfilse = async () =>
   await getInstance('/admins/pending-profiles');
 export const getAdminsRefundWaiting = async () =>
@@ -121,6 +123,9 @@ export const getCounselorsChats = async (chatId: string, params: any) =>
 export const getPaymentsCustomers = async (params: any) =>
   await getInstance('/payments/customers', params);
 
+export const getCounselorsAccount = async () =>
+  await getInstance('/counselors/account');
+
 export const getPaymentsMinder = async (params: any) =>
   await getInstance('/payments/counselors', params);
 
@@ -134,3 +139,39 @@ export const getMinderReviews = async (params: any) =>
   await getInstance('/reviews/counselors', params);
 export const getMinderReviewsHome = async () =>
   await getInstance('/reviews/counselors/home');
+
+// 일대다상담 컨트롤러
+
+// Comment Controller
+
+export const getCounselorsComments = async (postId: any) =>
+  await getInstance(`/comments/counselors/${postId}`);
+export const getCustomersComments = async (postId: any) =>
+  await getInstance(`/comments/customers/${postId}`);
+
+// Post Controller
+export const getOneOpenConsult = async (id: string | undefined) =>
+  await getInstance(`/posts/${id}`);
+
+export const getCounselorsOpenConsultList = async (params: any) =>
+  await getInstance(`/posts/counselors`, params);
+export const getCounselorsOneConsult = async (postId: any) =>
+  await getInstance(`/posts/counselors/${postId}`);
+
+export const getCounselorsRandomConsult = async () =>
+  await getInstance(`/posts/counselors/random`);
+
+export const getCustomerOpenConsultList = async (params: any) =>
+  await getInstance('/posts/customers', params);
+
+export const getCustomerPopularConsultList = async () =>
+  await getPublicInstance('/posts/customers/public/likes');
+
+export const getCustomerPublicConsultList = async (params: any) =>
+  await getPublicInstance('/posts/customers/public', params);
+
+export const getCustomerIsWriter = async (postId: any) =>
+  await getInstance(`/posts/customers/public/${postId}`);
+
+export const getOpenConsultDraft = async (postId: any) =>
+  await getInstance(`/posts/drafts/${postId}`);

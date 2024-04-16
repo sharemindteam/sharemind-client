@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction, useCallback } from 'react';
 import {
   isIncludeSpecialLetter,
   isIncludeSpecialLetterOneLiner,
@@ -39,18 +39,21 @@ export const useInput = (initialValue: string) => {
   const [lengthValid, setLengthValid] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
-  };
-  const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPrice = e.target.value
-      .replace(/[^0-9]/g, '')
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    setValue(newPrice);
-  };
+  }, []);
+  const onChangePrice = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newPrice = e.target.value
+        .replace(/[^0-9]/g, '')
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      setValue(newPrice);
+    },
+    [],
+  );
 
-  const handleCheckSpecialLetter = (str: string) => {
+  const handleCheckSpecialLetter = useCallback((str: string) => {
     if (isIncludeSpecialLetter(str) || str.length === 0) {
       setIsValid(false);
       setIsError(true);
@@ -58,9 +61,9 @@ export const useInput = (initialValue: string) => {
       setIsValid(true);
       setIsError(false);
     }
-  };
+  }, []);
 
-  const handleCheckOneLiner = (str: string) => {
+  const handleCheckOneLiner = useCallback((str: string) => {
     if (isIncludeSpecialLetterOneLiner(str) || str.length === 0) {
       setIsValid(false);
       setIsError(true);
@@ -68,20 +71,16 @@ export const useInput = (initialValue: string) => {
       setIsValid(true);
       setIsError(false);
     }
-  };
-  const handleCheckExperience = (str: string) => {
+  }, []);
+  const handleCheckExperience = useCallback((str: string) => {
     if (isIncludeSpecialLetterOneLiner(str) || str.length === 0) {
       setIsValid(false);
       setIsError(true);
-      if (str.includes('\n')) {
-        setIsValid(true);
-        setIsError(false);
-      }
     } else {
       setIsValid(true);
       setIsError(false);
     }
-  };
+  }, []);
 
   return {
     value,

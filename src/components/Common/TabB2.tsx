@@ -12,6 +12,7 @@ export const TabB2 = styled.div`
   justify-content: center;
   height: 5.2rem;
   position: sticky;
+  z-index: 999;
   top: 0;
   & > div.left-icon {
     position: absolute;

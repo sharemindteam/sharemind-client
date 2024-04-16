@@ -46,3 +46,27 @@ export const postIsPassQuiz = async (body: any, parmas: any) =>
 //찜하기 목록 가져오기
 export const postWishLists = async (body: any) =>
   await postInstance('/wishLists', body);
+
+// 일대다상담
+
+// Comment Controller
+export const postComment = async (body) =>
+  await postInstance('/comments/counselors', body);
+
+// CommentLike Controller
+
+export const postLikeComment = async (commentId: any) =>
+  await postInstance(`/commentLikes/${commentId}`, {});
+
+// Post Controller
+export const postOpenConsult = async (body: any) =>
+  await postInstance('/posts', body);
+
+// PostLike Controller
+
+export const postLikeOpenConsult = async (postId: any) =>
+  await postInstance(`/postLikes/${postId}`, {});
+
+// PostScrap Controller
+export const postScrapOpenConsult = async (postId: any) =>
+  await postInstance(`/postScraps/${postId}`, {});

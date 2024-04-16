@@ -2,7 +2,7 @@ import { ContentTag } from 'pages/Seller/SellerHome';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Black, Green, Grey5, Grey6 } from 'styles/color';
-import { Body1, Heading } from 'styles/font';
+import { Body1, Heading, Subtitle } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { useNavigate } from 'react-router-dom';
 import { getPaymentsHome } from 'api/get';
@@ -32,9 +32,9 @@ export const IncomeManagementSection = () => {
           navigate('/minder/calculatemanagement');
         }}
       >
-        <Heading color={Black} margin="0px auto 0px 0px">
+        <Subtitle color={Black} margin="0px auto 0px 0px">
           수익 관리
-        </Heading>
+        </Subtitle>
         <RightArrow />
       </ContentTag>
       <IncomeManagementBoxWrapper>

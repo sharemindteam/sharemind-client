@@ -1,14 +1,14 @@
 import { SellerReviewHeader } from 'components/Seller/SellerMyPageReview/SellerReviewHeader';
 import { SellerReviewMainSection } from 'components/Seller/SellerMyPageReview/SellerReviewMainSection';
-import styled from 'styled-components';
 
 export const SellerMyPageReview = () => {
   return (
     <>
       <SellerReviewHeader />
-      <SellerReviewMainSection />
+      <div style={{ height: 'calc(100% - 5rem)', overflow: 'scroll' }}>
+        <SellerReviewMainSection />
+      </div>
     </>
   );
 };
 
-const SellerMyPageReviewWrapper = styled.div``;
