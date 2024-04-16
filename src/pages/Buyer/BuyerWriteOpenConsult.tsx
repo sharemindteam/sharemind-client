@@ -233,7 +233,7 @@ const TextCount = styled.div`
 const TextArea = styled.textarea`
   resize: none;
   width: 89.33%;
-  min-height: 60vh;
+  min-height: 50vh;
   &::placeholder{
     color: ${Grey3};
   }
