@@ -100,12 +100,17 @@ export const BuyerSavedCounselor = () => {
             <Heading color={Grey1}>찜 목록</Heading>
           </HeaderWrapper>
           <Space height="1.2rem" />
-          <SavedCounselorResults wishlistData={wishlistData} />
-          {!isLastElem ? (
-            <div ref={setTarget} style={{ height: '3.5rem' }} />
-          ) : (
-            <div style={{ height: '3.5rem' }} />
-          )}
+          <div
+            className="save-counselor-list"
+            style={{ height: 'calc(100vh - 6.5rem)', overflow: 'scroll' }}
+          >
+            <SavedCounselorResults wishlistData={wishlistData} />
+            {!isLastElem ? (
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
+            ) : (
+              <div style={{ height: '3.5rem' }} />
+            )}
+          </div>
         </>
       );
     } else {

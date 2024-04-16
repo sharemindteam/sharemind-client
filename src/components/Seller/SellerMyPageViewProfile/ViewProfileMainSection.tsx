@@ -10,7 +10,6 @@ import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { convertTimeRange } from 'utils/convertTimeToString';
 
 interface ViewProfileMainSectionProps {
-  profileIdentifier: number;
   name: string | undefined;
   category: string[] | undefined;
   chatStyle: string | undefined;
@@ -37,7 +36,6 @@ const dayEngtoKor: Record<string, string> = {
 const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 export const ViewProfileMainSection = ({
-  profileIdentifier,
   name,
   category,
   chatStyle,

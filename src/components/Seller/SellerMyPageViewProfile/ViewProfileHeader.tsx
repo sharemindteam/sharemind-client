@@ -9,7 +9,10 @@ export const ViewProfileHeader = () => {
 
   return (
     <ViewProfileHeaderWrapper>
-      <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>
+      <div
+        className="back-button"
+        style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}
+      >
         <LeftArrowIcon
           onClick={() => {
             navigate('/minder/mypage');
@@ -20,7 +23,7 @@ export const ViewProfileHeader = () => {
     </ViewProfileHeaderWrapper>
   );
 };
-const ViewProfileHeaderWrapper = styled.div`
+const ViewProfileHeaderWrapper = styled.header`
   display: flex;
   align-items: center;
   background-color: ${White};
