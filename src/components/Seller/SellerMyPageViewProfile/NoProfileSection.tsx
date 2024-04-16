@@ -33,7 +33,7 @@ function NoProfileSection() {
     </>
   );
 }
-const NotWriteSection = styled.div`
+const NotWriteSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;

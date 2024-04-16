@@ -19,7 +19,7 @@ export const SellerReviewHeader = () => {
     </SellerReviewHeaderWrapper>
   );
 };
-export const SellerReviewHeaderWrapper = styled.div`
+export const SellerReviewHeaderWrapper = styled.header`
   display: flex;
   align-items: center;
   background-color: ${White};

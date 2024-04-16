@@ -30,8 +30,16 @@ function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
       content: content,
       isCompleted: true,
     };
-    await patchOpenConsult(body);
-    navigate('/consult/?type=open-consult');
+    try {
+      const res: any = await patchOpenConsult(body);
+      if (res?.status === 200) {
+        navigate('/consult/?type=open-consult');
+      } else {
+        console.log(res);
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
   return (
     <IsSendModalBox>

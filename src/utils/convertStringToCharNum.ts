@@ -1,5 +1,5 @@
 // 서버에서 념겨준 consultStyle을 Character num 으로 mapping..
-export const consultStyleToCharNum = (consultStyle: string) => {
+export const consultStyleToCharNum = (consultStyle: string | undefined) => {
   switch (consultStyle) {
     case '조언':
       return 9;
@@ -12,7 +12,9 @@ export const consultStyleToCharNum = (consultStyle: string) => {
   }
 };
 
-export const consultCategoryToCharNum = (consultCategory: string) => {
+export const consultCategoryToCharNum = (
+  consultCategory: string | undefined,
+) => {
   switch (consultCategory) {
     case '연애갈등':
       return 1;
