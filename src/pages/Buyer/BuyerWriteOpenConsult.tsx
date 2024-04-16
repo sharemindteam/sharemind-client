@@ -107,6 +107,7 @@ function BuyerWriteOpenConsult() {
           <TitleInput
             placeholder="제목"
             value={titleInput}
+            maxLength={50}
             onChange={(e) => {
               setTitleInput(e.target.value);
             }}
@@ -114,6 +115,7 @@ function BuyerWriteOpenConsult() {
           <TextArea
             value={input}
             placeholder="고민 내용을 남겨주세요."
+            maxLength={1001}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               setInput(e.target.value);
             }}
