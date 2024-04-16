@@ -1,6 +1,5 @@
-import React from 'react';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { Body3, Caption2, Heading } from 'styles/font';
@@ -16,10 +15,6 @@ import {
 import { BackDrop } from 'components/Common/BackDrop';
 import { LetterWriteModal } from 'components/Buyer/BuyerLetterWrite/LetterWriteModal';
 import { Button } from 'components/Common/Button';
-import { LetterPostModal } from 'components/Buyer/BuyerLetterWrite/LetterPostModal';
-import { LetterLoadModal } from 'components/Buyer/BuyerLetterWrite/LetterLoadModal';
-import { LetterSaveModal } from 'components/Buyer/BuyerLetterWrite/LetterSaveModal';
-import Input from 'components/Common/Input';
 import FinalWritePopup from 'components/Buyer/BuyerWriteOpenConsult/FianlWritePopup';
 import FinalSavePopup from 'components/Buyer/BuyerWriteOpenConsult/FinalSavePopup';
 import { getOneOpenConsult } from 'api/get';
@@ -193,6 +188,7 @@ function BuyerWriteOpenConsult() {
     </>
   );
 }
+
 const Wrapper = styled.div`
   width: 100%;
   position: relative;
