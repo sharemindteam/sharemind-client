@@ -115,7 +115,7 @@ function BuyerWriteOpenConsult() {
           <TextArea
             value={input}
             placeholder="고민 내용을 남겨주세요."
-            maxLength={1001}
+            maxLength={1000}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
               setInput(e.target.value);
             }}
