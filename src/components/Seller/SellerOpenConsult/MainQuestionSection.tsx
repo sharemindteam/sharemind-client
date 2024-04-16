@@ -1,50 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
-import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
-import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save3.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
 import { Body1, Caption1, Caption2 } from 'styles/font';
 import { Space } from 'components/Common/Space';
+import { getCounselorsOneConsult } from 'api/get';
+import { useParams } from 'react-router-dom';
+import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
+import { formattedMessage } from 'utils/formattedMessage';
 function MainQuestionSection() {
+  const { consultid } = useParams();
+  const [card, setCard] = useState<openConsultApiObject | undefined>(undefined);
+  useEffect(() => {
+    const fetchOneConsult = async () => {
+      try {
+        const res: any = await getCounselorsOneConsult(consultid);
+        setCard(res.data);
+      } catch (err) {
+        alert(err);
+      }
+    };
+    fetchOneConsult();
+  }, [consultid]);
   return (
     <MainQuestionWrapper>
       <MainQuestionText>
         <div className="row1">
-          <Body1>이거 권태기 증상 맞나요?</Body1>
-          <PrivateSign>
-            <LockIcon />
-            <Caption1 color={Grey3}>비공개</Caption1>
-          </PrivateSign>
+          <Body1>{card?.title}</Body1>
+          {!card?.isPublic && (
+            <PrivateSign>
+              <LockIcon />
+              <Caption1 color={Grey3}>비공개</Caption1>
+            </PrivateSign>
+          )}
         </div>
         <Space height="1.2rem" />
-        <div className="row2">
-          요즘따라 여자친구가 먼저 만나자고 이야기도 안 하고 만나면 피곤하다고만
-          해요. 스킨십도 하려고 하지 않고 인생이 재미가 없다네요.. 그런데
-          여자친구가 다른 남자 인스타 피드에는 좋아요를 눌러요... 이거
-          여자친구가 권태기가 맞는 걸까요? 맞다면 어떻게 이야기를 꺼내면
-          좋을까요? 너무 힘듭니다..
-        </div>
+        <div className="row2">{formattedMessage(card?.content)}</div>
         <Space height="0.8rem" />
         <div className="row3">
-          <Caption2 color={Grey2}>2024.12.13</Caption2>
+          <Caption2 color={Grey2}>{card?.updatedAt}</Caption2>
           <Circle />
-          <Caption2 color={Grey2}>연애갈등</Caption2>
+          <Caption2 color={Grey2}>{card?.consultCategory}</Caption2>
         </div>
         <Space height="1rem" />
       </MainQuestionText>
       <ButtonList>
         <ButtonItem>
-          <HeartEmptyIcon />
-          <Caption1 color={Grey2}>11</Caption1>
+          <HeartIcon />
+          <Caption1 color={Grey2}>{card?.totalLike}</Caption1>
         </ButtonItem>
         <ButtonItem>
-          <SaveEmptyIcon />
-          <Caption1 color={Grey2}>0</Caption1>
+          <SaveResizeIcon />
+          <Caption1 color={Grey2}>{card?.totalScrap}</Caption1>
         </ButtonItem>
       </ButtonList>
     </MainQuestionWrapper>
@@ -108,4 +117,8 @@ const ButtonItem = styled.div`
   gap: 0.4rem;
 `;
 
-export default MainQuestionSection;
+const SaveResizeIcon = styled(SaveIcon)`
+  width: 2rem;
+  height: 2rem;
+`;
+export default React.memo(MainQuestionSection);

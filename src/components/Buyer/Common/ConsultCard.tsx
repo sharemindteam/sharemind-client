@@ -54,6 +54,11 @@ export const ConsultCard = ({
     e?.stopPropagation();
     navigate('/reviewManage');
   };
+
+  //
+  //
+  //
+
   return (
     <Wrapper
       onClick={() => {
@@ -130,7 +135,7 @@ export const ConsultCard = ({
 const Wrapper = styled.div`
   width: 89%;
   background-color: ${Grey6};
-  border-radius: 1.2rem;
+  border-radius: 0.75rem;
   cursor: pointer;
   display: flex;
   flex-direction: column;

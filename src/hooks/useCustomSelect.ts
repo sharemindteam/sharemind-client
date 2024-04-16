@@ -22,7 +22,9 @@ const TypeMap: Record<string, string> = {
   편지: 'LETTER',
 };
 
-export const useCustomSelect = (type: 'category' | 'style' | 'type' | "time")  => {
+export const useCustomSelect = (
+  type: 'category' | 'style' | 'type' | 'time',
+) => {
   // 서버로 전달해야 될 값
   const [serverValue, setServerValue] = useState<string | string[] | undefined>(
     undefined,

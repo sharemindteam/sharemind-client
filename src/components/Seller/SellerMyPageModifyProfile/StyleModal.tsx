@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey3, Grey4, Grey6 } from 'styles/color';
-import { Body1, Body3, Body4, Button2, Caption2 } from 'styles/font';
+import { Body1, Body3, Button2, Caption2 } from 'styles/font';
 import { isStyleModalOpenState } from 'utils/atom';
 
 interface StyleModalProps {

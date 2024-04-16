@@ -36,7 +36,6 @@ import { BuyerPaymentDetail } from 'pages/Buyer/BuyerPaymentDetail';
 import { BuyerPaymentComplete } from 'pages/Buyer/BuyerPaymentComplete';
 import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
 import SellerRefundBankAccount from 'pages/Seller/SellerRefundBankAccount';
-import SellerChat from 'pages/Seller/SellerChat';
 import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
@@ -44,9 +43,14 @@ import { Admin } from 'pages/Common/Admin';
 import { BuyerChat } from 'pages/Buyer/BuyerChat';
 import Service from 'pages/Common/Service';
 import { BuyerQuit } from 'pages/Buyer/BuyerQuit';
-import { SellerChatTemp } from 'pages/Seller/SellerChatTemp';
+import SellerChat from 'pages/Seller/SellerChat';
 import BuyerOpenConsult from 'pages/Buyer/BuyerOpenConsult';
 import SellerOpenConsult from 'pages/Seller/SellerOpenConsult';
+import { BuyerOpenConsultRequest } from 'pages/Buyer/BuyerOpenConsultRequest';
+import { BuyerOpenPaymentDetail } from 'pages/Buyer/BuyerOpenPaymentDetail';
+import BuyerWriteOpenConsult from 'pages/Buyer/BuyerWriteOpenConsult';
+import BuyerOpenConsultDetail from 'pages/Buyer/BuyerOpenConsultDetail';
+import BuyerFinishPayment from 'pages/Buyer/BuyerFinishPayment';
 const Router = () => {
   return (
     <Routes>
@@ -57,13 +61,24 @@ const Router = () => {
       <Route path="/" element={<BuyerHome />} />
       <Route path="/consult" element={<BuyerConsult />} />
       <Route path="/open-consult" element={<BuyerOpenConsult />} />
+      <Route path="/open-consult/:id" element={<BuyerOpenConsultDetail />} />
       <Route path="/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/search" element={<BuyerSearch />} />
       <Route path="/categorySearch" element={<BuyerCategoryResult />} />
       <Route path="/search/result" element={<BuyerSearchResult />} />
       <Route path="/consultRequest" element={<BuyerConsultRequest />} />
+
+      <Route path="/openConsultRequest" element={<BuyerOpenConsultRequest />} />
+
+      <Route path="/openPaymentDetail" element={<BuyerOpenPaymentDetail />} />
+      <Route
+        path="/writeOpenConsult/:postId"
+        element={<BuyerWriteOpenConsult />}
+      />
+
       <Route path="/paymentDetail/:id" element={<BuyerPaymentDetail />} />
       <Route path="/paymentComplete" element={<BuyerPaymentComplete />} />
+      <Route path="/paymentFinish" element={<BuyerFinishPayment />} />
       <Route path="/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/mypage" element={<BuyerMypage />} />
       <Route path="/reviewManage" element={<BuyerReviewManage />} />
@@ -99,7 +114,7 @@ const Router = () => {
 
       {/* 판매자 : 상담 */}
       {/* 판매자 : 채팅 */}
-      <Route path="/minder/chat/:id" element={<SellerChatTemp />} />
+      <Route path="/minder/chat/:id" element={<SellerChat />} />
 
       {/* 판매자 : 편지 */}
       {/* 질문, 답장, 추가질문 , 추가답장 탭 페이지*/}
@@ -111,7 +126,10 @@ const Router = () => {
       />
 
       <Route path="/minder/consult" element={<SellerConsult />} />
-      <Route path="/minder/open-consult" element={<SellerOpenConsult />} />
+      <Route
+        path="/minder/open-consult/:consultid"
+        element={<SellerOpenConsult />}
+      />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/minder/mypage" element={<SellerMypage />} />
 

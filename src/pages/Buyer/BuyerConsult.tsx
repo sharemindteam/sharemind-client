@@ -10,12 +10,14 @@ import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.svg';
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
 import { ConsultModal } from 'components/Buyer/BuyerConsult/ConsultModal';
-import { BuyerChatSection } from 'components/Buyer/BuyerConsult/BuyerChatSection';
-import { BuyerLetterSection } from 'components/Buyer/BuyerConsult/BuyerLetterSection';
+import { BuyerConsultChatSection } from 'components/Buyer/BuyerConsult/BuyerConsultChatSection';
+import { BuyerConsultLetterSection } from 'components/Buyer/BuyerConsult/BuyerConsultLetterSection';
 import { useConsultParams } from 'hooks/useConsultParams';
+import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenConsultSection';
 
 export interface consultApiObject {
   consultStyle: string;
+  consultCategory: string;
   id: number;
   latestMessageContent: string | null;
   latestMessageIsCustomer: boolean | null;
@@ -25,6 +27,23 @@ export interface consultApiObject {
   unreadMessageCount: number | null;
   reviewCompleted: boolean | null;
   consultId: number | null;
+}
+export interface openConsultApiObject {
+  postId: number;
+  title: string;
+  content: string;
+  isPublic: boolean;
+  isCompleted: null | boolean;
+  isLiked: boolean;
+  totalLike: number;
+  publishedAt: string;
+  isChosen: boolean;
+  isScrapped: boolean;
+  totalScrap: number;
+  totalComment: number;
+  updatedAt: string;
+  finishedAt: string;
+  consultCategory?: string;
 }
 
 export const BuyerConsult = () => {
@@ -37,7 +56,7 @@ export const BuyerConsult = () => {
     sortType,
     setSortType,
     handleLetterClick,
-    handleOpenChatClick,
+    handleOpenConsultClick,
     handleChatClick,
     searchParams,
     setSearchParams,
@@ -80,24 +99,26 @@ export const BuyerConsult = () => {
               </Button2>
             </SelectButton>
             <SelectButton
-              isSelected={consultType === 'open-chat'}
-              onClick={handleOpenChatClick}
+              isSelected={consultType === 'open-consult'}
+              onClick={handleOpenConsultClick}
             >
-              <Button2 color={consultType === 'open-chat' ? Green : Grey1}>
+              <Button2 color={consultType === 'open-consult' ? Green : Grey1}>
                 공개상담
               </Button2>
             </SelectButton>
           </div>
-          <div
-            className="select-wrapper"
-            onClick={() => {
-              setIsModalOpen(true);
-              setScrollLock(true);
-            }}
-          >
-            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-            <Down />
-          </div>
+          {consultType !== 'open-consult' && (
+            <div
+              className="select-wrapper"
+              onClick={() => {
+                setIsModalOpen(true);
+                setScrollLock(true);
+              }}
+            >
+              <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+              <Down />
+            </div>
+          )}
         </div>
 
         <div
@@ -114,11 +135,11 @@ export const BuyerConsult = () => {
         </div>
       </div>
       {consultType === 'letter' ? (
-        <BuyerLetterSection sortType={sortType} isChecked={isChecked} />
+        <BuyerConsultLetterSection sortType={sortType} isChecked={isChecked} />
       ) : consultType === 'chat' ? (
-        <BuyerChatSection sortType={sortType} isChecked={isChecked} />
+        <BuyerConsultChatSection sortType={sortType} isChecked={isChecked} />
       ) : (
-        '컴포넌트 만들면 후에 추가'
+        <BuyerOpenConsultSection isChecked={isChecked} />
       )}
       {isModalOpen ? (
         <>
@@ -140,8 +161,7 @@ export const BuyerConsult = () => {
 };
 const Wrapper = styled.div`
   .options {
-    height: 8rem;
-    padding: 0.4rem 2rem;
+    padding: 0.8rem 2rem 0rem;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;

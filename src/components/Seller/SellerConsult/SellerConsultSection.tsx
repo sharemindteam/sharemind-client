@@ -23,7 +23,7 @@ export const SellerConsultSection = () => {
     setSortType,
     handleLetterClick,
     handleChatClick,
-    handleOpenChatClick,
+    handleOpenConsultClick,
     searchParams,
     setSearchParams,
     isChecked,
@@ -50,40 +50,40 @@ export const SellerConsultSection = () => {
           </ConsultType>
           <ConsultType
             isLong={true}
-            isActive={consultType === 'open-chat'}
-            onClick={handleOpenChatClick}
+            isActive={consultType === 'open-consult'}
+            onClick={handleOpenConsultClick}
           >
             공개상담
           </ConsultType>
-          <SortingType
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
-          >
-            <Button2 color={Grey3}>
-              {sortType === 0 ? '최근순' : '읽지않은순'}
-            </Button2>
-            <DownArrowIcon />
-          </SortingType>
-        </div>
-        {!(consultType === 'open-chat') && (
-          <div className="row2">
-            <div
-              className="row2-1"
+          {!(consultType === 'open-consult') && (
+            <SortingType
               onClick={() => {
-                setIsChecked(!isChecked);
-                searchParams.set('check', String(!isChecked));
-                setSearchParams(searchParams);
-              }}
-              style={{
-                cursor: 'pointer',
+                setIsModalOpen(true);
               }}
             >
-              <CircleCheckIcon fill={isChecked ? Green : Grey5} />
-              <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
-            </div>
+              <Button2 color={Grey3}>
+                {sortType === 0 ? '최근순' : '읽지않은순'}
+              </Button2>
+              <DownArrowIcon />
+            </SortingType>
+          )}
+        </div>
+        <div className="row2">
+          <div
+            className="row2-1"
+            onClick={() => {
+              setIsChecked(!isChecked);
+              searchParams.set('check', String(!isChecked));
+              setSearchParams(searchParams);
+            }}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <CircleCheckIcon fill={isChecked ? Green : Grey5} />
+            <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
           </div>
-        )}
+        </div>
       </ConsultSortingMenu>
       {consultType === 'letter' ? (
         <SellerLetterList
@@ -102,7 +102,12 @@ export const SellerConsultSection = () => {
           isChecked={isChecked}
         />
       ) : (
-        <SellerOpenConsultList />
+        <SellerOpenConsultList
+          sortType={sortType}
+          setSortType={setSortType}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
       )}
     </>
   );
@@ -142,12 +147,11 @@ const ConsultType = styled.div<ConsultTypeProps>`
   line-height: 110%;
   background: ${(props) => (props.isActive ? LightGreen : Grey6)};
   color: ${(props) => (props.isActive ? Green : Black)};
+  margin-top: 0.2rem;
 `;
 const SortingType = styled.div`
   display: flex;
   margin-left: auto;
-  margin-right: 0.8rem;
-  align-items: center;
   gap: 0.4rem;
   cursor: pointer;
 `;

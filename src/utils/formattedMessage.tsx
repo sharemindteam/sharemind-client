@@ -1,5 +1,5 @@
 export const formattedMessage = (
-  message: string | null,
+  message: string | undefined,
 ): JSX.Element[] | null => {
   return message
     ? message.split('\n').map((item, key) => (

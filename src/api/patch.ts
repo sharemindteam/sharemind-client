@@ -3,6 +3,9 @@ import { patchInstance, patchPublicInstance } from './axios';
 //admin 미결제 상담 승인
 export const patchAdminsUnpaidConsults = async (consultId: number) =>
   await patchInstance(`/admins/unpaid-consults/${consultId}`);
+
+export const patchAdminsUnpaidPosts = async (postId: number) =>
+  await patchInstance(`/admins/unpaid-posts/${postId}`);
 //admin 프로필 수정 승인
 export const patchAdminsPendingProfiles = async (
   counselorId: number,
@@ -39,6 +42,10 @@ export const patchCounselorsAll = async (sortType: string, body: any) =>
 //Message 최초 생성
 export const patchLetterMessage = async (body: any) =>
   await patchInstance('/letterMessages', body);
+
+export const patchCounselorsAccount = async (body: any) =>
+  await patchInstance('/counselors/account', body);
+
 //Message 최초 생성 (first-question)
 export const patchLetterMessageFirstQustion = async (body: any) =>
   await patchInstance('/letterMessages/first-question', body);
@@ -64,3 +71,15 @@ export const patchSearchWordsResults = async (sortType: string, body: any) =>
 //찜하기 추가
 export const patchWishLists = async (counselorId: number) =>
   await patchInstance(`/wishLists?counselorId=${counselorId}`);
+
+//일대다상담
+
+//Comment Controller
+
+export const patchAdoptComment = async (postId: any, commentId: string) =>
+  await patchInstance(`/comments/customers/${postId}?commentId=${commentId}`);
+
+//Post Controller
+export const patchOpenConsult = async (body: any) => {
+  await patchInstance(`/posts`, body);
+};

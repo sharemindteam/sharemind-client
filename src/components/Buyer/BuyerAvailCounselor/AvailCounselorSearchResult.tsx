@@ -17,7 +17,7 @@ export const AvailCounselorSearchResults = ({
         return (
           <ReadyConsultCard
             // 나중에 id로 변경
-            key={index}
+            key={value.counselorId}
             counselorId={value.counselorId}
             tagList={AppendCategoryType(
               value.consultCategories,

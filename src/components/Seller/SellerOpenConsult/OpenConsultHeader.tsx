@@ -4,18 +4,23 @@ import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { ReactComponent as OptionIcon } from 'assets/icons/icon-option.svg';
 import { Heading } from 'styles/font';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function OpenConsultHeader() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   return (
     <OpenConsultHeaderWrapper>
       <LeftArrow
         onClick={() => {
-          navigate('/minder');
+          if (searchParams.get('isMine') === 'true') {
+            navigate('/minder/consult?type=open-consult');
+          } else {
+            navigate('/minder');
+          }
         }}
       />
-      <Heading>공개상담</Heading>
+      <Heading>공개 상담</Heading>
     </OpenConsultHeaderWrapper>
   );
 }
@@ -31,6 +36,7 @@ const OpenConsultHeaderWrapper = styled.div`
   position: sticky;
   border-bottom: 1px solid rgba(242, 241, 248, 0.95);
   top: 0;
+  z-index: 1000;
 `;
 
 const LeftArrow = styled(LeftArrowIcon)`
@@ -40,4 +46,4 @@ const LeftArrow = styled(LeftArrowIcon)`
   left: 2rem;
 `;
 
-export default OpenConsultHeader;
+export default React.memo(OpenConsultHeader);

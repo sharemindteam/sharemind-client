@@ -1,6 +1,5 @@
-import { lightGreen } from '@mui/material/colors';
 import { Space } from 'components/Common/Space';
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import {
@@ -15,8 +14,18 @@ import {
 } from 'styles/color';
 import { Body1, Button2, Caption2 } from 'styles/font';
 import { isTimeModalOpenState } from 'utils/atom';
+
+//
+//
+//
+
 // 0부터 24까지 배열 생성
 const hourList = Array.from({ length: 25 }, (_, index) => index);
+
+//
+//
+//
+
 interface SelectedTimeList {
   [key: string]: string[];
 }
@@ -30,6 +39,11 @@ interface TimeSelectModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<ActiveDay>>;
   setIsSelected: React.Dispatch<React.SetStateAction<ActiveDay>>;
 }
+
+//
+//
+//
+
 function TimeSelectModal({
   isSelected,
   selectedTimeList,
@@ -43,6 +57,7 @@ function TimeSelectModal({
   const foundDayKey: any = Object.keys(isSelected).find(
     (key) => isSelected[key] === true,
   );
+
   useEffect(() => {
     if (selectedTimeList[foundDayKey][0]) {
       const [startNumber, endNumber] = selectedTimeList[foundDayKey][0]
@@ -51,6 +66,7 @@ function TimeSelectModal({
       setBlockRange([startNumber, endNumber]);
     }
   }, [foundDayKey]);
+
   // 모달 오픈 여부
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
@@ -134,6 +150,11 @@ function TimeSelectModal({
       console.error('No day selected.'); // 선택된 요일이 없는 경우 에러 처리
     }
   };
+
+  //
+  //
+  //
+
   return (
     <Wrapper visible={isTimeModalOpen}>
       <div className="bar-wrapper">
