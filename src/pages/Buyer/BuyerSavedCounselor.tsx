@@ -10,15 +10,15 @@ import { WishlistDataType } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import styled from 'styled-components';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import Divider2 from 'components/Common/Divider2';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현
 export const BuyerSavedCounselor = () => {
   const navigate = useNavigate();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [wishlistData, setWishlistData] = useState<WishlistDataType[]>([]);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-
+  const [tabState, setTabState] = useState<number>(1);
   const preventRef = useRef(true);
-
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
@@ -85,6 +85,7 @@ export const BuyerSavedCounselor = () => {
           />
           <Heading color={Grey1}>찜 목록</Heading>
         </HeaderWrapper>
+        <Divider2 tabState={tabState} setTabState={setTabState} />
       </>
     );
   } else {
@@ -99,10 +100,11 @@ export const BuyerSavedCounselor = () => {
             />
             <Heading color={Grey1}>찜 목록</Heading>
           </HeaderWrapper>
+          <Divider2 tabState={tabState} setTabState={setTabState} />
           <Space height="1.2rem" />
           <div
             className="save-counselor-list"
-            style={{ height: 'calc(100vh - 6.5rem)', overflow: 'scroll' }}
+            style={{ height: 'calc(100vh - 11rem)', overflow: 'scroll' }}
           >
             <SavedCounselorResults wishlistData={wishlistData} />
             {!isLastElem ? (
@@ -124,6 +126,7 @@ export const BuyerSavedCounselor = () => {
             />
             <Heading color={Grey1}>찜 목록</Heading>
           </HeaderWrapper>
+          <Divider2 tabState={tabState} setTabState={setTabState} />
           <EmptyWrapper>
             <EmptyIcon />
             <Heading>아직 후기가 없어요.</Heading>

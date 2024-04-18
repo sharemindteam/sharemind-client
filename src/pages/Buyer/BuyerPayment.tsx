@@ -225,7 +225,7 @@ export const BuyerPayment = () => {
           </>
         ) : null}
       </>
-    );
+    );  
   }
 };
 
