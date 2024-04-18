@@ -64,7 +64,7 @@ const BackIcon = styled(Back)`
 `;
 const FormWrapper = styled.form`
   position: relative;
-  width: 80%;
+  width: 100%;
 `;
 const SearchIcon = styled(Search)`
   position: absolute;

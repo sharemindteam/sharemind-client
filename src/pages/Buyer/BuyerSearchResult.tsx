@@ -17,7 +17,10 @@ import {
   searchKeywordState,
 } from 'utils/atom';
 import Input from 'components/Common/Input';
-import { patchSearchWordsResults } from 'api/patch';
+import {
+  patchSearchWordsCounselorsResults,
+  patchSearchWordsResults,
+} from 'api/patch';
 import { SearchResultData } from 'utils/type';
 import { ConverSortType } from 'utils/convertSortType';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
@@ -81,7 +84,10 @@ export const BuyerSearchResult = () => {
         index: pageIndex,
       };
       const sortTypeString: string = ConverSortType(sortType);
-      const res: any = await patchSearchWordsResults(sortTypeString, body);
+      const res: any = await patchSearchWordsCounselorsResults(
+        sortTypeString,
+        body,
+      );
       if (res.status === 200) {
         if (res.data.length !== 0) {
           if (pageIndex === 0) {
@@ -155,8 +161,8 @@ export const BuyerSearchResult = () => {
               placeHolderColor={Grey4}
               height="4.4rem"
               width="100%"
-              padding="0 3.2rem 0 0"
-              textIndent="1rem"
+              isBoxSizing={true}
+              padding="0.8rem 3.4rem 0.8rem 1.6rem"
             />
             <SearchIcon onClick={handleSubmit} />
           </FormWrapper>
@@ -230,26 +236,25 @@ const Wrapper = styled.div`
 `;
 const HeaderWrapper = styled.div`
   height: 5.2rem;
+  gap: 0.8rem;
   background-color: ${White};
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   padding: 0.4rem 2rem;
 `;
 const FormWrapper = styled.form`
   position: relative;
-  width: 79%;
+  width: 100%;
 `;
 const BackIcon = styled(Back)`
-  position: absolute;
-  top: 1.4rem;
-  left: 2rem;
   cursor: pointer;
 `;
 const SearchIcon = styled(Search)`
   position: absolute;
-  right: -2.7rem;
+  right: 0.8rem;
   top: 0.8rem;
   cursor: pointer;
 `;

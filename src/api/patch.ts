@@ -64,9 +64,23 @@ export const patchApplyPayments = async (id: any) =>
 
 //SearchWord Controller
 //검색 결과 반환
-export const patchSearchWordsResults = async (sortType: string, body: any) =>
-  await patchPublicInstance(`/searchWords/results?sortType=${sortType}`, body);
+export const patchSearchWordsCounselorsResults = async (
+  sortType: string,
+  body: any,
+) =>
+  await patchPublicInstance(
+    `/searchWords/results/counselors?sortType=${sortType}`,
+    body,
+  );
 
+export const patchSearchWordsPostsResults = async (
+  sortType: string,
+  body: any,
+) =>
+  await patchPublicInstance(
+    `/searchWords/results/posts?sortType=${sortType}`,
+    body,
+  );
 //Wishlist Controlloer
 //찜하기 추가
 export const patchWishLists = async (counselorId: number) =>
