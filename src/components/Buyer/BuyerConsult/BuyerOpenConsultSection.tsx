@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { Body1, Body3, Caption1, Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
-import { isBuyPopupOpenState, isConsultModalOpenState } from 'utils/atom';
+import { isBuyPopupOpenState } from 'utils/atom';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
@@ -279,14 +279,6 @@ const TimeLeft = styled.div`
   right: 1.6rem;
 `;
 
-const CreateConsultButton = styled.button`
-  width: 5.8rem;
-  height: 5.8rem;
-  border-radius: 100%;
-  background-color: ${Green};
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.25);
-  align-self: flex-end;
-`;
 const CreateConsultButtonWrapper = styled.div`
   width: 100%;
   padding: 0 2rem;

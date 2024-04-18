@@ -11,7 +11,7 @@ import { Characters } from 'utils/Characters';
 interface ProfileProps {
   isBuyer: boolean;
   isVerified?: undefined | boolean;
-  profileIdentifier: number | undefined;
+  profileIdentifier: number | null | undefined;
   name: string | undefined;
   levelStatus: string | undefined;
   isPass?: boolean | undefined;
@@ -29,7 +29,8 @@ export const Profile = ({
   return (
     <>
       <ProfileBox>
-        <Characters number={profileIdentifier} width="7.6rem" />
+        {/* 프로플 만들지 않았을 때, 기본 프로필을 4번으로 */}
+        <Characters number={profileIdentifier ?? 4} width="7.6rem" />
 
         {isBuyer ? (
           <Name>{name}</Name>

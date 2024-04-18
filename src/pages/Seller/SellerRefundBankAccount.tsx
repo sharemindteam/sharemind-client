@@ -11,15 +11,15 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Grey1, Grey3, Grey6 } from 'styles/color';
-import { Body1, Body3, Heading } from 'styles/font';
+import { Grey1, Grey6 } from 'styles/color';
+import { Body1, Heading } from 'styles/font';
 import { BankIcon } from 'utils/BankIcon';
 import { isBankModalOpenState } from 'utils/atom';
 
 function SellerRefundBankAccount() {
   const navigate = useNavigate();
-  const [accountNum, setAccountNum] = useState('');
-  const [bankType, setBankType] = useState(null);
+  const [accountNum, setAccountNum] = useState<string>('');
+  const [bankType, setBankType] = useState<string | null>(null);
   const [owner, setOwner] = useState('');
   // 은행 모달
   const [isBankModalOpen, setIsBankModalOpen] =
@@ -27,14 +27,9 @@ function SellerRefundBankAccount() {
 
   const [isActiveFisnishButton, setIsActiveFinishButton] = useState(false);
   useEffect(() => {
-    // API 요청
-    // setAccountNum('12345678900');
-    // setBankType('우리은행');
-    // setOwner('김고민');
-    // const res= getCounselorsAccount()
     const fetchAccountData = async () => {
       try {
-        const res:any = await getCounselorsAccount();
+        const res: any = await getCounselorsAccount();
         if (res.status === 200) {
           setAccountNum(res.data.account);
           setBankType(res.data.bank);
