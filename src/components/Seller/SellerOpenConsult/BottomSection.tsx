@@ -4,7 +4,7 @@ import reactTextareaAutosize from 'react-textarea-autosize';
 import styled from 'styled-components';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
 import { Green, Grey3, Grey6, LightGreen, White } from 'styles/color';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCounselorsIsWriteComments } from 'api/get';
@@ -22,11 +22,12 @@ function BottomSection({
 }: BottomSectionProps) {
   const navigate = useNavigate();
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
-  const { consultid } = useParams();
+  const { consultid } = useParams() as { consultid: string };
   const [isAlreadyWrite, setIsAlreadyWrite] = useState<boolean>(false);
   const handleNavigateRandomConsult = () => {
-    if (localStorage.getItem('randomConsult')) {
-      const randomNumList = JSON.parse(localStorage.getItem('randomConsult'));
+    const randomNumListString = localStorage.getItem('randomConsult');
+    if (randomNumListString != null) {
+      const randomNumList = JSON.parse(randomNumListString);
       const navigateId =
         randomNumList[
           (randomNumList.indexOf(parseInt(consultid)) + 1) %
