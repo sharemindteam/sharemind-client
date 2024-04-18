@@ -11,11 +11,18 @@ import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import styled from 'styled-components';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import Divider2 from 'components/Common/Divider2';
+import { openConsultApiObject } from './BuyerConsult';
+import { getPostScraps } from 'api/get';
+import SavedOpenConsultResults from 'components/Buyer/BuyerSavedCounselor.tsx/SavedOpenConsultResults';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 // TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현
 export const BuyerSavedCounselor = () => {
   const navigate = useNavigate();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [wishlistData, setWishlistData] = useState<WishlistDataType[]>([]);
+  const [openConsultData, setOpenConsultData] = useState<
+    openConsultApiObject[]
+  >([]);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const [tabState, setTabState] = useState<number>(1);
   const preventRef = useRef(true);
@@ -27,10 +34,18 @@ export const BuyerSavedCounselor = () => {
       preventRef.current
     ) {
       preventRef.current = false;
-      await fetchWishlistData(
-        wishlistData[wishlistData.length - 1].wishlistId,
-        wishlistData[wishlistData.length - 1].updatedAt,
-      );
+      if (tabState === 1) {
+        await fetchWishlistData(
+          wishlistData[wishlistData.length - 1].wishlistId,
+          wishlistData[wishlistData.length - 1].updatedAt,
+        );
+      } else if (tabState === 2) {
+        await fetchOpenConsultData(
+          openConsultData[openConsultData.length - 1].postScrapId,
+          openConsultData[openConsultData.length - 1].scrappedAt,
+        );
+      }
+
       preventRef.current = true;
     }
   };
@@ -46,12 +61,12 @@ export const BuyerSavedCounselor = () => {
       wishlistId: lastId,
       updatedAt: lastUpdateAt,
     };
-
     try {
       const res: any = await postWishLists(body);
       if (res.status === 200) {
         if (res.data.length !== 0) {
           if (lastId === 0) {
+            setIsInitialLoading(true);
             setWishlistData(res.data);
           } else {
             const updatedReviews = [...wishlistData, ...res.data];
@@ -71,9 +86,44 @@ export const BuyerSavedCounselor = () => {
       }
     }
   };
+  const fetchOpenConsultData = async (lastId: number, lastUpdateAt: string) => {
+    try {
+      const params = {
+        postScrapId: lastId,
+        scrappedAt: lastUpdateAt,
+      };
+      const res: any = await getPostScraps({ params });
+      if (res.status === 200) {
+        if (res.data.length !== 0) {
+          if (lastId === 0) {
+            setIsInitialLoading(true);
+            setOpenConsultData(res.data);
+          } else {
+            const updatedOpenConsultList = [...openConsultData, ...res.data];
+            setOpenConsultData(updatedOpenConsultList);
+          }
+        } else {
+          setIsLastElem(true);
+        }
+      } else if (res.response.status !== 401) {
+        // navigate('/mypage');
+      }
+    } catch (err) {
+      alert(err);
+    } finally {
+      if (lastId === 0) {
+        setIsInitialLoading(false);
+      }
+    }
+  };
   useLayoutEffect(() => {
-    fetchWishlistData(0, '');
-  }, []);
+    setIsInitialLoading(true);
+    if (tabState === 1) {
+      fetchWishlistData(0, '');
+    } else if (tabState === 2) {
+      fetchOpenConsultData(0, new Date().toISOString().slice(0, 19));
+    }
+  }, [tabState]);
   if (isInitialLoading) {
     return (
       <>
@@ -86,53 +136,111 @@ export const BuyerSavedCounselor = () => {
           <Heading color={Grey1}>찜 목록</Heading>
         </HeaderWrapper>
         <Divider2 tabState={tabState} setTabState={setTabState} />
+        <div
+          style={{
+            height: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <LoadingSpinner />
+        </div>
       </>
     );
   } else {
-    if (wishlistData.length !== 0) {
-      return (
-        <>
-          <HeaderWrapper>
-            <BackIcon
-              onClick={() => {
-                navigate('/mypage');
-              }}
-            />
-            <Heading color={Grey1}>찜 목록</Heading>
-          </HeaderWrapper>
-          <Divider2 tabState={tabState} setTabState={setTabState} />
-          <Space height="1.2rem" />
-          <div
-            className="save-counselor-list"
-            style={{ height: 'calc(100vh - 11rem)', overflow: 'scroll' }}
-          >
-            <SavedCounselorResults wishlistData={wishlistData} />
-            {!isLastElem ? (
-              <div ref={setTarget} style={{ height: '3.5rem' }} />
-            ) : (
-              <div style={{ height: '3.5rem' }} />
-            )}
-          </div>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <HeaderWrapper>
-            <BackIcon
-              onClick={() => {
-                navigate('/mypage');
-              }}
-            />
-            <Heading color={Grey1}>찜 목록</Heading>
-          </HeaderWrapper>
-          <Divider2 tabState={tabState} setTabState={setTabState} />
-          <EmptyWrapper>
-            <EmptyIcon />
-            <Heading>아직 후기가 없어요.</Heading>
-          </EmptyWrapper>
-        </>
-      );
+    if (tabState === 1) {
+      if (wishlistData.length !== 0) {
+        return (
+          <>
+            <HeaderWrapper>
+              <BackIcon
+                onClick={() => {
+                  navigate('/mypage');
+                }}
+              />
+              <Heading color={Grey1}>찜 목록</Heading>
+            </HeaderWrapper>
+            <Divider2 tabState={tabState} setTabState={setTabState} />
+            <Space height="1.2rem" />
+            <div
+              className="save-counselor-list"
+              style={{ height: 'calc(100vh - 11rem)', overflow: 'scroll' }}
+            >
+              <SavedCounselorResults wishlistData={wishlistData} />
+              {!isLastElem ? (
+                <div ref={setTarget} style={{ height: '3.5rem' }} />
+              ) : (
+                <div style={{ height: '3.5rem' }} />
+              )}
+            </div>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <HeaderWrapper>
+              <BackIcon
+                onClick={() => {
+                  navigate('/mypage');
+                }}
+              />
+              <Heading color={Grey1}>찜 목록</Heading>
+            </HeaderWrapper>
+            <Divider2 tabState={tabState} setTabState={setTabState} />
+            <EmptyWrapper>
+              <EmptyIcon />
+              <Heading>아직 후기가 없어요.</Heading>
+            </EmptyWrapper>
+          </>
+        );
+      }
+    } else if (tabState === 2) {
+      if (openConsultData.length !== 0) {
+        return (
+          <>
+            <HeaderWrapper>
+              <BackIcon
+                onClick={() => {
+                  navigate('/mypage');
+                }}
+              />
+              <Heading color={Grey1}>찜 목록</Heading>
+            </HeaderWrapper>
+            <Divider2 tabState={tabState} setTabState={setTabState} />
+            <Space height="1.2rem" />
+            <div
+              className="open-consult-list"
+              style={{ height: 'calc(100vh - 11rem)', overflow: 'scroll' }}
+            >
+              <SavedOpenConsultResults openConsultList={openConsultData} />
+              {!isLastElem ? (
+                <div ref={setTarget} style={{ height: '3.5rem' }} />
+              ) : (
+                <div style={{ height: '3.5rem' }} />
+              )}
+            </div>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <HeaderWrapper>
+              <BackIcon
+                onClick={() => {
+                  navigate('/mypage');
+                }}
+              />
+              <Heading color={Grey1}>찜 목록</Heading>
+            </HeaderWrapper>
+            <Divider2 tabState={tabState} setTabState={setTabState} />
+            <EmptyWrapper>
+              <EmptyIcon />
+              <Heading>아직 저장한 일대다상담이 없어요.</Heading>
+            </EmptyWrapper>
+          </>
+        );
+      }
     }
   }
 };

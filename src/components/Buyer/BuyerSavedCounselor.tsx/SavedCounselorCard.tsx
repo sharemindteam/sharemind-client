@@ -83,8 +83,10 @@ export const SavedCounselorCard = ({
           }}
         >
           <TagWrapper>
-            {tagList.map((value: any) => {
-              return <TagA2Cartegory tagType={value} bgColorType={1} />;
+            {tagList.map((value: any, index) => {
+              return (
+                <TagA2Cartegory tagType={value} bgColorType={1} key={index} />
+              );
             })}
           </TagWrapper>
           <Body1 margin={'0.8rem 1.6rem 1.2rem 1.6rem'}>{introduction}</Body1>

@@ -30,6 +30,7 @@ export interface consultApiObject {
 }
 export interface openConsultApiObject {
   postId: number;
+  postScrapId: number;
   title: string;
   content: string;
   isPublic: boolean;
@@ -39,6 +40,7 @@ export interface openConsultApiObject {
   publishedAt: string;
   isChosen: boolean;
   isScrapped: boolean;
+  scrappedAt: string;
   totalScrap: number;
   totalComment: number;
   updatedAt: string;
