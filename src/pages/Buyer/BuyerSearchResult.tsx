@@ -181,7 +181,24 @@ export const BuyerSearchResult = () => {
               navigate('/consult');
             }}
           />
+          <FormWrapper onSubmit={handleSubmit}>
+            <Input
+              value={input}
+              onChange={handleOnChange}
+              placeholder="상담사명, 제목, 키워드"
+              fontSize="1.6rem"
+              fontWeight="400"
+              fontColor={Grey1}
+              placeHolderColor={Grey4}
+              height="4.4rem"
+              width="100%"
+              isBoxSizing={true}
+              padding="0.8rem 3.4rem 0.8rem 1.6rem"
+            />
+            <SearchIcon onClick={handleSubmit} />
+          </FormWrapper>
         </HeaderWrapper>
+
         <div
           style={{
             height: '70vh',
@@ -382,7 +399,6 @@ const HeaderWrapper = styled.header`
   position: relative;
   display: flex;
   align-items: center;
-  top: 0;
   width: 100%;
   justify-content: center;
   box-sizing: border-box;
