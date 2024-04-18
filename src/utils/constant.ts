@@ -13,6 +13,7 @@ export const categories = [
   '조언',
   '팩폭',
 ];
+export const openSortList = ['최근순', '공감 많은 순', '댓글 많은 순'];
 export const sortList = ['최근순', '인기순', '별점순'];
 
 export const quizList = [

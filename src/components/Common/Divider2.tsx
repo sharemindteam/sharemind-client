@@ -53,8 +53,6 @@ const Wrapper = styled.nav`
   display: flex;
   justify-content: center;
   border-bottom: 1px solid ${Grey6};
-  position: sticky;
-  top: 5.3rem;
   background-color: white;
   z-index: 999;
 `;
