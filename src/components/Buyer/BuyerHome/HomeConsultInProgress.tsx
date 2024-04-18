@@ -145,10 +145,11 @@ const Wrapper = styled.div`
   .nav-consult {
     display: flex;
     width: 100%;
+    height: 4.4rem;
     box-sizing: border-box;
     padding: 2.2rem 3.2rem 1.2rem 2rem;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     cursor: pointer;
     margin-bottom: 0.4rem;
   }
