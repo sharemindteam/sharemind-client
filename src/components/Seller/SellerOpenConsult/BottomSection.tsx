@@ -1,5 +1,5 @@
 import { Button } from 'components/Common/Button';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import reactTextareaAutosize from 'react-textarea-autosize';
 import styled from 'styled-components';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
@@ -7,6 +7,7 @@ import { Green, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getCounselorsIsWriteComments } from 'api/get';
 interface BottomSectionProps {
   isReplying: boolean;
   setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +23,7 @@ function BottomSection({
   const navigate = useNavigate();
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
   const { consultid } = useParams();
+  const [isAlreadyWrite, setIsAlreadyWrite] = useState<boolean>(false);
   const handleNavigateRandomConsult = () => {
     if (localStorage.getItem('randomConsult')) {
       const randomNumList = JSON.parse(localStorage.getItem('randomConsult'));
@@ -34,6 +36,18 @@ function BottomSection({
     }
     // 그냥 open-consult id쳐서 들어왔을 경우 추후 예외처리..
   };
+  useEffect(() => {
+    const fetchIsAlreadyWrite = async () => {
+      const res: any = await getCounselorsIsWriteComments(consultid);
+      if (res.status === 200) {
+        setIsAlreadyWrite(res.data);
+      } else if (res.response.status === 404) {
+        alert('존재하지 않는 상담입니다.');
+        navigate('/minder/consult?type=open-consult');
+      }
+    };
+    fetchIsAlreadyWrite();
+  });
   return (
     <BottomSectionWrapper>
       {isReplying ? (
@@ -70,10 +84,13 @@ function BottomSection({
           <Button
             text={'답장쓰기'}
             width="100%"
+            isActive={!isAlreadyWrite}
             backgroundColor={Green}
             height="5.2rem"
             onClick={() => {
-              setIsReplying(true);
+              if (!isAlreadyWrite) {
+                setIsReplying(true);
+              }
             }}
           />
         </div>
