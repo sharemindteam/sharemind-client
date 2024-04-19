@@ -1,5 +1,6 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
 import { SetStateAction } from 'react';
+import { SetURLSearchParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
@@ -9,12 +10,16 @@ interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
   setPostId: React.Dispatch<SetStateAction<number>>;
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
 }
 //최근순 인기순 별점순 모달
 export const OpenConsultSortModal = ({
   sortType,
   setSortType,
   setPostId,
+  searchParams,
+  setSearchParams,
 }: SortModalProps) => {
   //modal 여부
   const [isModalOpen, setIsModalOpen] = useRecoilState(isSortModalOpenState);
@@ -31,6 +36,8 @@ export const OpenConsultSortModal = ({
         onClick={() => {
           setSortType(0);
           setPostId(0);
+          searchParams.set('open-sort', 'recent');
+          setSearchParams(searchParams);
           setIsModalOpen(false);
           setScrollLock(false);
         }}
@@ -49,6 +56,8 @@ export const OpenConsultSortModal = ({
         onClick={() => {
           setSortType(1);
           setPostId(0);
+          searchParams.set('open-sort', 'likes');
+          setSearchParams(searchParams);
           setIsModalOpen(false);
           setScrollLock(false);
         }}
@@ -67,6 +76,8 @@ export const OpenConsultSortModal = ({
         onClick={() => {
           setSortType(2);
           setPostId(0);
+          searchParams.set('open-sort', 'comments');
+          setSearchParams(searchParams);
           setIsModalOpen(false);
           setScrollLock(false);
         }}

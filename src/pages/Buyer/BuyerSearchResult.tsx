@@ -7,13 +7,12 @@ import { ReactComponent as Search } from 'assets/icons/search.svg';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { SearchResults } from 'components/Buyer/BuyerSearchResult/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { ChangeEvent, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { openSortList, sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   isSortModalOpenState,
   scrollLockState,
-  searchKeywordState,
 } from 'utils/atom';
 import Input from 'components/Common/Input';
 import {
@@ -30,33 +29,40 @@ import OpenConsultResults from 'components/Buyer/BuyerSearchResult/OpenConsultRe
 import { openConsultApiObject } from './BuyerConsult';
 import { OpenConsultSortModal } from 'components/Buyer/Common/OpenConsultSortModal';
 import { ConverOpenSortType } from 'utils/convertOpenSortType';
+import { useSearchPageParams } from 'hooks/useSearchPageParams';
 export const BuyerSearchResult = () => {
   const navigate = useNavigate();
-  //0 : 최신순 1:인기순 2: 별점순
-  // 바뀔 때마다 useEffect로 request
-  const [sortType, setSortType] = useState<number>(0);
-  // Modal 여부(recoil)
+  // Modal 여부(recoil), 스크롤 막기
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isSortModalOpenState);
-  //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
-  //검색된 value
-  const [keyword, setKeyword] = useRecoilState(searchKeywordState);
-  //input value
-  const initInput = keyword;
-  const [input, setInput] = useState(initInput);
-  //결과저장
+  // 검색 결과 리스트 - 상담사 리스트와 공개 상담 리스트
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
   const [openConsultSearchData, setOpenConsultSearchData] = useState<
     openConsultApiObject[]
   >([]);
-  //무한스크롤 위한 page num
+  //무한스크롤 위한 page num과 lastId
   const [pageNum, setPageNum] = useState<number>(0);
   const [lastId, setLastId] = useState<number>(0);
-  // 상담사 탭 0, 공개 상담 1
-  const [tabState, setTabState] = useState<number>(1);
+  // 무한스크롤을 trigger를 위한 상태
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  const preventRef = useRef(true); // 중복 방지 옵션
+  // 무한스크롤을 trigger를 위한 상태
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const preventRef = useRef(true);
+  const {
+    handleClickTab,
+    searchParams,
+    setSearchParams,
+    openSortType,
+    setOpenSortType,
+    input,
+    keyword,
+    tabState,
+    handleSubmit,
+    sortType,
+    setSortType,
+    handleChangeInput,
+  } = useSearchPageParams();
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
@@ -74,24 +80,13 @@ export const BuyerSearchResult = () => {
       preventRef.current = true;
     }
   };
-  //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
     threshold: 0.8,
     onIntersect,
   });
-  //input onchagne
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
-  };
-  const handleSubmit: any = (event: ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setKeyword(input);
-  };
 
-  //로딩 state
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const fetchSearchResults = async (searchWord: string, pageIndex: number) => {
     try {
       const body = {
@@ -134,7 +129,7 @@ export const BuyerSearchResult = () => {
         word: searchWord,
         postId: postId,
       };
-      const sortTypeString: string = ConverOpenSortType(sortType);
+      const sortTypeString: string = ConverOpenSortType(openSortType);
       const res: any = await patchSearchWordsPostsResults(sortTypeString, body);
       if (res.status === 200) {
         if (res.data.length !== 0) {
@@ -171,7 +166,8 @@ export const BuyerSearchResult = () => {
     } else if (tabState === 2) {
       fetchOpenSearchResults(keyword, 0);
     }
-  }, [keyword, sortType, tabState]);
+  }, [keyword, sortType, tabState, openSortType]);
+
   if (isLoading) {
     return (
       <>
@@ -184,7 +180,7 @@ export const BuyerSearchResult = () => {
           <FormWrapper onSubmit={handleSubmit}>
             <Input
               value={input}
-              onChange={handleOnChange}
+              onChange={handleChangeInput}
               placeholder="상담사명, 제목, 키워드"
               fontSize="1.6rem"
               fontWeight="400"
@@ -225,7 +221,7 @@ export const BuyerSearchResult = () => {
               <FormWrapper onSubmit={handleSubmit}>
                 <Input
                   value={input}
-                  onChange={handleOnChange}
+                  onChange={handleChangeInput}
                   placeholder="상담사명, 제목, 키워드"
                   fontSize="1.6rem"
                   fontWeight="400"
@@ -239,7 +235,7 @@ export const BuyerSearchResult = () => {
                 <SearchIcon onClick={handleSubmit} />
               </FormWrapper>
             </HeaderWrapper>
-            <Divider2 tabState={tabState} setTabState={setTabState} />
+            <Divider2 tabState={tabState} setTabState={handleClickTab} />
             <div className="select">
               <div
                 className="select-wrapper"
@@ -287,6 +283,8 @@ export const BuyerSearchResult = () => {
                 sortType={sortType}
                 setSortType={setSortType}
                 setPageNum={setPageNum}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
               />
             </>
           ) : null}
@@ -305,7 +303,7 @@ export const BuyerSearchResult = () => {
               <FormWrapper onSubmit={handleSubmit}>
                 <Input
                   value={input}
-                  onChange={handleOnChange}
+                  onChange={handleChangeInput}
                   placeholder="상담사명, 제목, 키워드"
                   fontSize="1.6rem"
                   fontWeight="400"
@@ -319,7 +317,7 @@ export const BuyerSearchResult = () => {
                 <SearchIcon onClick={handleSubmit} />
               </FormWrapper>
             </HeaderWrapper>
-            <Divider2 tabState={tabState} setTabState={setTabState} />
+            <Divider2 tabState={tabState} setTabState={handleClickTab} />
             <div className="select">
               <div
                 className="select-wrapper"
@@ -328,7 +326,7 @@ export const BuyerSearchResult = () => {
                   setScrollLock(true);
                 }}
               >
-                <Button2 color={Grey3}>{openSortList[sortType]}</Button2>
+                <Button2 color={Grey3}>{openSortList[openSortType]}</Button2>
                 <Down />
               </div>
             </div>
@@ -364,9 +362,11 @@ export const BuyerSearchResult = () => {
                 }}
               />
               <OpenConsultSortModal
-                sortType={sortType}
-                setSortType={setSortType}
+                sortType={openSortType}
+                setSortType={setOpenSortType}
                 setPostId={setLastId}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
               />
             </>
           ) : null}

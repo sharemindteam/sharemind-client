@@ -6,7 +6,7 @@ import { ReactComponent as UnderLineBuyerBig } from 'assets/icons/underline-big.
 import { Subtitle } from 'styles/font';
 interface Divder2Props {
   tabState: number;
-  setTabState: React.Dispatch<React.SetStateAction<number>>;
+  setTabState: (tabState: number) => void;
 }
 function Divider2({ tabState, setTabState }: Divder2Props) {
   return (
