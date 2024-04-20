@@ -1,7 +1,5 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { searchKeywordState } from 'utils/atom';
 
 //
 //
@@ -17,8 +15,7 @@ export const useSearchPageParams = () => {
   const openSortParam = searchParams.get('open-sort');
 
   /** get initial values */
-  const keywordFromPrevPage = useRecoilValue(searchKeywordState);
-  const initialKeyword = keywordParam ?? keywordFromPrevPage;
+  const initialKeyword = keywordParam ?? '';
   const initialSearchType = typeParam ?? 'counselor';
   const initialSortType =
     sortParam === 'rating' ? 2 : sortParam === 'popular' ? 1 : 0;
@@ -27,7 +24,7 @@ export const useSearchPageParams = () => {
   const initialTabState = typeParam === 'open-consult' ? 2 : 1;
 
   /** states with iniitial value */
-  const [input, setInput] = useState(keywordFromPrevPage);
+  const [input, setInput] = useState(initialKeyword);
   const [keyword, setKeyword] = useState(initialKeyword);
   const [searchType, setSearchType] = useState<string>(initialSearchType);
   const [openSortType, setOpenSortType] = useState<number>(initialOpenSortType);
@@ -88,7 +85,6 @@ export const useSearchPageParams = () => {
     keyword,
     setKeyword,
     handleSubmit,
-    keywordFromPrevPage,
     searchType,
     sortType,
     setSortType,

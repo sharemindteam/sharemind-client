@@ -5,12 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { Grey1, Grey4, White } from 'styles/color';
 import Input from 'components/Common/Input';
 import { ChangeEvent, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { searchKeywordState } from 'utils/atom';
 
 export const SearchHeader = () => {
   const navigate = useNavigate();
-  const setKeyword = useSetRecoilState(searchKeywordState);
   //input value
   const [input, setInput] = useState('');
   //input onchagne
@@ -19,8 +16,7 @@ export const SearchHeader = () => {
   };
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setKeyword(input);
-    navigate('/search/result');
+    navigate(`/search/result?keyword=${input}`);
   };
   return (
     <Wrapper>
