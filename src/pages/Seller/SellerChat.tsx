@@ -340,10 +340,12 @@ const SellerChat = () => {
   });
 
   useEffect(() => {
-    // 컴포넌트가 마운트되었을 때 실행
-    if (stompClient.current?.connected) {
-      connectChat();
+    if (!stompClient.current?.connected) {
+      return;
     }
+
+    connectChat();
+
     //채팅 불러오기
     getChatMessages(0);
     //채팅 status, 상대이름 가져오기

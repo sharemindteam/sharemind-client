@@ -278,7 +278,7 @@ export const BuyerChat = () => {
     }
   };
 
-  const sentExitResponse = () => {
+  const sendExitResponse = () => {
     if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send('app/api/v1/chat/customers/exit/' + chatId, {});
     }
@@ -352,10 +352,13 @@ export const BuyerChat = () => {
   });
 
   useEffect(() => {
-    // 컴포넌트가 마운트되었을 때 실행
-    if (stompClient.current?.connected) {
-      connectChat();
+    if (!stompClient.current?.connected) {
+      return;
     }
+    // 컴포넌트가 마운트되었을 때 실행
+
+    connectChat();
+
     //채팅 불러오기
     getChatMessages(0);
     //
@@ -374,7 +377,7 @@ export const BuyerChat = () => {
         stompClient.current.unsubscribe(
           '/queue/chatMessages/customers/' + chatId,
         );
-        sentExitResponse();
+        sendExitResponse();
       }
     };
   }, [stompClient.current?.connected]);
