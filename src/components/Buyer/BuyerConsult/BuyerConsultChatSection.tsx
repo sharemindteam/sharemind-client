@@ -37,7 +37,7 @@ export const BuyerConsultChatSection = ({
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
    */
   const cardDataRef = useRef<consultApiObject[]>([]);
-  const { stompClient, isConnected } = useStompContext();
+  const { stompClient } = useStompContext();
 
   /**
    * 채팅 readId, 가장 최근 unread message, 정렬 업데이트
@@ -95,7 +95,7 @@ export const BuyerConsultChatSection = ({
   };
 
   useEffect(() => {
-    if (!isConnected) {
+    if (!stompClient.current?.connected) {
       return;
     }
 
@@ -194,7 +194,7 @@ export const BuyerConsultChatSection = ({
       }
       stompClient.current?.unsubscribe('/queue/chattings/connect/customers/');
     };
-  }, [stompClient, isConnected]);
+  }, [stompClient, stompClient.current?.connected]);
 
   useLayoutEffect(() => {
     const fetchData = async () => {
