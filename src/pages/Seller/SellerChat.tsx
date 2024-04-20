@@ -18,6 +18,7 @@ import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 import SellerChatFooter from 'components/Seller/SellerChat/SellerChatFooter';
 import SellerChatSection from 'components/Seller/SellerChat/SellerChatSection';
+import { CHAT_START_REQUEST_TIME } from 'utils/constant';
 
 //
 //
@@ -144,7 +145,7 @@ const SellerChat = () => {
           ) {
             //구매자와 달리 현재 채팅 status를 업데이트하는 방향으로 구현해야할듯
             //새 메세지 도착으로 분류
-            setTime('10:00');
+            setTime(CHAT_START_REQUEST_TIME);
             setChatStatus('상담 시작 요청');
           } else if (
             arrivedMessage.chatWebsocketStatus ===

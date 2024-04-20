@@ -14,6 +14,7 @@ import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 import BuyerChatFooter from 'components/Buyer/BuyerChat/BuyerChatFooter';
 import BuyerChatSection from 'components/Buyer/BuyerChat/BuyerChatSection';
+import { CHAT_START_REQUEST_TIME } from 'utils/constant';
 
 export const BuyerChat = () => {
   const navigate = useNavigate();
@@ -129,7 +130,7 @@ export const BuyerChat = () => {
           ) {
             //새 메세지 도착으로 분류
             newMessageRef.current = true;
-            setTime('10:00');
+            setTime(CHAT_START_REQUEST_TIME);
             setMessages((prevMessages) => [
               ...prevMessages,
               {
