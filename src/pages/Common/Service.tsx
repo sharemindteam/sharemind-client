@@ -1,6 +1,6 @@
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Space } from 'components/Common/Space';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey2, Grey3, Grey6, LightGreen } from 'styles/color';
@@ -19,7 +19,7 @@ import { Button } from 'components/Common/Button';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Characters } from 'utils/Characters';
-import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+
 const slideArray = [
   '연애갈등',
   '이별/재회',
@@ -44,7 +44,7 @@ function Service() {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/share');
+            navigate(-1);
           }}
         />
         <Heading>서비스 소개</Heading>
