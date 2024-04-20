@@ -244,7 +244,7 @@ const SellerChat = () => {
   };
 
   const sendMessage = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chatMessages/counselors/' + chatId,
         {},
@@ -254,7 +254,7 @@ const SellerChat = () => {
   };
 
   const sendChatStartRequest = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chat/counselors/' + chatId,
         {},
@@ -264,13 +264,13 @@ const SellerChat = () => {
   };
 
   const sendExitResponse = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send('app/api/v1/chat/counselors/exit/' + chatId, {});
     }
   };
 
   const sendChatFinishRequest = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chat/counselors/' + chatId,
         {},

@@ -84,6 +84,7 @@ export const BuyerConsultChatSection = ({
       unreadMessageCount: 0,
       reviewCompleted: null,
       consultId: null,
+      consultCategory: '',
     };
     //add roomIds for unsubscribe
     roomIdsRef.current.unshift(notification.chatId);
@@ -99,7 +100,7 @@ export const BuyerConsultChatSection = ({
     }
 
     const sendConnectRequest = () => {
-      if (stompClient.current) {
+      if (stompClient.current && stompClient.current.connected) {
         stompClient.current.send(
           '/app/api/v1/chat/customers/connect',
           {},

@@ -258,7 +258,7 @@ export const BuyerChat = () => {
     }
   };
   const sendMessage = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chatMessages/customers/' + chatId,
         {},
@@ -268,7 +268,7 @@ export const BuyerChat = () => {
   };
 
   const sendChatStartResponse = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chat/customers/' + chatId,
         {},
@@ -278,13 +278,13 @@ export const BuyerChat = () => {
   };
 
   const sentExitResponse = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send('app/api/v1/chat/customers/exit/' + chatId, {});
     }
   };
 
   const sendChatFinishRequest = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chat/customers/' + chatId,
         {},

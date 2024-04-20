@@ -117,7 +117,7 @@ function SellerChatList({
      *
      */
     const sendConnectRequest = () => {
-      if (stompClient.current) {
+      if (stompClient.current && stompClient.current.connected) {
         stompClient.current.send(
           '/app/api/v1/chat/counselors/connect',
           {},
