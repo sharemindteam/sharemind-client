@@ -182,17 +182,19 @@ export const BuyerConsultChatSection = ({
     //
 
     return () => {
-      roomIdsRef.current.forEach((value) => {
-        stompClient.current?.unsubscribe(
-          '/queue/chatMessages/customers/' + value,
-        );
-      });
-      if (userIdRef.current !== -1) {
-        stompClient.current?.unsubscribe(
-          '/queue/chattings/notifications/customers/' + userIdRef.current,
-        );
+      if (stompClient.current?.connected) {
+        roomIdsRef.current.forEach((value) => {
+          stompClient.current?.unsubscribe(
+            '/queue/chatMessages/customers/' + value,
+          );
+        });
+        if (userIdRef.current !== -1) {
+          stompClient.current?.unsubscribe(
+            '/queue/chattings/notifications/customers/' + userIdRef.current,
+          );
+        }
+        stompClient.current?.unsubscribe('/queue/chattings/connect/customers/');
       }
-      stompClient.current?.unsubscribe('/queue/chattings/connect/customers/');
     };
   }, [stompClient, stompClient.current?.connected]);
 

@@ -52,7 +52,7 @@ function SellerChatList({
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
    */
   const cardDataRef = useRef<ConsultInfoItem[]>([]);
-  const { stompClient, isConnected } = useStompContext();
+  const { stompClient } = useStompContext();
 
   /**
    * 새로운 채팅 도착 시 업데이트
@@ -109,7 +109,8 @@ function SellerChatList({
   };
 
   useEffect(() => {
-    if (!isConnected) {
+    /** if client not connected, do nothing */
+    if (!stompClient.current?.connected) {
       return;
     }
 
@@ -197,19 +198,23 @@ function SellerChatList({
     //
 
     return () => {
-      roomIdsRef.current.forEach((value) => {
+      if (stompClient.current?.connected) {
+        roomIdsRef.current.forEach((value) => {
+          stompClient.current?.unsubscribe(
+            '/queue/chatMessages/counselors/' + value,
+          );
+        });
+        if (userIdRef.current !== -1) {
+          stompClient.current?.unsubscribe(
+            '/queue/chattings/notifications/counselors/' + userIdRef.current,
+          );
+        }
         stompClient.current?.unsubscribe(
-          '/queue/chatMessages/counselors/' + value,
-        );
-      });
-      if (userIdRef.current !== -1) {
-        stompClient.current?.unsubscribe(
-          '/queue/chattings/notifications/counselors/' + userIdRef.current,
+          '/queue/chattings/connect/counselors/',
         );
       }
-      stompClient.current?.unsubscribe('/queue/chattings/connect/counselors/');
     };
-  }, [stompClient, isConnected]);
+  }, [stompClient, stompClient.current?.connected]);
 
   const fetchChatData = useCallback(async () => {
     setIsLoading(true);
