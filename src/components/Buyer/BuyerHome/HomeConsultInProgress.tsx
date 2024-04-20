@@ -10,7 +10,7 @@ import { useStompContext } from 'contexts/StompContext';
 import { convertChatListDate } from 'utils/convertDate';
 interface ConsultItem {
   id: number;
-  consultStyle: string; 
+  consultStyle: string;
   status: string;
   opponentNickname: string;
   latestMessageUpdatedAt: string;
@@ -25,7 +25,7 @@ interface ConsultItem {
 export const HomeConsultInProgress = () => {
   const navigate = useNavigate();
 
-  const { stompClient, isConnected } = useStompContext();
+  const { stompClient } = useStompContext();
 
   const [consultCard, setConsultCard] = useState<ConsultItem>();
   const [totalOngoing, setTotalOngoing] = useState<number>();
@@ -39,7 +39,7 @@ export const HomeConsultInProgress = () => {
      *
      */
     const connectConsultInProgress = (id: number) => {
-      if (stompClient.current && isConnected && isLogined) {
+      if (stompClient.current && stompClient.current?.connected && isLogined) {
         stompClient.current.subscribe(
           '/queue/chatMessages/customers/' + id,
           (message) => {
@@ -85,13 +85,13 @@ export const HomeConsultInProgress = () => {
     fetchData();
 
     return () => {
-      if (stompClient.current && isConnected && isLogined) {
+      if (stompClient.current && stompClient.current?.connected && isLogined) {
         stompClient.current?.unsubscribe(
           '/queue/chatMessages/customers/' + currentChatIdRef.current,
         );
       }
     };
-  }, [stompClient, isConnected, isLogined]);
+  }, [stompClient, stompClient.current?.connected, isLogined]);
 
   if (!isLogined || !totalOngoing || !consultCard) {
     return <></>;
@@ -157,7 +157,6 @@ const NavConsult = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin: 0px auto 0px 0px
+  margin: 0px auto 0px 0px;
 `;
-const MoreIcon = styled(More)`
-`;
+const MoreIcon = styled(More)``;
