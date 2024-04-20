@@ -352,7 +352,9 @@ export const BuyerChat = () => {
 
   useEffect(() => {
     // 컴포넌트가 마운트되었을 때 실행
-    connectChat();
+    if (stompClient.current?.connected) {
+      connectChat();
+    }
     //채팅 불러오기
     getChatMessages(0);
     //
@@ -360,7 +362,7 @@ export const BuyerChat = () => {
     //관측 가능
     preventRef.current = true;
     return () => {
-      if (stompClient.current) {
+      if (stompClient.current && stompClient.current?.connected) {
         stompClient.current.unsubscribe('/queue/chattings/customers/' + chatId);
         stompClient.current.unsubscribe(
           '/queue/chattings/status/customers/' + chatId,
@@ -374,7 +376,7 @@ export const BuyerChat = () => {
         sentExitResponse();
       }
     };
-  }, []);
+  }, [stompClient.current?.connected]);
 
   //useEffects
   //보내기 버튼 색상처리

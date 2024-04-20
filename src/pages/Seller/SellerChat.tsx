@@ -263,7 +263,7 @@ const SellerChat = () => {
     }
   };
 
-  const sentExitResponse = () => {
+  const sendExitResponse = () => {
     if (stompClient.current) {
       stompClient.current.send('app/api/v1/chat/counselors/exit/' + chatId, {});
     }
@@ -340,7 +340,9 @@ const SellerChat = () => {
 
   useEffect(() => {
     // 컴포넌트가 마운트되었을 때 실행
-    connectChat();
+    if (stompClient.current?.connected) {
+      connectChat();
+    }
     //채팅 불러오기
     getChatMessages(0);
     //채팅 status, 상대이름 가져오기
@@ -349,7 +351,7 @@ const SellerChat = () => {
     preventRef.current = true;
     // 언마운트 시에 소켓 연결 해제
     return () => {
-      if (stompClient.current) {
+      if (stompClient.current && stompClient.current?.connected) {
         stompClient.current.unsubscribe(
           '/queue/chattings/counselors/' + chatId,
         );
@@ -362,10 +364,10 @@ const SellerChat = () => {
         stompClient.current.unsubscribe(
           '/queue/chatMessages/counselors/' + chatId,
         );
-        sentExitResponse();
+        sendExitResponse();
       }
     };
-  }, []);
+  }, [chatId, stompClient, stompClient.current?.connected]);
 
   //useEffects
   //보내기 버튼 색상처리
