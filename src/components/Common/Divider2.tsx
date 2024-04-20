@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Black, Green, Grey4, Grey6 } from 'styles/color';
+import { Green, Grey4, Grey6 } from 'styles/color';
 import { ReactComponent as UnderLineBuyer } from 'assets/icons/underline-buyer.svg';
 import { ReactComponent as UnderLineBuyerBig } from 'assets/icons/underline-big.svg';
 import { Subtitle } from 'styles/font';
+
+//
+//
+//
+
 interface Divder2Props {
   tabState: number;
   setTabState: (tabState: number) => void;
 }
+
+//
+//
+//
+
 function Divider2({ tabState, setTabState }: Divder2Props) {
   return (
     <Wrapper>

@@ -7,13 +7,10 @@ import { ReactComponent as Search } from 'assets/icons/search.svg';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { SearchResults } from 'components/Buyer/BuyerSearchResult/SearchResults';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { openSortList, sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import {
-  isSortModalOpenState,
-  scrollLockState,
-} from 'utils/atom';
+import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 import Input from 'components/Common/Input';
 import {
   patchSearchWordsCounselorsResults,
@@ -28,27 +25,33 @@ import Divider2 from 'components/Common/Divider2';
 import OpenConsultResults from 'components/Buyer/BuyerSearchResult/OpenConsultResults';
 import { openConsultApiObject } from './BuyerConsult';
 import { OpenConsultSortModal } from 'components/Buyer/Common/OpenConsultSortModal';
-import { ConverOpenSortType } from 'utils/convertOpenSortType';
+import { ConvertOpenSortType } from 'utils/convertOpenSortType';
 import { useSearchPageParams } from 'hooks/useSearchPageParams';
 export const BuyerSearchResult = () => {
   const navigate = useNavigate();
-  // Modal 여부(recoil), 스크롤 막기
+
+  // state with modal, scrollLock
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isSortModalOpenState);
   const setScrollLock = useSetRecoilState(scrollLockState);
-  // 검색 결과 리스트 - 상담사 리스트와 공개 상담 리스트
+
+  // state for saving search api result
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
   const [openConsultSearchData, setOpenConsultSearchData] = useState<
     openConsultApiObject[]
   >([]);
-  //무한스크롤 위한 page num과 lastId
+
+  // state with inifinite scroll - page number and last id
   const [pageNum, setPageNum] = useState<number>(0);
   const [lastId, setLastId] = useState<number>(0);
-  // 무한스크롤을 trigger를 위한 상태
+
+  // state for trigger fetch api (infinite scroll)
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  // 무한스크롤을 trigger를 위한 상태
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // state for blocking fetch api (infinite scroll) when the previous request has not been completed
   const preventRef = useRef(true);
+
   const {
     handleClickTab,
     searchParams,
@@ -63,6 +66,8 @@ export const BuyerSearchResult = () => {
     setSortType,
     handleChangeInput,
   } = useSearchPageParams();
+
+  // function to run in intersection observer
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
@@ -87,75 +92,85 @@ export const BuyerSearchResult = () => {
     onIntersect,
   });
 
-  const fetchSearchResults = async (searchWord: string, pageIndex: number) => {
-    try {
-      const body = {
-        word: searchWord,
-        index: pageIndex,
-      };
-      const sortTypeString: string = ConverSortType(sortType);
-      const res: any = await patchSearchWordsCounselorsResults(
-        sortTypeString,
-        body,
-      );
-      if (res.status === 200) {
-        if (res.data.length !== 0) {
-          if (pageIndex === 0) {
-            setSearchData(res.data);
-            setPageNum(pageNum + 1);
+  // function for fetching search result
+  const fetchSearchResults = useCallback(
+    async (searchWord: string, pageIndex: number) => {
+      try {
+        const body = {
+          word: searchWord,
+          index: pageIndex,
+        };
+        const sortTypeString: string = ConverSortType(sortType);
+        const res: any = await patchSearchWordsCounselorsResults(
+          sortTypeString,
+          body,
+        );
+        if (res.status === 200) {
+          if (res.data.length !== 0) {
+            if (pageIndex === 0) {
+              setSearchData(res.data);
+              setPageNum(pageNum + 1);
+            } else {
+              const updatedSearchs = [...searchData, ...res.data];
+              setSearchData(updatedSearchs);
+              setPageNum(pageNum + 1);
+            }
           } else {
-            const updatedSearchs = [...searchData, ...res.data];
-            setSearchData(updatedSearchs);
-            setPageNum(pageNum + 1);
+            setIsLastElem(true);
           }
-        } else {
-          setIsLastElem(true);
+        } else if (res.response.status === 400) {
+          alert('검색어는 2~20자 사이여야 합니다.');
         }
-      } else if (res.response.status === 400) {
-        alert('검색어는 2~20자 사이여야 합니다.');
+      } catch (e) {
+        alert(e);
+      } finally {
+        if (pageIndex === 0) {
+          setIsLoading(false);
+        }
       }
-    } catch (e) {
-      alert(e);
-    } finally {
-      if (pageIndex === 0) {
-        setIsLoading(false);
+    },
+    [pageNum, searchData, sortType],
+  );
+  const fetchOpenSearchResults = useCallback(
+    async (searchWord: string, postId: number) => {
+      try {
+        const body = {
+          word: searchWord,
+          postId: postId,
+        };
+        const sortTypeString: string = ConvertOpenSortType(openSortType);
+        const res: any = await patchSearchWordsPostsResults(
+          sortTypeString,
+          body,
+        );
+        if (res.status === 200) {
+          if (res.data.length !== 0) {
+            if (postId === 0) {
+              setOpenConsultSearchData(res.data);
+              setPageNum(pageNum + 1);
+            } else {
+              const updatedSearchs = [...openConsultSearchData, ...res.data];
+              setLastId(res.data.postId);
+              setOpenConsultSearchData(updatedSearchs);
+            }
+            setIsLastElem(true);
+          } else {
+            setOpenConsultSearchData([]);
+          }
+        } else if (res.response.status === 400) {
+          alert('검색어는 2~20자 사이여야 합니다.');
+        }
+      } catch (e) {
+        alert(e);
+      } finally {
+        if (postId === 0) {
+          setIsLoading(false);
+        }
       }
-    }
-  };
+    },
+    [openConsultSearchData, openSortType, pageNum],
+  );
 
-  const fetchOpenSearchResults = async (searchWord: string, postId: number) => {
-    try {
-      const body = {
-        word: searchWord,
-        postId: postId,
-      };
-      const sortTypeString: string = ConverOpenSortType(openSortType);
-      const res: any = await patchSearchWordsPostsResults(sortTypeString, body);
-      if (res.status === 200) {
-        if (res.data.length !== 0) {
-          if (postId === 0) {
-            setOpenConsultSearchData(res.data);
-            setPageNum(pageNum + 1);
-          } else {
-            const updatedSearchs = [...openConsultSearchData, ...res.data];
-            setLastId(res.data.postId);
-            setOpenConsultSearchData(updatedSearchs);
-          }
-          setIsLastElem(true);
-        } else {
-          setOpenConsultSearchData([]);
-        }
-      } else if (res.response.status === 400) {
-        alert('검색어는 2~20자 사이여야 합니다.');
-      }
-    } catch (e) {
-      alert(e);
-    } finally {
-      if (postId === 0) {
-        setIsLoading(false);
-      }
-    }
-  };
   useLayoutEffect(() => {
     setIsLastElem(false);
     setPageNum(0);

@@ -1,4 +1,4 @@
-export const ConverOpenSortType = (typeNum: number) => {
+export const ConvertOpenSortType = (typeNum: number) => {
   if (typeNum === 0) {
     return 'LATEST';
   } else if (typeNum === 1) {

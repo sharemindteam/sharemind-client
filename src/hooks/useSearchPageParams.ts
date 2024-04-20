@@ -3,12 +3,20 @@ import { useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { searchKeywordState } from 'utils/atom';
 
+//
+//
+//
+
 export const useSearchPageParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  /** get query-string */
   const keywordParam = searchParams.get('keyword');
   const typeParam = searchParams.get('searchType');
   const sortParam = searchParams.get('sort');
   const openSortParam = searchParams.get('open-sort');
+
+  /** get initial values */
   const keywordFromPrevPage = useRecoilValue(searchKeywordState);
   const initialKeyword = keywordParam ?? keywordFromPrevPage;
   const initialSearchType = typeParam ?? 'counselor';
@@ -17,25 +25,28 @@ export const useSearchPageParams = () => {
   const initialOpenSortType =
     openSortParam === 'comments' ? 2 : openSortParam === 'likes' ? 1 : 0;
   const initialTabState = typeParam === 'open-consult' ? 2 : 1;
+
+  /** states with iniitial value */
   const [input, setInput] = useState(keywordFromPrevPage);
   const [keyword, setKeyword] = useState(initialKeyword);
   const [searchType, setSearchType] = useState<string>(initialSearchType);
   const [openSortType, setOpenSortType] = useState<number>(initialOpenSortType);
   const [sortType, setSortType] = useState<number>(initialSortType);
   const [tabState, setTabState] = useState<number>(initialTabState);
+
+  /** event handler*/
   const handleClickOpenConsult = useCallback(() => {
     setSearchType('open-consult');
     searchParams.set('searchType', 'open-consult');
     setTabState(2);
     setSearchParams(searchParams);
-  }, []);
+  }, [searchParams, setSearchParams]);
   const handleClickCounselor = useCallback(() => {
     setSearchType('counselor');
     searchParams.set('searchType', 'counselor');
     setSearchParams(searchParams);
     setTabState(1);
-    console.log('hi');
-  }, []);
+  }, [searchParams, setSearchParams]);
 
   const handleClickTab = useCallback(
     (tabState: number) => {
@@ -45,17 +56,25 @@ export const useSearchPageParams = () => {
         handleClickOpenConsult();
       }
     },
-    [tabState],
+    [handleClickCounselor, handleClickOpenConsult],
   );
-  const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
-  };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setKeyword(input);
-    searchParams.set('keyword', input);
-    setSearchParams(searchParams);
-  };
+  const handleChangeInput = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setInput(event.target.value);
+    },
+    [],
+  );
+  const handleSubmit = useCallback(
+    (
+      event: React.FormEvent<HTMLFormElement> | React.MouseEvent<SVGSVGElement>,
+    ) => {
+      event.preventDefault();
+      setKeyword(input);
+      searchParams.set('keyword', input);
+      setSearchParams(searchParams);
+    },
+    [input, searchParams, setSearchParams],
+  );
 
   return {
     handleClickTab,

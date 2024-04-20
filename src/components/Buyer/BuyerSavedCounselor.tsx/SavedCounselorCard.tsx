@@ -8,11 +8,16 @@ import { ReactComponent as NoneBookMark } from 'assets/icons/icon-save1.svg';
 import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { ReactComponent as DownIcon } from 'assets/icons/icon-down-toggle.svg';
 import { ReactComponent as UpIcon } from 'assets/icons/icon-up-toggle.svg';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultTimes } from 'utils/type';
 import { convertTimeToString } from 'utils/convertTimeToString';
 import { deleteWishLists } from 'api/delete';
+
+//
+//
+//
+
 interface SavedCounselorCardProps {
   counselorId: number;
   tagList: CartegoryState[];
@@ -28,7 +33,11 @@ interface SavedCounselorCardProps {
   chattingPrice: number;
   consultStyle: number;
 }
-//일단 toggle파트 제외하고 클릭 시 상담프로필로 navigate하게 구현
+
+//
+//
+//
+
 export const SavedCounselorCard = ({
   counselorId,
   tagList,
@@ -45,11 +54,12 @@ export const SavedCounselorCard = ({
   consultStyle,
 }: SavedCounselorCardProps) => {
   const navigate = useNavigate();
-  //toggle
   const [toggle, setToggle] = useState<boolean>(false);
   const [isSending, setIsSending] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(true);
-  const handleBookmark = async (e: React.MouseEvent<HTMLElement>) => {
+  const handleBookmark = async (
+    e: React.MouseEvent<HTMLElement> | React.MouseEvent<SVGSVGElement>,
+  ) => {
     e.stopPropagation();
     if (isSending) {
       return;
@@ -73,19 +83,21 @@ export const SavedCounselorCard = ({
       setIsSaved(false);
     }
   };
+  //
+  //
+  //
   if (isSaved) {
     return (
       <Wrapper>
         <UpperWrapper
           onClick={() => {
-            //마인더 프로필 개발되면 수정
             navigate(`/profile/${counselorId}`);
           }}
         >
           <TagWrapper>
-            {tagList.map((value: any, index) => {
+            {tagList.map((value: CartegoryState) => {
               return (
-                <TagA2Cartegory tagType={value} bgColorType={1} key={index} />
+                <TagA2Cartegory tagType={value} bgColorType={1} key={value} />
               );
             })}
           </TagWrapper>
@@ -116,7 +128,7 @@ export const SavedCounselorCard = ({
             <BookMarkIcon onClick={handleBookmark} />
           ) : (
             <NoneBookMarkIcon
-              onClick={(e: React.MouseEvent<HTMLElement>) => {
+              onClick={(e: React.MouseEvent<SVGSVGElement>) => {
                 e.stopPropagation();
                 setIsSaved(true);
               }}

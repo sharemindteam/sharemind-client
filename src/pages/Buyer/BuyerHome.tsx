@@ -11,27 +11,26 @@ import { useEffect, useState } from 'react';
 import { patchCounselorsAll } from 'api/patch';
 export const BuyerHome = () => {
   const navigate = useNavigate();
-  //결과저장
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
-  const fectchSearchResults = async () => {
-    try {
-      const body = {
-        index: 0,
-      };
-      const res: any = await patchCounselorsAll('POPULARITY', body);
-      if (res.status === 200) {
-        setSearchData(res.data);
-      } else if (res.response.status === 404) {
-        alert('유효하지 않은 정렬 방식입니다.');
-        navigate('/share');
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
   useEffect(() => {
+    const fectchSearchResults = async () => {
+      try {
+        const body = {
+          index: 0,
+        };
+        const res: any = await patchCounselorsAll('POPULARITY', body);
+        if (res.status === 200) {
+          setSearchData(res.data);
+        } else if (res.response.status === 404) {
+          alert('유효하지 않은 정렬 방식입니다.');
+          navigate('/share');
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
     fectchSearchResults();
-  }, []);
+  }, [navigate]);
   return (
     <Wrapper>
       <Header
