@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import SockJs from 'sockjs-client';
-import { CompatClient, Stomp } from '@stomp/stompjs';
+import { CompatClient, IFrame, Stomp } from '@stomp/stompjs';
 import { useRecoilState } from 'recoil';
 import { isCustomerState } from 'utils/atom';
 import { useLocation } from 'react-router-dom';
@@ -82,6 +82,7 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
    *
    */
   const connectChat = () => {
+    setIsConnected(false);
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(() => {
       return socket;
@@ -92,7 +93,7 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
         Authorization: getCookie('accessToken'),
         isCustomer: isCustomer,
       },
-      (frame: any) => {
+      (frame: IFrame) => {
         console.log('Connected: ' + frame);
         setIsConnected(true);
       },
@@ -108,7 +109,7 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
       },
     );
 
-    stompClient.current.reconnect_delay = 100;
+    stompClient.current.reconnectDelay = 100;
   };
 
   //
