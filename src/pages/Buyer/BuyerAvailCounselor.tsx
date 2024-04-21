@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey3, Grey6, White } from 'styles/color';
 import { Button2, Heading } from 'styles/font';
@@ -18,7 +18,17 @@ import useIntersectionObserver from 'hooks/useIntersectionObserver';
 export const BuyerAvailCounselor = () => {
   //0 : 최신순 1:인기순 2: 별점순
   // 바뀔 때마다 useEffect로 request
-  const [sortType, setSortType] = useState<number>(0);
+  // using query params to store sorting type
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // sortType - 0 : 최신순 1:인기순 2: 별점순, 기본값: 0, 최신순
+  const initialSortType =
+    searchParams.get('sort') === 'rating'
+      ? 2
+      : searchParams.get('sort') === 'popular'
+      ? 1
+      : 0;
+  const [sortType, setSortType] = useState<number>(initialSortType);
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isSortModalOpenState);
@@ -92,7 +102,7 @@ export const BuyerAvailCounselor = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate(-1);
+            navigate('/share');
           }}
         />
         <Heading color={Grey1}>들을 준비가 된 마인더들</Heading>
@@ -125,6 +135,8 @@ export const BuyerAvailCounselor = () => {
             }}
           />
           <SortModal
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
             sortType={sortType}
             setSortType={setSortType}
             setPageNum={setPageNum}

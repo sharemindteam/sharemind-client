@@ -105,11 +105,11 @@ export const ConsultCard = ({
               ) : null}
             </div>
             {latestMessageContent !== null ? (
-              <CardText color={isBlur ? Grey3 : Grey1}>
+              <CardText $color={isBlur ? Grey3 : Grey1}>
                 {latestMessageContent}
               </CardText>
             ) : (
-              <CardText color={Grey1}>
+              <CardText $color={Grey1}>
                 {opponentNickname}님께 고민 내용을 남겨 주세요.{' '}
                 {opponentNickname}님이 24시간 이내 답장을 드릴 거예요.
               </CardText>
@@ -151,7 +151,7 @@ const Unread = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 0.4rem;
-  background-color: ${Green};
+  background-$color: ${Green};
   width: 1.9rem;
   height: 1.9rem;
   right: 0;
@@ -184,14 +184,14 @@ const ConsultStateBox = styled.div`
     align-items: center;
   }
 `;
-export const CardText = styled.div<{ color: string }>`
+export const CardText = styled.div<{ $color: string }>`
   width: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   -webkit-line-clamp: 2;
   font-family: Pretendard;
-  color: ${(props) => props.color};
+  color: ${(props) => props.$color};
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 155%;

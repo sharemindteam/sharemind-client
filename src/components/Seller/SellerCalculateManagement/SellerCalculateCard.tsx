@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Grey3, Grey6, Green, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import CompleteApplyPopup from './CompleteApplyPopup';
-import { useState } from 'react';
 import { BackDrop } from 'components/Common/BackDrop';
 
 interface SellerCalulateCardProps {
@@ -15,7 +14,7 @@ interface SellerCalulateCardProps {
   commission: number;
   paymentDate: string;
   paymentAccount: string;
-  id: string;
+  id: number;
   calculateActivate: boolean;
   isShowPopup: boolean;
   setIsShowPopup: any;
@@ -34,9 +33,21 @@ export const SellerCalulateCard = ({
   isShowPopup,
   setIsShowPopup,
 }: SellerCalulateCardProps) => {
-  const applyManagement = async (id: string) => {
-    await patchApplyPayments(id);
-    setIsShowPopup(true);
+  const applyManagement = async (id: number) => {
+    const res: any = await patchApplyPayments(id);
+    try {
+      if (res.status === 200) {
+        setIsShowPopup(true);
+      } else if (res?.response.status === 400) {
+        alert('정산 예정이 아닌 정산에 대한 요청입니다.');
+      } else if (res?.response.status === 403) {
+        alert('신청 권한이 없는 정산에 대한 요청입니다.');
+      } else if (res?.response.status === 404) {
+        alert('존재하지 않은 정산 정보입니다.');
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (
@@ -45,6 +56,7 @@ export const SellerCalulateCard = ({
       {isShowPopup && (
         <CompleteApplyPopup
           name={customerName}
+          consultType={consultType}
           date={paymentDate}
           setIsCompleteApplyManage={setIsShowPopup}
         />

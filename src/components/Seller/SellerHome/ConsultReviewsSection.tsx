@@ -1,14 +1,12 @@
 import { ContentTag } from 'pages/Seller/SellerHome';
 import styled from 'styled-components';
 import { Black, Grey3, Grey6, Red } from 'styles/color';
-import { Body1, Body2, Body3, Body4, Heading, Subtitle } from 'styles/font';
+import { Body1, Body2, Body3, Subtitle } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
-import { ReactComponent as ReviewHeart } from 'assets/icons/review-heart.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getMinderReviewsHome } from 'api/get';
 import { HeartRate } from 'utils/HeartRate';
-// 섹션 안에서 axios 요청
 
 interface ReviewData {
   comment: string;
@@ -55,6 +53,7 @@ export const ConsultReviewSection = () => {
         ) : (
           reviewData?.map((item) => (
             <ConsultReview
+              key={item.reviewId}
               onClick={() => {
                 navigate('/minder/mypage/review');
               }}

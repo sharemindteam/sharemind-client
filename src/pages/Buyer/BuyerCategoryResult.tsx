@@ -1,6 +1,6 @@
 import { CategoryResultHeader } from 'components/Buyer/BuyerCategoryResult/CategoryResultHeader';
 import { SortModal } from 'components/Buyer/Common/SortModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Down } from 'assets/icons/icon-drop-down.svg';
 import { Button2 } from 'styles/font';
@@ -20,27 +20,44 @@ import { SearchResultData } from 'utils/type';
 import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/CategorySearchResult';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
-//백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
+
+///
+///
+///
+
 export const BuyerCategoryResult = () => {
   const navigate = useNavigate();
-  //0 : 최신순 1:인기순 2: 별점순
-  // 바뀔 때마다 useEffect로 request
-  const [sortType, setSortType] = useState<number>(0);
-  // Modal 여부(recoil)
+
+  // using query params to store sorting type
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // sortType - 0 : 최신순 1:인기순 2: 별점순, 기본값: 0, 최신순
+  const initialSortType =
+    searchParams.get('sort') === 'rating'
+      ? 2
+      : searchParams.get('sort') === 'popular'
+      ? 1
+      : 0;
+  const [sortType, setSortType] = useState<number>(initialSortType);
+
+  // state with opening Modal, lock scroll
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isSortModalOpenState);
-  //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
-  //const 카테고리 정보, 검색과 동일하게 searchKeyword로 넘겨줌
+
+  // state with store keyword and serach result
   const searchKeyword = useRecoilValue(searchKeywordState);
-  //결과저장
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
-  //무한스크롤 위한 page num
+
+  //page num for infinite scrol
   const [pageNum, setPageNum] = useState<number>(0);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true); //로딩 state
-  const preventRef = useRef(true); // 중복 방지 옵션
-  //fetch 함수
+
+  // loding spinner
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const preventRef = useRef(true);
+
+  // functio with fetch API
   const fetchSearchResults = async (pageIndex: number) => {
     try {
       const body = {
@@ -137,6 +154,8 @@ export const BuyerCategoryResult = () => {
               }}
             />
             <SortModal
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
               sortType={sortType}
               setSortType={setSortType}
               setPageNum={setPageNum}

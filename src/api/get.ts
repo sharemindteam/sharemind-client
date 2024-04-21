@@ -178,3 +178,8 @@ export const getCustomerIsWriter = async (postId: any) =>
 
 export const getOpenConsultDraft = async (postId: any) =>
   await getInstance(`/posts/drafts/${postId}`);
+
+// Post Scrap Controller
+
+export const getPostScraps = async (params: any) =>
+  getInstance(`/postScraps`, params);

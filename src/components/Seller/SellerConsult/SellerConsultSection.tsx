@@ -10,11 +10,20 @@ import SellerLetterList from './SellerLetterList';
 import SellerChatList from './SellerChatList';
 import SellerOpenConsultList from './SellerOpenConsultList';
 import { useConsultParams } from 'hooks/useConsultParams';
-import { useState } from 'react';
+import { Space } from 'components/Common/Space';
+
+//
+//
+//
+
 interface ConsultTypeProps {
-  isActive: boolean;
-  isLong?: boolean;
+  $isActive: boolean;
+  $isLong?: boolean;
 }
+
+//
+//
+//
 
 export const SellerConsultSection = () => {
   const {
@@ -30,27 +39,26 @@ export const SellerConsultSection = () => {
     setIsChecked,
   } = useConsultParams();
 
-  // 모달 열지 말지
   const setIsModalOpen = useSetRecoilState<boolean>(isConsultModalOpenState);
   return (
     <>
       <ConsultSortingMenu>
         <div className="row1">
           <ConsultType
-            isActive={consultType === 'letter'}
+            $isActive={consultType === 'letter'}
             onClick={handleLetterClick}
           >
             편지
           </ConsultType>
           <ConsultType
-            isActive={consultType === 'chat'}
+            $isActive={consultType === 'chat'}
             onClick={handleChatClick}
           >
             채팅
           </ConsultType>
           <ConsultType
-            isLong={true}
-            isActive={consultType === 'open-consult'}
+            $isLong={true}
+            $isActive={consultType === 'open-consult'}
             onClick={handleOpenConsultClick}
           >
             공개상담
@@ -85,38 +93,48 @@ export const SellerConsultSection = () => {
           </div>
         </div>
       </ConsultSortingMenu>
-      {consultType === 'letter' ? (
-        <SellerLetterList
-          sortType={sortType}
-          setSortType={setSortType}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          isChecked={isChecked}
-        />
-      ) : consultType === 'chat' ? (
-        <SellerChatList
-          sortType={sortType}
-          setSortType={setSortType}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          isChecked={isChecked}
-        />
-      ) : (
-        <SellerOpenConsultList
-          sortType={sortType}
-          setSortType={setSortType}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-        />
-      )}
+      <section
+        className="consult-list"
+        style={{ height: 'calc(100vh - 19.3rem)', overflow: 'scroll' }}
+      >
+        {consultType === 'letter' ? (
+          <SellerLetterList
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            isChecked={isChecked}
+          />
+        ) : consultType === 'chat' ? (
+          <SellerChatList
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            isChecked={isChecked}
+          />
+        ) : (
+          <SellerOpenConsultList
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
+        )}
+        <Space height='4rem'/>
+      </section>
     </>
   );
 };
-const ConsultSortingMenu = styled.div`
+const ConsultSortingMenu = styled.section`
   display: flex;
   flex-direction: column;
-  margin: 0.8rem 2rem 1.2rem;
+  padding: 0.8rem 2rem 1.2rem;
   gap: 1.2rem;
+  position: sticky;
+  top: 10.4rem;
+  z-index: 10;
+  background-color: white;
   .row1 {
     display: flex;
     gap: 1.2rem;
@@ -135,7 +153,7 @@ const ConsultSortingMenu = styled.div`
 
 const ConsultType = styled.div<ConsultTypeProps>`
   display: flex;
-  width: ${(props) => (props.isLong ? '8rem' : '5.6rem')};
+  width: ${(props) => (props.$isLong ? '8rem' : '5.6rem')};
   height: 3.4rem;
   cursor: pointer;
   justify-content: center;
@@ -145,8 +163,8 @@ const ConsultType = styled.div<ConsultTypeProps>`
   font-style: normal;
   font-weight: 400;
   line-height: 110%;
-  background: ${(props) => (props.isActive ? LightGreen : Grey6)};
-  color: ${(props) => (props.isActive ? Green : Black)};
+  background: ${(props) => (props.$isActive ? LightGreen : Grey6)};
+  color: ${(props) => (props.$isActive ? Green : Black)};
   margin-top: 0.2rem;
 `;
 const SortingType = styled.div`

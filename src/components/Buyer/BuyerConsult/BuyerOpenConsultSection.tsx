@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
+import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { Body1, Body3, Caption1, Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isBuyPopupOpenState } from 'utils/atom';
@@ -83,7 +83,7 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
       {isLoading ? (
         <div
           style={{
-            height: 'calc(100vh - 46rem)',
+            height: 'calc(70vh)',
             display: 'flex',
             alignItems: 'center',
           }}
@@ -167,6 +167,8 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
             })
           )}
           {/* 상담카드 부분 */}
+          {/* 마지막 요소가 가려지지 않도록 마진 영역을 추가 */}
+          <Space height="4rem" />
         </BuyerOpenConsultCardList>
       )}
       {!isLastElem ? (
@@ -196,7 +198,7 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
 
 const BuyerOpenConsultCardList = styled.div`
   display: flex;
-  margin: 1.2rem 2rem;
+  margin: 0 2rem;
   flex-direction: column;
   align-items: flex-start;
   gap: 1.2rem;
