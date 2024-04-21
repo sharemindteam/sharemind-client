@@ -5,16 +5,21 @@ import { Button2 } from 'styles/font';
 import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow.svg';
 import { useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState } from 'utils/atom';
-
+//
+//
+//
 interface ManagementStatusSelectorProps {
   manageStatus: string;
   setManageStatus: React.Dispatch<React.SetStateAction<string>>;
   sortType: number;
 }
+//
+//
+//
 export const ManagementStatusSelector = ({
   manageStatus,
   setManageStatus,
-  sortType
+  sortType,
 }: ManagementStatusSelectorProps) => {
   const setIsModalOpen = useSetRecoilState(isConsultModalOpenState);
   return (
@@ -49,7 +54,7 @@ export const ManagementStatusSelector = ({
         }}
         color={manageStatus === '정산 예정' ? White : Black}
         buttonTextType={2}
-        width="7.8rem"
+        width="8.4rem"
         height="3.4rem"
       />
       <SortingType
@@ -58,8 +63,12 @@ export const ManagementStatusSelector = ({
         }}
       >
         <Button2 color={Grey3}>
-          {sortType ===0 ?  "최근 일주일" : sortType===1 ? "최근 1개월" : "전체"}
-          </Button2>
+          {sortType === 0
+            ? '최근 일주일'
+            : sortType === 1
+            ? '최근 1개월'
+            : '전체'}
+        </Button2>
         <DownArrowIcon />
       </SortingType>
     </ManagementStatusSelectorWrapper>
@@ -68,9 +77,12 @@ export const ManagementStatusSelector = ({
 const ManagementStatusSelectorWrapper = styled.div`
   display: flex;
   gap: 0.8rem;
-  padding: 0.4rem 2rem;
+  padding: 0.8rem 2rem;
   align-items: center;
   border-bottom: 1px solid ${Grey6};
+  position: sticky;
+  top: 5.2rem;
+  background-color: white;
 `;
 
 const SortingType = styled.div`

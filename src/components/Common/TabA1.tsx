@@ -13,7 +13,7 @@ interface TabA1Props {
 }
 export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
   const navigate = useNavigate();
-  const [$tabState, setTabState] = useState<number>();
+  const [tabState, setTabState] = useState<number>();
   const [color, setColor] = useState<string>();
   const navigateOpenConsult = async () => {
     try {
@@ -33,7 +33,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
     } else {
       setColor(Green);
     }
-  }, []);
+  }, [initState, isBuyer]);
   return (
     <Wrapper>
       <TabButton
@@ -47,7 +47,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
           }
         }}
       >
-        {$tabState === 1 ? (
+        {tabState === 1 ? (
           <>
             <Subtitle color={color}>홈</Subtitle>
             <UnderLineBuyer />
@@ -67,7 +67,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
           }
         }}
       >
-        {$tabState === 2 ? (
+        {tabState === 2 ? (
           <>
             <Subtitle color={color}>상담</Subtitle>
             <UnderLineBuyer />
@@ -87,7 +87,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
           }
         }}
       >
-        {$tabState === 3 ? (
+        {tabState === 3 ? (
           <>
             <Subtitle color={color}>공개상담</Subtitle>
             <UnderLineBuyerBig />
@@ -97,7 +97,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         )}
       </TabButton>
       <TabButton $tabState={4}>
-        {$tabState === 4 ? (
+        {tabState === 4 ? (
           <>
             <Subtitle color={color}>내 정보</Subtitle>
             <UnderLineBuyer />
