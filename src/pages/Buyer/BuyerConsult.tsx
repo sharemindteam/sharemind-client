@@ -50,9 +50,7 @@ export interface openConsultApiObject {
 
 export const BuyerConsult = () => {
   const navigate = useNavigate();
-
   const sortList = ['최근순', '읽지않은순'];
-
   const {
     consultType,
     sortType,
@@ -85,7 +83,7 @@ export const BuyerConsult = () => {
         <div className="select">
           <div className="select-button">
             <SelectButton
-              isSelected={consultType === 'letter'}
+              $isSelected={consultType === 'letter'}
               onClick={handleLetterClick}
             >
               <Button2 color={consultType === 'letter' ? Green : Grey1}>
@@ -93,7 +91,7 @@ export const BuyerConsult = () => {
               </Button2>
             </SelectButton>
             <SelectButton
-              isSelected={consultType === 'chat'}
+              $isSelected={consultType === 'chat'}
               onClick={handleChatClick}
             >
               <Button2 color={consultType === 'chat' ? Green : Grey1}>
@@ -101,7 +99,7 @@ export const BuyerConsult = () => {
               </Button2>
             </SelectButton>
             <SelectButton
-              isSelected={consultType === 'open-consult'}
+              $isSelected={consultType === 'open-consult'}
               onClick={handleOpenConsultClick}
             >
               <Button2 color={consultType === 'open-consult' ? Green : Grey1}>
@@ -163,10 +161,14 @@ export const BuyerConsult = () => {
 };
 const Wrapper = styled.div`
   .options {
-    padding: 0.8rem 2rem 0rem;
+    padding: 0.8rem 2rem 1.6rem;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
+    position: sticky;
+    top: 10.5rem;
+    background-color: white;
+    z-index: 10;
   }
   .select {
     display: flex;
@@ -177,7 +179,7 @@ const Wrapper = styled.div`
   .select-wrapper {
     display: flex;
     gap: 0.4rem;
-    cursor: pointer;
+    cursor: pointer;  
   }
   .select-button {
     display: flex;
@@ -188,8 +190,8 @@ const Wrapper = styled.div`
     gap: 0.4rem;
   }
 `;
-const SelectButton = styled.div<{ isSelected: boolean; isLong?: boolean }>`
-  background-color: ${(props) => (props.isSelected ? LightGreen : Grey6)};
+const SelectButton = styled.div<{ $isSelected: boolean; $isLong?: boolean }>`
+  background-color: ${(props) => (props.$isSelected ? LightGreen : Grey6)};
   cursor: pointer;
   padding: 0.8rem 1.6rem;
   border-radius: 1.2rem;

@@ -71,6 +71,7 @@ export const BuyerConsultLetterSection = ({
             {cardData.map((value) => {
               return (
                 <ConsultCard
+                  key={value.id}
                   consultStyle={value.consultStyle}
                   id={value.id}
                   latestMessageContent={value.latestMessageContent}
