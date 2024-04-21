@@ -10,6 +10,7 @@ import SellerLetterList from './SellerLetterList';
 import SellerChatList from './SellerChatList';
 import SellerOpenConsultList from './SellerOpenConsultList';
 import { useConsultParams } from 'hooks/useConsultParams';
+import { Space } from 'components/Common/Space';
 
 //
 //
@@ -92,38 +93,48 @@ export const SellerConsultSection = () => {
           </div>
         </div>
       </ConsultSortingMenu>
-      {consultType === 'letter' ? (
-        <SellerLetterList
-          sortType={sortType}
-          setSortType={setSortType}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          isChecked={isChecked}
-        />
-      ) : consultType === 'chat' ? (
-        <SellerChatList
-          sortType={sortType}
-          setSortType={setSortType}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-          isChecked={isChecked}
-        />
-      ) : (
-        <SellerOpenConsultList
-          sortType={sortType}
-          setSortType={setSortType}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-        />
-      )}
+      <section
+        className="consult-list"
+        style={{ height: 'calc(100vh - 19.3rem)', overflow: 'scroll' }}
+      >
+        {consultType === 'letter' ? (
+          <SellerLetterList
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            isChecked={isChecked}
+          />
+        ) : consultType === 'chat' ? (
+          <SellerChatList
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            isChecked={isChecked}
+          />
+        ) : (
+          <SellerOpenConsultList
+            sortType={sortType}
+            setSortType={setSortType}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          />
+        )}
+        <Space height='4rem'/>
+      </section>
     </>
   );
 };
-const ConsultSortingMenu = styled.div`
+const ConsultSortingMenu = styled.section`
   display: flex;
   flex-direction: column;
-  margin: 0.8rem 2rem 1.2rem;
+  padding: 0.8rem 2rem 1.2rem;
   gap: 1.2rem;
+  position: sticky;
+  top: 10.4rem;
+  z-index: 10;
+  background-color: white;
   .row1 {
     display: flex;
     gap: 1.2rem;

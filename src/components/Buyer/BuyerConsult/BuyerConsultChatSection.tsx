@@ -9,6 +9,7 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Heading } from 'styles/font';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { convertChatListDate } from 'utils/convertDate';
+import { Space } from 'components/Common/Space';
 
 //
 //
@@ -261,6 +262,7 @@ export const BuyerConsultChatSection = ({
               />
             );
           })}
+          <Space height="4rem" />
         </BuyerConsultChatSectionWrapper>
       );
     } else {
@@ -279,7 +281,6 @@ const BuyerConsultChatSectionWrapper = styled.section`
   flex-direction: column;
   gap: 0.8rem;
   align-items: center;
-  padding: 1.2rem 0;
 `;
 const EmptyWrapper = styled.div`
   margin-top: 10vh;

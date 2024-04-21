@@ -7,6 +7,7 @@ import { getLettersCustomers } from 'api/get';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { Heading } from 'styles/font';
+import { Space } from 'components/Common/Space';
 
 interface BuyerConsultLetterSectionProps {
   sortType: number;
@@ -86,6 +87,7 @@ export const BuyerConsultLetterSection = ({
                 />
               );
             })}
+            <Space height="4rem" />
           </BuyerConsultLetterSectionWrapper>
         ) : (
           <EmptyWrapper>
@@ -103,7 +105,6 @@ const BuyerConsultLetterSectionWrapper = styled.section`
   flex-direction: column;
   gap: 0.8rem;
   align-items: center;
-  padding: 1.2rem 0;
 `;
 
 const EmptyIcon = styled(Empty)`
