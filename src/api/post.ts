@@ -50,7 +50,7 @@ export const postWishLists = async (body: any) =>
 // 일대다상담
 
 // Comment Controller
-export const postComment = async (body) =>
+export const postComment = async (body: any) =>
   await postInstance('/comments/counselors', body);
 
 // CommentLike Controller

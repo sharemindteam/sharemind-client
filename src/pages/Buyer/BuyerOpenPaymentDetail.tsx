@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { Body1, Body3, Heading } from 'styles/font';
 import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { postOpenConsult } from 'api/post';
 

@@ -1,10 +1,9 @@
 import { patchOpenConsult } from 'api/patch';
-import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Green, Grey4, LightGreen, White } from 'styles/color';
-import { Body1, Body3 } from 'styles/font';
+import { Green, LightGreen, White } from 'styles/color';
+import { Body1 } from 'styles/font';
 import { isPostPopupOpenState } from 'utils/atom';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 interface FianlWritePopupProps {
