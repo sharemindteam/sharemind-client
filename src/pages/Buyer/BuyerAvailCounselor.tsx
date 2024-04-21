@@ -102,7 +102,7 @@ export const BuyerAvailCounselor = () => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate(-1);
+            navigate('/share');
           }}
         />
         <Heading color={Grey1}>들을 준비가 된 마인더들</Heading>
