@@ -16,8 +16,17 @@ export const BuyerOpenPaymentDetail = () => {
       cost: 500,
       isPublic: false,
     };
-    await postOpenConsult(body);
-    navigate('/paymentComplete');
+    try {
+      const res: any = await postOpenConsult(body);
+      if (res.status === 201) {
+        console.log(res);
+        navigate('/paymentComplete');
+      } else if (res?.response.status === 404) {
+        alert('존재하지 않는 회원입니다.');
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
   return (
     <Wrapper>

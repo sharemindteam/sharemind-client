@@ -80,7 +80,7 @@ const Router = () => {
       <Route path="/paymentComplete" element={<BuyerPaymentComplete />} />
       <Route path="/paymentFinish" element={<BuyerFinishPayment />} />
       <Route path="/counselors" element={<BuyerAvailCounselor />} />
-      <Route path="/mypage" element={<BuyerMypage />} />
+      <Route path="/mypage" element={<BuyerMypage />} />  
       <Route path="/reviewManage" element={<BuyerReviewManage />} />
       <Route path="/review" element={<BuyerWriteReview />} />
       <Route path="/saved" element={<BuyerSavedCounselor />} />

@@ -27,8 +27,19 @@ function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
       isCompleted: true,
     };
     try {
-      await patchOpenConsult(body);
-      navigate('/consult/?type=open-consult');
+      const res: any = await patchOpenConsult(body);
+      if (res.status === 200) {
+        navigate('/consult/?type=open-consult');
+      } else if (res?.response.status === 400) {
+        alert('이미 최종 제출된 상담입니다.');
+        navigate('/consult?type=open-consult');
+      } else if (res?.response.status === 403) {
+        alert('작성권한이 없습니다.');
+        navigate('/consult?type=open-consult');
+      } else if (res?.response.status === 404) {
+        alert('존재하지 않는 일대다상담입니다.');
+        navigate('/consult?type=open-consult');
+      }
     } catch (err) {
       alert(err);
     }

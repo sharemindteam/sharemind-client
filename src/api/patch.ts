@@ -94,6 +94,5 @@ export const patchAdoptComment = async (postId: any, commentId: string) =>
   await patchInstance(`/comments/customers/${postId}?commentId=${commentId}`);
 
 //Post Controller
-export const patchOpenConsult = async (body: any) => {
+export const patchOpenConsult = async (body: any) =>
   await patchInstance(`/posts`, body);
-};
