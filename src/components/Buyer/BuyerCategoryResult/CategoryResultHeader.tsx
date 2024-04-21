@@ -3,18 +3,24 @@ import { Grey1, Grey6, White } from 'styles/color';
 import { Heading } from 'styles/font';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { useNavigate } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
 interface ResultHeaderProps {
   categoryType: string;
 }
 export const CategoryResultHeader = ({ categoryType }: ResultHeaderProps) => {
+  const url = new URL(window.location.href);
+  const params = useMemo(() => new URLSearchParams(url.search), [url.search]);
   const navigate = useNavigate();
+  const handleClickBackIcon = useCallback(() => {
+    if (params.has('from', 'search')) { 
+      navigate('/search');
+    } else {
+      navigate('/share');
+    }
+  }, [navigate, params]);
   return (
     <Wrapper>
-      <BackIcon
-        onClick={() => {
-          navigate(-1);
-        }}
-      />
+      <BackIcon onClick={handleClickBackIcon} />
       <Heading color={Grey1}>{categoryType}</Heading>
     </Wrapper>
   );

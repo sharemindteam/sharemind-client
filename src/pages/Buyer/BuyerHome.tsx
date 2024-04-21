@@ -26,7 +26,7 @@ export const BuyerHome = () => {
           navigate('/share');
         }
       } catch (e) {
-        console.log(e);
+        alert(e);
       }
     };
     fectchSearchResults();
