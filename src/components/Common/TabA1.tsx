@@ -21,6 +21,9 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
       if (res.status === 200) {
         localStorage.setItem('randomConsult', JSON.stringify(res.data));
         navigate(`/minder/open-consult/${res.data[0]}`);
+        setTabState(3);
+      } else if (res?.response.status === 403) {
+        alert('공개 상담 페이지에 접근할 권한이 없습니다.');
       }
     } catch (err) {
       alert(err);
@@ -79,7 +82,6 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
       <TabButton
         $tabState={3}
         onClick={() => {
-          setTabState(3);
           if (isBuyer) {
             navigate('/open-consult');
           } else {
