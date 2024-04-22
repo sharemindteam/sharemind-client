@@ -101,6 +101,10 @@ export const Profile = ({
             onClick={() => {
               if (isPass) {
                 navigate('/minder/education/first');
+              } else {
+                alert(
+                  '마지막 인증 시험을 본 시간에서 24시간 이후에 시험을 응시할 수 있어요.',
+                );
               }
             }}
             width="100%"
