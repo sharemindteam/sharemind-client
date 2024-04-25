@@ -6,13 +6,10 @@ import { Grey1, Grey4 } from 'styles/color';
 import { ReactComponent as XIcon } from 'assets/icons/icon-grey-x.svg';
 import { getSearchWords } from 'api/get';
 import { deleteSearchWords } from 'api/delete';
-import { useSetRecoilState } from 'recoil';
-import { searchKeywordState } from 'utils/atom';
 import { useNavigate } from 'react-router-dom';
 export const SearchRecent = () => {
   const navigate = useNavigate();
   const [recentSearch, setRecentSearch] = useState<string[]>([]);
-  const setKeyword = useSetRecoilState(searchKeywordState);
   const handleXonClick = async (
     targetIndex: number,
     event: React.MouseEvent,
@@ -28,8 +25,7 @@ export const SearchRecent = () => {
     }
   };
   const handleRecentClick = (index: number) => {
-    setKeyword(recentSearch[index]);
-    navigate('/search/result');
+    navigate(`/search/result?keyword=${recentSearch[index]}`);
   };
   useEffect(() => {
     const fetchData = async () => {

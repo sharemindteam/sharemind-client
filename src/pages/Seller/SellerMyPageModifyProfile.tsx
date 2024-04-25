@@ -97,7 +97,7 @@ export const SellerMypageModifyProfile = () => {
   const category = useCustomSelect('category');
   const style = useCustomSelect('style');
   const type = useCustomSelect('type');
-  // 시간 설정은 나중에....ㅠㅠ
+
   const availableTime = useCustomSelect('time');
 
   const letterPrice = useInput('');

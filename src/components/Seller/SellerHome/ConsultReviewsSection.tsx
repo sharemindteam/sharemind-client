@@ -29,7 +29,7 @@ export const ConsultReviewSection = () => {
     <>
       <ContentTag
         onClick={() => {
-          navigate('/minder/mypage/review');
+          navigate('/minder/mypage/review?from=home');
         }}
       >
         {reviewData?.length === 0 ? (

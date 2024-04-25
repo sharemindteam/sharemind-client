@@ -9,7 +9,7 @@ export const isIncludeSpecialLetter = (str: string) => {
 };
 
 export const isIncludeSpecialLetterOneLiner = (str: string) => {
-  var specialCharacterRegex = /[\{\}\[\]\/,;|\)*~`^\-_+<>@\#$%&\\\=\(\'\"]/g;
+  var specialCharacterRegex = /[\{\}\[\]\/;|\)*~`^\-_+<>@\#$%&\\\=\(\'\"]/g;
   if (specialCharacterRegex.test(str)) {
     return true;
   } else {
