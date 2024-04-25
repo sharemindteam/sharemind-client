@@ -9,15 +9,15 @@ import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
-  setPageNum: React.Dispatch<SetStateAction<number>>;
+  setPostId: React.Dispatch<SetStateAction<number>>;
   searchParams: URLSearchParams;
   setSearchParams: SetURLSearchParams;
 }
 //최근순 인기순 별점순 모달
-export const SortModal = ({
+export const OpenConsultSortModal = ({
   sortType,
   setSortType,
-  setPageNum,
+  setPostId,
   searchParams,
   setSearchParams,
 }: SortModalProps) => {
@@ -35,10 +35,10 @@ export const SortModal = ({
         className="row"
         onClick={() => {
           setSortType(0);
-          setPageNum(0);
-          setIsModalOpen(false);
-          searchParams.set('sort', 'recent');
+          setPostId(0);
+          searchParams.set('open-sort', 'recent');
           setSearchParams(searchParams);
+          setIsModalOpen(false);
           setScrollLock(false);
         }}
       >
@@ -55,8 +55,8 @@ export const SortModal = ({
         className="row"
         onClick={() => {
           setSortType(1);
-          setPageNum(0);
-          searchParams.set('sort', 'popular');
+          setPostId(0);
+          searchParams.set('open-sort', 'likes');
           setSearchParams(searchParams);
           setIsModalOpen(false);
           setScrollLock(false);
@@ -64,19 +64,19 @@ export const SortModal = ({
       >
         {sortType === 1 ? (
           <>
-            <Body1 color={Green}>인기순</Body1>
+            <Body1 color={Green}>공감 많은 순</Body1>
             <CheckIcon />
           </>
         ) : (
-          <Body1 color={Grey1}>인기순</Body1>
+          <Body1 color={Grey1}>공감 많은 순</Body1>
         )}
       </div>
       <div
         className="row"
         onClick={() => {
           setSortType(2);
-          setPageNum(0);
-          searchParams.set('sort', 'rating');
+          setPostId(0);
+          searchParams.set('open-sort', 'comments');
           setSearchParams(searchParams);
           setIsModalOpen(false);
           setScrollLock(false);
@@ -84,11 +84,11 @@ export const SortModal = ({
       >
         {sortType === 2 ? (
           <>
-            <Body1 color={Green}>별점순</Body1>
+            <Body1 color={Green}>댓글 많은 순</Body1>
             <CheckIcon />
           </>
         ) : (
-          <Body1 color={Grey1}>별점순</Body1>
+          <Body1 color={Grey1}>댓글 많은 순</Body1>
         )}
       </div>
     </Wrapper>

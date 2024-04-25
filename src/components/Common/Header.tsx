@@ -57,7 +57,7 @@ const Logo = styled.div`
   cursor: pointer;
 `;
 const StyledSearch = styled(Search)`
-  margin-top: 1rem;
+  margin-top: 1.4rem;
   margin-right: 2.4rem;
   cursor: pointer;
 `;

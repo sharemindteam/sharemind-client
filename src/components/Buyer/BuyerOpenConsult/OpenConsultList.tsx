@@ -1,32 +1,23 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
-import { Body1, Caption1, Caption2 } from 'styles/font';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
-import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
+import { Grey1, Grey2, Grey6 } from 'styles/color';
+import { Body1, Caption1 } from 'styles/font';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
-import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save3.svg';
 import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
-import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import { Space } from 'components/Common/Space';
-import { BackDrop } from 'components/Common/BackDrop';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
-import {
-  getCustomerOpenConsultList,
-  getCustomerPublicConsultList,
-} from 'api/get';
+import { getCustomerPublicConsultList } from 'api/get';
 import { useNavigate } from 'react-router-dom';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { LoadingSpinner } from 'utils/LoadingSpinner';
 
 function OpenConsultList() {
   const [cardData, setCardData] = useState<openConsultApiObject[]>([]);
   const preventRef = useRef(true);
   const navigate = useNavigate();
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (entry[0].isIntersecting && !isLastElem && preventRef.current) {
       preventRef.current = false;
@@ -77,47 +68,63 @@ function OpenConsultList() {
   useLayoutEffect(() => {
     fetchOpenConsult(0, new Date().toISOString().slice(0, 19));
   }, []);
-  return (
-    <div>
-      <BuyerOpenConsultCardList>
-        {/* 상담카드 부분 */}
-        {cardData.map((item) => (
-          <BuyerOpenConsultCard
-            onClick={() => {
-              navigate(`/open-consult/${item.postId}`);
-            }}
-          >
-            <div className="row1">
-              <Body1>{item.title}</Body1>
-            </div>
-            <Space height="1.2rem" />
-            <div className="row2">{item.content}</div>
-            <div className="row3">
-              <IconItem>
-                <HeartResizeIcon />
-                <Caption1 color={Grey2}>{item.totalLike}</Caption1>
-              </IconItem>
-              <IconItem>
-                <SaveIcon />
-                <Caption1 color={Grey2}>{item.totalScrap}</Caption1>
-              </IconItem>
-              <IconItem>
-                <CommentIcon />
-                <Caption1 color={Grey2}>{item.totalComment}</Caption1>
-              </IconItem>
-            </div>
-            <TimeLeft>{item.updatedAt}</TimeLeft>
-          </BuyerOpenConsultCard>
-        ))}
-        {!isLastElem ? (
-          <div ref={setTarget} style={{ height: '3.5rem' }} />
-        ) : (
-          <div style={{ height: '3.5rem' }} />
-        )}
-        {/* 상담카드 부분 */}
-      </BuyerOpenConsultCardList>
-    </div>
-  );
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          height: '70vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <LoadingSpinner />
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <BuyerOpenConsultCardList>
+          {/* 상담카드 부분 */}
+          {cardData.map((item) => (
+            <BuyerOpenConsultCard
+              onClick={() => {
+                navigate(`/open-consult/${item.postId}`);
+              }}
+              key={item.postId}
+            >
+              <div className="row1">
+                <Body1>{item.title}</Body1>
+              </div>
+              <Space height="1.2rem" />
+              <div className="row2">{item.content}</div>
+              <div className="row3">
+                <IconItem>
+                  <HeartResizeIcon />
+                  <Caption1 color={Grey2}>{item.totalLike}</Caption1>
+                </IconItem>
+                <IconItem>
+                  <SaveIcon />
+                  <Caption1 color={Grey2}>{item.totalScrap}</Caption1>
+                </IconItem>
+                <IconItem>
+                  <CommentIcon />
+                  <Caption1 color={Grey2}>{item.totalComment}</Caption1>
+                </IconItem>
+              </div>
+              <TimeLeft>{item.updatedAt}</TimeLeft>
+            </BuyerOpenConsultCard>
+          ))}
+          {!isLastElem ? (
+            <div ref={setTarget} style={{ height: '3.5rem' }} />
+          ) : (
+            <div style={{ height: '3.5rem' }} />
+          )}
+          {/* 상담카드 부분 */}
+        </BuyerOpenConsultCardList>
+      </div>
+    );
+  }
 }
 const BuyerOpenConsultCardList = styled.div`
   display: flex;
@@ -177,13 +184,6 @@ const HeartResizeIcon = styled(HeartIcon)`
   height: 2rem;
 `;
 
-const PrivateSign = styled.div`
-  display: flex;
-  position: absolute;
-  top: 1.95rem;
-  right: 1.6rem;
-`;
-
 const TimeLeft = styled.div`
   font-size: 1.2rem;
   font-weight: 400;
@@ -193,24 +193,4 @@ const TimeLeft = styled.div`
   right: 1.6rem;
 `;
 
-const CreateConsultButton = styled.button`
-  width: 5.8rem;
-  height: 5.8rem;
-  border-radius: 100%;
-  background-color: ${Green};
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.25);
-  align-self: flex-end;
-`;
-const CreateConsultButtonWrapper = styled.div`
-  width: 100%;
-  padding: 0 3.3rem;
-  box-sizing: border-box;
-  display: flex;
-  position: fixed;
-  bottom: 3.5rem;
-  flex-direction: column;
-  @media (min-width: 768px) {
-    width: 375px;
-  }
-`;
 export default OpenConsultList;

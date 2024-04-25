@@ -18,6 +18,7 @@ import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 import SellerChatFooter from 'components/Seller/SellerChat/SellerChatFooter';
 import SellerChatSection from 'components/Seller/SellerChat/SellerChatSection';
+import { CHAT_START_REQUEST_TIME } from 'utils/constant';
 
 //
 //
@@ -144,7 +145,7 @@ const SellerChat = () => {
           ) {
             //구매자와 달리 현재 채팅 status를 업데이트하는 방향으로 구현해야할듯
             //새 메세지 도착으로 분류
-            setTime('10:00');
+            setTime(CHAT_START_REQUEST_TIME);
             setChatStatus('상담 시작 요청');
           } else if (
             arrivedMessage.chatWebsocketStatus ===
@@ -244,7 +245,7 @@ const SellerChat = () => {
   };
 
   const sendMessage = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chatMessages/counselors/' + chatId,
         {},
@@ -254,7 +255,7 @@ const SellerChat = () => {
   };
 
   const sendChatStartRequest = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chat/counselors/' + chatId,
         {},
@@ -263,14 +264,14 @@ const SellerChat = () => {
     }
   };
 
-  const sentExitResponse = () => {
-    if (stompClient.current) {
+  const sendExitResponse = () => {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send('app/api/v1/chat/counselors/exit/' + chatId, {});
     }
   };
 
   const sendChatFinishRequest = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chat/counselors/' + chatId,
         {},
@@ -339,8 +340,12 @@ const SellerChat = () => {
   });
 
   useEffect(() => {
-    // 컴포넌트가 마운트되었을 때 실행
+    if (!stompClient.current?.connected) {
+      return;
+    }
+
     connectChat();
+
     //채팅 불러오기
     getChatMessages(0);
     //채팅 status, 상대이름 가져오기
@@ -349,7 +354,7 @@ const SellerChat = () => {
     preventRef.current = true;
     // 언마운트 시에 소켓 연결 해제
     return () => {
-      if (stompClient.current) {
+      if (stompClient.current && stompClient.current?.connected) {
         stompClient.current.unsubscribe(
           '/queue/chattings/counselors/' + chatId,
         );
@@ -362,10 +367,10 @@ const SellerChat = () => {
         stompClient.current.unsubscribe(
           '/queue/chatMessages/counselors/' + chatId,
         );
-        sentExitResponse();
+        sendExitResponse();
       }
     };
-  }, []);
+  }, [chatId, stompClient, stompClient.current?.connected]);
 
   //useEffects
   //보내기 버튼 색상처리

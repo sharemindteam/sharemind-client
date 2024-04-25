@@ -21,6 +21,9 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
       if (res.status === 200) {
         localStorage.setItem('randomConsult', JSON.stringify(res.data));
         navigate(`/minder/open-consult/${res.data[0]}`);
+        setTabState(3);
+      } else if (res?.response.status === 403) {
+        alert('공개 상담 페이지에 접근할 권한이 없습니다.');
       }
     } catch (err) {
       alert(err);
@@ -33,11 +36,11 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
     } else {
       setColor(Green);
     }
-  }, []);
+  }, [initState, isBuyer]);
   return (
     <Wrapper>
       <TabButton
-        tabState={1}
+        $tabState={1}
         onClick={() => {
           setTabState(1);
           if (isBuyer) {
@@ -57,7 +60,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         )}
       </TabButton>
       <TabButton
-        tabState={2}
+        $tabState={2}
         onClick={() => {
           setTabState(2);
           if (isBuyer) {
@@ -77,9 +80,8 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
         )}
       </TabButton>
       <TabButton
-        tabState={3}
+        $tabState={3}
         onClick={() => {
-          setTabState(3);
           if (isBuyer) {
             navigate('/open-consult');
           } else {
@@ -96,7 +98,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
           <Subtitle color={Black}>공개상담</Subtitle>
         )}
       </TabButton>
-      <TabButton tabState={4}>
+      <TabButton $tabState={4}>
         {tabState === 4 ? (
           <>
             <Subtitle color={color}>내 정보</Subtitle>
@@ -132,15 +134,15 @@ const Wrapper = styled.nav`
   background-color: white;
   z-index: 999;
 `;
-const TabButton = styled.div<{ tabState: number }>`
+const TabButton = styled.div<{ $tabState: number }>`
   display: flex;
   flex-direction: column;
   width: ${(props) =>
-    props?.tabState === 1
+    props?.$tabState === 1
       ? '8.8rem'
-      : props?.tabState === 2
+      : props?.$tabState === 2
       ? '8.2rem'
-      : props?.tabState === 3
+      : props?.$tabState === 3
       ? '10.9rem'
       : '9.6rem'};
   align-items: center;

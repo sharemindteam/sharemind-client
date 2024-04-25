@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Grey6 } from 'styles/color';
 import { Characters } from 'utils/Characters';
 import { searchKeywordState } from 'utils/atom';
-
 export const CartegorySearch = () => {
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const setSearchKeyword = useSetRecoilState(searchKeywordState);
   return (
@@ -16,7 +16,11 @@ export const CartegorySearch = () => {
             number={1}
             onClick={() => {
               setSearchKeyword('연애갈등');
-              navigate('/categorySearch');
+              if (pathname === '/search') {
+                navigate('/categorySearch?from=search');
+              } else {
+                navigate('/categorySearch');
+              }
             }}
           />
           <Text>연애갈등</Text>
@@ -26,7 +30,11 @@ export const CartegorySearch = () => {
             number={2}
             onClick={() => {
               setSearchKeyword('이별/재회');
-              navigate('/categorySearch');
+              if (pathname === '/search') {
+                navigate('/categorySearch?from=search');
+              } else {
+                navigate('/categorySearch');
+              }
             }}
           />
           <Text>이별/재회</Text>
@@ -36,7 +44,11 @@ export const CartegorySearch = () => {
             number={3}
             onClick={() => {
               setSearchKeyword('여자심리');
-              navigate('/categorySearch');
+              if (pathname === '/search') {
+                navigate('/categorySearch?from=search');
+              } else {
+                navigate('/categorySearch');
+              }
             }}
           />
           <Text>여자심리</Text>
@@ -46,7 +58,11 @@ export const CartegorySearch = () => {
             number={4}
             onClick={() => {
               setSearchKeyword('남자심리');
-              navigate('/categorySearch');
+              if (pathname === '/search') {
+                navigate('/categorySearch?from=search');
+              } else {
+                navigate('/categorySearch');
+              }
             }}
           />
           <Text>남자심리</Text>
@@ -58,7 +74,11 @@ export const CartegorySearch = () => {
             number={5}
             onClick={() => {
               setSearchKeyword('썸/연애시작');
-              navigate('/categorySearch');
+              if (pathname === '/search') {
+                navigate('/categorySearch?from=search');
+              } else {
+                navigate('/categorySearch');
+              }
             }}
           />
           <Text>썸/연애시작</Text>
@@ -68,7 +88,11 @@ export const CartegorySearch = () => {
             number={6}
             onClick={() => {
               setSearchKeyword('짝사랑');
-              navigate('/categorySearch');
+              if (pathname === '/search') {
+                navigate('/categorySearch?from=search');
+              } else {
+                navigate('/categorySearch');
+              }
             }}
           />
           <Text>짝사랑</Text>
@@ -78,7 +102,11 @@ export const CartegorySearch = () => {
             number={7}
             onClick={() => {
               setSearchKeyword('권태기');
-              navigate('/categorySearch');
+              if (pathname === '/search') {
+                navigate('/categorySearch?from=search');
+              } else {
+                navigate('/categorySearch');
+              }
             }}
           />
           <Text>권태기</Text>
@@ -88,7 +116,11 @@ export const CartegorySearch = () => {
             number={8}
             onClick={() => {
               setSearchKeyword('기타');
-              navigate('/categorySearch');
+              if (pathname === '/search') {
+                navigate('/categorySearch?from=search');
+              } else {
+                navigate('/categorySearch');
+              }
             }}
           />
           <Text>기타</Text>

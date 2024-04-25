@@ -66,7 +66,7 @@ function BuyerWriteOpenConsult() {
       }
     };
     fetchDraftedData();
-  }, []);
+  }, [postId]);
   useEffect(() => {
     if (input === '' || titleInput === '') {
       // 비어 있으면 전송못함

@@ -1,4 +1,4 @@
-import React, { SetStateAction } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Grey4, Grey6 } from 'styles/color';
@@ -7,7 +7,7 @@ import { BankIcon } from 'utils/BankIcon';
 import { isBankModalOpenState } from 'utils/atom';
 import { bankNameList } from 'utils/constant';
 interface BankSelectModalProps {
-  setSelectBankType: React.Dispatch<SetStateAction<string>>;
+  setSelectBankType: React.Dispatch<React.SetStateAction<string | null>>;
 }
 function BankSelectModal({ setSelectBankType }: BankSelectModalProps) {
   const [isBankModalOpen, setIsBankModalOpen] =

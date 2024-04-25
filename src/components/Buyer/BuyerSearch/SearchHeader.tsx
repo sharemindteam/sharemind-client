@@ -5,12 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { Grey1, Grey4, White } from 'styles/color';
 import Input from 'components/Common/Input';
 import { ChangeEvent, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { searchKeywordState } from 'utils/atom';
 
 export const SearchHeader = () => {
   const navigate = useNavigate();
-  const setKeyword = useSetRecoilState(searchKeywordState);
   //input value
   const [input, setInput] = useState('');
   //input onchagne
@@ -19,8 +16,7 @@ export const SearchHeader = () => {
   };
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setKeyword(input);
-    navigate('/search/result');
+    navigate(`/search/result?keyword=${input}`);
   };
   return (
     <Wrapper>
@@ -40,8 +36,8 @@ export const SearchHeader = () => {
           placeHolderColor={Grey4}
           height="4.4rem"
           width="100%"
-          padding="0 3.2rem 0 0"
-          textIndent="1rem"
+          isBoxSizing={true}
+          padding="0.8rem 3.4rem 0.8rem 1.6rem"
         />
         <SearchIcon onClick={handleSubmit} />
       </FormWrapper>
@@ -50,26 +46,25 @@ export const SearchHeader = () => {
 };
 const Wrapper = styled.div`
   height: 5.2rem;
+  gap: 0.8rem;
   background-color: ${White};
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   padding: 0.4rem 2rem;
 `;
 const BackIcon = styled(Back)`
-  position: absolute;
-  top: 1.4rem;
-  left: 2rem;
   cursor: pointer;
 `;
 const FormWrapper = styled.form`
   position: relative;
-  width: 79%;
+  width: 100%;
 `;
 const SearchIcon = styled(Search)`
   position: absolute;
-  right: -2.7rem;
+  right: 0.8rem;
   top: 0.8rem;
   cursor: pointer;
 `;

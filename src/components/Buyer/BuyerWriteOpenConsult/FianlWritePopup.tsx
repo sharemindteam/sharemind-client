@@ -1,15 +1,10 @@
 import { patchOpenConsult } from 'api/patch';
-import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Green, Grey4, LightGreen, White } from 'styles/color';
-import { Body1, Body3 } from 'styles/font';
-import {
-  isBuyPopupOpenState,
-  isPostPopupOpenState,
-  isSendPopupOpenState,
-} from 'utils/atom';
+import { Green, LightGreen, White } from 'styles/color';
+import { Body1 } from 'styles/font';
+import { isPostPopupOpenState } from 'utils/atom';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 interface FianlWritePopupProps {
   title: string;
@@ -32,10 +27,17 @@ function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
     };
     try {
       const res: any = await patchOpenConsult(body);
-      if (res?.status === 200) {
+      if (res.status === 200) {
         navigate('/consult/?type=open-consult');
-      } else {
-        console.log(res);
+      } else if (res?.response.status === 400) {
+        alert('이미 최종 제출된 상담입니다.');
+        navigate('/consult?type=open-consult');
+      } else if (res?.response.status === 403) {
+        alert('작성권한이 없습니다.');
+        navigate('/consult?type=open-consult');
+      } else if (res?.response.status === 404) {
+        alert('존재하지 않는 일대다상담입니다.');
+        navigate('/consult?type=open-consult');
       }
     } catch (err) {
       alert(err);

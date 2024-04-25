@@ -2,11 +2,19 @@ import styled from 'styled-components';
 import { Green, Grey6, Red, White } from 'styles/color';
 import { Caption2 } from 'styles/font';
 import { CartegoryState } from 'utils/type';
-//bgcolor type이 1이면 white 2면 해당 색상, 3이면 grey6
+
+//
+//
+//
+
 interface TagA2CartegoryProps {
   tagType: CartegoryState;
   bgColorType: number;
 }
+
+//
+//
+//
 
 export const TagA2Cartegory = ({
   tagType,

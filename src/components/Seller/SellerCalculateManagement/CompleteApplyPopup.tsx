@@ -4,20 +4,34 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grey4 } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
+
+//
+//
+//
+
 interface CompleteApplyPopupProps {
   name: string;
   date: string;
+  consultType: string;
   setIsCompleteApplyManage: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+//
+//
+//
+
 function CompleteApplyPopup({
   name = '김고민',
-  date = '2023.02.02',
+  date = '2001.12.15',
+  consultType = '무슨',
   setIsCompleteApplyManage,
 }: CompleteApplyPopupProps) {
   return (
     <CompleteApplyPopupBox>
       <Body1>정산 신청이 완료되었어요!</Body1>
-      <Body3 color={Grey4}>{name}과의 편지 상담 2023.12.23</Body3>
+      <Body3 color={Grey4}>
+        {name}과의 {consultType} 상담 {date}
+      </Body3>
       <Space height="2rem" />
       <Button
         text="닫기"

@@ -64,7 +64,10 @@ const Wrapper = styled.div`
     width: 100%;
     height: 4.4rem;
     display: flex;
+    box-sizing: border-box;
+    align-items: center;
     justify-content: space-between;
+    padding: 2.2rem 3.2rem 1.2rem 2rem;
     cursor: pointer;
     margin-bottom: 0.4rem;
   }
@@ -73,10 +76,6 @@ const NavConsult = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin-top: 0.9rem;
-  margin-left: 2rem;
+  margin: 0px auto 0px 0px;
 `;
-const MoreIcon = styled(More)`
-  margin-right: 3.8rem;
-  margin-top: 1.5rem;
-`;
+const MoreIcon = styled(More)``;

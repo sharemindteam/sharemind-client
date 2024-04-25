@@ -12,7 +12,7 @@ interface UserInfo {
   nickname: string;
   level: string;
   isEducated: boolean;
-  consultStlyle: string;
+  consultStyle: string;
   profilesStatus: string;
 }
 export const SellerMypage = () => {

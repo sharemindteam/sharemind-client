@@ -14,6 +14,7 @@ import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 import BuyerChatFooter from 'components/Buyer/BuyerChat/BuyerChatFooter';
 import BuyerChatSection from 'components/Buyer/BuyerChat/BuyerChatSection';
+import { CHAT_START_REQUEST_TIME } from 'utils/constant';
 
 export const BuyerChat = () => {
   const navigate = useNavigate();
@@ -129,7 +130,7 @@ export const BuyerChat = () => {
           ) {
             //새 메세지 도착으로 분류
             newMessageRef.current = true;
-            setTime('10:00');
+            setTime(CHAT_START_REQUEST_TIME);
             setMessages((prevMessages) => [
               ...prevMessages,
               {
@@ -258,7 +259,7 @@ export const BuyerChat = () => {
     }
   };
   const sendMessage = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chatMessages/customers/' + chatId,
         {},
@@ -268,7 +269,7 @@ export const BuyerChat = () => {
   };
 
   const sendChatStartResponse = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chat/customers/' + chatId,
         {},
@@ -277,14 +278,14 @@ export const BuyerChat = () => {
     }
   };
 
-  const sentExitResponse = () => {
-    if (stompClient.current) {
+  const sendExitResponse = () => {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send('app/api/v1/chat/customers/exit/' + chatId, {});
     }
   };
 
   const sendChatFinishRequest = () => {
-    if (stompClient.current) {
+    if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
         '/app/api/v1/chat/customers/' + chatId,
         {},
@@ -351,8 +352,13 @@ export const BuyerChat = () => {
   });
 
   useEffect(() => {
+    if (!stompClient.current?.connected) {
+      return;
+    }
     // 컴포넌트가 마운트되었을 때 실행
+
     connectChat();
+
     //채팅 불러오기
     getChatMessages(0);
     //
@@ -360,7 +366,7 @@ export const BuyerChat = () => {
     //관측 가능
     preventRef.current = true;
     return () => {
-      if (stompClient.current) {
+      if (stompClient.current && stompClient.current?.connected) {
         stompClient.current.unsubscribe('/queue/chattings/customers/' + chatId);
         stompClient.current.unsubscribe(
           '/queue/chattings/status/customers/' + chatId,
@@ -371,10 +377,10 @@ export const BuyerChat = () => {
         stompClient.current.unsubscribe(
           '/queue/chatMessages/customers/' + chatId,
         );
-        sentExitResponse();
+        sendExitResponse();
       }
     };
-  }, []);
+  }, [stompClient.current?.connected]);
 
   //useEffects
   //보내기 버튼 색상처리

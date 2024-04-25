@@ -2,12 +2,13 @@ import { getPaymentsCustomers } from 'api/get';
 import { PaymentCard } from 'components/Buyer/BuyerPayment/PaymentCard';
 import { PaymentModal } from 'components/Buyer/BuyerPayment/PaymentModal';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
+import { Space } from 'components/Common/Space';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Green, Grey1, Grey5, White } from 'styles/color';
+import { Green, Grey1, Grey5, Grey6, White } from 'styles/color';
 import { Button2, Heading } from 'styles/font';
 import { isPaymentModalOpenState, scrollLockState } from 'utils/atom';
 import { PaymentInfo } from 'utils/type';
@@ -190,6 +191,7 @@ export const BuyerPayment = () => {
             );
           })}
         </CardWrapper>
+        <Space height="4rem" />
         {!isLastElem ? (
           <div
             ref={setTarget}
@@ -223,7 +225,7 @@ export const BuyerPayment = () => {
           </>
         ) : null}
       </>
-    );
+    );  
   }
 };
 
@@ -232,12 +234,18 @@ const CardWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
+  height: calc(100% - 11.6rem);
+  overflow: scroll;
   margin-top: 1.2rem;
 `;
 const ToggleWrapper = styled.div`
   display: flex;
-  margin: 0.8rem 2rem;
+  padding: 0.8rem 2rem;
   gap: 0.8rem;
+  background-color: white;
+  border-bottom: 1px solid ${Grey6};
+  position: sticky;
+  top: 5.3rem;
 `;
 const ToggleButton = styled.div<{ focus: boolean }>`
   width: 8.1rem;

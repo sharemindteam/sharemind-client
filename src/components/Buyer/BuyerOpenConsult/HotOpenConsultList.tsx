@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FireIcon } from 'assets/icons/icon-fire.svg';
-import { Body3, Body4 } from 'styles/font';
+import { Body4 } from 'styles/font';
 import { Grey6 } from 'styles/color';
 import { getCustomerPopularConsultList } from 'api/get';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +26,7 @@ function HotOpenConsultList() {
       </FireIconWrapper>
       {hotConsultList.map((item) => (
         <HotTitleItem
+          key={item.postId}
           onClick={() => {
             navigate(`/open-consult/${item.postId}`);
           }}

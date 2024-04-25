@@ -33,8 +33,11 @@ export const SellerMypageViewProfile = () => {
           setIsEvaluationPending(true);
         }
         const profileRes: any = await getProfiles();
-        if (profileRes?.response?.status === 404) {
+        if (profileRes?.response?.status === 403) {
           alert('마인더 인증을 통과한 뒤 판매 정보를 등록할 수 있습니다.');
+          navigate('/minder/mypage');
+        } else if (profileRes?.response?.status === 404) {
+          alert('등록되지 않은 회원 정보입니다.');
           navigate('/minder/mypage');
         }
         setProfile(profileRes.data);
