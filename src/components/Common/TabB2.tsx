@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // 왼쪽 아이콘 Import 후 <div className="left-icon"> <아이콘/></div>
 // 오른쪾 아이코 Import 후 <div className="right-icon"><아이콘/></div>
 
-export const TabB2 = styled.div`
+export const TabB2 = styled.header`
   display: flex;
   align-items: center;
   background-color: ${White};

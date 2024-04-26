@@ -74,7 +74,7 @@ export const HomeConsultInProgress = () => {
             currentChatIdRef.current = res.data.responses[0].id;
             connectConsultInProgress(res.data.responses[0].id);
           }
-        } else if (res.response.status === 401) {
+        } else if (res?.response?.status === 401) {
           setIsLogined(false);
         }
       } catch (e) {
