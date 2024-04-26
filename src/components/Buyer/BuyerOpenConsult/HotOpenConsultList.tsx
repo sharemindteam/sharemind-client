@@ -15,9 +15,7 @@ function HotOpenConsultList() {
   useEffect(() => {
     const fetchHotConsultList = async () => {
       const res: any = await getCustomerPopularConsultList();
-      if (res.status === 200) {
-        setHotConsultList(res.data);
-      }
+      setHotConsultList(res.data);
     };
     fetchHotConsultList();
   }, []);
@@ -26,7 +24,7 @@ function HotOpenConsultList() {
       <FireIconWrapper>
         <FireIcon />
       </FireIconWrapper>
-      {hotConsultList?.map((item) => (
+      {hotConsultList.map((item) => (
         <HotTitleItem
           key={item.postId}
           onClick={() => {

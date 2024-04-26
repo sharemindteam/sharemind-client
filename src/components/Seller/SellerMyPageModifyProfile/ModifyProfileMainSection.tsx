@@ -22,12 +22,14 @@ import {
   isCategoryModalOpenState,
   isStyleModalOpenState,
   isTypeOpenModalState,
+  isBankModalOpenState,
 } from 'utils/atom';
 import { categoryInputMaker } from 'utils/categoryInputmaker';
 import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { UpdatePopup } from './UpdatePopup';
 import { SelectedTimeList } from './SetChatTimeSection';
+import { convertTimeRange } from 'utils/convertTimeToString';
 
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
@@ -55,6 +57,7 @@ const dayEngtoKor: Record<string, string> = {
   SAT: '토',
   SUN: '일',
 };
+const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 function convertObjectToString(schedule: any) {
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
@@ -116,6 +119,7 @@ function ModifyProfileMainSection({
   );
   const [isTypeModalOpen, setIsTypeModalOpen] =
     useRecoilState(isTypeOpenModalState);
+  const setIsBankModalOpen = useSetRecoilState(isBankModalOpenState);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useRecoilState<boolean>(
     isUpdateModalOpenState,
   );
@@ -484,8 +488,6 @@ const ModifyProfileMainSectionWrapper = styled.section`
   margin-top: 0.2rem;
   flex-direction: column;
   gap: 1.1rem;
-  height: calc(100vh - 5.3rem);
-  overflow:scroll;
 `;
 
 const ModifyProfileBox = styled.div`
@@ -582,5 +584,37 @@ const ExperienceTextArea = styled.textarea`
     outline: none;
   }
 `;
+
+const AccountTag = styled.div`
+  width: 8rem;
+  margin-right: 1.7rem;
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 2.4rem */
+`;
+
+const BankTypeSelect = styled.div`
+  border-radius: 1.2rem;
+  background: ${Grey6};
+  height: 4.8rem;
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  gap: 0.8rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 100%;
+`;
+
+const OneLinerInput = styled.div`
+  width: 100%;
+  height; 4.8rem;
+  background-color: ${Grey6};
+  padding: 1.2rem 1.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  `;
 
 export default React.memo(ModifyProfileMainSection);

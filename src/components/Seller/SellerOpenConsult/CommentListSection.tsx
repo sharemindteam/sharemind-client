@@ -19,7 +19,6 @@ import { useParams } from 'react-router-dom';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useRecoilValue } from 'recoil';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { formattedMessage } from 'utils/formattedMessage';
 
 export interface commentApiObject {
   commentId: string;
@@ -76,7 +75,7 @@ function CommentListSection() {
               <Caption2>{card.updatedAt}</Caption2>
               <SettingButton />
             </div>
-            <Body3 color={Grey1}>{formattedMessage(card.content)}</Body3>
+            <Body3 color={Grey1}>{card.content}</Body3>
             <LikeButton>
               <HeartIcon />
               <Caption1 color={Grey2}>{card.totalLike}</Caption1>

@@ -189,6 +189,7 @@ function TimeSelectModal({
           시작시간과 종료시간을 1시간 이상 간격으로 설정해주세요
         </Caption2>
       </div>
+      <Space height="1.6rem" />
       <HourButtonList>
         {hourList.map((hour) => (
           <HourButton
@@ -220,19 +221,18 @@ function TimeSelectModal({
             {hour < 10 ? `0${hour}` : hour}시
           </HourButton>
         ))}
-        <div className="guide-message" style={{ alignSelf: 'center' }}>
-          <Caption2 color={Grey3}>
-            24시 이후에 종료하고 싶은 경우, 다음 요일의 <br />
-            항목에서 시작과 종료를 별도로 설정해주세요
-          </Caption2>
-        </div>
+        <Caption2 color={Grey3}>
+          24시 이후에 종료하고 싶은 경우, 다음 요일의 <br />
+          항목에서 시작과 종료를 별도로 설정해주세요
+        </Caption2>
       </HourButtonList>
     </Wrapper>
   );
 }
 const HourButtonList = styled.div`
   display: flex;
-  margin: 0 2rem;
+  gap: 2.4rem;
+  margin: 0 3.15rem;
   flex-wrap: wrap;
 `;
 
@@ -247,8 +247,7 @@ const HourButton = styled.div<{
     isActive ? Green : isBetween ? LightGreen : isBlock ? Grey5 : White};
   color: ${({ isActive, isBetween, isBlock }) =>
     isActive ? White : isBetween ? Black : isBlock ? White : Black};
-  width: 18%;
-  margin: 3.5%;
+  width: 6rem;
   font-size: 1.4rem;
   height: 3.4rem;
   justify-content: center;
