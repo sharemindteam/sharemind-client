@@ -1,8 +1,5 @@
 import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentListSection';
-import React, {
-  useCallback,
-  useState,
-} from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6, Red, White } from 'styles/color';
 import { Body1, Body3, Caption1, Caption2 } from 'styles/font';
@@ -15,6 +12,7 @@ import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
 import { deleteCommentLikes } from 'api/delete';
 import { postLikeComment } from 'api/post';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { formattedMessage } from 'utils/formattedMessage';
 interface CommentCardProps {
   item: commentApiObject;
   isMyPost: boolean;
@@ -76,7 +74,7 @@ function CommentCard({
         <Caption2>{item.updatedAt}</Caption2>
         <SettingButton />
       </div>
-      <Body3 color={Grey1}>{item.content}</Body3>
+      <Body3 color={Grey1}>{formattedMessage(item.content)}</Body3>
       <LikeButton>
         {isLike ? (
           <HeartIcon onClick={handleClickLikeButton} />

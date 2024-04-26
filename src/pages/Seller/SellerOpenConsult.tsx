@@ -21,8 +21,13 @@ function SellerOpenConsult() {
         }}
       >
         <OpenConsultHeader />
-        <MainQuestionSection />
-        <CommentListSection />
+        <div
+          className="scroll-container"
+          style={{ height: 'calc(100vh - 10rem)', overflow: 'scroll' }}
+        >
+          <MainQuestionSection />
+          <CommentListSection />
+        </div>
       </div>
       <BottomSection
         isReplying={isReplying}
@@ -32,7 +37,11 @@ function SellerOpenConsult() {
       />
       {isSendPopupOpen && (
         <>
-          <IsSendPopup text={text} setText={setText} setIsReplying={setIsReplying} />
+          <IsSendPopup
+            text={text}
+            setText={setText}
+            setIsReplying={setIsReplying}
+          />
           <BackDrop />
         </>
       )}
