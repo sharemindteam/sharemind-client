@@ -484,6 +484,8 @@ const ModifyProfileMainSectionWrapper = styled.section`
   margin-top: 0.2rem;
   flex-direction: column;
   gap: 1.1rem;
+  height: calc(100vh - 5.3rem);
+  overflow:scroll;
 `;
 
 const ModifyProfileBox = styled.div`
@@ -580,6 +582,5 @@ const ExperienceTextArea = styled.textarea`
     outline: none;
   }
 `;
-
 
 export default React.memo(ModifyProfileMainSection);
