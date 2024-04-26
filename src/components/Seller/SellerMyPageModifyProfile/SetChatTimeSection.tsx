@@ -110,13 +110,7 @@ function SetChatTimeSection({
             setIsActive={setIsActive}
           />
         )}
-        {(isOutPopupOpen || isTimeModalOpen) && (
-          <BackDrop
-            onClick={() => {
-              setIsTimeModalOpen(false);
-            }}
-          />
-        )}
+        {(isOutPopupOpen || isTimeModalOpen) && <BackDrop />}
 
         <SetChatGuide>
           상담 활동이 가능한 시간대를 설정해주세요. <br />
