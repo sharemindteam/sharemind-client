@@ -1,7 +1,7 @@
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey6, LightGreen } from 'styles/color';
 import { Body2, Heading } from 'styles/font';
@@ -11,9 +11,12 @@ export const BuyerConsultRequest = () => {
   const [letterFocus, setLetterFocus] = useState<boolean>(false);
   const [chatFocus, setChatFocus] = useState<boolean>(false);
   const [buttonAcitve, setButtonAcitve] = useState<boolean>(false);
-  const location = useLocation();
-  const { state } = location;
-  const counselorId: boolean = state?.counselorId;
+
+  const { counselorId } = useParams();
+
+  /**
+   *
+   */
   const handleNextClick = () => {
     navigate(`/paymentDetail/${counselorId}`, { state: { letterFocus } });
   };

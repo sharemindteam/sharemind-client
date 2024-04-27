@@ -71,7 +71,7 @@ export const CounselorFooter = ({
         text="상담 신청하기"
         width="26rem"
         height="5.2rem"
-        onClick={() => navigate('/consultRequest', { state: { counselorId } })}
+        onClick={() => navigate(`/consultRequest/${counselorId}`)}
       />
     </Wrapper>
   );
