@@ -273,12 +273,12 @@ const ToggleWrapper = styled.div`
   .row2 {
     margin-top: 0.8rem;
     display: flex;
-    gap: 3.6rem;
+    gap: 6.1rem;
   }
   .row3 {
     margin-top: 0.8rem;
     display: flex;
-    gap: 7.6rem;
+    gap: 6.1rem;
   }
 `;
 const ToggleBar = styled.div`
