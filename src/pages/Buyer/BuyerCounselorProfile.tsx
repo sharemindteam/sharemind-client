@@ -16,9 +16,15 @@ import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { ConsultCosts, ConsultTimes, MinderProfile } from 'utils/type';
+
+//
+//
+//
+
 export const BuyerCounselorProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+
   const [profileData, setProfileData] = useState<MinderProfile>({
     consultCategories: [],
     consultCosts: {} as ConsultCosts,
@@ -34,9 +40,15 @@ export const BuyerCounselorProfile = () => {
     ratingAverage: 0,
     totalReview: 0,
   });
+
   //로딩 state
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  //Nav 버튼 toggle
+  const [isInfo, setIsInfo] = useState<boolean>(true);
 
+  //
+  //
+  //
   useLayoutEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -57,9 +69,12 @@ export const BuyerCounselorProfile = () => {
       }
     };
     fetchData();
-  }, []);
-  //Nav 버튼 toggle
-  const [isInfo, setIsInfo] = useState<boolean>(true);
+  }, [id, navigate]);
+
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <>
@@ -108,6 +123,7 @@ export const BuyerCounselorProfile = () => {
           <CounselorFooter
             counselorId={counselorId}
             isWishList={profileData.isWishList}
+            consultTypes={profileData.consultTypes}
           />
         </Wrapper>
       );
