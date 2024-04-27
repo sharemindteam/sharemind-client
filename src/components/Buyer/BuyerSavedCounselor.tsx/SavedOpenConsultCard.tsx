@@ -1,26 +1,33 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Green, Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
-import { Body1, Caption1, Caption2 } from 'styles/font';
-import { LoadingSpinner } from 'utils/LoadingSpinner';
-import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
+import { Grey1, Grey2, Grey6 } from 'styles/color';
+import { Body1, Caption1 } from 'styles/font';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
-import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save3.svg';
 import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
-import { ReactComponent as WriteIcon } from 'assets/icons/icon-write.svg';
 import { Space } from 'components/Common/Space';
-import { BackDrop } from 'components/Common/BackDrop';
+
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { useNavigate } from 'react-router-dom';
-import useIntersectionObserver from 'hooks/useIntersectionObserver';
+
+//
+//
+//
+
 interface SavedCounselorCardProps {
   item: openConsultApiObject;
 }
+
+//
+//
+//
+
 function SavedOpenConsultCard({ item }: SavedCounselorCardProps) {
   const navigate = useNavigate();
+
+  //
+  //
+  //
+
   return (
     <Wrapper
       onClick={() => {

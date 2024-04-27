@@ -1,9 +1,16 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
+
+//
+//
+//
 interface NoCalculationGraphicProps {
   status: string;
 }
+
+//
+//
+//
 
 export const NoCalculationGraphic = ({ status }: NoCalculationGraphicProps) => {
   return (

@@ -6,7 +6,7 @@ import { ReactComponent as PlusIconSVG } from 'assets/icons/icon-plus.svg';
 import { ReactComponent as MinusIconSVG } from 'assets/icons/icon-minus.svg';
 import Input from 'components/Common/Input';
 import TimeSelectModal from './TimeSelectModal';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { isOutPopupOpenState, isTimeModalOpenState } from 'utils/atom';
 import { BackDrop } from 'components/Common/BackDrop';
 import { BottomButton } from '../Common/BottomButton';
@@ -84,9 +84,9 @@ function SetChatTimeSection({
 
   const [isTimeModalOpen, setIsTimeModalOpen] =
     useRecoilState(isTimeModalOpenState);
-  const [isOutPopupOpen, setIsOutPopupOpen] =
-    useRecoilState(isOutPopupOpenState);
+  const isOutPopupOpen = useRecoilValue(isOutPopupOpenState);
   const scrollTopRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if (scrollTopRef) {
       scrollTopRef.current?.scrollIntoView({
@@ -95,6 +95,10 @@ function SetChatTimeSection({
       });
     }
   }, []);
+
+  //
+  //
+  //
 
   return (
     <Wrapper>

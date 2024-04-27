@@ -1,4 +1,3 @@
-import { Space } from 'components/Common/Space';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';

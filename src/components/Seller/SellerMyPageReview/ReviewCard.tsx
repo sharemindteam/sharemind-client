@@ -4,10 +4,15 @@ import { Characters } from 'utils/Characters';
 import { ReactComponent as MoreIcon } from 'assets/icons/icon-more2.svg';
 import { Grey3, Grey6, White } from 'styles/color';
 import { HeartRate } from 'utils/HeartRate';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isReviewComplaintOpenState } from 'utils/atom';
 import { BackDrop } from 'components/Common/BackDrop';
 import { ReviewComplaintMenu } from './ReviewComplaintMenu';
+
+//
+//
+//
+
 export interface ReviewCardProps {
   id: number;
   name: string;
@@ -18,6 +23,10 @@ export interface ReviewCardProps {
   rating: number;
   review: string;
 }
+
+//
+//
+//
 
 export const ReviewCard = ({
   id,
@@ -32,6 +41,11 @@ export const ReviewCard = ({
   const [isReviewComplaintOpen, setIsReviewComplaintOpen] = useRecoilState(
     isReviewComplaintOpenState,
   );
+
+  //
+  //
+  //
+
   return (
     <>
       {isReviewComplaintOpen && (
