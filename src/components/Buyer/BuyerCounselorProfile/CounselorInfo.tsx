@@ -62,7 +62,7 @@ export const CounselorInfo = ({
         </div>
       </div>
       <div className="row3">
-        <Body3 color={Grey3}>상담료</Body3>
+        <Body3 color={Grey3}>상담 금액</Body3>
         <Body3 color={Grey1}>
           편지 1건 {letterPrice}원<br />
           실시간 30분당 {chattingPrice}원
