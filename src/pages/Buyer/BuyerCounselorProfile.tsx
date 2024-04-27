@@ -99,7 +99,9 @@ export const BuyerCounselorProfile = () => {
                 profileData.consultCategories,
                 profileData.consultStyle,
               )}
-              consultStyle={consultStyleToCharNum(profileData.consultStyle)}
+              consultStyle={
+                consultStyleToCharNum(profileData.consultStyle) || 9
+              }
             />
             <CounselorProfileNav
               isInfo={isInfo}
