@@ -117,7 +117,7 @@ export const ConsultCard = ({
           </div>
         </ConsultStateBox>
       </ConsultContent>
-      {!reviewCompleted && (
+      {reviewCompleted === false && (
         <Button
           text="리뷰 작성하기"
           height="4.2rem"
