@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Green, Grey3, Grey5, Grey6, LightGreen, White } from 'styles/color';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { LetterPostModal } from './LetterPostModal';
 import { LetterIsSaveModal } from './LetterIsSaveModal';
 import { LetterSavePostModal } from './LetterSavePostModal';
@@ -211,7 +211,7 @@ export const LetterWriteMainSection = ({
               }
             }}
           />
-          <Space height='5rem'/>
+          <Space height="5rem" />
           <BottomButtonGroup>
             <SaveButton
               onClick={() => {

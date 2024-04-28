@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ReactComponent as Check } from 'assets/icons/icon-signup-check.svg';
 import { Body1, Button2, Caption1, Caption2, Heading } from 'styles/font';
 import {
   ErrorColor,
@@ -21,6 +20,10 @@ import { postEmails, postEmailsCode } from 'api/post';
 import { BackDrop } from 'components/Common/BackDrop';
 import { SignupModal } from './SignupModal';
 import { Space } from 'components/Common/Space';
+
+//
+//
+//
 interface SignupVerifyEmailProps {
   idInput: UseInputResult;
   setSignupState: Dispatch<SetStateAction<number>>;
@@ -50,6 +53,7 @@ export const SignupVerifyEmail = ({
   const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
   // 모달 에러 메세지
   const [modalErrorMessage, setModalErrorMessage] = useState<string>('');
+
   useEffect(() => {
     if (idInput.value.trim() !== '') {
       if (idInput.isValid === false) {
@@ -67,6 +71,7 @@ export const SignupVerifyEmail = ({
       verifyInput.setIsValid(false);
     }
   }, [idInput.value, verifyInput.value]);
+
   useEffect(() => {
     if (idInput.value.trim() !== '') {
       if (idInput.isValid === false) {
@@ -93,8 +98,10 @@ export const SignupVerifyEmail = ({
       setValid(false);
     }
   }, [idInput.isValid, verifyInput.isValid]);
-  // 다음 button valid 체크
-  useEffect(() => {}, []);
+
+  /**
+   * 다음 button valid 체크
+   */
   const handleVerifyClick = async () => {
     const body = { email: idInput.value };
     try {
@@ -136,6 +143,10 @@ export const SignupVerifyEmail = ({
       alert('이메일 인증 과정에서 오류가 발생했습니다.');
     }
   };
+
+  /**
+   *
+   */
   const handleNextClick = async () => {
     const body = { email: idInput.value, code: verifyInput.value };
     try {
@@ -154,6 +165,7 @@ export const SignupVerifyEmail = ({
       alert('인증 번호 확인 과정에서 오류가 발생했습니다.');
     }
   };
+
   //5분 타이머
   const [remainingTime, setRemainingTime] = useState<number>(0); // 초 단위로 5분 설정
   const [minutes, setMinutes] = useState<number>(0);
@@ -172,6 +184,11 @@ export const SignupVerifyEmail = ({
 
     return () => clearInterval(intervalId);
   }, [remainingTime]);
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>

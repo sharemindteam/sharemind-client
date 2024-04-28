@@ -1,5 +1,5 @@
 import { getReviewsAll } from 'api/get';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey1, Grey6 } from 'styles/color';

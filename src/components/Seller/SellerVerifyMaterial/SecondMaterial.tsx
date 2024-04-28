@@ -1,11 +1,15 @@
-import React from 'react';
-import { Body3, Heading } from 'styles/font';
+import { Heading } from 'styles/font';
 import styled from 'styled-components';
 import { Space } from 'components/Common/Space';
-import { Green, Grey1, Grey4 } from 'styles/color';
-import { Button } from 'components/Common/Button';
+import { Grey1 } from 'styles/color';
+
 import { ReactComponent as VerifyMaterial } from 'assets/icons/graphic-verify-material-2.svg';
 import VerifyMaterialButton from './VerifyMaterialButton';
+
+//
+//
+//
+
 function SecondMaterial() {
   return (
     <>

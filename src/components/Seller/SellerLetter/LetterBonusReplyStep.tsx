@@ -2,9 +2,12 @@ import styled from 'styled-components';
 import { ReactComponent as NotWrite } from 'assets/icons/graphic-not-write.svg';
 import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
-import { BottomButton } from '../Common/BottomButton';
-import { useNavigate, useParams } from 'react-router-dom';
 import { formattedMessage } from 'utils/formattedMessage';
+
+//
+//
+//
+
 interface LetterBonusReplyStepProps {
   isArrive: boolean;
   time: string;
@@ -12,6 +15,11 @@ interface LetterBonusReplyStepProps {
   replyMsg: string;
   tagActiveLevel: number;
 }
+
+//
+//
+//
+
 export const LetterBonusReplyStep = ({
   isArrive,
   time,
@@ -19,8 +27,6 @@ export const LetterBonusReplyStep = ({
   replyMsg,
   tagActiveLevel,
 }: LetterBonusReplyStepProps) => {
-  const { consultid } = useParams();
-  const navigate = useNavigate();
   return (
     <LetterBonusReplyStepWrapper>
       {isArrive ? (
@@ -41,6 +47,7 @@ export const LetterBonusReplyStep = ({
     </LetterBonusReplyStepWrapper>
   );
 };
+
 const LetterBonusReplyStepWrapper = styled.section`
   margin-bottom: 100px;
 `;

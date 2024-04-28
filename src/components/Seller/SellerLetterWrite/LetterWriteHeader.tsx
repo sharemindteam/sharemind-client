@@ -1,13 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { ReactComponent as XIcon } from 'assets/icons/icon-x.svg';
 import { Heading } from 'styles/font';
-import { useRecoilValue } from 'recoil';
-import { replyState } from 'utils/atom';
 import { TabB2 } from 'components/Common/TabB2';
 import { useEffect, useState } from 'react';
 import { getLetterRecentType } from 'api/get';
+
+//
+//
+//
 
 export const LetterWriteHeader = ({
   isViewQuestion,
@@ -19,6 +20,7 @@ export const LetterWriteHeader = ({
   const navigate = useNavigate();
   const { consultid } = useParams();
   const [replyLevel, setReplyLevel] = useState('답장 쓰기');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,6 +42,11 @@ export const LetterWriteHeader = ({
     };
     fetchData();
   }, []);
+
+  //
+  //
+  //
+
   // 추가답장여부
   return (
     <TabB2>
@@ -63,5 +70,3 @@ export const LetterWriteHeader = ({
     </TabB2>
   );
 };
-
-const LetterWriteHeaderWrapper = styled(TabB2)``;

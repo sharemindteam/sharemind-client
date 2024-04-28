@@ -1,17 +1,27 @@
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
 import { isLetterModalOpenState } from 'utils/atom';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
+
+//
+//
+//
+
 interface LetterWriteModalProps {
   categoryType: number;
   setCategoryType: React.Dispatch<SetStateAction<number>>;
   categoryList: string[];
   setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
 }
+
+//
+//
+//
+
 //상담 카테고리
 export const LetterWriteModal = ({
   categoryType,
@@ -21,6 +31,10 @@ export const LetterWriteModal = ({
 }: LetterWriteModalProps) => {
   //modal 여부
   const isModalOpen = useRecoilValue(isLetterModalOpenState);
+
+  //
+  //
+  //
 
   return (
     <Wrapper visible={isModalOpen}>
@@ -50,11 +64,14 @@ export const LetterWriteModal = ({
               )}
             </div>
           );
+        } else {
+          return null;
         }
       })}
     </Wrapper>
   );
 };
+
 const slideIn = keyframes`
   from{
     transform : translateY(100%);

@@ -1,13 +1,20 @@
-import React from 'react';
 import styled from 'styled-components';
-import { Body3 } from 'styles/font';
-import { Grey3 } from 'styles/color';
 import { ReactComponent as NotWrite } from 'assets/icons/graphic-not-write.svg';
-import { BottomButton, BottomButtonWrapper } from '../Common/BottomButton';
+import { BottomButtonWrapper } from '../Common/BottomButton';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
+
+//
+//
+//
+
 function NoProfileSection() {
   const navigate = useNavigate();
+
+  //
+  //
+  //
+
   return (
     <>
       {' '}
