@@ -135,6 +135,7 @@ export const BuyerConsultChatSection = ({
                 '/queue/chatMessages/customers/' + chatId,
                 (message) => {
                   const response = JSON.parse(message.body);
+
                   updateChatData(
                     chatId,
                     response.content,
@@ -226,8 +227,14 @@ export const BuyerConsultChatSection = ({
         setIsLoading(false);
       }
     };
+
     fetchData();
   }, [sortType, isChecked, setIsLoading]);
+
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <>
