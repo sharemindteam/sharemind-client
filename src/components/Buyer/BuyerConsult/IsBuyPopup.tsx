@@ -1,10 +1,13 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Green, Grey4, LightGreen, White } from 'styles/color';
-import { Body1, Body3 } from 'styles/font';
-import { isBuyPopupOpenState, isSendPopupOpenState } from 'utils/atom';
+import { Green, LightGreen, White } from 'styles/color';
+import { Body1 } from 'styles/font';
+import { isBuyPopupOpenState } from 'utils/atom';
+
+//
+//
+//
 
 function IsBuyPopup() {
   const navigate = useNavigate();
@@ -13,6 +16,11 @@ function IsBuyPopup() {
     setIsSendPopupOpen(false);
     navigate('/openConsultRequest');
   };
+
+  //
+  //
+  //
+
   return (
     <IsSendModalBox>
       <ModalBox>
@@ -31,6 +39,7 @@ function IsBuyPopup() {
     </IsSendModalBox>
   );
 }
+
 const IsSendModalBox = styled.div`
   width: 100%;
   height: 12.8rem;

@@ -66,7 +66,10 @@ const Router = () => {
       <Route path="/search" element={<BuyerSearch />} />
       <Route path="/categorySearch" element={<BuyerCategoryResult />} />
       <Route path="/search/result" element={<BuyerSearchResult />} />
-      <Route path="/consultRequest" element={<BuyerConsultRequest />} />
+      <Route
+        path="/consultRequest/:counselorId"
+        element={<BuyerConsultRequest />}
+      />
 
       <Route path="/openConsultRequest" element={<BuyerOpenConsultRequest />} />
 
@@ -80,7 +83,7 @@ const Router = () => {
       <Route path="/paymentComplete" element={<BuyerPaymentComplete />} />
       <Route path="/paymentFinish" element={<BuyerFinishPayment />} />
       <Route path="/counselors" element={<BuyerAvailCounselor />} />
-      <Route path="/mypage" element={<BuyerMypage />} />  
+      <Route path="/mypage" element={<BuyerMypage />} />
       <Route path="/reviewManage" element={<BuyerReviewManage />} />
       <Route path="/review" element={<BuyerWriteReview />} />
       <Route path="/saved" element={<BuyerSavedCounselor />} />

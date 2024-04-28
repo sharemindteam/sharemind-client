@@ -3,12 +3,22 @@ import { Grey1, Grey3, Grey6 } from 'styles/color';
 import { Body3 } from 'styles/font';
 import { convertTimeToString } from 'utils/convertTimeToString';
 import { ConsultTimes } from 'utils/type';
+
+//
+//
+//
+
 interface CounselorInfoProps {
   consultType: string[];
   letterPrice: number;
   chattingPrice: number;
   consultTimes: ConsultTimes;
 }
+
+//
+//
+//
+
 export const CounselorInfo = ({
   consultType,
   letterPrice,
@@ -63,14 +73,23 @@ export const CounselorInfo = ({
       </div>
       <div className="row3">
         <Body3 color={Grey3}>상담료</Body3>
-        <Body3 color={Grey1}>
-          편지 1건 {letterPrice}원<br />
-          실시간 30분당 {chattingPrice}원
-        </Body3>
+        <div>
+          {letterPrice !== undefined ? (
+            <Body3 color={Grey1}>
+              편지 1건 {letterPrice.toLocaleString()}원
+            </Body3>
+          ) : null}
+          {chattingPrice !== undefined ? (
+            <Body3 color={Grey1}>
+              채팅 30분당 {chattingPrice.toLocaleString()}원
+            </Body3>
+          ) : null}
+        </div>
       </div>
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   padding: 1.6rem 2rem 1.2rem 5%;
   display: flex;
@@ -87,6 +106,6 @@ const Wrapper = styled.div`
   }
   .row3 {
     display: flex;
-    gap: 8.3rem;
+    gap: 6.8rem;
   }
 `;

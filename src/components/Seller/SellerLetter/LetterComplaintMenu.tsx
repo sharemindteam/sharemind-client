@@ -1,22 +1,31 @@
-import { ReactComponent as CheckIcon } from 'assets/icons/icon-modal-check.svg';
 import { Button } from 'components/Common/Button';
-import { SetStateAction, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled, { keyframes } from 'styled-components';
-import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
-import { Body1 } from 'styles/font';
+import { Grey4, Grey6 } from 'styles/color';
 import { isConsultModalOpenState } from 'utils/atom';
+
+//
+//
+//
 
 interface LetterComplaintMenuProps {
   isActiveComplaint: boolean;
   setIsActiveComplaint: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+//
+//
+//
+
 export const LetterComplaintMenu = ({
   isActiveComplaint,
   setIsActiveComplaint,
 }: LetterComplaintMenuProps) => {
   const isModalOpen = useRecoilValue(isConsultModalOpenState);
+
+  //
+  //
+  //
 
   return (
     <Wrapper visible={isModalOpen}>
@@ -37,6 +46,7 @@ export const LetterComplaintMenu = ({
     </Wrapper>
   );
 };
+
 const slideIn = keyframes`
   from{
     transform : translateY(100%);

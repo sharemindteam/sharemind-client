@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import { ReactComponent as NotArrive } from 'assets/icons/graphic-not-arrive.svg';
 import { Body3 } from 'styles/font';
 import { Grey3 } from 'styles/color';
-import { BottomButton } from '../Common/BottomButton';
-import { useNavigate, useParams } from 'react-router-dom';
-import React from 'react';
 import { formattedMessage } from 'utils/formattedMessage';
+
+//
+//
+//
+
 interface LetterQuestionStepProps {
   isArrive: boolean;
   time: string;
@@ -18,9 +20,6 @@ export const LetterQuestionStep = ({
   questionMsg,
   tagActiveLevel,
 }: LetterQuestionStepProps) => {
-  const { consultid } = useParams();
-  const navigate = useNavigate();
-
   return (
     <LetterQuestionWrapper>
       {isArrive ? (

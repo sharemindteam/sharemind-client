@@ -98,7 +98,12 @@ export const BuyerPaymentDetail = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [id, letterFocus, navigate]);
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>

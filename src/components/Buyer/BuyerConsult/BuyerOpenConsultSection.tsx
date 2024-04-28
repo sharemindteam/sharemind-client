@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useLayoutEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { Body1, Body3, Caption1, Heading } from 'styles/font';
@@ -25,8 +25,7 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [isBuyPopupOpen, setIsBuyPopupOpen] =
-    useRecoilState(isBuyPopupOpenState);
+  const isBuyPopupOpen = useRecoilValue(isBuyPopupOpenState);
 
   const preventRef = useRef(true);
 

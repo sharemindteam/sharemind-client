@@ -10,10 +10,12 @@ import { deleteWishLists } from 'api/delete';
 interface CounselorFooterProps {
   counselorId: number;
   isWishList: boolean;
+  consultTypes: string[];
 }
 export const CounselorFooter = ({
   counselorId,
   isWishList,
+  consultTypes,
 }: CounselorFooterProps) => {
   const navigate = useNavigate();
 
@@ -60,6 +62,11 @@ export const CounselorFooter = ({
       setIsSaved(false);
     }
   };
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       {isSaved ? (
@@ -71,11 +78,19 @@ export const CounselorFooter = ({
         text="상담 신청하기"
         width="26rem"
         height="5.2rem"
-        onClick={() => navigate('/consultRequest', { state: { counselorId } })}
+        onClick={() =>
+          navigate(`/consultRequest/${counselorId}`, {
+            state: { consultTypes },
+          })
+        }
       />
     </Wrapper>
   );
 };
+
+//
+//
+//
 
 const Wrapper = styled.div`
   height: 5.2rem;

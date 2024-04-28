@@ -12,8 +12,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey6, LightGreen } from 'styles/color';
-import { Subtitle } from 'styles/font';
-import { quizAnswerList, quizChoiceList, quizList } from 'utils/constant';
+import { quizChoiceList, quizList } from 'utils/constant';
 
 export const SellerVerifyQuiz = () => {
   const [quizLevel, setQuizLevel] = useState<number>(1);

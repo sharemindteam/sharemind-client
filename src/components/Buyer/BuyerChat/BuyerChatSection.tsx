@@ -35,6 +35,7 @@ interface BuyerChatSectionProps {
   messages: ChatMessage[];
   time: string;
   isLastElem: boolean;
+  isQuitButtonActive: boolean;
   counselorInfo: ChatCounselorInfo | null;
   lastRef: React.RefObject<HTMLDivElement>;
   topRef: React.RefObject<HTMLDivElement>;
@@ -44,7 +45,7 @@ interface BuyerChatSectionProps {
     React.SetStateAction<HTMLElement | null | undefined>
   >;
   sendChatStartResponse: () => void;
-  sendChatFinishRequest: () => void;
+  handleQuitChatClick: () => void;
 }
 
 //
@@ -55,6 +56,7 @@ const BuyerChatSection = ({
   messages,
   time,
   isLastElem,
+  isQuitButtonActive,
   counselorInfo,
   lastRef,
   topRef,
@@ -62,7 +64,7 @@ const BuyerChatSection = ({
   sectionPaddingRef,
   setTarget,
   sendChatStartResponse,
-  sendChatFinishRequest,
+  handleQuitChatClick,
 }: BuyerChatSectionProps) => {
   const navigate = useNavigate();
 
@@ -261,7 +263,8 @@ const BuyerChatSection = ({
                     text="상담 종료하기"
                     width="100%"
                     height="5.2rem"
-                    onClick={sendChatFinishRequest}
+                    isActive={isQuitButtonActive}
+                    onClick={handleQuitChatClick}
                   />
                 </EndChatBox>
               )}

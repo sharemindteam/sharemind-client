@@ -1,9 +1,18 @@
 import styled from 'styled-components';
 import { Grey1, Grey3 } from 'styles/color';
 import { Body1, Body2 } from 'styles/font';
+
+//
+//
+//
+
 interface CounselorExpProps {
   experience: string;
 }
+
+//
+//
+//
 
 export const CounselorExp = ({ experience }: CounselorExpProps) => {
   const formattedMessage = (message: string | null): JSX.Element[] | null => {
@@ -16,6 +25,11 @@ export const CounselorExp = ({ experience }: CounselorExpProps) => {
         ))
       : null;
   };
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <Body1 color={Grey3}>경험 소개</Body1>
@@ -25,6 +39,7 @@ export const CounselorExp = ({ experience }: CounselorExpProps) => {
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   padding: 1.2rem 2rem 3rem 2rem;
   margin-bottom: 5.2rem;

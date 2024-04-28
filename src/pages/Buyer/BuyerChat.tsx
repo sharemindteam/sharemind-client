@@ -16,6 +16,10 @@ import BuyerChatFooter from 'components/Buyer/BuyerChat/BuyerChatFooter';
 import BuyerChatSection from 'components/Buyer/BuyerChat/BuyerChatSection';
 import { CHAT_START_REQUEST_TIME } from 'utils/constant';
 
+//
+//
+//
+
 export const BuyerChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -28,6 +32,7 @@ export const BuyerChat = () => {
   const [input, setInput] = useState<string>(''); //입력
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
   const [isTyping, setIsTyping] = useState<boolean>(false); //입력 있을 시 버튼 색상
+  const [isQuitButtonActive, setIsQuitButtonActive] = useState<boolean>(true);
 
   const [counselorInfo, setCounselorInfo] = useState<ChatCounselorInfo | null>(
     null,
@@ -70,12 +75,20 @@ export const BuyerChat = () => {
           if (startRequestIndex !== -1)
             setTime(res.data[startRequestIndex].time);
 
+          const reversedMessages = [...res.data].reverse();
+
           if (firstMessageId === 0) {
+            /** if last message is finish, it means time over is clicked */
+            if (
+              reversedMessages[reversedMessages.length - 1]
+                .chatMessageStatus === 'FINISH'
+            ) {
+              setIsQuitButtonActive(false);
+            }
             //첫 fetch 시에는 처음 채팅방을 들어왔을 때니까 맨 밑으로 scroll
             newMessageRef.current = true;
-            setMessages(res.data.reverse());
+            setMessages(reversedMessages);
           } else {
-            const reversedMessages = res.data.reverse();
             const updatedMessages = [...reversedMessages, ...messages];
             setMessages(updatedMessages);
           }
@@ -94,6 +107,10 @@ export const BuyerChat = () => {
       }
     }
   };
+
+  /**
+   *
+   */
   const getCounselorInfo = async () => {
     try {
       const params = {
@@ -110,12 +127,11 @@ export const BuyerChat = () => {
       alert(e);
     }
   };
-  const connectChat = () => {
-    //   if (isConnected.current) {
-    //     stompClient.current.disconnect();
-    //     isConnected.current = false;
-    //   }
 
+  /**
+   *
+   */
+  const connectChat = () => {
     if (stompClient.current) {
       // 구독
       stompClient.current.subscribe(
@@ -317,6 +333,14 @@ export const BuyerChat = () => {
     }
   };
 
+  /**
+   *
+   */
+  const handleQuitChatClick = () => {
+    setIsQuitButtonActive(false);
+    sendChatFinishRequest();
+  };
+
   const handleFooterChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
     //textarea 높이 동적할당
@@ -406,6 +430,10 @@ export const BuyerChat = () => {
     preventScrollRef.current = true;
   }, [messages]);
 
+  //
+  //
+  //
+
   return (
     <Wrapper onTouchStart={handleTouchStart}>
       <HeaderWrapper border={false}>
@@ -421,6 +449,7 @@ export const BuyerChat = () => {
         messages={messages}
         time={time}
         isLastElem={isLastElem}
+        isQuitButtonActive={isQuitButtonActive}
         counselorInfo={counselorInfo}
         lastRef={lastRef}
         topRef={topRef}
@@ -428,7 +457,7 @@ export const BuyerChat = () => {
         sectionPaddingRef={sectionPaddingRef}
         setTarget={setTarget}
         sendChatStartResponse={sendChatStartResponse}
-        sendChatFinishRequest={sendChatFinishRequest}
+        handleQuitChatClick={handleQuitChatClick}
       />
       <BuyerChatFooter
         input={input}
@@ -442,6 +471,7 @@ export const BuyerChat = () => {
   );
   // }
 };
+
 const Wrapper = styled.main`
   height: 100%;
   width: 100%;

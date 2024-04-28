@@ -1,19 +1,25 @@
 import { ContentTag } from 'pages/Seller/SellerHome';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Black, Green, Grey4, Red } from 'styles/color';
-import { Body1, Body3, Heading, Subtitle } from 'styles/font';
+import { Black, Grey4, Red } from 'styles/color';
+import { Body1, Body3, Subtitle } from 'styles/font';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { useNavigate } from 'react-router-dom';
 import { getConsultsMinder } from 'api/get';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Space } from 'components/Common/Space';
+
+//
+//
+//
+
 function OnGoingConsultSection() {
   const navigate = useNavigate();
   const [consult, setConsult] = useState([]);
   const [totalNum, setTotalNum] = useState<number | undefined>();
   const [isNoProfile, setIsNoProfile] = useState<boolean | undefined>();
+
   useEffect(() => {
     const fetchOngoingConsult = async () => {
       const res: any = await getConsultsMinder();
@@ -28,6 +34,11 @@ function OnGoingConsultSection() {
     };
     fetchOngoingConsult();
   }, []);
+
+  //
+  //
+  //
+
   return (
     <>
       <ContentTag
