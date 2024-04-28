@@ -8,6 +8,7 @@ import { HeartRate } from 'utils/HeartRate';
 import { Review } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { formattedMessage } from 'utils/formattedMessage';
 interface CounselorReviewProps {
   counselorId: number;
 }
@@ -87,7 +88,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
                   <HeartRate rating={value.rating}></HeartRate>
                 </div>
                 <div className="row3">
-                  <Body2>{value.comment}</Body2>
+                  <Body2>{formattedMessage(value.comment)}</Body2>
                 </div>
               </ReviewCard>
             );
