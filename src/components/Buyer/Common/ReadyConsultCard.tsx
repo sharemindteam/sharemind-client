@@ -145,7 +145,7 @@ export const ReadyConsultCard = ({
             <Body3 color={Grey1}>{consultType.join(', ')}</Body3>
           </div>
           <div className="row2">
-            <Body3 color={Grey3}>상담가능 시간</Body3>
+            <Body3 color={Grey3}>상담 시간</Body3>
             <div>
               {consultTimes.MON !== undefined &&
               consultTimes.MON.length !== 0 ? (
@@ -192,7 +192,7 @@ export const ReadyConsultCard = ({
             </div>
           </div>
           <div className="row3">
-            <Body3 color={Grey3}>상담료</Body3>
+            <Body3 color={Grey3}>상담 금액</Body3>
             <div>
               {letterPrice !== undefined ? (
                 <Body3 color={Grey1}>
@@ -273,12 +273,12 @@ const ToggleWrapper = styled.div`
   .row2 {
     margin-top: 0.8rem;
     display: flex;
-    gap: 3.6rem;
+    gap: 6.1rem;
   }
   .row3 {
     margin-top: 0.8rem;
     display: flex;
-    gap: 7.6rem;
+    gap: 6.1rem;
   }
 `;
 const ToggleBar = styled.div`

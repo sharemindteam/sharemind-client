@@ -16,7 +16,7 @@ export const CounselorProfileHeader = () => {
     </Wrapper>
   );
 };
-const Wrapper = styled.div`
+const Wrapper = styled.header`
   height: 5.2rem;
   background-color: ${White};
   position: relative;
