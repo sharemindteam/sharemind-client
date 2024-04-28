@@ -1,9 +1,12 @@
 import { Button } from 'components/Common/Button';
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+
 import styled from 'styled-components';
-import { Green, Grey4, LightGreen, White } from 'styles/color';
-import { Body3 } from 'styles/font';
+import { Green, LightGreen, White } from 'styles/color';
+
+//
+//
+//
 
 interface VerifyQuizButtonProps {
   quizLevel: number;
@@ -12,6 +15,10 @@ interface VerifyQuizButtonProps {
   setChoiceNumberList: React.Dispatch<React.SetStateAction<number[]>>;
   setIsSubmitModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+//
+//
+//
 
 function VerifyQuizButton({
   quizLevel,

@@ -5,15 +5,20 @@ import { Body2, Heading } from 'styles/font';
 import { ReactComponent as SendGraphic } from 'assets/icons/graphic-send.svg';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import {
-  BottomButton,
-  BottomButtonWrapper,
-} from 'components/Seller/Common/BottomButton';
+
 import { Space } from 'components/Common/Space';
-import { lightGreen } from '@mui/material/colors';
+
+//
+//
+//
 
 function BuyerFinishPayment() {
   const navigate = useNavigate();
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -38,9 +43,14 @@ function BuyerFinishPayment() {
             navigate('/');
           }}
         />
-        <Button text="상담글 작성하기" height="5.2rem" width="45%" onClick={()=>{
-            navigate("/consult?type=open-consult")
-        }}/>
+        <Button
+          text="상담글 작성하기"
+          height="5.2rem"
+          width="45%"
+          onClick={() => {
+            navigate('/consult?type=open-consult');
+          }}
+        />
       </div>
     </Wrapper>
   );

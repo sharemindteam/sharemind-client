@@ -47,9 +47,9 @@ export const ConsultCard = ({
   const consultStatus = status as ConsultState;
   const isBlur: boolean =
     consultStatus === '상담 종료' || consultStatus === '상담 취소';
-  if (unreadMessageCount === null) {
-    unreadMessageCount = 0;
-  }
+
+  const filterdUnreadMessageCount = unreadMessageCount ?? 0;
+
   const handleReviewClick = (e?: React.MouseEvent<HTMLElement>) => {
     e?.stopPropagation();
     navigate('/reviewManage');
@@ -98,9 +98,9 @@ export const ConsultCard = ({
                   </>
                 )}
               </div>
-              {unreadMessageCount > 0 ? (
+              {filterdUnreadMessageCount > 0 ? (
                 <Unread>
-                  <Caption2 color={White}>{unreadMessageCount}</Caption2>
+                  <Caption2 color={White}>{filterdUnreadMessageCount}</Caption2>
                 </Unread>
               ) : null}
             </div>
@@ -117,7 +117,7 @@ export const ConsultCard = ({
           </div>
         </ConsultStateBox>
       </ConsultContent>
-      {reviewCompleted && (
+      {reviewCompleted === false && (
         <Button
           text="리뷰 작성하기"
           height="4.2rem"
@@ -151,7 +151,7 @@ const Unread = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 0.4rem;
-  background-$color: ${Green};
+  background-color: ${Green};
   width: 1.9rem;
   height: 1.9rem;
   right: 0;

@@ -1,11 +1,15 @@
 import { postComment } from 'api/post';
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { isSendPopupOpenState } from 'utils/atom';
+
+//
+//
+//
 
 interface IsSendPopupProps {
   text: string;
@@ -13,9 +17,17 @@ interface IsSendPopupProps {
   setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
+//
+//
+//
+
 function IsSendPopup({ text, setText, setIsReplying }: IsSendPopupProps) {
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
   const { consultid } = useParams();
+
+  /**
+   *
+   */
   const handleSendContent = async () => {
     const body = {
       postId: consultid,
@@ -42,6 +54,11 @@ function IsSendPopup({ text, setText, setIsReplying }: IsSendPopupProps) {
       alert(err);
     }
   };
+
+  //
+  //
+  //
+
   return (
     <IsSendModalBox>
       <ModalBox>
@@ -61,6 +78,7 @@ function IsSendPopup({ text, setText, setIsReplying }: IsSendPopupProps) {
     </IsSendModalBox>
   );
 }
+
 const IsSendModalBox = styled.div`
   width: 100%;
   height: 15rem;

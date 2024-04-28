@@ -1,14 +1,22 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { Heading } from 'styles/font';
 import { useCallback, useMemo } from 'react';
 
+//
+//
+//
+
 export const SellerReviewHeader = () => {
   const url = new URL(window.location.href);
   const params = useMemo(() => new URLSearchParams(url.search), [url.search]);
   const navigate = useNavigate();
+
+  /**
+   *
+   */
   const handleClickBackIcon = useCallback(() => {
     if (params.has('from', 'home')) {
       navigate('/minder');
@@ -16,6 +24,11 @@ export const SellerReviewHeader = () => {
       navigate('/minder/mypage');
     }
   }, [navigate, params]);
+
+  //
+  //
+  //
+
   return (
     <SellerReviewHeaderWrapper>
       <div style={{ position: 'absolute', left: '2rem', cursor: 'pointer' }}>

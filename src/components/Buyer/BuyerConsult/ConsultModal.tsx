@@ -7,12 +7,21 @@ import { Body1 } from 'styles/font';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
 import { SetURLSearchParams } from 'react-router-dom';
+
+//
+//
+//
+
 interface SortModalProps {
   sortType: number;
   setSortType: React.Dispatch<SetStateAction<number>>;
   searchParams: URLSearchParams;
   setSearchParams: SetURLSearchParams;
 }
+
+//
+//
+//
 
 //최근순 읽지않은순 modal
 export const ConsultModal = ({
@@ -33,6 +42,11 @@ export const ConsultModal = ({
   //     setSortType(modalSortType);
   //   };
   // });
+
+  //
+  //
+  //
+
   return (
     <Wrapper visible={isModalOpen}>
       <div className="bar-wrapper">

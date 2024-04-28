@@ -1,27 +1,35 @@
 import { patchOpenConsult } from 'api/patch';
-import React from 'react';
+
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Green, Grey4, LightGreen, White } from 'styles/color';
-import { Body1, Body3 } from 'styles/font';
-import {
-  isBuyPopupOpenState,
-  isPostPopupOpenState,
-  isSavePopupOpenState,
-  isSendPopupOpenState,
-} from 'utils/atom';
+import { Green, LightGreen, White } from 'styles/color';
+import { Body1 } from 'styles/font';
+import { isSavePopupOpenState } from 'utils/atom';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
+
+//
+//
+//
+
 interface FianlSavePopupProps {
   title: string;
   content: string;
   category: string;
 }
 
+//
+//
+//
+
 function FinalSavePopup({ title, content, category }: FianlSavePopupProps) {
   const navigate = useNavigate();
   const setIsSavePopupOpen = useSetRecoilState(isSavePopupOpenState);
   const { postId } = useParams();
+
+  /**
+   *
+   */
   const handlePost = async () => {
     setIsSavePopupOpen(false);
     const body = {
@@ -34,6 +42,11 @@ function FinalSavePopup({ title, content, category }: FianlSavePopupProps) {
     await patchOpenConsult(body);
     navigate('/consult/?type=open-consult');
   };
+
+  //
+  //
+  //
+
   return (
     <IsSendModalBox>
       <ModalBox>
@@ -52,6 +65,7 @@ function FinalSavePopup({ title, content, category }: FianlSavePopupProps) {
     </IsSendModalBox>
   );
 }
+
 const IsSendModalBox = styled.div`
   width: 100%;
   height: 12.8rem;

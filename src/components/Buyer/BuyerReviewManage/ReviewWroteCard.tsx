@@ -3,19 +3,25 @@ import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as Heart } from 'assets/icons/icon-review-empty-heart.svg';
-import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
+// import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
 import { HeartRate } from 'utils/HeartRate';
-import { useSetRecoilState } from 'recoil';
-import { isModifyReviewState } from 'utils/atom';
 import { BuyerReview } from 'utils/type';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+
+//
+//
+//
+
 interface ReviewWroteCardProps {
   reviewData: BuyerReview;
 }
+
+//
+//
+//
+
 //캐릭터 넘버 레벨 별점 후기개수 상담유형 상담일자 상담가격 (남긴리뷰) 리뷰내용
 export const ReviewWroteCard = ({ reviewData }: ReviewWroteCardProps) => {
-  // Modal 여부(recoil)
-  const setIsModalOpen = useSetRecoilState<boolean>(isModifyReviewState);
   return (
     <Wrapper>
       <UpperWrapper>
@@ -68,6 +74,7 @@ export const ReviewWroteCard = ({ reviewData }: ReviewWroteCardProps) => {
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   width: 89%;
   border-radius: 0.8rem;
@@ -113,10 +120,11 @@ const LowerWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
-const MoreIcon = styled(More)`
-  padding: 1.2rem 0.4rem;
-  position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
-  cursor: pointer;
-`;
+
+// const MoreIcon = styled(More)`
+//   padding: 1.2rem 0.4rem;
+//   position: absolute;
+//   top: 1.2rem;
+//   right: 1.2rem;
+//   cursor: pointer;
+// `;

@@ -16,7 +16,7 @@ import { Body1, Caption2 } from 'styles/font';
 import { ReactComponent as CheckIcon } from 'assets/icons/icon-check.svg';
 import { SetStateAction, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import {
   isUpdateModalOpenState,
   isCategoryModalOpenState,
@@ -485,7 +485,7 @@ const ModifyProfileMainSectionWrapper = styled.section`
   flex-direction: column;
   gap: 1.1rem;
   height: calc(100vh - 5.3rem);
-  overflow:scroll;
+  overflow: scroll;
 `;
 
 const ModifyProfileBox = styled.div`

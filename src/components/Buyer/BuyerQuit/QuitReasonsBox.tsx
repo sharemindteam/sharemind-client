@@ -7,7 +7,7 @@ import { ReactComponent as CheckIcon } from 'assets/icons/icon-complete-check.sv
 import { ReactComponent as NonCheckIcon } from 'assets/icons/icon-complete-non-check.svg';
 import { ReactComponent as Heart } from 'assets/icons/icon-heart1.svg';
 import { quitReasons, quitRecommends } from 'utils/constant';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface QuitReasonsBoxProps {
   index: number;

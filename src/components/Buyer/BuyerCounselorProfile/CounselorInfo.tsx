@@ -106,6 +106,6 @@ const Wrapper = styled.div`
   }
   .row3 {
     display: flex;
-    gap: 8.3rem;
+    gap: 6.8rem;
   }
 `;

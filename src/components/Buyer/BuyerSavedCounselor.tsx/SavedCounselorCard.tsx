@@ -142,7 +142,7 @@ export const SavedCounselorCard = ({
               <Body3 color={Grey1}>{consultType.join(', ')}</Body3>
             </div>
             <div className="row2">
-              <Body3 color={Grey3}>상담가능 시간</Body3>
+              <Body3 color={Grey3}>상담 시간</Body3>
               <div>
                 {consultTimes.MON !== undefined &&
                 consultTimes.MON.length !== 0 ? (
@@ -189,7 +189,7 @@ export const SavedCounselorCard = ({
               </div>
             </div>
             <div className="row3">
-              <Body3 color={Grey3}>상담료</Body3>
+              <Body3 color={Grey3}>상담 금액</Body3>
               <div>
                 {letterPrice !== undefined ? (
                   <Body3 color={Grey1}>

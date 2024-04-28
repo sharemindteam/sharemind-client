@@ -1,12 +1,16 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ReviewCard, ReviewCardProps } from './ReviewCard';
+import { ReviewCard } from './ReviewCard';
 import { getMinderReviews } from 'api/get';
 import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
 import { useNavigate } from 'react-router-dom';
 import { Grey4 } from 'styles/color';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+
+//
+//
+//
 
 interface ReviewData {
   reviewId: number;
@@ -22,6 +26,10 @@ interface ReviewData {
   comment: string;
 }
 
+//
+//
+//
+
 export const SellerReviewMainSection = () => {
   const navigate = useNavigate();
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -29,6 +37,10 @@ export const SellerReviewMainSection = () => {
   const [cardList, setCardList] = useState<ReviewData[]>([]);
 
   const preventRef = useRef(true);
+
+  /**
+   *
+   */
   const fetchReviewData = async (lastId: number) => {
     const params = {
       reviewId: lastId,
@@ -61,6 +73,7 @@ export const SellerReviewMainSection = () => {
       }
     }
   };
+
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (entry[0].isIntersecting && !isLastElem && preventRef.current) {
       preventRef.current = false;
@@ -68,6 +81,7 @@ export const SellerReviewMainSection = () => {
       preventRef.current = true;
     }
   };
+
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
@@ -77,6 +91,10 @@ export const SellerReviewMainSection = () => {
   useLayoutEffect(() => {
     fetchReviewData(0);
   }, []);
+
+  //
+  //
+  //
 
   if (isInitialLoading) {
     return (
