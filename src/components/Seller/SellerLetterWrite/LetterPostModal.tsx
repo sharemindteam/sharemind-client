@@ -1,9 +1,14 @@
 import { patchLetterMessage } from 'api/patch';
 import { postLetterMessage } from 'api/post';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
+
+//
+//
+//
+
 interface LetterWritePostModal {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   replyText: string;
@@ -12,6 +17,11 @@ interface LetterWritePostModal {
   messageType: string;
   saveId: string;
 }
+
+//
+//
+//
+
 export const LetterPostModal = ({
   setIsActive,
   replyText,
@@ -21,6 +31,10 @@ export const LetterPostModal = ({
   saveId,
 }: LetterWritePostModal) => {
   const { consultid } = useParams();
+
+  /**
+   *
+   */
   const handlePostReplyText = async () => {
     const postBody = {
       isCompleted: true,
@@ -45,6 +59,11 @@ export const LetterPostModal = ({
       console.log(err);
     }
   };
+
+  //
+  //
+  //
+
   return (
     <PostModalBox>
       <ModalBox>

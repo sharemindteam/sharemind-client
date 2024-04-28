@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Black, Green, Grey5, White } from 'styles/color';
-import { Body2, Button2, Caption2 } from 'styles/font';
+import { Button2 } from 'styles/font';
 import { LetterState } from 'utils/type';
 
 interface TagLetterStatusProps {

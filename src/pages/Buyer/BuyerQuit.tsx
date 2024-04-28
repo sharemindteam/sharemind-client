@@ -3,18 +3,22 @@ import { QuitFooter } from 'components/Buyer/BuyerQuit/QuitFooter';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
-import { Characters } from 'utils/Characters';
+
 import { checkedNumberState } from 'utils/atom';
+
+//
+//
+//
 
 export const BuyerQuit = () => {
   const navigate = useNavigate();
   const [reasonSelected, setReasonSelected] = useState<boolean>(false);
-  const [checkedNumber, setCheckedNumber] =
-    useRecoilState<number>(checkedNumberState);
+  const setCheckedNumber = useSetRecoilState<number>(checkedNumberState);
+
   useEffect(() => {
     return () => {
       setCheckedNumber(-1);

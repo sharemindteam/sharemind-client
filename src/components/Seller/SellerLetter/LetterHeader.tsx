@@ -4,8 +4,6 @@ import { ReactComponent as OptionIcon } from 'assets/icons/icon-option.svg';
 import styled from 'styled-components';
 import { White } from 'styles/color';
 import { Heading } from 'styles/font';
-import { isConsultModalOpenState } from 'utils/atom';
-import { useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 import { getLettersNickname } from 'api/get';
 

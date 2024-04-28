@@ -7,14 +7,12 @@ import ThirdMaterial from 'components/Seller/SellerVerifyMaterial/ThirdMaterial'
 import VerifyMaterialHeader from 'components/Seller/SellerVerifyMaterial/VerifyMaterialHeader';
 import { useEffect, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { isTakingQuizModalOpenState } from 'utils/atom';
 
 export const SellerVerifyMaterial = () => {
-  const [isTakingQuizModalOpen, setIsTakingQuizModalOpen] = useRecoilState(
-    isTakingQuizModalOpenState,
-  );
+  const isTakingQuizModalOpen = useRecoilValue(isTakingQuizModalOpenState);
 
   const topRef = useRef<HTMLDivElement | null>(null);
 

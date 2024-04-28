@@ -2,13 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
-import { ReactComponent as OptionIcon } from 'assets/icons/icon-option.svg';
 import { Heading } from 'styles/font';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+//
+//
+//
 
 function OpenConsultHeader() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  //
+  //
+  //
+
   return (
     <OpenConsultHeaderWrapper>
       <LeftArrow

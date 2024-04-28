@@ -2,17 +2,24 @@ import { postOpenConsult } from 'api/post';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey2, Grey6, LightGreen } from 'styles/color';
 import { Body2, Heading } from 'styles/font';
+
+//
+//
+//
 
 export const BuyerOpenConsultRequest = () => {
   const navigate = useNavigate();
   const [isOpenConsult, setIsOpenConsult] = useState<boolean>(false);
   const [isNotOpenConsult, setIsNotOpenConsult] = useState<boolean>(false);
   const [buttonAcitve, setButtonAcitve] = useState<boolean>(false);
-  const location = useLocation();
+
+  /**
+   *
+   */
   const handleNextClick = async () => {
     if (buttonAcitve) {
       if (isOpenConsult) {
@@ -27,6 +34,7 @@ export const BuyerOpenConsultRequest = () => {
       }
     }
   };
+
   useEffect(() => {
     if (!(isOpenConsult === false && isNotOpenConsult === false)) {
       setButtonAcitve(true);
@@ -34,6 +42,11 @@ export const BuyerOpenConsultRequest = () => {
       setButtonAcitve(false);
     }
   }, [isOpenConsult, isNotOpenConsult]);
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>

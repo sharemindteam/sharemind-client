@@ -1,8 +1,8 @@
 import { ContentTag } from 'pages/Seller/SellerHome';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Black, Green, Grey5, Grey6 } from 'styles/color';
-import { Body1, Heading, Subtitle } from 'styles/font';
+import { Body1, Subtitle } from 'styles/font';
 import { ReactComponent as RightArrow } from 'assets/icons/right-arrow.svg';
 import { useNavigate } from 'react-router-dom';
 import { getPaymentsHome } from 'api/get';

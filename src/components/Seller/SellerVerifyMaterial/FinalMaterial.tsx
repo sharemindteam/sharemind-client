@@ -1,13 +1,13 @@
-import React from 'react';
 import { Heading } from 'styles/font';
 import { ReactComponent as VerifyMaterial } from 'assets/icons/graphic-verify-material-4.svg';
 import styled from 'styled-components';
 import { Space } from 'components/Common/Space';
 import { Grey1 } from 'styles/color';
 import VerifyMaterialButton from './VerifyMaterialButton';
-import { useRecoilState } from 'recoil';
-import { isTakingQuizModalOpenState } from 'utils/atom';
-import { BackDrop } from 'components/Common/BackDrop';
+
+//
+//
+//
 
 function FinalMaterial() {
   return (
@@ -27,7 +27,6 @@ function FinalMaterial() {
         <b>제재 사유가</b> 될 수 있으니 주의해 주세요.
       </Caption>
       <VerifyMaterialButton level={4} />
-      
     </>
   );
 }
