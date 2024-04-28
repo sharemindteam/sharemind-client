@@ -53,7 +53,7 @@ export const ReadyConsultCard = ({
   //보내는 동안 중복 클릭 방지
   const [isSending, setIsSending] = useState<boolean>(false);
   //찜하기 업데이트
-  const handleBookmark = async (e: React.MouseEvent<HTMLElement>) => {
+  const handleBookmark = async (e: React.MouseEvent<SVGSVGElement>) => {
     e.stopPropagation();
     if (isSending) {
       return;
@@ -73,7 +73,7 @@ export const ReadyConsultCard = ({
       setIsSaved(true);
     }
   };
-  const handleUnBookmark = async (e: React.MouseEvent<HTMLElement>) => {
+  const handleUnBookmark = async (e: React.MouseEvent<SVGSVGElement>) => {
     e.stopPropagation();
     if (isSending) {
       return;
@@ -218,6 +218,7 @@ export const ReadyConsultCard = ({
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   width: 89%;
   border-radius: 0.8rem;
