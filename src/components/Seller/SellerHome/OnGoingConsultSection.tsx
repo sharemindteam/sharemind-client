@@ -84,10 +84,11 @@ function OnGoingConsultSection() {
       if (res.status === 200) {
         setConsult(res.data.responses[0]);
         setTotalNum(res.data.totalOngoing);
-
-        if (res.data.responses[0].isChat) {
-          currentChatIdRef.current = res.data.responses[0].id;
-          connectConsultInProgress(res.data.responses[0].id);
+        if (res.data.responses.length !== 0) {
+          if (res.data.responses[0].isChat) {
+            currentChatIdRef.current = res.data.responses[0].id;
+            connectConsultInProgress(res.data.responses[0].id);
+          }
         }
       } else {
         setIsNoProfile(true);
