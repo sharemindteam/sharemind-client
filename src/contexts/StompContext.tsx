@@ -95,7 +95,6 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
       },
       (frame: IFrame) => {
         console.log('Connected: ' + frame);
-        setIsConnected(true);
       },
       (error: any) => {
         setIsConnected(false);
@@ -108,7 +107,12 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
         }
       },
     );
-
+    stompClient.current.onConnect = () => {
+      setIsConnected(true);
+    };
+    stompClient.current.onDisconnect = () => {
+      setIsConnected(false);
+    };
     stompClient.current.reconnectDelay = 100;
   };
 
