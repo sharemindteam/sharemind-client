@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { getConsultsCustomers } from 'api/get';
 import { useStompContext } from 'contexts/StompContext';
 import { convertChatListDate } from 'utils/convertDate';
+import { StompSubscription } from '@stomp/stompjs';
 interface ConsultItem {
   id: number;
   consultStyle: string;
@@ -25,14 +26,14 @@ interface ConsultItem {
 export const HomeConsultInProgress = () => {
   const navigate = useNavigate();
 
-  const { stompClient } = useStompContext();
+  const { stompClient, isConnected } = useStompContext();
 
   const [consultCard, setConsultCard] = useState<ConsultItem>();
   const [totalOngoing, setTotalOngoing] = useState<number>();
 
-  const [isLogined, setIsLogined] = useState<boolean>(false);
+  const [isLogined, setIsLogined] = useState<boolean>(true);
 
-  const currentChatIdRef = useRef<number | null>();
+  const OngoingSubscription = useRef<StompSubscription>();
 
   useEffect(() => {
     /**
@@ -40,7 +41,7 @@ export const HomeConsultInProgress = () => {
      */
     const connectConsultInProgress = (id: number) => {
       if (stompClient.current && stompClient.current?.connected && isLogined) {
-        stompClient.current.subscribe(
+        OngoingSubscription.current = stompClient.current.subscribe(
           '/queue/chatMessages/customers/' + id,
           (message) => {
             const response = JSON.parse(message.body);
@@ -65,75 +66,79 @@ export const HomeConsultInProgress = () => {
     const fetchData = async () => {
       try {
         const res: any = await getConsultsCustomers();
+
         if (res.status === 200) {
           setTotalOngoing(res.data.totalOngoing);
           setConsultCard(res.data.responses[0]);
-          setIsLogined(true);
 
-          if (res.data.responses[0].isChat) {
-            currentChatIdRef.current = res.data.responses[0].id;
-            connectConsultInProgress(res.data.responses[0].id);
+          if (res.data.responses.length !== 0) {
+            if (res.data.responses[0].isChat) {
+              connectConsultInProgress(res.data.responses[0].id);
+            }
           }
         } else if (res?.response?.status === 401) {
           setIsLogined(false);
         }
       } catch (e) {
-        console.log(e);
+        alert(e);
       }
     };
 
     fetchData();
 
     return () => {
-      if (stompClient.current && stompClient.current?.connected && isLogined) {
-        stompClient.current?.unsubscribe(
-          '/queue/chatMessages/customers/' + currentChatIdRef.current,
-        );
+      if (
+        OngoingSubscription.current &&
+        stompClient.current &&
+        stompClient.current?.connected &&
+        isLogined
+      ) {
+        OngoingSubscription.current.unsubscribe();
       }
     };
-  }, [stompClient, stompClient.current?.connected, isLogined]);
+  }, [stompClient, isConnected, isLogined]);
 
-  if (!isLogined || !totalOngoing || !consultCard) {
+  if (!isLogined) {
     return <></>;
-  } else {
-    return (
-      <Wrapper>
-        <div
-          className="nav-consult"
-          onClick={() => {
-            navigate('/consult');
-          }}
-        >
-          <NavConsult>
-            <Subtitle>진행 중인 상담</Subtitle>
-            {/* 나중에 api */}
-            <Body1 color={Red}>{totalOngoing}</Body1>
-          </NavConsult>
-          <MoreIcon />
-        </div>
-        {totalOngoing === 0 && (
-          <div style={{ paddingLeft: '2rem', alignSelf: 'flex-start' }}>
-            <Body3 color={Grey4}>진행중인 상담이 없어요.</Body3>
-          </div>
-        )}
-        {totalOngoing !== 0 && consultCard && (
-          <ConsultCard
-            consultStyle={consultCard.consultStyle}
-            id={consultCard.id}
-            latestMessageContent={consultCard.latestMessageContent}
-            latestMessageIsCustomer={consultCard.latestMessageIsCustomer}
-            latestMessageUpdatedAt={consultCard.latestMessageUpdatedAt}
-            opponentNickname={consultCard.opponentNickname}
-            status={consultCard.status}
-            unreadMessageCount={consultCard.unreadMessageCount}
-            reviewCompleted={consultCard.reviewCompleted}
-            consultId={consultCard.consultId}
-            isLetter={!consultCard.isChat}
-          />
-        )}
-      </Wrapper>
-    );
   }
+
+  return (
+    <Wrapper>
+      <div
+        className="nav-consult"
+        onClick={() => {
+          navigate('/consult');
+        }}
+      >
+        <NavConsult>
+          <Subtitle>진행 중인 상담</Subtitle>
+          {/* 나중에 api */}
+          <Body1 color={Red}>{totalOngoing}</Body1>
+        </NavConsult>
+        <MoreIcon />
+      </div>
+      {totalOngoing === 0 && (
+        <div style={{ paddingLeft: '2rem', alignSelf: 'flex-start' }}>
+          <Body3 color={Grey4}>진행중인 상담이 없어요.</Body3>
+        </div>
+      )}
+      {totalOngoing !== 0 && consultCard && (
+        <ConsultCard
+          consultStyle={consultCard.consultStyle}
+          id={consultCard.id}
+          latestMessageContent={consultCard.latestMessageContent}
+          latestMessageIsCustomer={consultCard.latestMessageIsCustomer}
+          latestMessageUpdatedAt={consultCard.latestMessageUpdatedAt}
+          opponentNickname={consultCard.opponentNickname}
+          status={consultCard.status}
+          unreadMessageCount={consultCard.unreadMessageCount}
+          reviewCompleted={consultCard.reviewCompleted}
+          consultId={consultCard.consultId}
+          isLetter={!consultCard.isChat}
+        />
+      )}
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`
