@@ -9,6 +9,25 @@ import { useNavigate } from 'react-router-dom';
 import { getConsultsMinder } from 'api/get';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Space } from 'components/Common/Space';
+import { useStompContext } from 'contexts/StompContext';
+
+//
+//
+//
+
+interface OngoinConsultResponse {
+  consultId: number;
+  consultStyle: string;
+  id: number;
+  isChat: boolean;
+  latestMessageContent: string;
+  latestMessageIsCustomer: boolean;
+  latestMessageUpdatedAt: string;
+  opponentNickname: string;
+  reviewCompleted: boolean;
+  status: string;
+  unreadMessageCount: number;
+}
 
 //
 //
@@ -16,19 +35,44 @@ import { Space } from 'components/Common/Space';
 
 function OnGoingConsultSection() {
   const navigate = useNavigate();
-  const [consult, setConsult] = useState([]);
+
+  const { stompClient } = useStompContext();
+
+  const [consult, setConsult] = useState<OngoinConsultResponse>();
   const [totalNum, setTotalNum] = useState<number | undefined>();
   const [isNoProfile, setIsNoProfile] = useState<boolean | undefined>();
 
   useEffect(() => {
+    // const connectConsultInProgress = (id: number) => {
+    //   if (stompClient.current && stompClient.current?.connected && isLogined) {
+    //     stompClient.current.subscribe(
+    //       '/queue/chatMessages/customers/' + id,
+    //       (message) => {
+    //         const response = JSON.parse(message.body);
+    //         setConsultCard((prevCardItem) => {
+    //           return {
+    //             ...prevCardItem,
+    //             latestMessageContent: response.content,
+    //             unreadMessageCount: prevCardItem
+    //               ? prevCardItem.unreadMessageCount + 1
+    //               : 0,
+    //             latestMessageUpdatedAt: convertChatListDate(response.sendTime),
+    //           } as ConsultItem;
+    //         });
+    //       },
+    //     );
+    //   }
+    // };
+
     const fetchOngoingConsult = async () => {
       const res: any = await getConsultsMinder();
-      if (res?.status === 200) {
-        setConsult(res?.data?.responses);
-        setTotalNum(res?.data?.totalOngoing);
+      if (res.status === 200) {
+        console.log(res.data);
+        setConsult(res.data.responses[0]);
+        setTotalNum(res.data.totalOngoing);
       } else {
-        // 판매 정보를 등록해주세요.
         // alert('진행중인 상담 조회 오류 발생!');
+        // 판매 정보를 등록해주세요.
         setIsNoProfile(true);
       }
     };
@@ -54,7 +98,7 @@ function OnGoingConsultSection() {
       </ContentTag>
 
       <OngoingCounsultBoxList>
-        {totalNum === 0 || totalNum === undefined ? (
+        {totalNum === 0 || totalNum === undefined || !consult ? (
           <div style={{ alignSelf: 'flex-start', paddingLeft: '2rem' }}>
             <Body3 color={Grey4}>
               {isNoProfile
@@ -64,29 +108,27 @@ function OnGoingConsultSection() {
             <Space height="1.6rem" />
           </div>
         ) : (
-          consult?.map((item: any) => (
-            <OngoingCounsultBox
-              key={item?.id}
-              isChat={item?.isChat}
-              consultStatus={item?.status}
-              counselorName={item?.opponentNickname}
-              beforeMinutes={item?.latestMessageUpdatedAt}
-              content={
-                item?.status === '질문 대기'
-                  ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요!'
-                  : item?.latestMessageContent
+          <OngoingCounsultBox
+            key={consult.id}
+            isChat={consult.isChat}
+            consultStatus={consult.status}
+            counselorName={consult.opponentNickname}
+            beforeMinutes={consult.latestMessageUpdatedAt}
+            content={
+              consult.status === '질문 대기'
+                ? '셰어의 질문이 도착할 때까지 조금만 기다려주세요!'
+                : consult?.latestMessageContent
+            }
+            newMessageCounts={consult.unreadMessageCount}
+            counselorprofileStatus={consultStyleToCharNum(consult.consultStyle)}
+            onClick={() => {
+              if (consult.isChat) {
+                navigate(`/minder/chat/${consult.id}`);
+              } else {
+                navigate(`/minder/letter/${consult.id}`);
               }
-              newMessageCounts={item?.unreadMessageCount}
-              counselorprofileStatus={consultStyleToCharNum(item?.consultStyle)}
-              onClick={() => {
-                if (item?.isChat) {
-                  navigate(`/minder/chat/${item?.id}`);
-                } else {
-                  navigate(`/minder/letter/${item?.id}`);
-                }
-              }}
-            />
-          ))
+            }}
+          />
         )}
       </OngoingCounsultBoxList>
     </>
