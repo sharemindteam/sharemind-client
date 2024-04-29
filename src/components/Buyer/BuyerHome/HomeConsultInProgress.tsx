@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { getConsultsCustomers } from 'api/get';
 import { useStompContext } from 'contexts/StompContext';
 import { convertChatListDate } from 'utils/convertDate';
+import { StompSubscription } from '@stomp/stompjs';
 interface ConsultItem {
   id: number;
   consultStyle: string;
@@ -25,14 +26,14 @@ interface ConsultItem {
 export const HomeConsultInProgress = () => {
   const navigate = useNavigate();
 
-  const { stompClient } = useStompContext();
+  const { stompClient, isConnected } = useStompContext();
 
   const [consultCard, setConsultCard] = useState<ConsultItem>();
   const [totalOngoing, setTotalOngoing] = useState<number>();
 
-  const [isLogined, setIsLogined] = useState<boolean>(false);
+  const [isLogined, setIsLogined] = useState<boolean>(true);
 
-  const currentChatIdRef = useRef<number | null>();
+  const OngoingSubscription = useRef<StompSubscription>();
 
   useEffect(() => {
     /**
@@ -40,7 +41,7 @@ export const HomeConsultInProgress = () => {
      */
     const connectConsultInProgress = (id: number) => {
       if (stompClient.current && stompClient.current?.connected && isLogined) {
-        stompClient.current.subscribe(
+        OngoingSubscription.current = stompClient.current.subscribe(
           '/queue/chatMessages/customers/' + id,
           (message) => {
             const response = JSON.parse(message.body);
@@ -69,10 +70,9 @@ export const HomeConsultInProgress = () => {
         if (res.status === 200) {
           setTotalOngoing(res.data.totalOngoing);
           setConsultCard(res.data.responses[0]);
-          setIsLogined(true);
+
           if (res.data.responses.length !== 0) {
             if (res.data.responses[0].isChat) {
-              currentChatIdRef.current = res.data.responses[0].id;
               connectConsultInProgress(res.data.responses[0].id);
             }
           }
@@ -80,20 +80,23 @@ export const HomeConsultInProgress = () => {
           setIsLogined(false);
         }
       } catch (e) {
-        console.log(e);
+        alert(e);
       }
     };
 
     fetchData();
 
     return () => {
-      if (stompClient.current && stompClient.current?.connected && isLogined) {
-        stompClient.current?.unsubscribe(
-          '/queue/chatMessages/customers/' + currentChatIdRef.current,
-        );
+      if (
+        OngoingSubscription.current &&
+        stompClient.current &&
+        stompClient.current?.connected &&
+        isLogined
+      ) {
+        OngoingSubscription.current.unsubscribe();
       }
     };
-  }, [stompClient, stompClient.current?.connected, isLogined]);
+  }, [stompClient, isConnected, isLogined]);
 
   if (!isLogined) {
     return <></>;

@@ -44,17 +44,10 @@ function OnGoingConsultSection() {
   const [totalNum, setTotalNum] = useState<number | undefined>();
   const [isNoProfile, setIsNoProfile] = useState<boolean>(false);
 
-  const currentChatIdRef = useRef<number | null>();
-
   const OngoingSubscription = useRef<StompSubscription>();
 
   useEffect(() => {
     const connectConsultInProgress = (id: number) => {
-      console.log(
-        stompClient.current,
-        stompClient.current?.connected,
-        !isNoProfile,
-      );
       if (
         stompClient.current &&
         stompClient.current?.connected &&
@@ -86,7 +79,6 @@ function OnGoingConsultSection() {
         setTotalNum(res.data.totalOngoing);
         if (res.data.responses.length !== 0) {
           if (res.data.responses[0].isChat) {
-            currentChatIdRef.current = res.data.responses[0].id;
             connectConsultInProgress(res.data.responses[0].id);
           }
         }
