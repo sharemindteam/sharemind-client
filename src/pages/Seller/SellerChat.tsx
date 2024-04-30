@@ -334,6 +334,7 @@ const SellerChat = () => {
         stompClient.current.unsubscribe(
           '/queue/chattings/exception/counselors/' + chatId,
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         stompClient.current.unsubscribe(
           '/queue/chatMessages/counselors/' + chatId,
         );
