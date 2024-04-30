@@ -14,11 +14,11 @@ import { ChatStartRequestModal } from 'components/Seller/SellerChat/ChatStartReq
 import { ChatAlertModal } from 'components/Seller/SellerChat/ChatAlertModal';
 import { BackDrop } from 'components/Common/BackDrop';
 import { ChatReportModal } from 'components/Seller/SellerChat/ChatReportModal';
-import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 import SellerChatFooter from 'components/Seller/SellerChat/SellerChatFooter';
 import SellerChatSection from 'components/Seller/SellerChat/SellerChatSection';
 import { CHAT_START_REQUEST_TIME } from 'utils/constant';
+import useCounselorChat from 'ws/useCounselorChat';
 
 //
 //
@@ -50,7 +50,13 @@ const SellerChat = () => {
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
-  const { stompClient } = useStompContext();
+  const {
+    stompClient,
+    sendMessage,
+    sendChatStartRequest,
+    sendExitResponse,
+    sendChatFinishRequest,
+  } = useCounselorChat(chatId);
 
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
 
@@ -244,45 +250,9 @@ const SellerChat = () => {
     }
   };
 
-  const sendMessage = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chatMessages/counselors/' + chatId,
-        {},
-        JSON.stringify({ content: input }),
-      );
-    }
-  };
-
-  const sendChatStartRequest = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chat/counselors/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'COUNSELOR_CHAT_START_REQUEST' }),
-      );
-    }
-  };
-
-  const sendExitResponse = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send('app/api/v1/chat/counselors/exit/' + chatId, {});
-    }
-  };
-
-  const sendChatFinishRequest = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chat/counselors/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_FINISH_REQUEST' }),
-      );
-    }
-  };
-
   const handleSubmit = () => {
     if (input.trim() !== '') {
-      sendMessage();
+      sendMessage(input);
       setInput('');
     }
     if (inputRef.current && hiddenInputRef.current) {
@@ -370,6 +340,7 @@ const SellerChat = () => {
         sendExitResponse();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId, stompClient, stompClient.current?.connected]);
 
   //useEffects
