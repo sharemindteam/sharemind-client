@@ -12,6 +12,7 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { useStompContext } from 'contexts/StompContext';
 import { convertChatListDate } from 'utils/convertDate';
 import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
+import { StompSubscription } from '@stomp/stompjs';
 
 //
 //
@@ -47,12 +48,15 @@ function SellerChatList({
 
   const roomIdsRef = useRef<number[]>([]); //unmout 시 unsubscibe를 위함
   const userIdRef = useRef<number>(-1);
+
+  const ConsultSubscriptions = useRef<StompSubscription[]>([]);
+
   /* non-react callback은 static copy of the state만 본다고한다.
    * 따라서 useRef로 함께 관리한다
    * https://stackoverflow.com/questions/73896315/rxjs-subscribe-callback-doesnt-have-access-to-current-react-state-functional-c
    */
   const cardDataRef = useRef<ConsultInfoItem[]>([]);
-  const { stompClient } = useStompContext();
+  const { stompClient, isConnected } = useStompContext();
 
   /**
    * 새로운 채팅 도착 시 업데이트
@@ -139,8 +143,8 @@ function SellerChatList({
     };
 
     const subscribeChatList = () => {
-      if (stompClient.current) {
-        stompClient.current.subscribe(
+      if (stompClient.current?.connected) {
+        const userSubscription = stompClient.current.subscribe(
           `/queue/chattings/connect/counselors/${userIdRef.current}`,
           (rooms) => {
             const response = JSON.parse(rooms.body);
@@ -148,7 +152,7 @@ function SellerChatList({
 
             response.roomIds.forEach((chatId: number) => {
               //모든 채팅방 subscribe
-              stompClient.current?.subscribe(
+              const chatSubscription = stompClient.current?.subscribe(
                 '/queue/chatMessages/counselors/' + chatId,
                 (message) => {
                   const response = JSON.parse(message.body);
@@ -159,10 +163,15 @@ function SellerChatList({
                   );
                 },
               );
+
+              /** add to subscriptions array */
+              if (chatSubscription) {
+                ConsultSubscriptions.current.push(chatSubscription);
+              }
             });
             if (response.userId !== null) {
               //채팅방 생성, 종료 readid tab 갱신
-              stompClient.current?.subscribe(
+              const notificationSubscribe = stompClient.current?.subscribe(
                 '/queue/chattings/notifications/counselors/' + response.userId,
                 (message) => {
                   const notification = JSON.parse(message.body);
@@ -185,9 +194,15 @@ function SellerChatList({
                   }
                 },
               );
+
+              if (notificationSubscribe) {
+                ConsultSubscriptions.current.push(notificationSubscribe);
+              }
             }
           },
         );
+
+        ConsultSubscriptions.current.push(userSubscription);
       }
     };
 
@@ -198,23 +213,16 @@ function SellerChatList({
     //
 
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (stompClient.current?.connected) {
-        roomIdsRef.current.forEach((value) => {
-          stompClient.current?.unsubscribe(
-            '/queue/chatMessages/counselors/' + value,
-          );
+        ConsultSubscriptions.current.forEach((subscription) => {
+          subscription.unsubscribe();
         });
-        if (userIdRef.current !== -1) {
-          stompClient.current?.unsubscribe(
-            '/queue/chattings/notifications/counselors/' + userIdRef.current,
-          );
-        }
-        stompClient.current?.unsubscribe(
-          '/queue/chattings/connect/counselors/',
-        );
+
+        ConsultSubscriptions.current = [];
       }
     };
-  }, [stompClient, stompClient.current?.connected]);
+  }, [stompClient, stompClient.current?.connected, isConnected]);
 
   const fetchChatData = useCallback(async () => {
     setIsLoading(true);
