@@ -288,8 +288,6 @@ export const BuyerChat = () => {
         chatErrorSubscribe,
         chatMessagesSubscribe,
       );
-
-      console.log(ChatSubscriptions.current);
     }
   };
 
