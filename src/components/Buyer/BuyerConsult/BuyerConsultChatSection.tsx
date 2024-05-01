@@ -126,7 +126,7 @@ export const BuyerConsultChatSection = ({
     };
 
     const subscribeChatList = () => {
-      if (stompClient.current) {
+      if (stompClient.current?.connected) {
         // 이거 전에 먼저 userId 를 받고 userId 기준으로 subscribe 한다.
         const userSubscription = stompClient.current.subscribe(
           `/queue/chattings/connect/customers/${userIdRef.current}`,
@@ -154,7 +154,6 @@ export const BuyerConsultChatSection = ({
               }
             });
             if (response.userId !== null) {
-              // userIdRef.current = response.userId;
               //채팅방 생성, 종료 readid tab 갱신
               const notificationSubscribe = stompClient.current?.subscribe(
                 '/queue/chattings/notifications/customers/' + response.userId,
@@ -200,7 +199,7 @@ export const BuyerConsultChatSection = ({
 
     return () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (stompClient.current) {
+      if (stompClient.current?.connected) {
         ConsultSubscriptions.current.forEach((subscription) => {
           subscription.unsubscribe();
         });
