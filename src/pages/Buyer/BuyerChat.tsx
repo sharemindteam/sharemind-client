@@ -141,7 +141,6 @@ export const BuyerChat = () => {
    */
   const connectChat = () => {
     if (stompClient.current) {
-      // 구독
       const chatStatusSubscribe = stompClient.current.subscribe(
         '/queue/chattings/customers/' + chatId,
         function (statusUpdate) {
