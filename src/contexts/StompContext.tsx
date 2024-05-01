@@ -131,6 +131,7 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
         console.log('WebSocket disconnected');
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCustomer]); // 한 번만 실행
 
   //
