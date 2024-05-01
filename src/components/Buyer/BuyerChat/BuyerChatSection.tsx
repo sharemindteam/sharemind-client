@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import styled from 'styled-components';
 import {
   Black,
@@ -95,6 +96,7 @@ const BuyerChatSection = ({
           }}
         ></div>
       )}
+
       {messages.map((value, index) => {
         let isLastIndex = index === messages.length - 1;
         //iscustomer가 true인거 customer message, 시작

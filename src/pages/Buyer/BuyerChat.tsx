@@ -29,6 +29,7 @@ export const BuyerChat = () => {
 
   const {
     stompClient,
+    ChatSubscriptions,
     sendMessage,
     sendChatStartResponse,
     sendExitResponse,
@@ -140,13 +141,12 @@ export const BuyerChat = () => {
    */
   const connectChat = () => {
     if (stompClient.current) {
-      // 구독
-      stompClient.current.subscribe(
+      const chatStatusSubscribe = stompClient.current.subscribe(
         '/queue/chattings/customers/' + chatId,
         function (statusUpdate) {
           console.log('Status Update: ', statusUpdate.body);
           const arrivedMessage = JSON.parse(statusUpdate.body);
-
+          //TODO: enum 혹은 type으로 뺴기
           if (
             arrivedMessage.chatWebsocketStatus ===
             'COUNSELOR_CHAT_START_REQUEST'
@@ -209,7 +209,7 @@ export const BuyerChat = () => {
         },
       );
       //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
-      stompClient.current.subscribe(
+      const chatAutoUpdateSubscribe = stompClient.current.subscribe(
         '/queue/chattings/status/customers/' + chatId,
         function (statusAutoUpdate) {
           console.log('Status Auto Update: ', statusAutoUpdate.body);
@@ -251,13 +251,14 @@ export const BuyerChat = () => {
         },
       );
       //에러 핸들링
-      stompClient.current.subscribe(
+      const chatErrorSubscribe = stompClient.current.subscribe(
         '/queue/chattings/exception/customers/' + chatId,
         function (error) {
           console.log('Error: ', error.body);
         },
       );
-      stompClient.current.subscribe(
+
+      const chatMessagesSubscribe = stompClient.current.subscribe(
         '/queue/chatMessages/customers/' + chatId,
         function (message) {
           //받은 message 정보
@@ -278,6 +279,14 @@ export const BuyerChat = () => {
             },
           ]);
         },
+      );
+
+      /** subscribe 전부 완료 후, 모두 subscriptions 배열에 push */
+      ChatSubscriptions.current.push(
+        chatStatusSubscribe,
+        chatAutoUpdateSubscribe,
+        chatErrorSubscribe,
+        chatMessagesSubscribe,
       );
     }
   };
@@ -362,18 +371,15 @@ export const BuyerChat = () => {
     //관측 가능
     preventRef.current = true;
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (stompClient.current && stompClient.current?.connected) {
-        stompClient.current.unsubscribe('/queue/chattings/customers/' + chatId);
-        stompClient.current.unsubscribe(
-          '/queue/chattings/status/customers/' + chatId,
-        );
-        stompClient.current.unsubscribe(
-          '/queue/chattings/exception/customers/' + chatId,
-        );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        stompClient.current.unsubscribe(
-          '/queue/chatMessages/customers/' + chatId,
-        );
+        ChatSubscriptions.current.forEach((subscription) => {
+          subscription.unsubscribe();
+        });
+
+        // Clear the array after unsubscribing
+        ChatSubscriptions.current = [];
         sendExitResponse();
       }
     };
