@@ -10,11 +10,11 @@ import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { Space } from 'components/Common/Space';
 import { calculateTimeAfterFiveMinutes } from 'utils/convertDate';
 
-import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 import BuyerChatFooter from 'components/Buyer/BuyerChat/BuyerChatFooter';
 import BuyerChatSection from 'components/Buyer/BuyerChat/BuyerChatSection';
 import { CHAT_START_REQUEST_TIME } from 'utils/constant';
+import useCustomerChat from 'ws/useCustomerChat';
 
 //
 //
@@ -26,6 +26,14 @@ export const BuyerChat = () => {
   const chatId = id || '';
 
   const { time, setTime } = useChatRequestTime();
+
+  const {
+    stompClient,
+    sendMessage,
+    sendChatStartResponse,
+    sendExitResponse,
+    sendChatFinishRequest,
+  } = useCustomerChat(chatId);
 
   //states
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -44,7 +52,6 @@ export const BuyerChat = () => {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
 
-  const { stompClient } = useStompContext();
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
   const preventScrollRef = useRef(false); // message 변경 시 모바일에서 오버 스크롤로 인해 여러번 불리는 오류 발생, scrollintoview 완료 전까지 observe 막기
   // const isLastElem = useRef(false); //마지막 채팅인지 확인
@@ -274,45 +281,10 @@ export const BuyerChat = () => {
       );
     }
   };
-  const sendMessage = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chatMessages/customers/' + chatId,
-        {},
-        JSON.stringify({ content: input }),
-      );
-    }
-  };
-
-  const sendChatStartResponse = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_START_RESPONSE' }),
-      );
-    }
-  };
-
-  const sendExitResponse = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send('app/api/v1/chat/customers/exit/' + chatId, {});
-    }
-  };
-
-  const sendChatFinishRequest = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_FINISH_REQUEST' }),
-      );
-    }
-  };
 
   const handleSubmit = () => {
     if (input.trim() !== '') {
-      sendMessage();
+      sendMessage(input);
       setInput('');
     }
     if (inputRef.current && hiddenInputRef.current) {
@@ -398,13 +370,15 @@ export const BuyerChat = () => {
         stompClient.current.unsubscribe(
           '/queue/chattings/exception/customers/' + chatId,
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         stompClient.current.unsubscribe(
           '/queue/chatMessages/customers/' + chatId,
         );
         sendExitResponse();
       }
     };
-  }, [stompClient.current?.connected]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatId, stompClient, stompClient.current?.connected]);
 
   //useEffects
   //보내기 버튼 색상처리
