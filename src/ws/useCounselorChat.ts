@@ -1,4 +1,6 @@
+import { StompSubscription } from '@stomp/stompjs';
 import { useStompContext } from 'contexts/StompContext';
+import { useRef } from 'react';
 
 //
 //
@@ -6,6 +8,8 @@ import { useStompContext } from 'contexts/StompContext';
 
 const useCounselorChat = (chatId: string) => {
   const { stompClient } = useStompContext();
+
+  const ChatSubscriptions = useRef<StompSubscription[]>([]);
 
   const sendMessage = (content: string) => {
     if (stompClient.current && stompClient.current.connected) {
@@ -45,6 +49,7 @@ const useCounselorChat = (chatId: string) => {
 
   return {
     stompClient,
+    ChatSubscriptions,
     sendMessage,
     sendChatStartRequest,
     sendExitResponse,

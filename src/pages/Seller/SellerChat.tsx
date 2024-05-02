@@ -52,6 +52,7 @@ const SellerChat = () => {
 
   const {
     stompClient,
+    ChatSubscriptions,
     sendMessage,
     sendChatStartRequest,
     sendExitResponse,
@@ -139,7 +140,7 @@ const SellerChat = () => {
   const connectChat = () => {
     if (stompClient.current) {
       // 구독
-      stompClient.current.subscribe(
+      const chatStatusSubscribe = stompClient.current.subscribe(
         '/queue/chattings/counselors/' + chatId,
         function (statusUpdate) {
           console.log('Status Update: ', statusUpdate.body);
@@ -185,7 +186,7 @@ const SellerChat = () => {
         },
       );
       //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
-      stompClient.current.subscribe(
+      const chatAutoUpdateSubscribe = stompClient.current.subscribe(
         '/queue/chattings/status/counselors/' + chatId,
         function (statusAutoUpdate) {
           console.log('Status Auto Update: ', statusAutoUpdate.body);
@@ -217,14 +218,16 @@ const SellerChat = () => {
           }
         },
       );
+
       //에러 핸들링
-      stompClient.current.subscribe(
+      const chatErrorSubscribe = stompClient.current.subscribe(
         '/queue/chattings/exception/counselors/' + chatId,
         function (error) {
           console.log('Error: ', error.body);
         },
       );
-      stompClient.current.subscribe(
+
+      const chatMessagesSubscribe = stompClient.current.subscribe(
         '/queue/chatMessages/counselors/' + chatId,
         function (message) {
           //받은 message 정보
@@ -246,6 +249,14 @@ const SellerChat = () => {
             },
           ]);
         },
+      );
+
+      /** subscribe 전부 완료 후, 모두 subscriptions 배열에 push */
+      ChatSubscriptions.current.push(
+        chatStatusSubscribe,
+        chatAutoUpdateSubscribe,
+        chatErrorSubscribe,
+        chatMessagesSubscribe,
       );
     }
   };
@@ -324,20 +335,15 @@ const SellerChat = () => {
     preventRef.current = true;
     // 언마운트 시에 소켓 연결 해제
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (stompClient.current && stompClient.current?.connected) {
-        stompClient.current.unsubscribe(
-          '/queue/chattings/counselors/' + chatId,
-        );
-        stompClient.current.unsubscribe(
-          '/queue/chattings/status/counselors/' + chatId,
-        );
-        stompClient.current.unsubscribe(
-          '/queue/chattings/exception/counselors/' + chatId,
-        );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        stompClient.current.unsubscribe(
-          '/queue/chatMessages/counselors/' + chatId,
-        );
+        ChatSubscriptions.current.forEach((subscription) => {
+          subscription.unsubscribe();
+        });
+
+        // Clear the array after unsubscribing
+        ChatSubscriptions.current = [];
         sendExitResponse();
       }
     };
