@@ -46,7 +46,7 @@ function MainQuestionSection() {
         </div>
         <Space height="1rem" />
       </MainQuestionText>
-      <ButtonList>
+      {/* <ButtonList>
         <ButtonItem>
           <HeartIcon />
           <Caption1 color={Grey2}>{card?.totalLike}</Caption1>
@@ -55,7 +55,7 @@ function MainQuestionSection() {
           <SaveResizeIcon />
           <Caption1 color={Grey2}>{card?.totalScrap}</Caption1>
         </ButtonItem>
-      </ButtonList>
+      </ButtonList> */}
     </MainQuestionWrapper>
   );
 }

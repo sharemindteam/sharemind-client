@@ -184,21 +184,7 @@ const IconItem = styled.div`
   gap: 0.5rem;
 `;
 
-const HeartResizeIcon = styled(HeartIcon)`
-  width: 1.5rem;
-  height: 1.5rem;
-`;
-
-const HeartEmptyResizeIcon = styled(HeartEmptyIcon)`
-  width: 2rem;
-  height: 2rem;
-`;
-
 const SaveResizeIcon = styled(SaveIcon)`
-  width: 2rem;
-  height: 2rem;
-`;
-const SaveEmptyResizeIcon = styled(SaveEmptyIcon)`
   width: 2rem;
   height: 2rem;
 `;
