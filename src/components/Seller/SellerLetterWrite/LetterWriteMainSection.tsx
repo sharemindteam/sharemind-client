@@ -159,11 +159,15 @@ export const LetterWriteMainSection = ({
           setReplyText={setReplyText}
           setIsActive={setIsActiveSaveModal}
           lastModifyDate={saveDate}
+          setIsActivePostButton={setIsActivePostButton}
+          setIsActiveSaveButton={setIsActiveSaveButton}
         />
       )}
       {isActiveSavePostModal && (
         <LetterSavePostModal
           setIsActive={setIsActiveSavePostModal}
+          setIsActivePostButton={setIsActivePostButton}
+          setIsActiveSaveButton={setIsActiveSaveButton}
           replyText={replyText}
           isSave={isSave}
           messageType={messageType}
@@ -226,7 +230,7 @@ export const LetterWriteMainSection = ({
               onClick={() => {
                 setIsActivePostModal(true);
               }}
-              isActive={isActiveSaveButton}
+              isActive={isActivePostButton}
               disabled={isActivePostButton ? false : true}
             >
               보내기
