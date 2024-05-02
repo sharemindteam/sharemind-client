@@ -42,7 +42,6 @@ function OngoingCounsultBox({
   reviewCompleted,
 }: OngoingCounsultBoxProps) {
   const navigate = useNavigate();
-  console.log(categoryStatus);
   return (
     <OngoingCounsultBoxWrapper
       onClick={onClick}
