@@ -19,10 +19,10 @@ import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultState } from 'utils/type';
 interface OngoingCounsultBoxProps {
   categoryStatus?: string;
-  consultStatus: string;
+  consultStatus?: string;
   counselorName: string | undefined;
-  beforeMinutes: string | null;
-  content: string | null;
+  beforeMinutes: string | undefined | null;
+  content: string | null | undefined;
   newMessageCounts: number | null;
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
