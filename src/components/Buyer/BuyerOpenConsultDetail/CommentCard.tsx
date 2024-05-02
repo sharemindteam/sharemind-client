@@ -13,6 +13,7 @@ import { deleteCommentLikes } from 'api/delete';
 import { postLikeComment } from 'api/post';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { formattedMessage } from 'utils/formattedMessage';
+import { useNavigate } from 'react-router-dom';
 interface CommentCardProps {
   item: commentApiObject;
   isMyPost: boolean;
@@ -31,6 +32,7 @@ function CommentCard({
   // 보내기 중복 방지
   const [isSending, setIsSending] = useState<boolean>(false);
   const [isFirstRendering, setIsFirstRendering] = useState<boolean>(true);
+  const navigate = useNavigate();
   const handleClickLikeButton = useCallback(async () => {
     if (isSending) {
       return;

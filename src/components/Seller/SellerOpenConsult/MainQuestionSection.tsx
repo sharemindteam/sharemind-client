@@ -103,22 +103,22 @@ const Circle = styled.div`
   background-color: ${Grey3};
 `;
 
-const ButtonList = styled.div`
-  display: flex;
-  gap: 1.2rem;
-`;
+// const ButtonList = styled.div`
+//   display: flex;
+//   gap: 1.2rem;
+// `;
 
-const ButtonItem = styled.div`
-  border-radius: 0.8rem;
-  background: ${Grey6};
-  display: flex;
-  padding: 0.6rem 1.2rem 0.6rem 0.6rem;
-  align-items: center;
-  gap: 0.4rem;
-`;
+// const ButtonItem = styled.div`
+//   border-radius: 0.8rem;
+//   background: ${Grey6};
+//   display: flex;
+//   padding: 0.6rem 1.2rem 0.6rem 0.6rem;
+//   align-items: center;
+//   gap: 0.4rem;
+// `;
 
-const SaveResizeIcon = styled(SaveIcon)`
-  width: 2rem;
-  height: 2rem;
-`;
+// const SaveResizeIcon = styled(SaveIcon)`
+//   width: 2rem;
+//   height: 2rem;
+// `;
 export default React.memo(MainQuestionSection);
