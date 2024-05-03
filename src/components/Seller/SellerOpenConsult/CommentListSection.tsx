@@ -29,6 +29,7 @@ export interface commentApiObject {
   totalLike: number;
   consultStyle: string;
   updatedAt: string;
+  counselorId: number;
   isChosen: boolean;
 }
 

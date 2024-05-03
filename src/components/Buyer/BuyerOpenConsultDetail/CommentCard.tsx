@@ -66,12 +66,25 @@ function CommentCard({
   return (
     <CommentCardWrapper>
       <div className="flex1">
-        <Characters
-          number={consultStyleToCharNum(item.consultStyle) ?? 1}
-          width="3.2rem"
-          height="3.3rem"
-        />
-        <Body1>{item.nickName}</Body1>
+        <div
+          className="minder-profile"
+          onClick={() => {
+            navigate(`/profile/${item.counselorId}`);
+          }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.8rem',
+            cursor: 'pointer',
+          }}
+        >
+          <Characters
+            number={consultStyleToCharNum(item.consultStyle) ?? 1}
+            width="3.2rem"
+            height="3.3rem"
+          />
+          <Body1>{item.nickName}</Body1>
+        </div>
         <Circle />
         <Caption2>{item.updatedAt}</Caption2>
         <SettingButton />
