@@ -7,7 +7,9 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isBuyPopupOpenState } from 'utils/atom';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
-import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
+import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart4.svg';
+import { ReactComponent as SaveIcon } from 'assets/icons/icon-save4.svg';
+import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save5.svg';
 import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
 import { Space } from 'components/Common/Space';
 import { BackDrop } from 'components/Common/BackDrop';
@@ -147,11 +149,17 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
                     <div className="row2">{item?.content}</div>
                     <div className="row3">
                       <IconItem>
-                        <HeartResizeIcon />
+                        {item?.isLiked ? (
+                          <HeartResizeIcon />
+                        ) : (
+                          <HeartEmptyIcon />
+                        )}
+
                         <Caption1 color={Grey2}>{item?.totalLike}</Caption1>
                       </IconItem>
                       <IconItem>
-                        <SaveIcon />
+                        {item?.isScrapped ? <SaveIcon /> : <SaveEmptyIcon />}
+
                         <Caption1 color={Grey2}>{item?.totalScrap}</Caption1>
                       </IconItem>
                       <IconItem>

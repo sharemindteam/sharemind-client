@@ -49,7 +49,6 @@ function CommentListSection() {
     };
     fetchComment();
   }, [id, isPickPopup]);
-  console.log(isMyPost);
   return (
     <>
       {isPickPopup && (
