@@ -22,7 +22,9 @@ import { getOneOpenConsult } from 'api/get';
 function BuyerWriteOpenConsult() {
   const navigate = useNavigate();
   const [categoryType, setCategoryType] = useState<number>(0);
+
   const categoryList = [
+    '상담 카테고리',
     '연애갈등',
     '이별/재회',
     '여자심리',

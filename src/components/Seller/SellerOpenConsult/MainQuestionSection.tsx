@@ -46,7 +46,8 @@ function MainQuestionSection() {
         </div>
         <Space height="1rem" />
       </MainQuestionText>
-      <ButtonList>
+      {/* 나중에 사용할수도 있는 코드 */}
+      {/* <ButtonList>
         <ButtonItem>
           <HeartIcon />
           <Caption1 color={Grey2}>{card?.totalLike}</Caption1>
@@ -55,7 +56,7 @@ function MainQuestionSection() {
           <SaveResizeIcon />
           <Caption1 color={Grey2}>{card?.totalScrap}</Caption1>
         </ButtonItem>
-      </ButtonList>
+      </ButtonList> */}
     </MainQuestionWrapper>
   );
 }
@@ -103,22 +104,23 @@ const Circle = styled.div`
   background-color: ${Grey3};
 `;
 
-const ButtonList = styled.div`
-  display: flex;
-  gap: 1.2rem;
-`;
+// 나중에 사용할 수도 있는 코드..
+// const ButtonList = styled.div`
+//   display: flex;
+//   gap: 1.2rem;
+// `;
 
-const ButtonItem = styled.div`
-  border-radius: 0.8rem;
-  background: ${Grey6};
-  display: flex;
-  padding: 0.6rem 1.2rem 0.6rem 0.6rem;
-  align-items: center;
-  gap: 0.4rem;
-`;
+// const ButtonItem = styled.div`
+//   border-radius: 0.8rem;
+//   background: ${Grey6};
+//   display: flex;
+//   padding: 0.6rem 1.2rem 0.6rem 0.6rem;
+//   align-items: center;
+//   gap: 0.4rem;
+// `;
 
-const SaveResizeIcon = styled(SaveIcon)`
-  width: 2rem;
-  height: 2rem;
-`;
+// const SaveResizeIcon = styled(SaveIcon)`
+//   width: 2rem;
+//   height: 2rem;
+// `;
 export default React.memo(MainQuestionSection);

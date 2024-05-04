@@ -30,7 +30,6 @@ function BuyerFinishPayment() {
         <Heading color={Green} margin="0 0 2.2rem 0">
           상담 신청 완료
         </Heading>
-        <Body2>blabla</Body2>
       </div>
       <div className="buttons">
         <Button
