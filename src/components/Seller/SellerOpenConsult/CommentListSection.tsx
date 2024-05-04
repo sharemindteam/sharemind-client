@@ -15,7 +15,7 @@ import { ReactComponent as SettingIcon } from 'assets/icons/icon-option.svg';
 import { Characters } from 'utils/Characters';
 import { Space } from 'components/Common/Space';
 import { getCounselorsComments } from 'api/get';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useRecoilValue } from 'recoil';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
@@ -39,12 +39,17 @@ function CommentListSection() {
     [],
   );
   const isSendPopupOpen = useRecoilValue(isSendPopupOpenState);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchCommentList = async () => {
       try {
         const res: any = await getCounselorsComments(consultid);
-        setCommentCardList(res.data);
+        if (res.status === 200) {
+          setCommentCardList(res.data);
+        } else if (res?.response.status === 400) {
+          alert('이미 채택 완료 혹은 종료된 상담입니다.');
+          navigate('/open-consult');
+        }
       } catch (err) {
         alert(err);
       }
