@@ -46,6 +46,7 @@ function MainQuestionSection() {
         </div>
         <Space height="1rem" />
       </MainQuestionText>
+      {/* 나중에 사용할수도 있는 코드 */}
       {/* <ButtonList>
         <ButtonItem>
           <HeartIcon />
@@ -103,6 +104,7 @@ const Circle = styled.div`
   background-color: ${Grey3};
 `;
 
+// 나중에 사용할 수도 있는 코드
 // const ButtonList = styled.div`
 //   display: flex;
 //   gap: 1.2rem;
