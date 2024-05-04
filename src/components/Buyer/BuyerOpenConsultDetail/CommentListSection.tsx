@@ -33,7 +33,7 @@ function CommentListSection() {
             }
           }
           const res2: any = await getCustomerIsWriter(id);
-          if (res2.status === 200) setIsMyPost(res.data);
+          if (res2.status === 200) setIsMyPost(res2.data);
           else if (res2?.response.status === 404) {
             alert('존재하지 않는 게시물입니다.');
             navigate('/open-consult');

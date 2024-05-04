@@ -10,11 +10,11 @@ import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { Space } from 'components/Common/Space';
 import { calculateTimeAfterFiveMinutes } from 'utils/convertDate';
 
-import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 import BuyerChatFooter from 'components/Buyer/BuyerChat/BuyerChatFooter';
 import BuyerChatSection from 'components/Buyer/BuyerChat/BuyerChatSection';
 import { CHAT_START_REQUEST_TIME } from 'utils/constant';
+import useCustomerChat from 'ws/useCustomerChat';
 
 //
 //
@@ -26,6 +26,15 @@ export const BuyerChat = () => {
   const chatId = id || '';
 
   const { time, setTime } = useChatRequestTime();
+
+  const {
+    stompClient,
+    ChatSubscriptions,
+    sendMessage,
+    sendChatStartResponse,
+    sendExitResponse,
+    sendChatFinishRequest,
+  } = useCustomerChat(chatId);
 
   //states
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -44,7 +53,6 @@ export const BuyerChat = () => {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
 
-  const { stompClient } = useStompContext();
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
   const preventScrollRef = useRef(false); // message 변경 시 모바일에서 오버 스크롤로 인해 여러번 불리는 오류 발생, scrollintoview 완료 전까지 observe 막기
   // const isLastElem = useRef(false); //마지막 채팅인지 확인
@@ -133,13 +141,12 @@ export const BuyerChat = () => {
    */
   const connectChat = () => {
     if (stompClient.current) {
-      // 구독
-      stompClient.current.subscribe(
+      const chatStatusSubscribe = stompClient.current.subscribe(
         '/queue/chattings/customers/' + chatId,
         function (statusUpdate) {
           console.log('Status Update: ', statusUpdate.body);
           const arrivedMessage = JSON.parse(statusUpdate.body);
-
+          //TODO: enum 혹은 type으로 뺴기
           if (
             arrivedMessage.chatWebsocketStatus ===
             'COUNSELOR_CHAT_START_REQUEST'
@@ -202,7 +209,7 @@ export const BuyerChat = () => {
         },
       );
       //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
-      stompClient.current.subscribe(
+      const chatAutoUpdateSubscribe = stompClient.current.subscribe(
         '/queue/chattings/status/customers/' + chatId,
         function (statusAutoUpdate) {
           console.log('Status Auto Update: ', statusAutoUpdate.body);
@@ -244,13 +251,14 @@ export const BuyerChat = () => {
         },
       );
       //에러 핸들링
-      stompClient.current.subscribe(
+      const chatErrorSubscribe = stompClient.current.subscribe(
         '/queue/chattings/exception/customers/' + chatId,
         function (error) {
           console.log('Error: ', error.body);
         },
       );
-      stompClient.current.subscribe(
+
+      const chatMessagesSubscribe = stompClient.current.subscribe(
         '/queue/chatMessages/customers/' + chatId,
         function (message) {
           //받은 message 정보
@@ -272,47 +280,20 @@ export const BuyerChat = () => {
           ]);
         },
       );
-    }
-  };
-  const sendMessage = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chatMessages/customers/' + chatId,
-        {},
-        JSON.stringify({ content: input }),
-      );
-    }
-  };
 
-  const sendChatStartResponse = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_START_RESPONSE' }),
-      );
-    }
-  };
-
-  const sendExitResponse = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send('app/api/v1/chat/customers/exit/' + chatId, {});
-    }
-  };
-
-  const sendChatFinishRequest = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chat/customers/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_FINISH_REQUEST' }),
+      /** subscribe 전부 완료 후, 모두 subscriptions 배열에 push */
+      ChatSubscriptions.current.push(
+        chatStatusSubscribe,
+        chatAutoUpdateSubscribe,
+        chatErrorSubscribe,
+        chatMessagesSubscribe,
       );
     }
   };
 
   const handleSubmit = () => {
     if (input.trim() !== '') {
-      sendMessage();
+      sendMessage(input);
       setInput('');
     }
     if (inputRef.current && hiddenInputRef.current) {
@@ -390,21 +371,20 @@ export const BuyerChat = () => {
     //관측 가능
     preventRef.current = true;
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (stompClient.current && stompClient.current?.connected) {
-        stompClient.current.unsubscribe('/queue/chattings/customers/' + chatId);
-        stompClient.current.unsubscribe(
-          '/queue/chattings/status/customers/' + chatId,
-        );
-        stompClient.current.unsubscribe(
-          '/queue/chattings/exception/customers/' + chatId,
-        );
-        stompClient.current.unsubscribe(
-          '/queue/chatMessages/customers/' + chatId,
-        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        ChatSubscriptions.current.forEach((subscription) => {
+          subscription.unsubscribe();
+        });
+
+        // Clear the array after unsubscribing
+        ChatSubscriptions.current = [];
         sendExitResponse();
       }
     };
-  }, [stompClient.current?.connected]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatId, stompClient, stompClient.current?.connected]);
 
   //useEffects
   //보내기 버튼 색상처리

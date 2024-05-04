@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { Grey1, Grey2, Grey6 } from 'styles/color';
 import { Body1, Caption1 } from 'styles/font';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
-import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
+import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart4.svg';
+import { ReactComponent as SaveIcon } from 'assets/icons/icon-save4.svg';
+import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save5.svg';
 import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
 import { Space } from 'components/Common/Space';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
@@ -96,15 +98,16 @@ function OpenConsultList() {
               <div className="row1">
                 <Body1>{item.title}</Body1>
               </div>
-              <Space height="1.2rem" />
+              <Space height="0.8rem" />
               <div className="row2">{item.content}</div>
               <div className="row3">
                 <IconItem>
-                  <HeartResizeIcon />
+                  {item.isLiked ? <HeartIcon /> : <HeartEmptyIcon />}
                   <Caption1 color={Grey2}>{item.totalLike}</Caption1>
                 </IconItem>
+
                 <IconItem>
-                  <SaveIcon />
+                  {item.isScrapped ? <SaveResizeIcon /> : <SaveEmptyIcon />}
                   <Caption1 color={Grey2}>{item.totalScrap}</Caption1>
                 </IconItem>
                 <IconItem>
@@ -169,6 +172,8 @@ const BuyerOpenConsultCard = styled.div`
     line-height: 155%;
   }
   .row3 {
+    position: absolute;
+    bottom: 1.6rem;
     display: flex;
     gap: 1.2rem;
   }
@@ -179,7 +184,7 @@ const IconItem = styled.div`
   gap: 0.5rem;
 `;
 
-const HeartResizeIcon = styled(HeartIcon)`
+const SaveResizeIcon = styled(SaveIcon)`
   width: 2rem;
   height: 2rem;
 `;

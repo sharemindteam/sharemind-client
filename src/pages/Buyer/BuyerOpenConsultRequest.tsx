@@ -79,7 +79,7 @@ export const BuyerOpenConsultRequest = () => {
             <Heading color={'#40b29a'} margin="0 0 1.2rem 0">
               공개
             </Heading>
-            <Body2 color={Grey2}>이건 무료에요.</Body2>
+            <Body2 color={Grey2}>공개상담은 무료에요.</Body2>
           </Box>
           <Box
             focus={isNotOpenConsult}
@@ -92,8 +92,9 @@ export const BuyerOpenConsultRequest = () => {
               비공개
             </Heading>
             <Body2 color={Grey2}>
-              이건 유료에요. 마인더들만 내 고민을 보고 답변할 수 있다. 다른
-              셰어들은 못본다.
+              비공개 상담은 요금 결제가 필요해요. 비공개를 선택할 경우 마인더만
+              내 고민을 보고 답변할 수 있고 공개상담 게시판에 업로드 되지
+              않아요.
             </Body2>
           </Box>
         </div>

@@ -43,6 +43,7 @@ export const LetterPostModal = ({
         if (categoryType === 0) {
           alert('상담 카테고리를 정해주세요.');
           setIsActive(false);
+          return;
         } else {
           //첫번째 질문 임시저장 X 메세지 임시저장 수정
           try {

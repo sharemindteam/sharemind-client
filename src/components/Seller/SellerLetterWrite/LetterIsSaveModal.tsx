@@ -6,12 +6,16 @@ interface SaveModalProps {
   setReplyText: React.Dispatch<React.SetStateAction<string>>;
   lastModifyDate: string | undefined;
   saveText: string;
+  setIsActiveSaveButton: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsActivePostButton: React.Dispatch<React.SetStateAction<boolean>>;
 }
 // 임시저장할지 여부 모달
 export const LetterIsSaveModal = ({
   setIsActive,
   setReplyText,
   lastModifyDate,
+  setIsActivePostButton,
+  setIsActiveSaveButton,
   saveText,
 }: SaveModalProps) => {
   return (
@@ -31,6 +35,8 @@ export const LetterIsSaveModal = ({
             onClick={() => {
               setIsActive(false);
               setReplyText(saveText);
+              setIsActiveSaveButton(true);
+              setIsActivePostButton(true);
             }}
           >
             불러오기

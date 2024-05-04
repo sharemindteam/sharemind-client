@@ -14,11 +14,11 @@ import { ChatStartRequestModal } from 'components/Seller/SellerChat/ChatStartReq
 import { ChatAlertModal } from 'components/Seller/SellerChat/ChatAlertModal';
 import { BackDrop } from 'components/Common/BackDrop';
 import { ChatReportModal } from 'components/Seller/SellerChat/ChatReportModal';
-import { useStompContext } from 'contexts/StompContext';
 import useChatRequestTime from 'hooks/Chat/useChatRequestTime';
 import SellerChatFooter from 'components/Seller/SellerChat/SellerChatFooter';
 import SellerChatSection from 'components/Seller/SellerChat/SellerChatSection';
 import { CHAT_START_REQUEST_TIME } from 'utils/constant';
+import useCounselorChat from 'ws/useCounselorChat';
 
 //
 //
@@ -50,7 +50,14 @@ const SellerChat = () => {
   const sectionPaddingRef = useRef<number>(2.4); // section 추가 padding bottom
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
-  const { stompClient } = useStompContext();
+  const {
+    stompClient,
+    ChatSubscriptions,
+    sendMessage,
+    sendChatStartRequest,
+    sendExitResponse,
+    sendChatFinishRequest,
+  } = useCounselorChat(chatId);
 
   const preventRef = useRef(false); // observer 중복방지, 첫 mount 시 message 가져온 후 true로 전환
 
@@ -133,7 +140,7 @@ const SellerChat = () => {
   const connectChat = () => {
     if (stompClient.current) {
       // 구독
-      stompClient.current.subscribe(
+      const chatStatusSubscribe = stompClient.current.subscribe(
         '/queue/chattings/counselors/' + chatId,
         function (statusUpdate) {
           console.log('Status Update: ', statusUpdate.body);
@@ -179,7 +186,7 @@ const SellerChat = () => {
         },
       );
       //채팅 시작, 채팅 5분 남았을 때, 채팅 끝났을 때 알림
-      stompClient.current.subscribe(
+      const chatAutoUpdateSubscribe = stompClient.current.subscribe(
         '/queue/chattings/status/counselors/' + chatId,
         function (statusAutoUpdate) {
           console.log('Status Auto Update: ', statusAutoUpdate.body);
@@ -211,14 +218,16 @@ const SellerChat = () => {
           }
         },
       );
+
       //에러 핸들링
-      stompClient.current.subscribe(
+      const chatErrorSubscribe = stompClient.current.subscribe(
         '/queue/chattings/exception/counselors/' + chatId,
         function (error) {
           console.log('Error: ', error.body);
         },
       );
-      stompClient.current.subscribe(
+
+      const chatMessagesSubscribe = stompClient.current.subscribe(
         '/queue/chatMessages/counselors/' + chatId,
         function (message) {
           //받은 message 정보
@@ -241,48 +250,20 @@ const SellerChat = () => {
           ]);
         },
       );
-    }
-  };
 
-  const sendMessage = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chatMessages/counselors/' + chatId,
-        {},
-        JSON.stringify({ content: input }),
-      );
-    }
-  };
-
-  const sendChatStartRequest = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chat/counselors/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'COUNSELOR_CHAT_START_REQUEST' }),
-      );
-    }
-  };
-
-  const sendExitResponse = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send('app/api/v1/chat/counselors/exit/' + chatId, {});
-    }
-  };
-
-  const sendChatFinishRequest = () => {
-    if (stompClient.current && stompClient.current.connected) {
-      stompClient.current.send(
-        '/app/api/v1/chat/counselors/' + chatId,
-        {},
-        JSON.stringify({ chatWebsocketStatus: 'CUSTOMER_CHAT_FINISH_REQUEST' }),
+      /** subscribe 전부 완료 후, 모두 subscriptions 배열에 push */
+      ChatSubscriptions.current.push(
+        chatStatusSubscribe,
+        chatAutoUpdateSubscribe,
+        chatErrorSubscribe,
+        chatMessagesSubscribe,
       );
     }
   };
 
   const handleSubmit = () => {
     if (input.trim() !== '') {
-      sendMessage();
+      sendMessage(input);
       setInput('');
     }
     if (inputRef.current && hiddenInputRef.current) {
@@ -354,22 +335,19 @@ const SellerChat = () => {
     preventRef.current = true;
     // 언마운트 시에 소켓 연결 해제
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (stompClient.current && stompClient.current?.connected) {
-        stompClient.current.unsubscribe(
-          '/queue/chattings/counselors/' + chatId,
-        );
-        stompClient.current.unsubscribe(
-          '/queue/chattings/status/counselors/' + chatId,
-        );
-        stompClient.current.unsubscribe(
-          '/queue/chattings/exception/counselors/' + chatId,
-        );
-        stompClient.current.unsubscribe(
-          '/queue/chatMessages/counselors/' + chatId,
-        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        ChatSubscriptions.current.forEach((subscription) => {
+          subscription.unsubscribe();
+        });
+
+        // Clear the array after unsubscribing
+        ChatSubscriptions.current = [];
         sendExitResponse();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId, stompClient, stompClient.current?.connected]);
 
   //useEffects

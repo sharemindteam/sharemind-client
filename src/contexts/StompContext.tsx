@@ -9,8 +9,6 @@ import React, {
 } from 'react';
 import SockJs from 'sockjs-client';
 import { CompatClient, IFrame, Stomp } from '@stomp/stompjs';
-import { useRecoilState } from 'recoil';
-import { isCustomerState } from 'utils/atom';
 import { useLocation } from 'react-router-dom';
 import { postPublicReissue } from 'api/post';
 import { getCookie, setCookie } from 'utils/cookie';
@@ -27,8 +25,6 @@ interface StompProviderType {
   stompClient: MutableRefObject<CompatClient | null>;
   connectChat: () => void;
   isConnected: boolean;
-  // disconnect: () => void;
-  // sendMessage: (message: Message) => void;
 }
 
 //
@@ -52,15 +48,18 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const stompClient = useRef<CompatClient | null>(null);
   const { pathname } = useLocation();
-  const [isCustomer, setIsCustomer] = useRecoilState(isCustomerState);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
 
-  // 옯바른 소켓 연결을 위해 경로에 따라 마인더, Seller 구분
-  if (pathname.includes('/minder')) {
-    setIsCustomer(false);
-  } else {
-    setIsCustomer(true);
-  }
+  const getIsCustomer = () => {
+    if (pathname.includes('/minder')) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const currentIsCustomer = getIsCustomer();
+
+  const [isConnected, setIsConnected] = useState<boolean>(false);
 
   const reissueToken = async () => {
     try {
@@ -82,7 +81,6 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
    *
    */
   const connectChat = () => {
-    setIsConnected(false);
     const socket = new SockJs(process.env.REACT_APP_CHAT_URL + '/chat');
     stompClient.current = Stomp.over(() => {
       return socket;
@@ -91,12 +89,13 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
     stompClient.current.connect(
       {
         Authorization: getCookie('accessToken'),
-        isCustomer: isCustomer,
+        isCustomer: currentIsCustomer,
       },
       (frame: IFrame) => {
         console.log('Connected: ' + frame);
       },
       (error: any) => {
+        console.log(error);
         setIsConnected(false);
         if (error.headers.message === 'UNAUTHORIZED') {
           reissueToken();
@@ -119,6 +118,8 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
   //
   //
   //
+
+  // connectChat();
   useEffect(() => {
     connectChat();
     // Provider 언마운트 시 연결 해제
@@ -128,10 +129,10 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
           stompClient.current.disconnect();
         }
         setIsConnected(false);
-        console.log('WebSocket disconnected');
       }
     };
-  }, [isCustomer]); // 한 번만 실행
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIsCustomer]); // 한 번만 실행
 
   //
   // Context 객체의 Provider 컴포넌트

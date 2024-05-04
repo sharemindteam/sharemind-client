@@ -5,9 +5,18 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
 import { scrollLockState } from 'utils/atom';
+
+//
+//
+//
+
 interface AppContainerProps {
   children: React.ReactNode;
 }
+
+//
+//
+//
 
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
@@ -15,6 +24,10 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
   var { pathname } = useLocation();
   const [isGray, setIsGray] = useState(false);
+
+  //
+  //
+  //
   useEffect(() => {
     if (
       pathname === '/minder/mypage/viewProfile' ||
@@ -30,12 +43,18 @@ export const AppContainer = ({ children }: AppContainerProps) => {
       setIsGray(false);
     }
   }, [pathname]);
+
+  //
+  //
+  //
+
   return (
     <StyledApp $isGray={isGray} $scrollLock={scrollLock}>
       {children}
     </StyledApp>
   );
 };
+
 const StyledApp = styled.div<{ $isGray: boolean; $scrollLock: boolean }>`
   height: calc(var(--vh, 1vh) * 100);
   @media (min-width: 768px) {

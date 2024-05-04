@@ -10,6 +10,7 @@ interface LetterWriteSavePostModal {
   isSave: boolean;
   messageType: string;
   saveId: string;
+
 }
 // 임시저장 할까요? 모달
 export const LetterSavePostModal = ({

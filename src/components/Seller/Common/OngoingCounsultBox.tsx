@@ -19,10 +19,10 @@ import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultState } from 'utils/type';
 interface OngoingCounsultBoxProps {
   categoryStatus?: string;
-  consultStatus: string;
+  consultStatus?: string;
   counselorName: string | undefined;
-  beforeMinutes: string | null;
-  content: string | null;
+  beforeMinutes: string | undefined | null;
+  content: string | null | undefined;
   newMessageCounts: number | null;
   counselorprofileStatus: number | undefined;
   onClick?: () => void;
@@ -43,7 +43,10 @@ function OngoingCounsultBox({
 }: OngoingCounsultBoxProps) {
   const navigate = useNavigate();
   return (
-    <OngoingCounsultBoxWrapper onClick={onClick}>
+    <OngoingCounsultBoxWrapper
+      onClick={onClick}
+      $categoryStatus={categoryStatus}
+    >
       <div className="flex-1">
         {categoryStatus && (
           <div className="button">
@@ -107,7 +110,9 @@ function OngoingCounsultBox({
     </OngoingCounsultBoxWrapper>
   );
 }
-const OngoingCounsultBoxWrapper = styled.div`
+const OngoingCounsultBoxWrapper = styled.div<{
+  $categoryStatus: string | undefined;
+}>`
   width: calc(100% - 4rem);
   box-sizing: border-box;
   padding: 1.6rem;
@@ -122,9 +127,8 @@ const OngoingCounsultBoxWrapper = styled.div`
   background-color: ${Grey6};
   margin: 0 2rem;
   .button {
-    display: flex;
-    width: 6rem;
-    justify-content: center;
+    width: fit-content;
+    min-width: 5.6rem;
   }
   .flex-1 {
     display: flex;
@@ -138,7 +142,8 @@ const OngoingCounsultBoxWrapper = styled.div`
   }
   .flex-2 {
     display: flex;
-    gap: 1.2rem;
+    gap: ${(props) =>
+      props.$categoryStatus === '썸/연애시작' ? '2.4rem' : '1.2rem'};
   }
 `;
 

@@ -36,8 +36,14 @@ function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
         alert('작성권한이 없습니다.');
         navigate('/consult?type=open-consult');
       } else if (res?.response.status === 404) {
-        alert('존재하지 않는 일대다상담입니다.');
-        navigate('/consult?type=open-consult');
+        if (res?.response.data.errorName === 'CONSULT_CATEGORY_NOT_FOUND') {
+          alert('상담 카테고리를 선택해주세요.');
+          setIsPostPopupOpen(false);
+          return;
+        } else if (res?.data.errorName === 'CONSULT_TYPE_NOT_FOUND') {
+          alert('존재하지 않는 일대다상담입니다.');
+          navigate('/consult?type=open-consult');
+        }
       }
     } catch (err) {
       alert(err);
