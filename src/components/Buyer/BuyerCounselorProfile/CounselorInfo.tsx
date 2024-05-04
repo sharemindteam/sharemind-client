@@ -72,7 +72,7 @@ export const CounselorInfo = ({
         </div>
       </div>
       <div className="row3">
-        <Body3 color={Grey3}>상담료</Body3>
+        <Body3 color={Grey3}>상담 금액</Body3>
         <div>
           {letterPrice !== undefined ? (
             <Body3 color={Grey1}>
@@ -98,14 +98,14 @@ const Wrapper = styled.div`
   border-bottom: 1px solid ${Grey6};
   .row1 {
     display: flex;
-    gap: 6.8rem;
+    gap: 6rem;
   }
   .row2 {
     display: flex;
-    gap: 6.8rem;
+    gap: 6rem;
   }
   .row3 {
     display: flex;
-    gap: 6.8rem;
+    gap: 6rem;
   }
 `;
