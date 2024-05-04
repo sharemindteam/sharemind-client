@@ -14,6 +14,7 @@ import {
 } from 'api/get';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Space } from 'components/Common/Space';
+import { CartegoryState } from 'utils/type';
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -130,7 +131,7 @@ export const LetterWriteMainSection = ({
       setConsultInform({
         categoryStatus: customerInfoResponse?.data?.category,
         counselorName: customerInfoResponse?.data?.nickname,
-        beforeMinutes: '5분 전', // 포매팅 필요
+        beforeMinutes: letterResponse?.data?.updatedAt2,
         counselorprofileStatus: 1, // 포매팅 필요
         newMessageCounts: 0,
         content: letterResponse?.data?.content,
@@ -159,6 +160,8 @@ export const LetterWriteMainSection = ({
           setReplyText={setReplyText}
           setIsActive={setIsActiveSaveModal}
           lastModifyDate={saveDate}
+          setIsActivePostButton={setIsActivePostButton}
+          setIsActiveSaveButton={setIsActiveSaveButton}
         />
       )}
       {isActiveSavePostModal && (
@@ -226,7 +229,7 @@ export const LetterWriteMainSection = ({
               onClick={() => {
                 setIsActivePostModal(true);
               }}
-              isActive={isActiveSaveButton}
+              isActive={isActivePostButton}
               disabled={isActivePostButton ? false : true}
             >
               보내기
