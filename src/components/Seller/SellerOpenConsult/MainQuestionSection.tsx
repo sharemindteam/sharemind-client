@@ -104,7 +104,7 @@ const Circle = styled.div`
   background-color: ${Grey3};
 `;
 
-// 나중에 사용할 수도 있는 코드
+// 나중에 사용할 수도 있는 코드..
 // const ButtonList = styled.div`
 //   display: flex;
 //   gap: 1.2rem;

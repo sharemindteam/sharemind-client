@@ -139,6 +139,7 @@ ViewProfileMainSectionProps) => {
           </Body1>
         </div>
       </IntroduceWhiteBox>
+      {/* 나중에 사용할 수 도 있는 코드 */}
       {/* <AccountWhiteBox>
         <ProfileInformTag>수익 계좌</ProfileInformTag>
         <div className="account-num">
@@ -226,7 +227,7 @@ const WhiteBox = styled.div`
     flex-direction: column;
   }
 `;
-
+// 나중에 사용할 수도 있는 코드
 // const AccountWhiteBox = styled(WhiteBox)`
 //   gap: 0.6rem;
 //   & > div {
@@ -251,6 +252,7 @@ const IntroduceWhiteBox = styled(WhiteBox)`
   }
 `;
 
+// 나중에 사용할 수도 있는 코드
 // const AccountTag = styled(Body1)`
 //   width: 10rem;
 //   margin-bottom: 0.4rem;
