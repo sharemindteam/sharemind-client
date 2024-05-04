@@ -5,7 +5,7 @@ import { Space } from 'components/Common/Space';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grey1 } from 'styles/color';
-import { Heading } from 'styles/font';
+import { Body2, Heading } from 'styles/font';
 import { WishlistDataType } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import styled from 'styled-components';
@@ -190,7 +190,11 @@ export const BuyerSavedCounselor = () => {
             <Divider2 tabState={tabState} setTabState={setTabState} />
             <EmptyWrapper>
               <EmptyIcon />
-              <Heading>아직 후기가 없어요.</Heading>
+              <Heading>아직 찜한 마인더가 없어요.</Heading>
+              <Space height="1.5rem" />
+              <Body2>
+                관심 있는 마인더를 찜하고 <br /> 더욱 편리하게 상담하세요.
+              </Body2>
             </EmptyWrapper>
           </>
         );
@@ -236,7 +240,7 @@ export const BuyerSavedCounselor = () => {
             <Divider2 tabState={tabState} setTabState={setTabState} />
             <EmptyWrapper>
               <EmptyIcon />
-              <Heading>아직 저장한 일대다상담이 없어요.</Heading>
+              <Heading>아직 저장한 공개상담이 없어요.</Heading>
             </EmptyWrapper>
           </>
         );
