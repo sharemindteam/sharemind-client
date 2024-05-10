@@ -41,8 +41,6 @@ export const SignupVerifyEmail = ({
   const [errorMessageColor, setErrorMessageColor] = useState<string>(Grey4);
   //verify button text
   const [verifyText, setVerifyText] = useState<string>('인증 요청');
-  //처음 인증요청보내는건지 체크
-  const [isFirstRequest, setIsFirstRequest] = useState<boolean>(true);
   // 임시저장, 편지, 불러오기 모달 활성화여부
   const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
   // 모달 에러 메세지
@@ -98,9 +96,12 @@ export const SignupVerifyEmail = ({
    */
   const handleVerifyClick = async () => {
     setLoading(true);
+
     const body = { email: idInput.value };
+
     try {
       const res: any = await postEmails(body);
+
       if (res.status === 200) {
         setIsSended(true);
         //이메일 입력 캡션
@@ -112,11 +113,7 @@ export const SignupVerifyEmail = ({
         //전송 5회 카운트
         //버튼 텍스트랑 남은시간
         setVerifyText('재발송');
-        //최초 전송시에만 5분으로 설정
-        if (isFirstRequest) {
-          setRemainingTime(5 * 60);
-          setIsFirstRequest(false);
-        }
+        setRemainingTime(5 * 60);
       } else if (res.response.status === 400) {
         setErrorMessageColor(ErrorColor);
         setIsEmailError(true);
