@@ -1,15 +1,6 @@
 import styled from 'styled-components';
-import { Body1, Button2, Caption1, Caption2, Heading } from 'styles/font';
-import {
-  ErrorColor,
-  Green,
-  Grey1,
-  Grey3,
-  Grey4,
-  Grey5,
-  Red,
-  White,
-} from 'styles/color';
+import { Body1, Caption1, Caption2, Heading } from 'styles/font';
+import { ErrorColor, Grey1, Grey3, Grey4, Red } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import Input from 'components/Common/Input';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -20,6 +11,7 @@ import { postEmails, postEmailsCode } from 'api/post';
 import { BackDrop } from 'components/Common/BackDrop';
 import { SignupModal } from './SignupModal';
 import { Space } from 'components/Common/Space';
+import SignupVerifyInput from './SignupVerifyInput';
 
 //
 //
@@ -205,23 +197,13 @@ export const SignupVerifyEmail = ({
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               아이디(이메일)
             </Body1>
-            <div className="input-wrapper">
-              <Input
-                value={idInput.value}
-                onChange={idInput.onChange}
-                width="24.3rem"
-                height="4.8rem"
-                padding="0 9.2rem 0 0"
-                textIndent="1.6rem"
-              />
-              <VerifyButton
-                isActive={idInput.isValid}
-                isSended={isSended}
-                onClick={handleVerifyClick}
-              >
-                <Button2 color={White}>{verifyText}</Button2>
-              </VerifyButton>
-            </div>
+            <SignupVerifyInput
+              value={idInput.value}
+              isActive={idInput.isValid}
+              verifyText={verifyText}
+              onClick={handleVerifyClick}
+              onChange={idInput.onChange}
+            />
           </div>
           <Space height="0.4rem" />
 
@@ -316,18 +298,4 @@ const Wrapper = styled.div`
     position: sticky;
     bottom: 0;
   }
-`;
-
-const VerifyButton = styled.button<{ isActive: boolean; isSended: boolean }>`
-  position: absolute;
-  top: 14.58%;
-  left: ${(props) => (props.isSended ? '77.91%' : '73.43%')};
-  cursor: pointer;
-  padding: 0 1.5rem;
-  height: 71%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0.8rem;
-  background-color: ${(props) => (props.isActive ? Green : Grey5)};
 `;
