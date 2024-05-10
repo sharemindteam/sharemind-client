@@ -29,6 +29,8 @@ export const SignupVerifyEmail = ({
   const verifyInput = useInput('');
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
+  /** is email sended and response not arrived yet */
+  const [isLoading, setLoading] = useState<boolean>(false);
   //인증 전송됨 여부
   const [isSended, setIsSended] = useState<boolean>(false);
   //이메일 에러 메세지
@@ -95,6 +97,7 @@ export const SignupVerifyEmail = ({
    * 다음 button valid 체크
    */
   const handleVerifyClick = async () => {
+    setLoading(true);
     const body = { email: idInput.value };
     try {
       const res: any = await postEmails(body);
@@ -133,6 +136,8 @@ export const SignupVerifyEmail = ({
       }
     } catch (ex) {
       alert('이메일 인증 과정에서 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -199,7 +204,7 @@ export const SignupVerifyEmail = ({
             </Body1>
             <SignupVerifyInput
               value={idInput.value}
-              isActive={idInput.isValid}
+              isActive={idInput.isValid && !isLoading}
               verifyText={verifyText}
               onClick={handleVerifyClick}
               onChange={idInput.onChange}
