@@ -1,7 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
-// import { normalize } from 'styled-normalize';
 import { isMobile } from 'react-device-detect';
 import { reset } from 'styled-reset';
+
+//
+//
+//
+
 export const GlobalStyle = createGlobalStyle`
   ${reset}
   html {

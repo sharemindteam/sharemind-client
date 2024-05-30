@@ -1,15 +1,6 @@
 import styled from 'styled-components';
-import { Body1, Button2, Caption1, Caption2, Heading } from 'styles/font';
-import {
-  ErrorColor,
-  Green,
-  Grey1,
-  Grey3,
-  Grey4,
-  Grey5,
-  Red,
-  White,
-} from 'styles/color';
+import { Body1, Caption1, Caption2, Heading } from 'styles/font';
+import { ErrorColor, Grey1, Grey3, Grey4, Red } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import Input from 'components/Common/Input';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -20,6 +11,7 @@ import { postEmails, postEmailsCode } from 'api/post';
 import { BackDrop } from 'components/Common/BackDrop';
 import { SignupModal } from './SignupModal';
 import { Space } from 'components/Common/Space';
+import SignupVerifyInput from './SignupVerifyInput';
 
 //
 //
@@ -37,6 +29,8 @@ export const SignupVerifyEmail = ({
   const verifyInput = useInput('');
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
+  /** is email sended and response not arrived yet */
+  const [isLoading, setLoading] = useState<boolean>(false);
   //인증 전송됨 여부
   const [isSended, setIsSended] = useState<boolean>(false);
   //이메일 에러 메세지
@@ -47,8 +41,6 @@ export const SignupVerifyEmail = ({
   const [errorMessageColor, setErrorMessageColor] = useState<string>(Grey4);
   //verify button text
   const [verifyText, setVerifyText] = useState<string>('인증 요청');
-  //처음 인증요청보내는건지 체크
-  const [isFirstRequest, setIsFirstRequest] = useState<boolean>(true);
   // 임시저장, 편지, 불러오기 모달 활성화여부
   const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
   // 모달 에러 메세지
@@ -103,9 +95,13 @@ export const SignupVerifyEmail = ({
    * 다음 button valid 체크
    */
   const handleVerifyClick = async () => {
+    setLoading(true);
+
     const body = { email: idInput.value };
+
     try {
       const res: any = await postEmails(body);
+
       if (res.status === 200) {
         setIsSended(true);
         //이메일 입력 캡션
@@ -117,11 +113,7 @@ export const SignupVerifyEmail = ({
         //전송 5회 카운트
         //버튼 텍스트랑 남은시간
         setVerifyText('재발송');
-        //최초 전송시에만 5분으로 설정
-        if (isFirstRequest) {
-          setRemainingTime(5 * 60);
-          setIsFirstRequest(false);
-        }
+        setRemainingTime(5 * 60);
       } else if (res.response.status === 400) {
         setErrorMessageColor(ErrorColor);
         setIsEmailError(true);
@@ -141,6 +133,8 @@ export const SignupVerifyEmail = ({
       }
     } catch (ex) {
       alert('이메일 인증 과정에서 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -205,23 +199,13 @@ export const SignupVerifyEmail = ({
             <Body1 color={Grey3} margin="0.2rem 0 0.6rem 0">
               아이디(이메일)
             </Body1>
-            <div className="input-wrapper">
-              <Input
-                value={idInput.value}
-                onChange={idInput.onChange}
-                width="24.3rem"
-                height="4.8rem"
-                padding="0 9.2rem 0 0"
-                textIndent="1.6rem"
-              />
-              <VerifyButton
-                isActive={idInput.isValid}
-                isSended={isSended}
-                onClick={handleVerifyClick}
-              >
-                <Button2 color={White}>{verifyText}</Button2>
-              </VerifyButton>
-            </div>
+            <SignupVerifyInput
+              value={idInput.value}
+              isActive={idInput.isValid && !isLoading}
+              verifyText={verifyText}
+              onClick={handleVerifyClick}
+              onChange={idInput.onChange}
+            />
           </div>
           <Space height="0.4rem" />
 
@@ -316,18 +300,4 @@ const Wrapper = styled.div`
     position: sticky;
     bottom: 0;
   }
-`;
-
-const VerifyButton = styled.button<{ isActive: boolean; isSended: boolean }>`
-  position: absolute;
-  top: 14.58%;
-  left: ${(props) => (props.isSended ? '77.91%' : '73.43%')};
-  cursor: pointer;
-  padding: 0 1.5rem;
-  height: 71%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0.8rem;
-  background-color: ${(props) => (props.isActive ? Green : Grey5)};
 `;
