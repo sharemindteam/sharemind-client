@@ -63,20 +63,18 @@ export const SellerConsultSection = () => {
           >
             공개상담
           </ConsultType>
-          {!(consultType === 'open-consult') && (
-            <SortingType
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-            >
-              <Button2 color={Grey3}>
-                {sortType === 0 ? '최근순' : '읽지않은순'}
-              </Button2>
-              <DownArrowIcon />
-            </SortingType>
-          )}
+          <SortingType
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            <Button2 color={Grey3}>
+              {sortType === 0 ? '최근순' : '읽지않은순'}
+            </Button2>
+            <DownArrowIcon />
+          </SortingType>
         </div>
-        <div className="row2">
+        {/* <div className="row2">
           <div
             className="row2-1"
             onClick={() => {
@@ -91,7 +89,7 @@ export const SellerConsultSection = () => {
             <CircleCheckIcon fill={isChecked ? Green : Grey5} />
             <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
           </div>
-        </div>
+        </div> */}
       </ConsultSortingMenu>
       <section
         className="consult-list"
@@ -121,7 +119,7 @@ export const SellerConsultSection = () => {
             setSearchParams={setSearchParams}
           />
         )}
-        <Space height='4rem'/>
+        <Space height="4rem" />
       </section>
     </>
   );

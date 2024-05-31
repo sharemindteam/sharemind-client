@@ -35,7 +35,8 @@ export const AppContainer = ({ children }: AppContainerProps) => {
       pathname === '/mypage' ||
       pathname === '/review' ||
       pathname === '/paymentDetail' ||
-      pathname.includes('/chat/')
+      pathname.includes('/chat/') ||
+      pathname === '/minder/consult'
     ) {
       setIsGray(true);
     } else {
