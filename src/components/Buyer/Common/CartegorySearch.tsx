@@ -139,7 +139,7 @@ const Wrapper = styled.div`
 const Line = styled.div`
   display: flex;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.4rem;
 `;
 const CartegoryItem = styled.div`
   display: flex;

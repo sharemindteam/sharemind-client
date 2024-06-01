@@ -127,7 +127,7 @@ export const SellerConsultSection = () => {
 const ConsultSortingMenu = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 0.8rem 2rem 1.2rem;
+  padding: 0.4rem 2rem 0.4rem;
   gap: 1.2rem;
   position: sticky;
   top: 10.4rem;
