@@ -7,6 +7,7 @@ import { RecoilRoot } from 'recoil';
 import 'styles/font.css';
 import axios from 'axios';
 import { StompProvider } from 'contexts/StompContext';
+import AppLayout from 'App.Layout';
 axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -16,9 +17,11 @@ root.render(
     <RecoilRoot>
       <GlobalStyle />
       <StompProvider>
-        <AppContainer>
-          <App />
-        </AppContainer>
+        <AppLayout>
+          <AppContainer>
+            <App />
+          </AppContainer>
+        </AppLayout>
       </StompProvider>
     </RecoilRoot>
   </BrowserRouter>,
