@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useInput } from 'hooks/useInput';
 import { SignupVerifyEmail } from 'components/Buyer/BuyerSignup/SignupVerifyEmail';
 import { SignupPw } from 'components/Buyer/BuyerSignup/SignupPw';
-import { SignupInfo } from 'components/Buyer/BuyerSignup/SignupInfo';
 
 export const BuyerSignup = () => {
   useBeforeUnload((event) => {
@@ -14,8 +13,7 @@ export const BuyerSignup = () => {
 
   const idInput = useInput('');
   const pw = useInput('');
-  const recoveryEmail = useInput('');
-  const phoneNumber = useInput('');
+
   if (signupState === 0) {
     return (
       <>
@@ -23,17 +21,6 @@ export const BuyerSignup = () => {
       </>
     );
   } else if (signupState === 1) {
-    return <SignupPw pw={pw} setSignupState={setSignupState} />;
-  } else if (signupState === 2) {
-    //SignupInfo 컴포넌트 내부에서 회원가입 api call, navigate
-    return (
-      <SignupInfo
-        idInput={idInput}
-        pw={pw}
-        email={recoveryEmail}
-        phoneNumber={phoneNumber}
-        setSignupState={setSignupState}
-      />
-    );
+    return <SignupPw pw={pw} idInput={idInput} />;
   }
 };
