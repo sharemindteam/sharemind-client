@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
+import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
@@ -74,6 +74,7 @@ const MainQuestionText = styled.div`
   background-color: ${Grey6};
   padding: 1.6rem;
   box-sizing: border-box;
+  background-color: ${White};
   border-radius: 1.2rem;
   .row2 {
     align-self: flex-end;
