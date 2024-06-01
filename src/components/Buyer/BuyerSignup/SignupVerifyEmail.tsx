@@ -62,6 +62,7 @@ export const SignupVerifyEmail = ({
     } else {
       verifyInput.setIsValid(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idInput.value, verifyInput.value]);
 
   useEffect(() => {
@@ -80,6 +81,7 @@ export const SignupVerifyEmail = ({
     } else {
       verifyInput.setIsValid(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idInput.value, verifyInput.value]);
 
   // 다음 button valid 체크
@@ -145,6 +147,7 @@ export const SignupVerifyEmail = ({
     const body = { email: idInput.value, code: verifyInput.value };
     try {
       const res: any = await postEmailsCode(body);
+      console.log(res);
       if (res.status === 200) {
         setSignupState(1);
       } else if (res.response.status === 400) {
