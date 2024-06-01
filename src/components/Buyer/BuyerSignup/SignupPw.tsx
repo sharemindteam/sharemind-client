@@ -3,18 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ErrorColor, Grey1, Grey3, Grey4, SafeColor } from 'styles/color';
 import { Body1, Caption2, Heading } from 'styles/font';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { UseInputResult, useInput } from 'hooks/useInput';
 import { SignupValidIcon } from 'components/Buyer/Common/SignupValidIcon';
 import { passwordLengthValid, passwordTypeValid } from 'utils/signupValidCheck';
 import PwInput from 'components/Buyer/Common/PwInput';
 import { Space } from 'components/Common/Space';
+import { postSingup } from 'api/post';
+
+//
+//
+//
+
 interface SignupPwProps {
   pw: UseInputResult;
-  setSignupState: Dispatch<SetStateAction<number>>;
+  idInput: UseInputResult;
 }
-export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
+
+//
+//
+//
+
+export const SignupPw = ({ pw, idInput }: SignupPwProps) => {
   //첫렌더 시 예외처리
   const isInitialRender = useRef(true);
   const navigate = useNavigate();
@@ -31,7 +42,31 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
   const [correctState, setCorrectState] = useState<string>('');
   //최종 다음 valid 여부
   const [valid, setValid] = useState<boolean>(false);
+
+  /**
+   *
+   */
+  const handleSubmit = async () => {
+    const body = {
+      email: idInput.value,
+      password: pw.value,
+    };
+    try {
+      const res: any = await postSingup(body);
+      console.log(res);
+      if (res.status === 201) {
+        navigate('/signup/nav');
+      } else if (res.response.status === 400 || res.response.status === 409) {
+        alert(res.response.data.message);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  //
   //valid check
+  //
   useEffect(() => {
     //세 case 모두 valid할 시 다음으로 넘어감
     if (pw.typeValid && pw.lengthValid && pwCheck.isValid) {
@@ -41,6 +76,9 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
     }
   }, [pw.typeValid, pw.lengthValid, pwCheck.isValid]);
 
+  //
+  //
+  //
   useEffect(() => {
     // 첫 마운트 시에는 error 색상 안되게 처리
     if (isInitialRender.current) {
@@ -81,6 +119,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
       setCorrectState('invalid');
       pwCheck.setIsValid(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pw.value, pwCheck.value]);
 
   return (
@@ -141,9 +180,7 @@ export const SignupPw = ({ pw, setSignupState }: SignupPwProps) => {
           width="33.5rem"
           height="5.2rem"
           isActive={valid}
-          onClick={() => {
-            setSignupState(2);
-          }}
+          onClick={handleSubmit}
         />
       </div>
     </Wrapper>
