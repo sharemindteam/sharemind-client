@@ -64,4 +64,5 @@ const StyledApp = styled.div<{ $isGray: boolean; $scrollLock: boolean }>`
   }
   background-color: ${(props) => (props.$isGray ? Grey6 : White)};
   overflow-y: ${(props) => (props.$scrollLock ? 'hidden' : 'scroll')};
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
 `;
