@@ -13,12 +13,11 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    display: flex;
+    
     -webkit-box-align: center;
     font-family: 'Pretendard';
     align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
+    
     margin: 0;
     padding: 0;
     background-color: ${isMobile ? '#ffffff' : '#24a78b'};
