@@ -9,25 +9,21 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
+const LAYOUT_STYLES = {
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  width: '100vw',
+  height: '100vh',
+};
+
 //
 //
 //
 
 const AppLayout = ({ children }: AppLayoutProps) => {
-  return (
-    <div
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        width: '100vw',
-        height: '100vh',
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div style={LAYOUT_STYLES}>{children}</div>;
 };
 
 export default AppLayout;
