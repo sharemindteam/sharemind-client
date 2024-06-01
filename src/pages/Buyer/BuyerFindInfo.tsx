@@ -12,6 +12,10 @@ import { FindInfoIdModal } from 'components/Buyer/BuyerFindInfo/FindInfoIdModal'
 import { BackDrop } from 'components/Common/BackDrop';
 import { patchAuthFindId, patchAuthFindPassword } from 'api/patch';
 
+//
+//
+//
+
 export const BuyerFindInfo = () => {
   const navigate = useNavigate();
   const [isId, setIsId] = useState<boolean>(true);
@@ -21,6 +25,10 @@ export const BuyerFindInfo = () => {
   // 모달 에러 메세지
   const [modalMessage, setModalMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  /**
+   *
+   */
   const patchFindId = async () => {
     setIsLoading(true);
     setIsActiveModal(false);
@@ -48,6 +56,10 @@ export const BuyerFindInfo = () => {
       setIsLoading(false);
     }
   };
+
+  /**
+   *
+   */
   const patchFindPassword = async () => {
     setIsLoading(true);
     setIsActiveModal(false);
@@ -75,6 +87,10 @@ export const BuyerFindInfo = () => {
       setIsLoading(false);
     }
   };
+
+  //
+  //
+  //
   useEffect(() => {
     //TODO:(아이디) 추후 valid 체크 후 true처리
     //현재는 입력만 들어오면 valid true
@@ -89,6 +105,11 @@ export const BuyerFindInfo = () => {
       email.setIsValid(false);
     }
   }, [recoveryEmail.value, email.value]);
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper border={false}>
