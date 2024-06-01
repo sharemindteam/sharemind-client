@@ -134,7 +134,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 2.5rem;
   padding: 1.6rem 2rem 1.6rem 2.1rem;
-  border-bottom: 1px solid ${Grey6};
+  background-color: ${Grey6};
 `;
 const Line = styled.div`
   display: flex;
@@ -145,7 +145,8 @@ const CartegoryItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.6rem;
+  
   cursor: pointer;
 `;
 const Text = styled.div`

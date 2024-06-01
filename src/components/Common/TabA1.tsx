@@ -125,7 +125,7 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
 };
 const Wrapper = styled.nav`
   width: 100%;
-  height: 4.4rem;
+  height: 4rem;
   display: flex;
   justify-content: center;
   border-bottom: 1px solid ${Grey6};
