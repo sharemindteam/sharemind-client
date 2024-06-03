@@ -2,7 +2,7 @@ import { Black, Green, Grey3, Grey6, LightGreen } from 'styles/color';
 import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow.svg';
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
-
+import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState } from 'utils/atom';
 import SellerLetterList from './SellerLetterList';
@@ -35,6 +35,7 @@ export const SellerConsultSection = () => {
     searchParams,
     setSearchParams,
     isChecked,
+    setIsChecked,
   } = useConsultParams();
 
   const setIsModalOpen = useSetRecoilState<boolean>(isConsultModalOpenState);
@@ -72,22 +73,24 @@ export const SellerConsultSection = () => {
             <DownArrowIcon />
           </SortingType>
         </div>
-        {/* <div className="row2">
-          <div
-            className="row2-1"
-            onClick={() => {
-              setIsChecked(!isChecked);
-              searchParams.set('check', String(!isChecked));
-              setSearchParams(searchParams);
-            }}
-            style={{
-              cursor: 'pointer',
-            }}
-          >
-            <CircleCheckIcon fill={isChecked ? Green : Grey5} />
-            <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
+        {consultType !== 'open-consult' && (
+          <div className="row2">
+            <div
+              className="row2-1"
+              onClick={() => {
+                setIsChecked(!isChecked);
+                searchParams.set('check', String(!isChecked));
+                setSearchParams(searchParams);
+              }}
+              style={{
+                cursor: 'pointer',
+              }}
+            >
+              <CircleCheckIcon fill={isChecked ? Green : Grey5} />
+              <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
+            </div>
           </div>
-        </div> */}
+        )}
       </ConsultSortingMenu>
       <section
         className="consult-list"
