@@ -1,4 +1,4 @@
-import { Black, Green, Grey3, Grey6, LightGreen } from 'styles/color';
+import { Black, Green, Grey3, Grey5, Grey6, LightGreen } from 'styles/color';
 import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow.svg';
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';

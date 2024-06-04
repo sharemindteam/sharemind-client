@@ -27,7 +27,7 @@ function MainQuestionSection() {
       <MainQuestionText>
         <div className="row1">
           <Body1>{card?.title}</Body1>
-          {!card?.isPublic && (
+          {card?.isPublic && (
             <PrivateSign>
               <LockIcon />
               <Caption1 color={Grey3}>비공개</Caption1>
@@ -95,6 +95,9 @@ const PrivateSign = styled.div`
   position: absolute;
   top: 1.95rem;
   right: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 `;
 const Circle = styled.div`
   width: 0.2rem;
