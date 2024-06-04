@@ -21,7 +21,7 @@ interface AppContainerProps {
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
-  var { pathname } = useLocation();
+  var { pathname, search } = useLocation();
   const [isGray, setIsGray] = useState(false);
 
   //
@@ -36,14 +36,14 @@ export const AppContainer = ({ children }: AppContainerProps) => {
       pathname === '/review' ||
       pathname === '/paymentDetail' ||
       pathname.includes('/chat/') ||
-      pathname === '/minder/consult' ||
-      pathname.includes('/minder/open-consult')
+      pathname.includes('/open-consult') ||
+      (pathname.includes('/consult') && search.includes('type=open-consult'))
     ) {
       setIsGray(true);
     } else {
       setIsGray(false);
     }
-  }, [pathname]);
+  }, [pathname, search]);
 
   //
   //

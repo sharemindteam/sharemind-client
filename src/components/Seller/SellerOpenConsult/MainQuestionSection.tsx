@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
-import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
-import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
 import { Body1, Caption1, Caption2 } from 'styles/font';
 import { Space } from 'components/Common/Space';
 import { getCounselorsOneConsult } from 'api/get';
