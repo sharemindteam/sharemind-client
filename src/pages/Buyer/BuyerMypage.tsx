@@ -11,6 +11,11 @@ import { ReactComponent as SavedIcon } from 'assets/icons/icon-mypage-saved.svg'
 import { useLayoutEffect, useState } from 'react';
 import { Button } from 'components/Common/Button';
 import { getCustomersNickname } from 'api/get';
+
+//
+//
+//
+
 export const BuyerMypage = () => {
   const navigate = useNavigate();
   //로그인 여부 temp
@@ -19,6 +24,10 @@ export const BuyerMypage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   //회원닉네임
   const [nickname, setNickname] = useState<string>('');
+
+  //
+  //
+  //
   useLayoutEffect(() => {
     const fetchNickname = async () => {
       setIsLoading(true);
@@ -38,6 +47,11 @@ export const BuyerMypage = () => {
     };
     fetchNickname();
   }, []);
+
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <>
@@ -118,23 +132,28 @@ export const BuyerMypage = () => {
                 </Body3>
               </div>
               <Button
-                text="로그인 및 회원가입"
+                text="로그인"
                 width="100%"
                 height="5.2rem"
                 onClick={() => {
                   navigate('/login');
                 }}
               />
-              <div className="find-id">
-                <Body2
-                  color={Grey4}
-                  style={{ cursor: 'pointer' }}
+              <div className="find-info">
+                <UnderlineText
+                  onClick={() => {
+                    navigate('/signup');
+                  }}
+                >
+                  회원가입
+                </UnderlineText>
+                <UnderlineText
                   onClick={() => {
                     navigate('/find');
                   }}
                 >
-                  아이디/비밀번호 찾기
-                </Body2>
+                  비밀번호 찾기
+                </UnderlineText>
               </div>
             </div>
           </LoginCard>
@@ -170,6 +189,11 @@ export const BuyerMypage = () => {
     );
   }
 };
+
+//
+//
+//
+
 const Wrapper = styled.div`
   .mypage-options {
     display: flex;
@@ -222,10 +246,10 @@ const LoginCard = styled.div`
     margin-bottom: 1.2rem;
     gap: 2rem;
   }
-  .find-id {
+  .find-info {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
   }
 `;
 const ChangeButton = styled.div`
@@ -238,4 +262,15 @@ const ChangeButton = styled.div`
   border-radius: 1.2rem;
   cursor: pointer;
   background-color: ${LightGreen};
+`;
+
+const UnderlineText = styled.div`
+  color: ${Grey4};
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%;
+  text-decoration-line: underline;
+  cursor: pointer;
 `;

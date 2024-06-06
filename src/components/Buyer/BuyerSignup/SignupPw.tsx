@@ -127,7 +127,7 @@ export const SignupPw = ({ pw, idInput }: SignupPwProps) => {
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/login');
+            navigate('/mypage');
           }}
         />
         <Heading color={Grey1}>회원가입</Heading>

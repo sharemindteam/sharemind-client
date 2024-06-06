@@ -46,6 +46,9 @@ export const SignupVerifyEmail = ({
   // 모달 에러 메세지
   const [modalErrorMessage, setModalErrorMessage] = useState<string>('');
 
+  //
+  //
+  //
   useEffect(() => {
     if (idInput.value.trim() !== '') {
       if (idInput.isValid === false) {
@@ -65,6 +68,9 @@ export const SignupVerifyEmail = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idInput.value, verifyInput.value]);
 
+  //
+  //
+  //
   useEffect(() => {
     if (idInput.value.trim() !== '') {
       if (idInput.isValid === false) {
@@ -84,7 +90,9 @@ export const SignupVerifyEmail = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idInput.value, verifyInput.value]);
 
+  //
   // 다음 button valid 체크
+  //
   useEffect(() => {
     if (idInput.isValid && verifyInput.isValid) {
       setValid(true);
@@ -191,7 +199,7 @@ export const SignupVerifyEmail = ({
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/login');
+            navigate('/mypage');
           }}
         />
         <Heading color={Grey1}>회원가입</Heading>

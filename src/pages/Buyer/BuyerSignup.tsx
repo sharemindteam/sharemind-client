@@ -4,7 +4,14 @@ import { useInput } from 'hooks/useInput';
 import { SignupVerifyEmail } from 'components/Buyer/BuyerSignup/SignupVerifyEmail';
 import { SignupPw } from 'components/Buyer/BuyerSignup/SignupPw';
 
+//
+//
+//
+
 export const BuyerSignup = () => {
+  //
+  //
+  //
   useBeforeUnload((event) => {
     event.preventDefault();
   });
