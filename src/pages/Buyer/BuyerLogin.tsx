@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import { Body1, Heading } from 'styles/font';
-import { Grey1, Grey3, Grey4, Grey6, White } from 'styles/color';
+import { Grey1, Grey3, Grey6, White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/Common/Button';
 import { postLogin } from 'api/post';
@@ -13,6 +13,11 @@ import PwInput from 'components/Buyer/Common/PwInput';
 import { Space } from 'components/Common/Space';
 import { useStompContext } from 'contexts/StompContext';
 import { setCookie } from 'utils/cookie';
+
+//
+//
+//
+
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
@@ -24,6 +29,9 @@ export const BuyerLogin = () => {
 
   const { connectChat } = useStompContext();
 
+  /**
+   *
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -51,6 +59,11 @@ export const BuyerLogin = () => {
       alert(e);
     }
   };
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -89,22 +102,6 @@ export const BuyerLogin = () => {
               width="33.5rem"
               height="5.2rem"
             />
-            <div className="underline-option">
-              <UnderlineText
-                onClick={() => {
-                  navigate('/signup');
-                }}
-              >
-                회원가입
-              </UnderlineText>
-              <UnderlineText
-                onClick={() => {
-                  navigate('/find');
-                }}
-              >
-                아이디/비밀번호 찾기
-              </UnderlineText>
-            </div>
           </div>
         </div>
       </form>
@@ -124,6 +121,11 @@ export const BuyerLogin = () => {
     </Wrapper>
   );
 };
+
+//
+//
+//
+
 const Wrapper = styled.div`
   position: relative;
   .body-wrapper {
@@ -144,11 +146,6 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 1.4rem;
-  }
-  .underline-option {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
   }
 `;
 const HeaderWrapper = styled.div`
@@ -192,14 +189,4 @@ const LoginInput = styled.input<{
     outline: none;
   }
   box-sizing: border-box;
-`;
-const UnderlineText = styled.div`
-  color: ${Grey4};
-  font-family: Pretendard;
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 110%;
-  text-decoration-line: underline;
-  cursor: pointer;
 `;

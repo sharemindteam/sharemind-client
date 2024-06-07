@@ -24,9 +24,7 @@ export const patchAdminsRefundWaiting = async (paymentId: number) =>
 
 export const patchAuthPassword = async (body: any) =>
   await patchInstance('/auth/password', body);
-//아이디 찾기
-export const patchAuthFindId = async (body: any) =>
-  await patchPublicInstance('/auth/find-id', body);
+
 //비밀번호 찾기
 export const patchAuthFindPassword = async (body: any) =>
   await patchPublicInstance('/auth/find-password', body);

@@ -46,6 +46,9 @@ export const SignupVerifyEmail = ({
   // 모달 에러 메세지
   const [modalErrorMessage, setModalErrorMessage] = useState<string>('');
 
+  //
+  //
+  //
   useEffect(() => {
     if (idInput.value.trim() !== '') {
       if (idInput.isValid === false) {
@@ -62,8 +65,12 @@ export const SignupVerifyEmail = ({
     } else {
       verifyInput.setIsValid(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idInput.value, verifyInput.value]);
 
+  //
+  //
+  //
   useEffect(() => {
     if (idInput.value.trim() !== '') {
       if (idInput.isValid === false) {
@@ -80,9 +87,12 @@ export const SignupVerifyEmail = ({
     } else {
       verifyInput.setIsValid(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idInput.value, verifyInput.value]);
 
+  //
   // 다음 button valid 체크
+  //
   useEffect(() => {
     if (idInput.isValid && verifyInput.isValid) {
       setValid(true);
@@ -145,6 +155,7 @@ export const SignupVerifyEmail = ({
     const body = { email: idInput.value, code: verifyInput.value };
     try {
       const res: any = await postEmailsCode(body);
+      console.log(res);
       if (res.status === 200) {
         setSignupState(1);
       } else if (res.response.status === 400) {
@@ -188,7 +199,7 @@ export const SignupVerifyEmail = ({
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
-            navigate('/login');
+            navigate('/mypage');
           }}
         />
         <Heading color={Grey1}>회원가입</Heading>
