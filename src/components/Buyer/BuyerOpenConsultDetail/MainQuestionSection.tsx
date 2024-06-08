@@ -16,6 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { postLikeOpenConsult, postScrapOpenConsult } from 'api/post';
 import { deletePostLikes, deletePostScraps } from 'api/delete';
 import { formattedMessage } from 'utils/formattedMessage';
+import { Flex } from 'components/Common/Flex';
 
 //
 //
@@ -145,7 +146,7 @@ function MainQuestionSection() {
         </div>
         <Space height="1rem" />
       </MainQuestionText>
-      <ButtonList>
+      <Flex gap="1rem" justify="flex-end">
         <ButtonItem>
           {isLike ? (
             <HeartIcon onClick={handleClickLikeButton} />
@@ -164,7 +165,7 @@ function MainQuestionSection() {
 
           <Caption1 color={Grey2}>{card?.totalScrap}</Caption1>
         </ButtonItem>
-      </ButtonList>
+      </Flex>
     </MainQuestionWrapper>
   );
 }
@@ -219,16 +220,11 @@ const Circle = styled.div`
   background-color: ${Grey3};
 `;
 
-const ButtonList = styled.div`
-  display: flex;
-  gap: 1.2rem;
-`;
-
 const ButtonItem = styled.div`
   border-radius: 0.8rem;
   background: ${White};
   display: flex;
-  padding: 0.6rem 1.2rem 0.6rem 0.6rem;
+  padding: 0.8rem 1.2rem;
   align-items: center;
   gap: 0.4rem;
 `;
