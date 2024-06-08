@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey6 } from 'styles/color';
 import { Body1, Caption1 } from 'styles/font';
@@ -9,12 +9,16 @@ import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save5.svg';
 import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
 import { Space } from 'components/Common/Space';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
-import { getCustomerPublicConsultList } from 'api/get';
+import { getPostsCustomersPublic } from 'api/get';
 import { useNavigate } from 'react-router-dom';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 
-function OpenConsultList() {
+//
+//
+//
+
+const OpenConsultList = () => {
   const [cardData, setCardData] = useState<openConsultApiObject[]>([]);
   const preventRef = useRef(true);
   const navigate = useNavigate();
@@ -30,19 +34,24 @@ function OpenConsultList() {
       preventRef.current = true;
     }
   };
+
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
     threshold: 0.8,
     onIntersect,
   });
+
+  /**
+   *
+   */
   const fetchOpenConsult = async (lastId: number, lastDate: string) => {
     try {
       const params = {
         postId: lastId,
         finishedAt: lastDate,
       };
-      const res: any = await getCustomerPublicConsultList({ params });
+      const res: any = await getPostsCustomersPublic({ params });
 
       if (res.status === 200) {
         if (res.data.length !== 0) {
@@ -67,9 +76,19 @@ function OpenConsultList() {
       }
     }
   };
+
+  //
+  //
+  //
   useLayoutEffect(() => {
     fetchOpenConsult(0, new Date().toISOString().slice(0, 19));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <div
@@ -128,7 +147,12 @@ function OpenConsultList() {
       </div>
     );
   }
-}
+};
+
+//
+//
+//
+
 const BuyerOpenConsultCardList = styled.div`
   display: flex;
   margin: 0 2rem;

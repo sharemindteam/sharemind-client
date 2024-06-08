@@ -1,31 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FireIcon } from 'assets/icons/icon-fire.svg';
 import { Body4 } from 'styles/font';
 import { Grey6 } from 'styles/color';
 import { getCustomerPopularConsultList } from 'api/get';
 import { useNavigate } from 'react-router-dom';
+
+//
+//
+//
 interface apiHotConsultObj {
   postId: number;
   title: string;
 }
-function HotOpenConsultList() {
-  const [hotConsultList, setHotConsultList] = useState<apiHotConsultObj[]>([]);
+
+//
+//
+//
+
+const HotOpenConsultList = () => {
   const navigate = useNavigate();
+
+  const [hotConsultList, setHotConsultList] = useState<apiHotConsultObj[]>([]);
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchHotConsultList = async () => {
-      const res: any = await getCustomerPopularConsultList();
-      if (res.status === 200) {
-        setHotConsultList(res.data);
+      try {
+        const params = {
+          postId: 0,
+          finishedAt: new Date().toISOString().slice(0, 19),
+        };
+
+        const res: any = await getCustomerPopularConsultList({ params });
+        if (res.status === 200) {
+          console.log(res);
+          setHotConsultList(res.data);
+        }
+      } catch (e) {
+        console.error(e);
       }
     };
+
     fetchHotConsultList();
   }, []);
+
+  //
+  //
+  //
+
   return (
-    <HotList>
-      <FireIconWrapper>
-        <FireIcon />
-      </FireIconWrapper>
+    <>
+      <FireIcon />
+
       {hotConsultList?.map((item) => (
         <HotTitleItem
           key={item.postId}
@@ -40,18 +69,13 @@ function HotOpenConsultList() {
           </Body4>
         </HotTitleItem>
       ))}
-    </HotList>
+    </>
   );
-}
+};
 
-const HotList = styled.div`
-  display: flex;
-  white-space: nowrap;
-  flex-wrap: nowrap;
-  overflow-x: scroll;
-  gap: 1.2rem;
-  align-items: center;
-`;
+//
+//
+//
 
 const HotTitleItem = styled.div`
   padding: 1.2rem 1.6rem;
@@ -59,7 +83,5 @@ const HotTitleItem = styled.div`
   background-color: ${Grey6};
   border-radius: 1.2rem;
 `;
-
-const FireIconWrapper = styled.div``;
 
 export default HotOpenConsultList;
