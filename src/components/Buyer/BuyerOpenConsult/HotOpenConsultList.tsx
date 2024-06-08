@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FireIcon } from 'assets/buyer-open-consult/open-consult-fire.svg';
 import { ReactComponent as ArrowIcon } from 'assets/buyer-open-consult/open-consult-arrow.svg';
-import { Body1 } from 'styles/font';
+import { Body1, Caption2 } from 'styles/font';
 import { getPostsCustomersPublicLikes } from 'api/get';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'components/Common/Flex';
 import BuyerOpenConsultCard from './BuyerOpenConsultCard';
+import { Grey2 } from 'styles/color';
+import { Space } from 'components/Common/Space';
 
 //
 //
@@ -77,12 +79,15 @@ const HotOpenConsultList = () => {
         </Flex>
         <ArrowIcon />
       </Flex>
+      <Caption2 color={Grey2} margin="0 0 0 3rem">
+        공감을 10개 이상 받았어요
+      </Caption2>
+      <Space height="1rem" />
       <Flex direction="column">
         {hotConsultList?.map((item) => (
           <BuyerOpenConsultCard
             key={item.postId}
             title={item.title}
-            content={item.content}
             totalLike={item.totalLike}
             totalScrap={item.totalScrap}
             totalComment={item.totalComment}
