@@ -1,7 +1,7 @@
 import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentListSection';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey3, Grey6, Red, White } from 'styles/color';
+import { Grey1, Grey2, Grey3, Red, White } from 'styles/color';
 import { Body1, Body3, Caption1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
@@ -14,6 +14,11 @@ import { postLikeComment } from 'api/post';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { formattedMessage } from 'utils/formattedMessage';
 import { useNavigate } from 'react-router-dom';
+
+//
+//
+//
+
 interface CommentCardProps {
   item: commentApiObject;
   isMyPost: boolean;
@@ -21,6 +26,11 @@ interface CommentCardProps {
   setPickedCommentId: React.Dispatch<React.SetStateAction<string>>;
   isEndConsult: boolean | undefined;
 }
+
+//
+//
+//
+
 function CommentCard({
   item,
   isMyPost,
@@ -28,11 +38,16 @@ function CommentCard({
   setIsPickPopup,
   isEndConsult,
 }: CommentCardProps) {
+  const navigate = useNavigate();
+
   const [isLike, setIsLike] = useState<boolean>(item.isLiked);
   // 보내기 중복 방지
   const [isSending, setIsSending] = useState<boolean>(false);
   const [isFirstRendering, setIsFirstRendering] = useState<boolean>(true);
-  const navigate = useNavigate();
+
+  /**
+   *
+   */
   const handleClickLikeButton = useCallback(async () => {
     if (isSending) {
       return;
@@ -61,7 +76,12 @@ function CommentCard({
         setIsFirstRendering(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item, isLike]);
+
+  //
+  //
+  //
 
   return (
     <CommentCardWrapper>
@@ -125,6 +145,10 @@ function CommentCard({
   );
 }
 
+//
+//
+//
+
 const CommentCardWrapper = styled.div`
   display: flex;
   position: relative;
@@ -133,7 +157,7 @@ const CommentCardWrapper = styled.div`
   padding: 1.2rem 1.6rem;
   flex-direction: column;
   align-items: flex-start;
-  background-color: ${Grey6};
+  background-color: ${White};
   gap: 1rem;
   .flex1 {
     display: flex;

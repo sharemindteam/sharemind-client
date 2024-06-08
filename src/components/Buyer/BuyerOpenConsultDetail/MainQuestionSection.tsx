@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
+import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
@@ -184,7 +184,7 @@ const MainQuestionWrapper = styled.section`
 const MainQuestionText = styled.div`
   width: 100%;
   position: relative;
-  background-color: ${Grey6};
+  background-color: ${White};
   padding: 1.6rem;
   box-sizing: border-box;
   border-radius: 1.2rem;
@@ -224,7 +224,7 @@ const ButtonList = styled.div`
 
 const ButtonItem = styled.div`
   border-radius: 0.8rem;
-  background: ${Grey6};
+  background: ${White};
   display: flex;
   padding: 0.6rem 1.2rem 0.6rem 0.6rem;
   align-items: center;
