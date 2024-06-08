@@ -95,4 +95,5 @@ const FlexBase = styled.div<FlexBaseProps>`
   flex-wrap: ${({ wrap }) => wrap};
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
+  box-sizing: border-box;
 `;
