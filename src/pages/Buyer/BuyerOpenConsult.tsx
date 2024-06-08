@@ -27,13 +27,11 @@ const BuyerOpenConsult = () => {
         }}
       />
       <TabA1 isBuyer={true} initState={3} />
-      <section>
-        <HotOpenConsultList />
-      </section>
-      <section>
-        <OpenConsultList />
-        <Space height="5.2rem" />
-      </section>
+
+      <HotOpenConsultList />
+      <OpenConsultList />
+      <Space height="5.2rem" />
+
       <CreateConsultButtonWrapper>
         <Button
           text="공개상담 신청하기"
