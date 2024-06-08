@@ -1,13 +1,22 @@
 import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentListSection';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey3, Grey6, Red, White } from 'styles/color';
+import {
+  Green,
+  Grey1,
+  Grey2,
+  Grey3,
+  Grey6,
+  LightGreen,
+  Red,
+  White,
+} from 'styles/color';
 import { Body1, Body3, Button2, Caption1, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart-button.svg';
 import { ReactComponent as HeartEmptyIcon } from 'assets/open-consult/open-consult-heart-empty-button.svg';
 import { ReactComponent as SettingIcon } from 'assets/icons/icon-option.svg';
-import { ReactComponent as GreenCheckIcon } from 'assets/icons/icon-green-check.svg';
+import { ReactComponent as GreenCheckIcon } from 'assets/open-consult/open-consult-check.svg';
 import { ReactComponent as PickIcon } from 'assets/open-consult/open-consult-pick.svg';
 import { deleteCommentLikes } from 'api/delete';
 import { postLikeComment } from 'api/post';
@@ -119,20 +128,22 @@ function CommentCard({
         <SettingIcon style={{ padding: '0 0.4rem' }} />
       </Flex>
       <Body3 color={Grey1}>{formattedMessage(item.content)}</Body3>
-      <LikeButton>
-        {isLike ? (
-          <HeartIcon onClick={handleClickLikeButton} />
-        ) : (
-          <HeartEmptyIcon onClick={handleClickLikeButton} />
-        )}
-        <Button2 color={Grey2}>
-          {isFirstRendering
-            ? item.totalLike
-            : isLike
-            ? item.totalLike + 1
-            : item.totalLike}
-        </Button2>
-      </LikeButton>
+      <Flex justify="flex-end" width="100%">
+        <LikeButton>
+          {isLike ? (
+            <HeartIcon onClick={handleClickLikeButton} />
+          ) : (
+            <HeartEmptyIcon onClick={handleClickLikeButton} />
+          )}
+          <Button2 color={Grey2}>
+            {isFirstRendering
+              ? item.totalLike
+              : isLike
+              ? item.totalLike + 1
+              : item.totalLike}
+          </Button2>
+        </LikeButton>
+      </Flex>
       {isMyPost && !item.isChosen && !isEndConsult && (
         <SelectButton
           onClick={() => {
@@ -141,7 +152,7 @@ function CommentCard({
           }}
         >
           <GreenCheckIcon />
-          <Caption1>이 답변 채택하기</Caption1>
+          <Caption1 color={Grey2}>이 답변 채택하기</Caption1>
         </SelectButton>
       )}
     </CommentCardWrapper>
@@ -176,18 +187,17 @@ const SharePickButton = styled.div`
   gap: 0.4rem;
 `;
 
-const SelectButton = styled.div`
-  position: absolute;
-  bottom: 1.2rem;
+const SelectButton = styled.button`
   cursor: pointer;
-  right: 1.6rem;
   display: flex;
-  padding: 0.6rem 0.8rem;
-  justify-content: flex-end;
+  width: 100%;
+  height: 3.6rem;
+  justify-content: center;
   align-items: center;
   gap: 0.4rem;
   border-radius: 0.8rem;
-  background: ${White};
+  border: 1px solid ${Green};
+  background-color: ${LightGreen};
 `;
 
 const LikeButton = styled.div`
