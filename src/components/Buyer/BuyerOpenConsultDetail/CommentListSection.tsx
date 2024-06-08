@@ -7,6 +7,7 @@ import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentLis
 import { BackDrop } from 'components/Common/BackDrop';
 import IsPickPopup from './IsPickPopup';
 import CommentCard from './CommentCard';
+import { White } from 'styles/color';
 
 //
 //
@@ -88,7 +89,7 @@ function CommentListSection() {
             setPickedCommentId={setPickedCommentId}
           />
         ))}
-        <Space height="10rem" />
+        <Space height="3.2rem" />
       </CommentListSectionWrapper>
     </>
   );
@@ -103,6 +104,7 @@ const CommentListSectionWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  background-color: ${White};
 `;
 
 export default CommentListSection;

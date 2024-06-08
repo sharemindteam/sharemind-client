@@ -8,7 +8,7 @@ import { ReactComponent as SaveIcon } from 'assets/open-consult/open-consult-scr
 import { ReactComponent as HeartEmptyIcon } from 'assets/open-consult/open-consult-heart-empty-button.svg';
 import { ReactComponent as SaveEmptyIcon } from 'assets/open-consult/open-consult-scrap-empty-button.svg';
 
-import { Body1, Caption1, Caption2 } from 'styles/font';
+import { Body1, Button2, Caption1, Caption2 } from 'styles/font';
 import { Space } from 'components/Common/Space';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getOneOpenConsult } from 'api/get';
@@ -154,7 +154,7 @@ function MainQuestionSection() {
             <HeartEmptyIcon onClick={handleClickLikeButton} />
           )}
 
-          <Caption1 color={Grey2}>{card?.totalLike}</Caption1>
+          <Button2 color={Grey2}>{card?.totalLike}</Button2>
         </ButtonItem>
         <ButtonItem>
           {isSave ? (
@@ -163,7 +163,7 @@ function MainQuestionSection() {
             <SaveEmptyIcon onClick={handleClickScrapButton} />
           )}
 
-          <Caption1 color={Grey2}>{card?.totalScrap}</Caption1>
+          <Button2 color={Grey2}>{card?.totalScrap}</Button2>
         </ButtonItem>
       </Flex>
     </MainQuestionWrapper>
