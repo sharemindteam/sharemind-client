@@ -19,7 +19,10 @@ interface FlexProps {
   align?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | 'baseline';
   gap?: number | string;
   wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+  padding?: string;
+  margin?: string;
   className?: string;
+  onClick?: () => void;
 }
 
 interface FlexBaseProps {
@@ -36,6 +39,8 @@ interface FlexBaseProps {
   align?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | 'baseline';
   gap?: number | string;
   wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+  padding?: string;
+  margin?: string;
 }
 
 //
@@ -51,7 +56,10 @@ export const Flex = ({
   align = 'center',
   gap = 0,
   wrap = 'nowrap',
+  padding = '0',
+  margin = '0',
   className,
+  onClick,
 }: FlexProps) => {
   return (
     <FlexBase
@@ -62,7 +70,10 @@ export const Flex = ({
       gap={gap}
       width={width}
       wrap={wrap}
+      padding={padding}
+      margin={margin}
       className={className}
+      onClick={onClick}
     >
       {children}
     </FlexBase>
@@ -82,4 +93,6 @@ const FlexBase = styled.div<FlexBaseProps>`
   align-items: ${({ align }) => align};
   gap: ${({ gap }) => `${gap}`};
   flex-wrap: ${({ wrap }) => wrap};
+  padding: ${({ padding }) => padding};
+  margin: ${({ margin }) => margin};
 `;
