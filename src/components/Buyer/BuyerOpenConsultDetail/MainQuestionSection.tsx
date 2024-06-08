@@ -181,7 +181,7 @@ const MainQuestionWrapper = styled.section`
   padding: 1.2rem 2rem;
   flex-direction: column;
   gap: 1.2rem;
-  border-bottom: 1px solid ${Grey6};
+  background-color: ${Grey6};
 `;
 
 const MainQuestionText = styled.div`
