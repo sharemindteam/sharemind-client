@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
@@ -14,14 +14,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { postLikeOpenConsult, postScrapOpenConsult } from 'api/post';
 import { deletePostLikes, deletePostScraps } from 'api/delete';
 import { formattedMessage } from 'utils/formattedMessage';
+
+//
+//
+//
+
 function MainQuestionSection() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [isSave, setIsSave] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [card, setCard] = useState<openConsultApiObject>();
+
   // 보내기 중복 방지
   const [isSending, setIsSending] = useState<boolean>(false);
-  const { id } = useParams();
-  const navigate = useNavigate();
+
+  /**
+   *
+   */
   const handleClickLikeButton = useCallback(async () => {
     if (isSending) {
       return;
@@ -50,8 +61,12 @@ function MainQuestionSection() {
         setIsSending(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, isLike, isSending]);
 
+  /**
+   *
+   */
   const handleClickScrapButton = useCallback(async () => {
     if (isSending) {
       return;
@@ -80,7 +95,12 @@ function MainQuestionSection() {
         setIsSending(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, isSave, isSending]);
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchOneConsult = async () => {
       try {
@@ -96,6 +116,11 @@ function MainQuestionSection() {
     };
     fetchOneConsult();
   }, [isLike, isSave, id]);
+
+  //
+  //
+  //
+
   return (
     <MainQuestionWrapper>
       <MainQuestionText>
@@ -141,6 +166,13 @@ function MainQuestionSection() {
     </MainQuestionWrapper>
   );
 }
+
+export default MainQuestionSection;
+
+//
+//
+//
+
 const MainQuestionWrapper = styled.section`
   display: flex;
   padding: 1.2rem 2rem;
@@ -203,4 +235,3 @@ const SaveResizeIcon = styled(SaveIcon)`
   width: 2rem;
   height: 2rem;
 `;
-export default MainQuestionSection;
