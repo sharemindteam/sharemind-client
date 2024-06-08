@@ -67,7 +67,7 @@ const HotOpenConsultList = () => {
   return (
     <Wrapper>
       {/* TODO: add navigate url */}
-      <Flex
+      <PointerFlex
         justify="space-between"
         onClick={() => {
           navigate('/');
@@ -78,7 +78,7 @@ const HotOpenConsultList = () => {
           <Body1>인기글</Body1>
         </Flex>
         <ArrowIcon />
-      </Flex>
+      </PointerFlex>
       <Caption2 color={Grey2} margin="0 0 0 3rem">
         공감을 10개 이상 받았어요
       </Caption2>
@@ -108,6 +108,10 @@ const HotOpenConsultList = () => {
 
 const Wrapper = styled.section`
   padding: 1.2rem 2rem 2.3rem 2rem;
+`;
+
+const PointerFlex = styled(Flex)`
+  cursor: pointer;
 `;
 
 export default HotOpenConsultList;

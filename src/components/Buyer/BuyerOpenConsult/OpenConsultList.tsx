@@ -72,7 +72,7 @@ const OpenConsultList = () => {
   return (
     <Wrapper>
       {/* TODO: add navigate url */}
-      <Flex
+      <PointerFlex
         justify="space-between"
         onClick={() => {
           navigate('/');
@@ -83,7 +83,7 @@ const OpenConsultList = () => {
           <Body1>최신글</Body1>
         </Flex>
         <ArrowIcon />
-      </Flex>
+      </PointerFlex>
       <Space height="1rem" />
       <Flex direction="column" gap="1.2rem">
         {recentConsultList.map((consult) => (
@@ -111,6 +111,10 @@ const OpenConsultList = () => {
 
 const Wrapper = styled.section`
   padding: 0 2rem;
+`;
+
+const PointerFlex = styled(Flex)`
+  cursor: pointer;
 `;
 
 export default OpenConsultList;
