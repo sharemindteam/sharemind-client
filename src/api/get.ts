@@ -167,7 +167,7 @@ export const getCounselorsRandomConsult = async () =>
 export const getCustomerOpenConsultList = async (params: any) =>
   await getInstance('/posts/customers', params);
 
-export const getCustomerPopularConsultList = async (params: any) =>
+export const getPostsCustomersPublicLikes = async (params: any) =>
   await getPublicInstance('/posts/customers/public/likes', params);
 
 export const getPostsCustomersPublic = async (params: any) =>
