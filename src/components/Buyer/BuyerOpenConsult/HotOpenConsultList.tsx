@@ -83,7 +83,7 @@ const HotOpenConsultList = () => {
         공감을 10개 이상 받았어요
       </Caption2>
       <Space height="1rem" />
-      <Flex direction="column">
+      <Flex direction="column" gap="1.2rem">
         {hotConsultList?.map((item) => (
           <OpenConsultCard
             key={item.postId}
