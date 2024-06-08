@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Space } from 'components/Common/Space';
 import { getCustomerIsWriter, getCustomersComments } from 'api/get';
@@ -8,7 +8,14 @@ import { BackDrop } from 'components/Common/BackDrop';
 import IsPickPopup from './IsPickPopup';
 import CommentCard from './CommentCard';
 
+//
+//
+//
+
 function CommentListSection() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const [commentCard, setCommendCard] = useState<commentApiObject[]>([]);
   // 내 게시물인지 아닌지
   const [isMyPost, setIsMyPost] = useState<boolean>(false);
@@ -18,9 +25,10 @@ function CommentListSection() {
   const [isEndConsult, setIsEndConsult] = useState<boolean | undefined>();
   // 선택한 댓글 아이디 (좋아요, 채택)
   const [pickedCommentId, setPickedCommentId] = useState<string>('');
-  const { id } = useParams();
-  const navigate = useNavigate();
 
+  //
+  //
+  //
   useEffect(() => {
     const fetchComment = async () => {
       try {
@@ -48,7 +56,13 @@ function CommentListSection() {
       }
     };
     fetchComment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, isPickPopup]);
+
+  //
+  //
+  //
+
   return (
     <>
       {isPickPopup && (
@@ -79,6 +93,10 @@ function CommentListSection() {
     </>
   );
 }
+
+//
+//
+//
 
 const CommentListSectionWrapper = styled.section`
   padding: 1.2rem 2rem;
