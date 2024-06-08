@@ -8,8 +8,8 @@ import OpenConsultCard from './OpenConsultCard';
 import { Body1 } from 'styles/font';
 import { Flex } from 'components/Common/Flex';
 
-import { ReactComponent as RecentIcon } from 'assets/buyer-open-consult/open-consult-recent.svg';
-import { ReactComponent as ArrowIcon } from 'assets/buyer-open-consult/open-consult-arrow.svg';
+import { ReactComponent as RecentIcon } from 'assets/open-consult/open-consult-recent.svg';
+import { ReactComponent as ArrowIcon } from 'assets/open-consult/open-consult-arrow.svg';
 import { Space } from 'components/Common/Space';
 
 //

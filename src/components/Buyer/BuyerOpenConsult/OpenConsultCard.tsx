@@ -2,11 +2,9 @@ import styled, { css } from 'styled-components';
 import { Grey1, Grey2, White } from 'styles/color';
 import { Body3, Body4, Caption2 } from 'styles/font';
 
-import { ReactComponent as HeartIcon } from 'assets/buyer-open-consult/open-consult-heart.svg';
-// import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart4.svg';
-import { ReactComponent as SaveIcon } from 'assets/buyer-open-consult/open-consult-scrap.svg';
-// import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save5.svg';
-import { ReactComponent as CommentIcon } from 'assets/buyer-open-consult/open-consult-comment.svg';
+import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart.svg';
+import { ReactComponent as SaveIcon } from 'assets/open-consult/open-consult-scrap.svg';
+import { ReactComponent as CommentIcon } from 'assets/open-consult/open-consult-comment.svg';
 
 import { Flex } from 'components/Common/Flex';
 import { getPostsCustomersPublicLikesResponse } from './HotOpenConsultList';

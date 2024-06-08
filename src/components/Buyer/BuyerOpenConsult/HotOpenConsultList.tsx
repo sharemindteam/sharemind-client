@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as FireIcon } from 'assets/buyer-open-consult/open-consult-fire.svg';
-import { ReactComponent as ArrowIcon } from 'assets/buyer-open-consult/open-consult-arrow.svg';
+import { ReactComponent as FireIcon } from 'assets/open-consult/open-consult-fire.svg';
+import { ReactComponent as ArrowIcon } from 'assets/open-consult/open-consult-arrow.svg';
 import { Body1, Caption2 } from 'styles/font';
 import { getPostsCustomersPublicLikes } from 'api/get';
 import { useNavigate } from 'react-router-dom';
