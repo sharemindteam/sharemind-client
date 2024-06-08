@@ -15,7 +15,7 @@ import { getPostsCustomersPublicLikesResponse } from './HotOpenConsultList';
 //
 //
 
-export interface BuyerOpenConsultCardProps
+export interface OpenConsultCardProps
   extends Omit<
     getPostsCustomersPublicLikesResponse,
     'content' | 'postId' | 'isLiked' | 'isScrapped'
@@ -39,7 +39,7 @@ const ContentTwoLinesCSS = css`
 //
 //
 
-const BuyerOpenConsultCard = ({
+const OpenConsultCard = ({
   title,
   content,
   totalLike,
@@ -47,7 +47,7 @@ const BuyerOpenConsultCard = ({
   totalComment,
   updatedAt,
   onClick,
-}: BuyerOpenConsultCardProps) => {
+}: OpenConsultCardProps) => {
   /**
    *
    */
@@ -92,7 +92,7 @@ const BuyerOpenConsultCard = ({
   );
 };
 
-export default BuyerOpenConsultCard;
+export default OpenConsultCard;
 
 //
 //

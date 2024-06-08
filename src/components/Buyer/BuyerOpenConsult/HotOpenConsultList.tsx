@@ -6,7 +6,7 @@ import { Body1, Caption2 } from 'styles/font';
 import { getPostsCustomersPublicLikes } from 'api/get';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'components/Common/Flex';
-import BuyerOpenConsultCard from './BuyerOpenConsultCard';
+import OpenConsultCard from './OpenConsultCard';
 import { Grey2 } from 'styles/color';
 import { Space } from 'components/Common/Space';
 
@@ -85,7 +85,7 @@ const HotOpenConsultList = () => {
       <Space height="1rem" />
       <Flex direction="column">
         {hotConsultList?.map((item) => (
-          <BuyerOpenConsultCard
+          <OpenConsultCard
             key={item.postId}
             title={item.title}
             totalLike={item.totalLike}
