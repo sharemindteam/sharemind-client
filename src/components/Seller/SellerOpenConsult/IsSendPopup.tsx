@@ -35,7 +35,7 @@ function IsSendPopup({ text, setText, setIsReplying }: IsSendPopupProps) {
     };
     try {
       const res: any = await postComment(body);
-      console.log(res);
+
       if (res?.status === 200 || res.status === 201) {
         setText('');
         setIsSendPopupOpen(false);
