@@ -21,7 +21,6 @@ interface FlexProps {
   wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   padding?: string;
   margin?: string;
-  cursor?: string;
   className?: string;
   onClick?: () => void;
 }
@@ -42,7 +41,6 @@ interface FlexBaseProps {
   wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   padding?: string;
   margin?: string;
-  cursor?: string;
 }
 
 //
@@ -60,7 +58,6 @@ export const Flex = ({
   wrap = 'nowrap',
   padding = '0',
   margin = '0',
-  cursor = 'default',
   className,
   onClick,
 }: FlexProps) => {
@@ -75,7 +72,6 @@ export const Flex = ({
       wrap={wrap}
       padding={padding}
       margin={margin}
-      cursor={cursor}
       className={className}
       onClick={onClick}
     >
@@ -99,6 +95,5 @@ const FlexBase = styled.div<FlexBaseProps>`
   flex-wrap: ${({ wrap }) => wrap};
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
-  cursor: ${({ cursor }) => cursor};
   box-sizing: border-box;
 `;
