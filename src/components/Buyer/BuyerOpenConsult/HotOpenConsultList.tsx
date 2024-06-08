@@ -106,7 +106,7 @@ const HotOpenConsultList = () => {
 //
 //
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   padding: 1.2rem 2rem 2.3rem 2rem;
 `;
 
