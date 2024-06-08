@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
+
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
-import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
-import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
-import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save3.svg';
+import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart-button.svg';
+import { ReactComponent as SaveIcon } from 'assets/open-consult/open-consult-scrap-button.svg';
+import { ReactComponent as HeartEmptyIcon } from 'assets/open-consult/open-consult-heart-empty-button.svg';
+import { ReactComponent as SaveEmptyIcon } from 'assets/open-consult/open-consult-scrap-empty-button.svg';
+
 import { Body1, Caption1, Caption2 } from 'styles/font';
 import { Space } from 'components/Common/Space';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
@@ -155,7 +157,7 @@ function MainQuestionSection() {
         </ButtonItem>
         <ButtonItem>
           {isSave ? (
-            <SaveResizeIcon onClick={handleClickScrapButton} />
+            <SaveIcon onClick={handleClickScrapButton} />
           ) : (
             <SaveEmptyIcon onClick={handleClickScrapButton} />
           )}
@@ -229,9 +231,4 @@ const ButtonItem = styled.div`
   padding: 0.6rem 1.2rem 0.6rem 0.6rem;
   align-items: center;
   gap: 0.4rem;
-`;
-
-const SaveResizeIcon = styled(SaveIcon)`
-  width: 2rem;
-  height: 2rem;
 `;
