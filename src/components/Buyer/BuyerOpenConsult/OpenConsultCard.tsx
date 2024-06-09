@@ -16,7 +16,7 @@ import { getPostsCustomersPublicLikesResponse } from './HotOpenConsultList';
 export interface OpenConsultCardProps
   extends Omit<
     getPostsCustomersPublicLikesResponse,
-    'content' | 'postId' | 'isLiked' | 'isScrapped'
+    'content' | 'postId' | 'isLiked' | 'isScrapped' | 'finishedAt'
   > {
   content?: string;
   onClick?: () => void;

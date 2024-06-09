@@ -26,6 +26,7 @@ export interface getPostsCustomersPublicResponse {
   totalScrap: number;
   totalComment: number;
   updatedAt: string;
+  finishedAt: string;
 }
 
 //
