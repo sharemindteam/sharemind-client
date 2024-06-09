@@ -171,8 +171,8 @@ export const getCustomerOpenConsultList = async (params: any) =>
 export const getPostsCustomersPublicLikes = (params: any) =>
   axiosPublicGet('/posts/customers/public/likes', params);
 
-export const getPostsCustomersPublic = async (params: any) =>
-  await getPublicInstance('/posts/customers/public', params);
+export const getPostsCustomersPublic = (params: any) =>
+  axiosPublicGet('/posts/customers/public', params);
 
 export const getCustomerIsWriter = async (postId: any) =>
   await getInstance(`/posts/customers/public/${postId}`);

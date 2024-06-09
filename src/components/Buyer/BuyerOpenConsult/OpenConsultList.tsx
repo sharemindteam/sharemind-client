@@ -1,4 +1,3 @@
-import { useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { getPostsCustomersPublic } from 'api/get';
@@ -11,6 +10,7 @@ import { Flex } from 'components/Common/Flex';
 import { ReactComponent as RecentIcon } from 'assets/open-consult/open-consult-recent.svg';
 import { ReactComponent as ArrowIcon } from 'assets/open-consult/open-consult-arrow.svg';
 import { Space } from 'components/Common/Space';
+import { useQuery } from '@tanstack/react-query';
 
 //
 //
@@ -33,37 +33,20 @@ export interface getPostsCustomersPublicResponse {
 //
 
 const OpenConsultList = () => {
-  const [recentConsultList, setRecentConsultList] = useState<
-    getPostsCustomersPublicResponse[]
-  >([]);
   const navigate = useNavigate();
 
-  //
-  //
-  //
-  useLayoutEffect(() => {
-    const fetchOpenConsult = async () => {
-      try {
-        const params = {
-          postId: 0,
-          finishedAt: new Date().toISOString().slice(0, 19),
-        };
+  const params = {
+    postId: 0,
+    finishedAt: new Date().toISOString().slice(0, 19),
+  };
 
-        const res: any = await getPostsCustomersPublic({ params });
-
-        if (res.status === 200) {
-          setRecentConsultList(res.data);
-        } else if (res.response.status === 404) {
-          alert('존재하지 않는 회원입니다.');
-          navigate('/login');
-        }
-      } catch (err) {
-        alert(err);
-      }
-    };
-
-    fetchOpenConsult();
-  }, [navigate]);
+  const { data: recentConsultList } = useQuery<
+    getPostsCustomersPublicResponse[]
+  >({
+    queryKey: ['getPostsCustomersPublic'],
+    queryFn: async () =>
+      await getPostsCustomersPublic(params).then((res) => res.data),
+  });
 
   //
   //
@@ -71,7 +54,6 @@ const OpenConsultList = () => {
 
   return (
     <Wrapper>
-      {/* TODO: add navigate url */}
       <PointerFlex
         justify="space-between"
         onClick={() => {
@@ -86,7 +68,7 @@ const OpenConsultList = () => {
       </PointerFlex>
       <Space height="1rem" />
       <Flex direction="column" gap="1.2rem">
-        {recentConsultList.map((consult) => (
+        {recentConsultList?.map((consult) => (
           <OpenConsultCard
             key={consult.postId}
             title={consult.title}
