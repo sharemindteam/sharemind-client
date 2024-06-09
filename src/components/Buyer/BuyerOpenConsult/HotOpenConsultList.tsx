@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FireIcon } from 'assets/open-consult/open-consult-fire.svg';
 import { ReactComponent as ArrowIcon } from 'assets/open-consult/open-consult-arrow.svg';
@@ -9,6 +8,7 @@ import { Flex } from 'components/Common/Flex';
 import OpenConsultCard from './OpenConsultCard';
 import { Grey2 } from 'styles/color';
 import { Space } from 'components/Common/Space';
+import { useQuery } from '@tanstack/react-query';
 
 //
 //
@@ -33,32 +33,18 @@ export interface getPostsCustomersPublicLikesResponse {
 const HotOpenConsultList = () => {
   const navigate = useNavigate();
 
-  const [hotConsultList, setHotConsultList] = useState<
+  const params = {
+    postId: 0,
+    finishedAt: new Date().toISOString().slice(0, 19),
+  };
+
+  const { data: hotConsultList } = useQuery<
     getPostsCustomersPublicLikesResponse[]
-  >([]);
-
-  //
-  //
-  //
-  useEffect(() => {
-    const fetchHotConsultList = async () => {
-      try {
-        const params = {
-          postId: 0,
-          finishedAt: new Date().toISOString().slice(0, 19),
-        };
-
-        const res: any = await getPostsCustomersPublicLikes({ params });
-        if (res.status === 200) {
-          setHotConsultList(res.data);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    fetchHotConsultList();
-  }, []);
+  >({
+    queryKey: ['getPostsCustomersPublicLikes'],
+    queryFn: async () =>
+      await getPostsCustomersPublicLikes(params).then((res) => res.data),
+  });
 
   //
   //
@@ -66,7 +52,6 @@ const HotOpenConsultList = () => {
 
   return (
     <Wrapper>
-      {/* TODO: add navigate url */}
       <PointerFlex
         justify="space-between"
         onClick={() => {
@@ -84,16 +69,16 @@ const HotOpenConsultList = () => {
       </Caption2>
       <Space height="1rem" />
       <Flex direction="column" gap="1.2rem">
-        {hotConsultList?.map((item) => (
+        {hotConsultList?.map((consult) => (
           <OpenConsultCard
-            key={item.postId}
-            title={item.title}
-            totalLike={item.totalLike}
-            totalScrap={item.totalScrap}
-            totalComment={item.totalComment}
-            updatedAt={item.updatedAt}
+            key={consult.postId}
+            title={consult.title}
+            totalLike={consult.totalLike}
+            totalScrap={consult.totalScrap}
+            totalComment={consult.totalComment}
+            updatedAt={consult.updatedAt}
             onClick={() => {
-              navigate(`/open-consult/${item.postId}`);
+              navigate(`/open-consult/${consult.postId}`);
             }}
           />
         ))}
