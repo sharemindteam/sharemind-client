@@ -5,17 +5,15 @@ import { useNavigate } from 'react-router-dom';
 //
 //
 
-const BuyerOpenConsultAll = () => {
+const BuyerOpenConsultRecents = () => {
   const navigate = useNavigate();
-
   //
   //
   //
-
   return (
     <>
       <AppHeader
-        title="인기글"
+        title="최신글"
         onBackClick={() => {
           navigate('/open-consult');
         }}
@@ -24,4 +22,4 @@ const BuyerOpenConsultAll = () => {
   );
 };
 
-export default BuyerOpenConsultAll;
+export default BuyerOpenConsultRecents;

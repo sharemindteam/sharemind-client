@@ -55,7 +55,7 @@ const HotOpenConsultList = () => {
       <PointerFlex
         justify="space-between"
         onClick={() => {
-          navigate('/open-consult/all');
+          navigate('/open-consult/likes');
         }}
       >
         <Flex gap="0.6rem">
