@@ -31,9 +31,7 @@ const BuyerOpenConsultRecents = () => {
   } = useInfiniteQuery<getPostsCustomersPublicResponse[]>({
     queryKey: ['infiniteGetPostsCustomersPublic'],
     queryFn: async ({ pageParam }) =>
-      await getPostsCustomersPublic(pageParam).then((res) => {
-        return res?.data;
-      }),
+      await getPostsCustomersPublic(pageParam).then((res) => res.data),
     initialPageParam: {
       postId: 0,
       finishedAt: new Date().toISOString().slice(0, 19),
