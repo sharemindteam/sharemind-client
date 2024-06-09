@@ -51,7 +51,7 @@ const BuyerOpenConsultRecents = () => {
   });
 
   const recentConsultList = useMemo(
-    () => recentConsults?.pages.flatMap((channel) => channel) ?? [],
+    () => recentConsults?.pages.flatMap((consult) => consult) ?? [],
     [recentConsults],
   );
 
