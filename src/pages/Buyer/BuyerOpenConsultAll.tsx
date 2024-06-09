@@ -1,7 +1,27 @@
-import React from 'react';
+import AppHeader from 'components/Common/AppHeader';
+import { useNavigate } from 'react-router-dom';
+
+//
+//
+//
 
 const BuyerOpenConsultAll = () => {
-  return <></>;
+  const navigate = useNavigate();
+
+  //
+  //
+  //
+
+  return (
+    <>
+      <AppHeader
+        title="인기글"
+        onBackClick={() => {
+          navigate('/open-consult');
+        }}
+      />
+    </>
+  );
 };
 
 export default BuyerOpenConsultAll;
