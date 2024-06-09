@@ -112,13 +112,16 @@ function MainQuestionSection() {
           setCard(res.data);
           setIsLike(res.data.isLiked);
           setIsSave(res.data.isScrapped);
+        } else {
+          alert('존재하지 않는 게시물입니다.');
+          navigate('/open-consult');
         }
       } catch (err) {
         alert(err);
       }
     };
     fetchOneConsult();
-  }, [isLike, isSave, id]);
+  }, [isLike, isSave, id, navigate]);
 
   //
   //
