@@ -12,11 +12,7 @@ function OpenConsultHeader() {
     <OpenConsultHeaderWrapper>
       <LeftArrow
         onClick={() => {
-          if (searchParams.get('isMine') === 'true') {
-            navigate('/consult?type=open-consult');
-          } else {
-            navigate('/open-consult');
-          }
+          navigate(-1);
         }}
       />
       <Heading>
