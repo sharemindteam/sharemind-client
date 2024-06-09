@@ -3,10 +3,12 @@ import { getPostsCustomersPublic } from 'api/get';
 import OpenConsultCard from 'components/Buyer/BuyerOpenConsult/OpenConsultCard';
 import { getPostsCustomersPublicResponse } from 'components/Buyer/BuyerOpenConsult/OpenConsultList';
 import AppHeader from 'components/Common/AppHeader';
+import { Button } from 'components/Common/Button';
 import { Flex } from 'components/Common/Flex';
 import useInfiniteObserver from 'hooks/useInfiniteObserver';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 //
 //
@@ -91,8 +93,33 @@ const BuyerOpenConsultRecents = () => {
         ))}
         <div ref={observerElem} />
       </Flex>
+      <ButtonWrapper>
+        <Button
+          text="공개상담 신청하기"
+          width="100%"
+          height="5.2rem"
+          onClick={() => {
+            navigate('/openConsultRequest');
+          }}
+        />
+      </ButtonWrapper>
     </>
   );
 };
+
+//
+//
+//
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 1.5rem;
+  @media (min-width: 768px) {
+    width: 375px;
+  }
+`;
 
 export default BuyerOpenConsultRecents;

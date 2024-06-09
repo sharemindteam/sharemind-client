@@ -54,10 +54,8 @@ const CreateConsultButtonWrapper = styled.div`
   width: 100%;
   padding: 0 2rem;
   box-sizing: border-box;
-  display: flex;
   position: fixed;
   bottom: 1.5rem;
-  flex-direction: column;
   @media (min-width: 768px) {
     width: 375px;
   }
