@@ -117,16 +117,16 @@ publicInstance.interceptors.response.use(
 //
 
 export const axiosGet = async (url: string, params?: any) =>
-  await instance.get(url, params);
+  await instance.get(url, { params });
 
 export const axiosPost = async (url: string, body: any, params?: any) =>
-  await instance.post(url, body, params);
+  await instance.post(url, body, { params });
 
 export const axiosPut = async (url: string, body: any, params: any) =>
-  await instance.put(url, body, params);
+  await instance.put(url, body, { params });
 
 export const axiosPatch = async (url: string, body?: any, params?: any) =>
-  await instance.patch(url, body, params);
+  await instance.patch(url, body, { params });
 
 export const axiosDelete = async (url: string, body?: any) => {
   const config = {
@@ -140,16 +140,16 @@ export const axiosDelete = async (url: string, body?: any) => {
 //
 
 export const axiosPublicGet = async (url: string, params?: any) =>
-  await instance.get(url, params);
+  await instance.get(url, { params });
 
 export const axiosPublicPost = async (url: string, body: any, params?: any) =>
-  await instance.post(url, body, params);
+  await instance.post(url, body, { params });
 
 export const axiosPublicPut = async (url: string, body: any, params: any) =>
-  await instance.put(url, body, params);
+  await instance.put(url, body, { params });
 
 export const axiosPublicPatch = async (url: string, body?: any, params?: any) =>
-  await instance.patch(url, body, params);
+  await instance.patch(url, body, { params });
 
 export const axiosPublicDelete = async (url: string, body?: any) => {
   const config = {
