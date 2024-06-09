@@ -68,7 +68,6 @@ const publicInstance = axios.create({
     Authorization: `${getCookie('accessToken')}`,
   },
 });
-
 publicInstance.interceptors.request.use((config) => {
   const token = getCookie('accessToken');
   config.headers.Authorization = token;
@@ -116,44 +115,114 @@ publicInstance.interceptors.response.use(
 //
 //
 
-export const axiosGet = async (url: string, params?: any) =>
-  await instance.get(url, params);
+export const getInstance = async (url: string, params?: any) => {
+  try {
+    const data = await instance.get(url, params);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+export const postInstance = async (url: string, body: any, params?: any) => {
+  try {
+    const data = await instance.post(url, body, params);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+export const putInstance = async (url: string, body: any, params: any) => {
+  try {
+    const data = await instance.put(url, body, params);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
-export const axiosPost = async (url: string, body: any, params?: any) =>
-  await instance.post(url, body, params);
+export const patchInstance = async (url: string, body?: any, params?: any) => {
+  try {
+    const data = await instance.patch(url, body, params);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
-export const axiosPut = async (url: string, body: any, params: any) =>
-  await instance.put(url, body, params);
-
-export const axiosPatch = async (url: string, body?: any, params?: any) =>
-  await instance.patch(url, body, params);
-
-export const axiosDelete = async (url: string, body?: any) => {
-  const config = {
-    data: body,
-  };
-  return await instance.delete(url, config);
+export const deleteInstance = async (url: string, body?: any) => {
+  try {
+    const config = {
+      data: body,
+    };
+    const data = await instance.delete(url, config);
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 //
 //
 //
 
-export const axiosPublicGet = async (url: string, params?: any) =>
-  await instance.get(url, params);
-
-export const axiosPublicPost = async (url: string, body: any, params?: any) =>
-  await instance.post(url, body, params);
-
-export const axiosPublicPut = async (url: string, body: any, params: any) =>
-  await instance.put(url, body, params);
-
-export const axiosPublicPatch = async (url: string, body?: any, params?: any) =>
-  await instance.patch(url, body, params);
-
-export const axiosPublicDelete = async (url: string, body?: any) => {
-  const config = {
-    data: body,
-  };
-  return await instance.delete(url, config);
+export const getPublicInstance = async (url: string, params?: any) => {
+  try {
+    const data = await publicInstance.get(url, params);
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
+export const postPublicInstance = async (
+  url: string,
+  body: any,
+  params?: any,
+) => {
+  try {
+    const data = await publicInstance.post(url, body, params);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+export const putPublicInstance = async (
+  url: string,
+  body: any,
+  params: any,
+) => {
+  try {
+    const data = await publicInstance.put(url, body, params);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const patchPublicInstance = async (
+  url: string,
+  body?: any,
+  params?: any,
+) => {
+  try {
+    const data = await publicInstance.patch(url, body, params);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deletePublicInstance = async (url: string, body?: any) => {
+  try {
+    const config = {
+      data: body,
+    };
+    const data = await publicInstance.delete(url, config);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+//
+//
+//

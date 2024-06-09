@@ -1,4 +1,4 @@
-import { patchInstance, patchPublicInstance } from './axios';
+import { patchInstance, patchPublicInstance } from './axios.deprecated';
 //Admin Controller
 //admin 미결제 상담 승인
 export const patchAdminsUnpaidConsults = async (consultId: number) =>
