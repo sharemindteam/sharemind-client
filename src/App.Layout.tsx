@@ -21,6 +21,8 @@ interface AppLayoutProps {
 //
 //
 
+const BACKGROUND_LEFT_RIGHT_RATIO = 3;
+
 const GROUND_HEIGHT = '24rem';
 
 const LAYOUT_STYLES = {
@@ -35,7 +37,7 @@ const LAYOUT_STYLES = {
 
 const LeftSection = styled.div`
   position: relative;
-  flex: 5;
+  flex: ${BACKGROUND_LEFT_RIGHT_RATIO};
   display: flex;
   justify-content: center;
 `;
@@ -51,12 +53,20 @@ const IconWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   max-width: 40rem;
-  padding: 0 2rem;
+  padding: 0;
+
+  @media (min-width: 768px) {
+    padding: 0 2rem;
+  }
 `;
 
 const ButtonWrapper = styled.div`
   max-width: 40rem;
-  padding: 0 2rem;
+  padding: 0;
+
+  @media (min-width: 768px) {
+    padding: 0 2rem;
+  }
 `;
 
 const StyledImg = styled.img`
