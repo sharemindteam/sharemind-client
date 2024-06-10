@@ -1,25 +1,13 @@
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 
 //
 //
 //
 
-interface FlexProps {
+interface FlexProps extends FlexBaseProps {
   children: React.ReactNode;
-  width?: string;
-  height?: string;
-  direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
-  justify?:
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly';
-  align?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | 'baseline';
-  gap?: number | string;
-  wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   className?: string;
+  style?: CSSProperties;
 }
 
 interface FlexBaseProps {
@@ -52,6 +40,7 @@ export const Flex = ({
   gap = 0,
   wrap = 'nowrap',
   className,
+  style,
 }: FlexProps) => {
   return (
     <FlexBase
@@ -63,6 +52,7 @@ export const Flex = ({
       width={width}
       wrap={wrap}
       className={className}
+      style={style}
     >
       {children}
     </FlexBase>
