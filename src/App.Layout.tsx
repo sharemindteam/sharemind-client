@@ -6,7 +6,7 @@ import backgroundIconsImage from 'assets/background/background_sub_icons.png';
 import backgroundButtonImage from 'assets/background/background_button.png';
 
 import styled from 'styled-components';
-import { Red } from 'styles/color';
+import { Green } from 'styles/color';
 import { Flex } from 'components/Common/Flex';
 import { useNavigate } from 'react-router-dom';
 //
@@ -46,12 +46,11 @@ const RightSection = styled.div`
   flex-direction: column;
 `;
 
-const LogoWrapper = styled.div`
+const IconWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   max-width: 40rem;
-  margin-top: 18rem;
   padding: 0 2rem;
 `;
 
@@ -73,7 +72,7 @@ const BottomGreenBox = styled.div`
   width: 100%;
   height: ${GROUND_HEIGHT};
   bottom: 0;
-  background-color: ${Red};
+  background-color: ${Green};
 `;
 
 //
@@ -90,8 +89,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <div style={LAYOUT_STYLES}>
       <LeftSection>
-        <LogoWrapper>
-          <Flex direction="column" gap="1rem">
+        <IconWrapper>
+          <Flex direction="column" gap="1rem" style={{ flex: 1 }}>
             <StyledImg src={backgroundTextImage} alt="bg-text" />
             <StyledImg src={backgroundLogoImage} alt="bg-logo" />
           </Flex>
@@ -100,7 +99,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             alt="bg-icons"
             style={{ marginBottom: GROUND_HEIGHT }}
           />
-        </LogoWrapper>
+        </IconWrapper>
         <BottomGreenBox>
           <ButtonWrapper>
             <StyledImg
