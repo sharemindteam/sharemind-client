@@ -88,6 +88,30 @@ export const BuyerConsult = () => {
   /**
    *
    */
+  const renderCheckBox = () => {
+    if (consultType === 'open-consult') {
+      return null;
+    }
+
+    return (
+      <div
+        className="exception-toggle"
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          setIsChecked(!isChecked);
+          searchParams.set('check', String(!isChecked));
+          setSearchParams(searchParams);
+        }}
+      >
+        {isChecked ? <CheckIcon /> : <NonCheckIcon />}
+        <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
+      </div>
+    );
+  };
+
+  /**
+   *
+   */
   const renderConsultSection = () => {
     switch (consultType) {
       case 'letter':
@@ -106,6 +130,31 @@ export const BuyerConsult = () => {
       default:
         return null;
     }
+  };
+
+  /**
+   *
+   */
+  const renderSortModal = () => {
+    if (!isModalOpen) {
+      return null;
+    }
+
+    return (
+      <>
+        <BackDrop
+          onClick={() => {
+            setIsModalOpen(false);
+          }}
+        />
+        <ConsultModal
+          sortType={sortType}
+          setSortType={setSortType}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
+      </>
+    );
   };
 
   //
@@ -162,36 +211,10 @@ export const BuyerConsult = () => {
             </div>
           )}
         </div>
-
-        <div
-          className="exception-toggle"
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            setIsChecked(!isChecked);
-            searchParams.set('check', String(!isChecked));
-            setSearchParams(searchParams);
-          }}
-        >
-          {isChecked ? <CheckIcon /> : <NonCheckIcon />}
-          <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
-        </div>
+        {renderCheckBox()}
       </div>
       {renderConsultSection()}
-      {isModalOpen ? (
-        <>
-          <BackDrop
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-          />
-          <ConsultModal
-            sortType={sortType}
-            setSortType={setSortType}
-            searchParams={searchParams}
-            setSearchParams={setSearchParams}
-          />
-        </>
-      ) : null}
+      {renderSortModal()}
     </Wrapper>
   );
 };
