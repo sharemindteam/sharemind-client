@@ -89,10 +89,6 @@ export const BuyerConsult = () => {
    *
    */
   const renderCheckBox = () => {
-    if (consultType === 'open-consult') {
-      return null;
-    }
-
     return (
       <div
         className="exception-toggle"

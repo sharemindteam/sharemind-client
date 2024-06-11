@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
+import { Grey1, Grey2, Grey3, White } from 'styles/color';
 import { Body1, Body3, Caption1, Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isBuyPopupOpenState } from 'utils/atom';
@@ -20,13 +20,24 @@ import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getCustomerOpenConsultList } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+
+//
+//
+//
+
 interface BuyerOpenConsultSectionProps {
   isChecked: boolean;
 }
+
+//
+//
+//
+
 function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  const navigate = useNavigate();
   const isBuyPopupOpen = useRecoilValue(isBuyPopupOpenState);
 
   const preventRef = useRef(true);
@@ -38,13 +49,16 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
       preventRef.current = true;
     }
   };
+
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
     threshold: 0.8,
     onIntersect,
   });
+
   const [cardData, setCardData] = useState<openConsultApiObject[]>([]);
+
   const fetchOpenConsult = async (lastId: number) => {
     try {
       const params = {
@@ -76,9 +90,16 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
       }
     }
   };
+
   useLayoutEffect(() => {
     fetchOpenConsult(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isChecked]);
+
+  //
+  //
+  //
+
   return (
     <>
       {isLoading ? (
@@ -203,9 +224,13 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
   );
 }
 
+//
+//
+//
+
 const BuyerOpenConsultCardList = styled.div`
   display: flex;
-  margin: 0 2rem;
+  padding: 1.2rem 2rem;
   flex-direction: column;
   align-items: flex-start;
   gap: 1.2rem;
@@ -219,7 +244,7 @@ const BuyerPendingOpenConsultCard = styled.div`
   padding: 1.6rem;
   gap: 0.8rem;
   position: relative;
-  background-color: ${Grey6};
+  background-color: ${White};
   border-radius: 1.2rem;
 `;
 
@@ -228,7 +253,7 @@ const BuyerOpenConsultCard = styled.div`
   cursor: pointer;
   height: 14rem;
   position: relative;
-  background-color: ${Grey6};
+  background-color: ${White};
   padding: 1.6rem;
   box-sizing: border-box;
   border-radius: 1.2rem;
