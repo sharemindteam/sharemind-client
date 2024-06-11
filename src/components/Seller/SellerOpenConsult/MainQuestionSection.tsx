@@ -74,6 +74,14 @@ const MainQuestionText = styled.div`
   box-sizing: border-box;
   background-color: ${White};
   border-radius: 1.2rem;
+  .row1 {
+    display: -webkit-box;
+    width: calc(100% - 5rem);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-height: 3rem;
+    overflow: hidden;
+  }
   .row2 {
     align-self: flex-end;
     margin-bottom: 0.4rem;
