@@ -19,8 +19,13 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
     try {
       const res: any = await getCounselorsRandomConsult();
       if (res.status === 200) {
-        localStorage.setItem('randomConsult', JSON.stringify(res.data));
-        navigate(`/minder/open-consult/${res.data[0]}`);
+        if (res.data.length > 0) {
+          localStorage.setItem('randomConsult', JSON.stringify(res.data));
+          navigate(`/minder/open-consult/${res.data[0]}`);
+        } else {
+          // 서버 응답 상담 리스트가 []일 경우
+          navigate('/minder/open-consult/all-adopted');
+        }
         setTabState(3);
       } else if (res?.response.status === 403) {
         alert('공개 상담 페이지에 접근할 권한이 없습니다.');

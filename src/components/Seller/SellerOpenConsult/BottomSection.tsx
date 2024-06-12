@@ -61,8 +61,13 @@ function BottomSection({
         const res: any = await getCounselorsRandomConsult();
         if (res.status === 200) {
           alert('현재 올라온 상담글을 모두 정독하셨습니다.');
-          localStorage.setItem('randomConsult', JSON.stringify(res.data));
-          navigate(`/minder/open-consult/${res.data[0]}`);
+          if (res.data.length > 0) {
+            localStorage.setItem('randomConsult', JSON.stringify(res.data));
+            navigate(`/minder/open-consult/${res.data[0]}`);
+          } else {
+            // 서버 응답 상담 리스트가 []일 경우
+            navigate('/minder/open-consult/all-adopted');
+          }
         } else if (res?.response.status === 403) {
           alert('공개 상담 페이지에 접근할 권한이 없습니다.');
         }
