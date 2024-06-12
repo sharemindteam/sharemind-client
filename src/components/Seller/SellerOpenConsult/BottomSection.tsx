@@ -9,6 +9,7 @@ import { isSendPopupOpenState } from 'utils/atom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCounselorsIsWriteComments } from 'api/get';
 import useConsultNavigation from 'hooks/useConsultNavigation';
+import useIsAlreadyReply from 'hooks/useIsAlreadyReply';
 
 //
 //
@@ -34,21 +35,9 @@ function BottomSection({
   const navigate = useNavigate();
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
   const { consultid } = useParams() as { consultid: string };
-  const [isAlreadyWrite, setIsAlreadyWrite] = useState<boolean>(false);
   const { handleNavigateRandomConsult } = useConsultNavigation(consultid);
+  const isAlreadyReply = useIsAlreadyReply(consultid, navigate);
 
-  useEffect(() => {
-    const fetchIsAlreadyWrite = async () => {
-      const res: any = await getCounselorsIsWriteComments(consultid);
-      if (res.status === 200) {
-        setIsAlreadyWrite(res.data);
-      } else if (res.response.status === 404) {
-        alert('존재하지 않는 상담입니다.');
-        navigate('/minder/consult?type=open-consult');
-      }
-    };
-    fetchIsAlreadyWrite();
-  }, [consultid, navigate]);
   return (
     <BottomSectionWrapper>
       {isReplying ? (
@@ -65,7 +54,6 @@ function BottomSection({
           <SendIconSVG
             fill={text.length > 0 ? Green : Grey3}
             onClick={() => {
-              // sendMessage();
               if (text.length > 0) {
                 setIsSendPopupOpen(true);
               }
@@ -85,11 +73,11 @@ function BottomSection({
           <Button
             text={'답장쓰기'}
             width="100%"
-            isActive={!isAlreadyWrite}
+            isActive={!isAlreadyReply}
             backgroundColor={Green}
             height="5.2rem"
             onClick={() => {
-              if (!isAlreadyWrite) {
+              if (!isAlreadyReply) {
                 setIsReplying(true);
               }
             }}
