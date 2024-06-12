@@ -5,6 +5,9 @@ import { BottomButtonWrapper } from '../Common/BottomButton';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/Common/Button';
 import { Green } from 'styles/color';
+//
+//
+//
 function VerifyFail() {
   const navigate = useNavigate();
   return (
@@ -31,7 +34,10 @@ function VerifyFail() {
     </>
   );
 }
-const VerifyFailSection = styled.div`
+//
+//
+//
+const VerifyFailSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;

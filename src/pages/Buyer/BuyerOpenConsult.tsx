@@ -1,14 +1,23 @@
 import { Header } from 'components/Common/Header';
 import { TabA1 } from 'components/Common/TabA1';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OpenConsultList from 'components/Buyer/BuyerOpenConsult/OpenConsultList';
 import HotOpenConsultList from 'components/Buyer/BuyerOpenConsult/HotOpenConsultList';
 import { Button } from 'components/Common/Button';
 import { Space } from 'components/Common/Space';
-function BuyerOpenConsult() {
+
+//
+//
+//
+
+const BuyerOpenConsult = () => {
   const navigate = useNavigate();
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <Header
@@ -37,7 +46,11 @@ function BuyerOpenConsult() {
       </CreateConsultButtonWrapper>
     </Wrapper>
   );
-}
+};
+
+//
+//
+//
 
 const Wrapper = styled.div`
   section.hot-consult-list {

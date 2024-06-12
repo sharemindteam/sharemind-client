@@ -4,11 +4,17 @@ import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { quizAnswerList } from 'utils/constant';
+//
+//
+//
 interface IsSubmitQuizModalProps {
   setIsSubmitModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   choiceNumberList: number[];
   setVerifyStatus: React.Dispatch<React.SetStateAction<string>>;
 }
+//
+//
+//
 function IsSubmitQuizModal({
   setIsSubmitModalOpen,
   choiceNumberList,

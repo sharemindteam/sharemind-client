@@ -16,7 +16,7 @@ import { SellerMypageModifyProfile } from 'pages/Seller/SellerMyPageModifyProfil
 import { SellerMypageViewProfile } from 'pages/Seller/SellerMyPageViewProfile';
 import { SellerMypage } from 'pages/Seller/SellerMypage';
 import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { SellerMyPageReview } from 'pages/Seller/SellerMyPageReview';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
@@ -58,7 +58,7 @@ const Router = () => {
       <Route path="/admin" element={<Admin />} />
       {/* minder(buyer) */}
       <Route path="/share" element={<BuyerHome />} />
-      <Route path="/" element={<BuyerHome />} />
+      <Route path="/" element={<Navigate to="/share" />} />
       <Route path="/consult" element={<BuyerConsult />} />
       <Route path="/open-consult" element={<BuyerOpenConsult />} />
       <Route path="/open-consult/:id" element={<BuyerOpenConsultDetail />} />
