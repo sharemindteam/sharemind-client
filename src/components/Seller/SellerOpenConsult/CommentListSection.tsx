@@ -90,7 +90,6 @@ function CommentListSection() {
           </CommentCard>
         );
       })}
-
       <Space height="10rem" />
     </CommentListSectionWrapper>
   );
@@ -101,6 +100,7 @@ const CommentListSectionWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  background-color: white;
 `;
 
 const CommentGuide = styled.div<{ $isGreen: boolean }>`
@@ -135,8 +135,9 @@ const LikeButton = styled.div`
   display: flex;
   border-radius: 0.8rem;
   background-color: white;
-  padding: 0.4rem 0.8rem 0.4rem 0.4rem;
+  padding: 0.8rem 1.15rem;
   align-items: center;
+  align-self: flex-end;
   gap: 0.4rem;
 `;
 

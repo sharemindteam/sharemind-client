@@ -1,12 +1,20 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Green, Grey1, Grey2, Grey3, Grey6, Red, White } from 'styles/color';
+import {
+  Green,
+  Grey1,
+  Grey2,
+  Grey3,
+  LightGreen,
+  Red,
+  White,
+} from 'styles/color';
 import { Body1, Caption1, Caption2, Heading } from 'styles/font';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
 import { ReactComponent as CommentIcon } from 'assets/icons/icon-comment.svg';
-import { ReactComponent as CheckIcon } from 'assets/icons/icon-check2.svg';
+import { ReactComponent as SharePickIcon } from 'assets/icons/icon-sharepick.svg';
 import { Space } from 'components/Common/Space';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { SetURLSearchParams, useNavigate } from 'react-router-dom';
@@ -108,17 +116,20 @@ function SellerOpenConsultList({
         </div>
       ) : (
         <SellerOpenConsultCardList>
-          <GuideMessage>
-            <Caption2 color={Green}>
-              내가 댓글을 작성한 글의 목록입니다.
-            </Caption2>
-          </GuideMessage>
-
-          {openConsultList.length === 0 && (
+          {openConsultList.length === 0 ? (
             <EmptyWrapper>
               <EmptyIcon />
               <Heading>아직 답변한 상담이 없어요</Heading>
             </EmptyWrapper>
+          ) : (
+            <>
+              <Space height="0.4rem" />
+              <GuideMessage>
+                <Caption2 color={Green}>
+                  내가 댓글을 작성한 글의 목록입니다.
+                </Caption2>
+              </GuideMessage>
+            </>
           )}
           {openConsultList.map((item) => (
             <SellerOpenConsultCard
@@ -139,28 +150,25 @@ function SellerOpenConsultList({
               <div className="row2">{item.content}</div>
               <Space height="0.8rem" />
               <div className="row3">
-                <Caption2 color={Grey2}>{item.publishedAt}</Caption2>
-                <Circle />
-                <Caption2 color={Grey2}>{item.consultCategory}</Caption2>
-              </div>
-              <Space height="1rem" />
-              <div className="row4">
                 <IconItem>
-                  <HeartResizeIcon />
-                  <Caption1 color={Grey2}>{item.totalLike}</Caption1>
+                  <HeartIcon />
+                  <Caption2 color={Grey2}>{item.totalLike}</Caption2>
                 </IconItem>
                 <IconItem>
                   <SaveIcon />
-                  <Caption1 color={Grey2}>{item.totalScrap}</Caption1>
+                  <Caption2 color={Grey2}>{item.totalScrap}</Caption2>
                 </IconItem>
                 <IconItem>
                   <CommentIcon />
-                  <Caption1 color={Grey2}>{item.totalComment}</Caption1>
+                  <Caption2 color={Grey2}>{item.totalComment}</Caption2>
                 </IconItem>
+                <div className="publish-at">
+                  <Caption2 color={Grey2}>{item.publishedAt}</Caption2>
+                </div>
               </div>
               {item.isChosen && (
                 <SharePickSign>
-                  <CheckIcon />
+                  <SharePickIcon />
                   <Caption1 color={White}>셰어 Pick</Caption1>
                 </SharePickSign>
               )}
@@ -196,7 +204,7 @@ function SellerOpenConsultList({
 const GuideMessage = styled.div`
   width: 100%;
   height: 3.1rem;
-  background-color: ${Grey6};
+  background-color: ${LightGreen};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -212,9 +220,9 @@ const SellerOpenConsultCardList = styled.div`
 const SellerOpenConsultCard = styled.div`
   width: 100%;
   cursor: pointer;
-  height: 17.5rem;
+  min-height: 14rem;
   position: relative;
-  background-color: ${Grey6};
+  background-color: ${White};
   padding: 1.6rem;
   box-sizing: border-box;
   border-radius: 1.2rem;
@@ -246,10 +254,12 @@ const SellerOpenConsultCard = styled.div`
     display: flex;
     gap: 0.8rem;
     align-items: center;
+    position: relative;
   }
-  .row4 {
-    display: flex;
-    gap: 1.2rem;
+  .row3 .publish-at {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 `;
 
@@ -262,14 +272,13 @@ const PrivateSign = styled.div`
 
 const SharePickSign = styled.div`
   background-color: ${Red};
-  position: absolute;
+  margin-top: 1.1rem;
   display: flex;
   align-items: center;
-  padding: 0.4rem 0.8rem;
+  justify-content: center;
+  height: 3.6rem;
   gap: 0.4rem;
   border-radius: 0.8rem;
-  bottom: 1.6rem;
-  right: 1.4rem;
 `;
 const IconItem = styled.div`
   display: flex;

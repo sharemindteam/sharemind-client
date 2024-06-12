@@ -146,7 +146,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 1.2rem 0 2.2rem;
+  margin: 0 0 2.2rem;
   .nav-consult {
     display: flex;
     width: 100%;

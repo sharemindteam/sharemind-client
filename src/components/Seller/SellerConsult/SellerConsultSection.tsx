@@ -1,9 +1,8 @@
 import { Black, Green, Grey3, Grey5, Grey6, LightGreen } from 'styles/color';
 import { ReactComponent as DownArrowIcon } from 'assets/icons/sorting-down-arrow.svg';
-import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { Button2 } from 'styles/font';
 import styled from 'styled-components';
-
+import { ReactComponent as CircleCheckIcon } from 'assets/icons/circle-check.svg';
 import { useSetRecoilState } from 'recoil';
 import { isConsultModalOpenState } from 'utils/atom';
 import SellerLetterList from './SellerLetterList';
@@ -63,35 +62,35 @@ export const SellerConsultSection = () => {
           >
             공개상담
           </ConsultType>
-          {!(consultType === 'open-consult') && (
-            <SortingType
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-            >
-              <Button2 color={Grey3}>
-                {sortType === 0 ? '최근순' : '읽지않은순'}
-              </Button2>
-              <DownArrowIcon />
-            </SortingType>
-          )}
-        </div>
-        <div className="row2">
-          <div
-            className="row2-1"
+          <SortingType
             onClick={() => {
-              setIsChecked(!isChecked);
-              searchParams.set('check', String(!isChecked));
-              setSearchParams(searchParams);
-            }}
-            style={{
-              cursor: 'pointer',
+              setIsModalOpen(true);
             }}
           >
-            <CircleCheckIcon fill={isChecked ? Green : Grey5} />
-            <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
-          </div>
+            <Button2 color={Grey3}>
+              {sortType === 0 ? '최근순' : '읽지않은순'}
+            </Button2>
+            <DownArrowIcon />
+          </SortingType>
         </div>
+        {consultType !== 'open-consult' && (
+          <div className="row2">
+            <div
+              className="row2-1"
+              onClick={() => {
+                setIsChecked(!isChecked);
+                searchParams.set('check', String(!isChecked));
+                setSearchParams(searchParams);
+              }}
+              style={{
+                cursor: 'pointer',
+              }}
+            >
+              <CircleCheckIcon fill={isChecked ? Green : Grey5} />
+              <Button2 color={Grey3}>종료/취소된 상담 제외</Button2>
+            </div>
+          </div>
+        )}
       </ConsultSortingMenu>
       <section
         className="consult-list"
@@ -121,7 +120,7 @@ export const SellerConsultSection = () => {
             setSearchParams={setSearchParams}
           />
         )}
-        <Space height='4rem'/>
+        <Space height="4rem" />
       </section>
     </>
   );
@@ -129,7 +128,7 @@ export const SellerConsultSection = () => {
 const ConsultSortingMenu = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 0.8rem 2rem 1.2rem;
+  padding: 0.4rem 2rem 0.4rem;
   gap: 1.2rem;
   position: sticky;
   top: 10.4rem;
