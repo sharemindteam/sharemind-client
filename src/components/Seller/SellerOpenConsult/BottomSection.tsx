@@ -7,13 +7,26 @@ import { Green, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { useSetRecoilState } from 'recoil';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCounselorsIsWriteComments } from 'api/get';
+import {
+  getCounselorsIsWriteComments,
+  getCounselorsRandomConsult,
+} from 'api/get';
+
+//
+//
+//
+
 interface BottomSectionProps {
   isReplying: boolean;
   setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
 }
+
+//
+//
+//
+
 function BottomSection({
   isReplying,
   setIsReplying,
@@ -24,18 +37,39 @@ function BottomSection({
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
   const { consultid } = useParams() as { consultid: string };
   const [isAlreadyWrite, setIsAlreadyWrite] = useState<boolean>(false);
-  const handleNavigateRandomConsult = () => {
-    const randomNumListString = localStorage.getItem('randomConsult');
-    if (randomNumListString != null) {
-      const randomNumList = JSON.parse(randomNumListString);
+  const handleNavigateRandomConsult = async () => {
+    const randomNumListString =
+      localStorage.getItem('randomConsult') ?? `[${consultid}]`;
+    // 공개상담 탭 눌렀을 때, random api 호출하여 로컬 스토리지에 값 저장
+    // 로컬스토리지에 값이 없을 땐 (URL링크로 바로 들어올 경우) path variable를 하나의 원소로 하는 리스트 형태로 저장
+
+    const randomNumList: number[] = JSON.parse(randomNumListString);
+    if (randomNumList.length !== 1) {
       const navigateId =
         randomNumList[
           (randomNumList.indexOf(parseInt(consultid)) + 1) %
             randomNumList.length
         ];
+      const filteredNumList = randomNumList.filter((item) => {
+        return item !== parseInt(consultid);
+      });
+      localStorage.setItem('randomConsult', JSON.stringify(filteredNumList));
       navigate(`/minder/open-consult/${navigateId}`);
+    } else {
+      try {
+        // 로컬 스토리지에 저장된 상담 리스트의 길이가 1인경우 -> 사용자에게 상담을 모두 순회했다고 알림
+        const res: any = await getCounselorsRandomConsult();
+        if (res.status === 200) {
+          alert('현재 올라온 상담글을 모두 정독하셨습니다.');
+          localStorage.setItem('randomConsult', JSON.stringify(res.data));
+          navigate(`/minder/open-consult/${res.data[0]}`);
+        } else if (res?.response.status === 403) {
+          alert('공개 상담 페이지에 접근할 권한이 없습니다.');
+        }
+      } catch (err) {
+        alert(err);
+      }
     }
-    // 그냥 open-consult id쳐서 들어왔을 경우 추후 예외처리..
   };
   useEffect(() => {
     const fetchIsAlreadyWrite = async () => {
