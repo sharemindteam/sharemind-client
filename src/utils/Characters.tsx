@@ -6,9 +6,9 @@ import { ReactComponent as Char5 } from 'assets/characters/char5.svg';
 import { ReactComponent as Char6 } from 'assets/characters/char6.svg';
 import { ReactComponent as Char7 } from 'assets/characters/char7.svg';
 import { ReactComponent as Char8 } from 'assets/characters/char8.svg';
-import { ReactComponent as Char9 } from 'assets/characters/char9.svg';
-import { ReactComponent as Char10 } from 'assets/characters/char10.svg';
-import { ReactComponent as Char11 } from 'assets/characters/char11.svg';
+import { ReactComponent as Char9 } from 'assets/characters/minder-char1.svg';
+import { ReactComponent as Char10 } from 'assets/characters/minder-char2.svg';
+import { ReactComponent as Char11 } from 'assets/characters/minder-char3.svg';
 import styled from 'styled-components';
 interface CharacterProps {
   number: number | undefined;
