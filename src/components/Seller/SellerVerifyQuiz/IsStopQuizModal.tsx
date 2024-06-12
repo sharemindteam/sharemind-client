@@ -3,10 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
+//
+//
+//
 interface IsStopQuizModalProps {
   setIsStopModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
+//
+//
+//
 function IsStopQuizModal({ setIsStopModalOpen }: IsStopQuizModalProps) {
   const navigate = useNavigate();
   return (

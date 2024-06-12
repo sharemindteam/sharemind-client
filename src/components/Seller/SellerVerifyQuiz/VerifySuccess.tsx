@@ -5,6 +5,9 @@ import { BottomButtonWrapper } from '../Common/BottomButton';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/Common/Button';
 import { Green } from 'styles/color';
+//
+//
+//
 function VerifySuccess() {
   const navigate = useNavigate();
   return (
@@ -32,6 +35,9 @@ function VerifySuccess() {
     </>
   );
 }
+//
+//
+//
 const VerifySuccessSection = styled.section`
   display: flex;
   flex-direction: column;
