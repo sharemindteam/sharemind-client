@@ -31,7 +31,7 @@ function VerifyFail() {
     </>
   );
 }
-const VerifyFailSection = styled.div`
+const VerifyFailSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;

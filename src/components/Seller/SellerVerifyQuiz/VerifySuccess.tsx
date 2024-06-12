@@ -32,7 +32,7 @@ function VerifySuccess() {
     </>
   );
 }
-const VerifySuccessSection = styled.div`
+const VerifySuccessSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;

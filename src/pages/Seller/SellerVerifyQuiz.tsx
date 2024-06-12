@@ -13,27 +13,44 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey6, LightGreen } from 'styles/color';
 import { quizChoiceList, quizList } from 'utils/constant';
-
+//
+//
+//
 export const SellerVerifyQuiz = () => {
+  // 현재 몇번쨰 문제를 나타내는 상태 (1~5)
   const [quizLevel, setQuizLevel] = useState<number>(1);
+
+  // 사용자가 문제를 풀며 선택한 답 (리스트), 초기값 : 모두 0
   const [choiceNumberList, setChoiceNumberList] = useState<number[]>([
     0, 0, 0, 0, 0,
   ]);
+
+  // 모달 오픈 여부에 관한 상태
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState<boolean>(false);
   const [isStopModalOpen, setIsStopModalOpen] = useState<boolean>(false);
+
+  // 하나의 컴포넌트에 인증 전, 인증 성공, 인증 실패 상태에 따른 뷰 구현을 위한 상태
   const [verifyStatus, setVerifyStatus] = useState<string>('인증 전');
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchIsPassQuiz = async () => {
-      const isPassRes: any = await getIsPassQuiz();
-      // isPassRes
-      if (!isPassRes?.data) {
-        alert('접근 권한이 없습니다.');
+      try {
+        const res: any = await getIsPassQuiz();
+        if (res.status === 200) {
+          if (!res.data) {
+            alert('접근 권한이 없습니다.');
+            navigate('/minder/mypage');
+          }
+        }
+      } catch (err) {
+        alert(err);
         navigate('/minder/mypage');
       }
     };
     fetchIsPassQuiz();
-  }, []);
+  }, [navigate]);
+
   return (
     <>
       <VerifyQuizHeader
