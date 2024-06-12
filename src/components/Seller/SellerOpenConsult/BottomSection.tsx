@@ -1,5 +1,4 @@
 import { Button } from 'components/Common/Button';
-import React, { useEffect, useState } from 'react';
 import reactTextareaAutosize from 'react-textarea-autosize';
 import styled from 'styled-components';
 import { ReactComponent as SendIcon } from 'assets/icons/icon-send.svg';
@@ -7,7 +6,6 @@ import { Green, Grey3, Grey6, LightGreen, White } from 'styles/color';
 import { useSetRecoilState } from 'recoil';
 import { isSendPopupOpenState } from 'utils/atom';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCounselorsIsWriteComments } from 'api/get';
 import useConsultNavigation from 'hooks/useConsultNavigation';
 import useIsAlreadyReply from 'hooks/useIsAlreadyReply';
 
@@ -36,7 +34,8 @@ function BottomSection({
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
   const { consultid } = useParams() as { consultid: string };
   const { handleNavigateRandomConsult } = useConsultNavigation(consultid);
-  const isAlreadyReply = useIsAlreadyReply(consultid, navigate);
+  // 마인더가 해당 상담에 답장했는지 여부
+  const isAlreadyReply = useIsAlreadyReply(consultid, navigate); 
 
   return (
     <BottomSectionWrapper>
