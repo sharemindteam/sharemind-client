@@ -1,4 +1,4 @@
-import { axiosPublicGet } from './axios';
+import { axiosGet, axiosPublicGet } from './axios';
 import { getInstance, getPublicInstance } from './axios.deprecated';
 
 /**
@@ -166,7 +166,10 @@ export const getCounselorsRandomConsult = async () =>
   await getInstance(`/posts/counselors/random`);
 
 export const getCustomerOpenConsultList = async (params: any) =>
-  await getInstance('/posts/customers', params);
+  await getInstance('/posts/customers', { params });
+
+export const getPostsCutsomers = async (params: any) =>
+  axiosGet('/posts/customers', params);
 
 export const getPostsCustomersPublicLikes = (params: any) =>
   axiosPublicGet('/posts/customers/public/likes', params);

@@ -6,7 +6,7 @@ import { getCookie, setCookie } from 'utils/cookie';
 //axios instance that the token is required
 //
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
     Authorization: `${getCookie('accessToken')}`,
@@ -37,8 +37,10 @@ instance.interceptors.response.use(
         const tokenResponse: any = await postReissue({
           refreshToken: getCookie('refreshToken'),
         });
+
         if (tokenResponse.status === 200) {
           const { accessToken, refreshToken } = tokenResponse.data;
+
           setCookie('accessToken', accessToken);
           setCookie('refreshToken', refreshToken);
           axios.defaults.headers.common.Authorization = `${accessToken}`;
@@ -62,7 +64,7 @@ instance.interceptors.response.use(
 // axios instance that the token is not required
 //
 
-const publicInstance = axios.create({
+export const publicInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
     Authorization: `${getCookie('accessToken')}`,
@@ -95,6 +97,7 @@ publicInstance.interceptors.response.use(
         });
         if (tokenResponse.status === 200) {
           const { accessToken, refreshToken } = tokenResponse.data;
+
           setCookie('accessToken', accessToken);
           setCookie('refreshToken', refreshToken);
           axios.defaults.headers.common.Authorization = `${accessToken}`;
