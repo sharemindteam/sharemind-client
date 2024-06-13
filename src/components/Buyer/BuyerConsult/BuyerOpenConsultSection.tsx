@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, White } from 'styles/color';
@@ -17,13 +17,34 @@ import IsBuyPopup from './IsBuyPopup';
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
-import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
-import { getCustomerOpenConsultList } from 'api/get';
-import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { getPostsCutsomers } from 'api/get';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import useInfiniteObserver from 'hooks/useInfiniteObserver';
 
 //
 //
 //
+
+const LIKE_LIST_PER_PAGE = 4;
+
+//
+//
+//
+
+interface GetPostsCutsomersResponse {
+  postId: number;
+  isCompleted: boolean;
+  title: string;
+  content: string;
+  isPublic: boolean;
+  isLiked: boolean;
+  totalLike: number;
+  isScrapped: boolean;
+  totalScrap: number;
+  totalComment: number;
+  updatedAt: string;
+  finishedAt: string;
+}
 
 interface BuyerOpenConsultSectionProps {
   isChecked: boolean;
@@ -36,65 +57,50 @@ interface BuyerOpenConsultSectionProps {
 function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const isBuyPopupOpen = useRecoilValue(isBuyPopupOpenState);
 
-  const preventRef = useRef(true);
+  const {
+    data: openConsults,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isLoadingError,
+  } = useInfiniteQuery<GetPostsCutsomersResponse[]>({
+    queryKey: ['infiniteGetPostsCutsomersResponse', isChecked],
+    queryFn: async ({ pageParam }) =>
+      await getPostsCutsomers(pageParam).then((res) => {
+        console.log(res.data);
+        return res.data;
+      }),
+    initialPageParam: {
+      filter: isChecked,
+      postId: 0,
+    },
+    getNextPageParam: (lastPage) => {
+      if (lastPage.length < LIKE_LIST_PER_PAGE) {
+        return undefined;
+      }
 
-  const onIntersect: IntersectionObserverCallback = async (entry) => {
-    if (entry[0].isIntersecting && !isLastElem && preventRef.current) {
-      preventRef.current = false;
-      await fetchOpenConsult(cardData[cardData.length - 1]?.postId);
-      preventRef.current = true;
-    }
-  };
+      const lastItem = lastPage[lastPage.length - 1];
 
-  const { setTarget } = useIntersectionObserver({
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.8,
-    onIntersect,
+      return { filter: isChecked, postId: lastItem.postId };
+    },
   });
 
-  const [cardData, setCardData] = useState<openConsultApiObject[]>([]);
+  const openConsultList = useMemo(
+    () => openConsults?.pages.flatMap((consult) => consult) ?? [],
+    [openConsults],
+  );
 
-  const fetchOpenConsult = async (lastId: number) => {
-    try {
-      const params = {
-        filter: isChecked,
-        postId: lastId,
-      };
-      const res: any = await getCustomerOpenConsultList({ params });
-
-      if (res.status === 200) {
-        if (res.data.length !== 0) {
-          if (lastId === 0) {
-            setCardData(res.data);
-          } else {
-            const updatedReviews = [...cardData, ...res.data];
-            setCardData(updatedReviews);
-          }
-        } else {
-          setIsLastElem(true);
-        }
-      } else if (res.response.status === 404) {
-        alert('존재하지 않는 회원입니다.');
-        navigate('/login');
-      }
-    } catch (err) {
-      alert(err);
-    } finally {
-      if (lastId === 0) {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  useLayoutEffect(() => {
-    fetchOpenConsult(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isChecked]);
+  const { observerElem } = useInfiniteObserver({
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isLoadingError,
+  });
 
   //
   //
@@ -115,13 +121,13 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
       ) : (
         <BuyerOpenConsultCardList>
           {/* 상담카드 부분 */}
-          {cardData.length === 0 ? (
+          {openConsultList.length === 0 ? (
             <EmptyWrapper>
               <EmptyIcon />
               <Heading>아직 진행한 상담이 없어요</Heading>
             </EmptyWrapper>
           ) : (
-            cardData?.map((item) => {
+            openConsultList?.map((item) => {
               if (item.title === null) {
                 return (
                   <BuyerPendingOpenConsultCard key={item.postId}>
@@ -199,11 +205,9 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
           <Space height="4rem" />
         </BuyerOpenConsultCardList>
       )}
-      {!isLastElem ? (
-        <div ref={setTarget} style={{ height: '3.5rem' }} />
-      ) : (
-        <div style={{ height: '3.5rem' }} />
-      )}
+
+      <div ref={observerElem} />
+
       {isBuyPopupOpen && (
         <>
           <BackDrop />
