@@ -42,6 +42,7 @@ export const Flex = ({
   wrap = 'nowrap',
   className,
   style,
+  onClick,
 }: FlexProps) => {
   return (
     <FlexBase
