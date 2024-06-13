@@ -8,8 +8,8 @@ import 'styles/font.css';
 import axios from 'axios';
 import { StompProvider } from 'contexts/StompContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 import AppLayout from 'App.Layout';
+
 axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(
