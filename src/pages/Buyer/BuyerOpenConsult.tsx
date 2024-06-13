@@ -30,7 +30,7 @@ const BuyerOpenConsult = () => {
 
       <HotOpenConsultList />
       <OpenConsultList />
-      <Space height="5.2rem" />
+      <Space height="8.9rem" />
 
       <CreateConsultButtonWrapper>
         <Button
