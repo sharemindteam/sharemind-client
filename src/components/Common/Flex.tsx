@@ -1,27 +1,13 @@
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 
 //
 //
 //
 
-interface FlexProps {
+interface FlexProps extends FlexBaseProps {
   children: React.ReactNode;
-  width?: string;
-  height?: string;
-  direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
-  justify?:
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly';
-  align?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | 'baseline';
-  gap?: number | string;
-  wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
-  padding?: string;
-  margin?: string;
   className?: string;
+  style?: CSSProperties;
   onClick?: () => void;
 }
 
@@ -39,8 +25,6 @@ interface FlexBaseProps {
   align?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | 'baseline';
   gap?: number | string;
   wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
-  padding?: string;
-  margin?: string;
 }
 
 //
@@ -56,10 +40,8 @@ export const Flex = ({
   align = 'center',
   gap = 0,
   wrap = 'nowrap',
-  padding = '0',
-  margin = '0',
   className,
-  onClick,
+  style,
 }: FlexProps) => {
   return (
     <FlexBase
@@ -70,19 +52,14 @@ export const Flex = ({
       gap={gap}
       width={width}
       wrap={wrap}
-      padding={padding}
-      margin={margin}
       className={className}
+      style={style}
       onClick={onClick}
     >
       {children}
     </FlexBase>
   );
 };
-
-//
-//
-//
 
 const FlexBase = styled.div<FlexBaseProps>`
   display: flex;
@@ -93,7 +70,4 @@ const FlexBase = styled.div<FlexBaseProps>`
   align-items: ${({ align }) => align};
   gap: ${({ gap }) => `${gap}`};
   flex-wrap: ${({ wrap }) => wrap};
-  padding: ${({ padding }) => padding};
-  margin: ${({ margin }) => margin};
-  box-sizing: border-box;
 `;

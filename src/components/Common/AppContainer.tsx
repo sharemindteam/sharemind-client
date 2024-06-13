@@ -22,6 +22,7 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
   var { pathname, search } = useLocation();
+  var { pathname, search } = useLocation();
   const [isGray, setIsGray] = useState(false);
 
   const isOpenConsultWithNumber = /^\/open-consult\/\d+$/.test(pathname);
@@ -70,4 +71,5 @@ const StyledApp = styled.div<{ $isGray: boolean; $scrollLock: boolean }>`
   }
   background-color: ${(props) => (props.$isGray ? Grey6 : White)};
   overflow-y: ${(props) => (props.$scrollLock ? 'hidden' : 'scroll')};
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
 `;

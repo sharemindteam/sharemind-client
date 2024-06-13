@@ -39,8 +39,19 @@ function FinalSavePopup({ title, content, category }: FianlSavePopupProps) {
       content: content,
       isCompleted: false,
     };
-    await patchOpenConsult(body);
-    navigate('/consult/?type=open-consult');
+    try {
+      const res: any = await patchOpenConsult(body);
+      if (res.status === 200) {
+        navigate('/consult/?type=open-consult');
+      } else if (res?.response.status === 404) {
+        if (res?.response.data.errorName === 'CONSULT_CATEGORY_NOT_FOUND') {
+          alert('상담 카테고리를 선택해주세요.');
+          setIsSavePopupOpen(false);
+        }
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
 
   //

@@ -4,11 +4,17 @@ import { Heading } from 'styles/font';
 import { ProgressBar, ProgressCurrentStatus } from '../Common/ProgressStatus';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as XIcon } from 'assets/icons/icon-x.svg';
+//
+//
+//
 interface VerifyQuizHeaderProps {
   progress: string;
   verifyStatus: string;
   setIsStopModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+//
+//
+//
 function VerifyQuizHeader({
   progress,
   verifyStatus,

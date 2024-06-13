@@ -1,15 +1,24 @@
 import styled from 'styled-components';
 import { Body3 } from 'styles/font';
-import { ReactComponent as LogoText } from 'assets/icons/logo-text.svg';
-import { ReactComponent as Char1 } from 'assets/characters/char9.svg';
-import { ReactComponent as Char2 } from 'assets/characters/char2.svg';
-
+import { ReactComponent as Logo } from 'assets/icons/logo.svg';
+import { ReactComponent as Char1 } from 'assets/characters/char5.svg';
+import { ReactComponent as Char2 } from 'assets/characters/minder-char2.svg';
 import { Green, Grey6, LightGreen } from 'styles/color';
 import { Button } from './Button';
 import { useNavigate } from 'react-router-dom';
+
+//
+//
+//
+
 interface HomeAboutFooterSectionProps {
   isBuyer: boolean;
 }
+
+//
+//
+//
+
 export const HomeAboutFooterSection = ({
   isBuyer,
 }: HomeAboutFooterSectionProps) => {
@@ -20,10 +29,10 @@ export const HomeAboutFooterSection = ({
         <Body3 margin="2rem 0 0.4rem">
           경험 공유 기반 연애상담 마켓플레이스
         </Body3>
-        <LogoText width="132px" height="22px" />
+        <Logo width="132px" height="22px" />
         <div className="character">
-          <Char1 />
-          <Char2 />
+          <MainChar1 />
+          <MainChar2 />
         </div>
         <Button
           text="About 셰어마인드"
@@ -48,7 +57,7 @@ export const HomeAboutFooterSection = ({
   );
 };
 
-const AboutSection = styled.div<HomeAboutFooterSectionProps>`
+const AboutSection = styled.section<HomeAboutFooterSectionProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,8 +68,19 @@ const AboutSection = styled.div<HomeAboutFooterSectionProps>`
     display: flex;
     margin: 1.3rem 0px 2.1rem;
     align-items: flex-end;
-    gap: 0.6rem;
   }
+`;
+
+const MainChar1 = styled(Char1)`
+  width: 80px;
+  height: 64px;
+  margin: 0rem -0.6rem 0;
+`;
+
+const MainChar2 = styled(Char2)`
+  width: 80px;
+  height: 64px;
+  margin: 0rem -0.6rem 0;
 `;
 
 const Footer = styled.section``;

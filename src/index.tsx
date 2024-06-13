@@ -9,6 +9,7 @@ import axios from 'axios';
 import { StompProvider } from 'contexts/StompContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import AppLayout from 'App.Layout';
 axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(
@@ -23,9 +24,11 @@ root.render(
       <GlobalStyle />
       <StompProvider>
         <QueryClientProvider client={queryClient}>
-          <AppContainer>
-            <App />
-          </AppContainer>
+          <AppLayout>
+            <AppContainer>
+              <App />
+            </AppContainer>
+          </AppLayout>
         </QueryClientProvider>
       </StompProvider>
     </RecoilRoot>
