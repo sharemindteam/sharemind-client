@@ -8,9 +8,18 @@ import { getCounselorsOneConsult } from 'api/get';
 import { useParams } from 'react-router-dom';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { formattedMessage } from 'utils/formattedMessage';
+
+//
+//
+//
+
 function MainQuestionSection() {
   const { consultid } = useParams();
   const [card, setCard] = useState<openConsultApiObject | undefined>(undefined);
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchOneConsult = async () => {
       try {
@@ -22,6 +31,11 @@ function MainQuestionSection() {
     };
     fetchOneConsult();
   }, [consultid]);
+
+  //
+  //
+  //
+
   return (
     <MainQuestionWrapper>
       <MainQuestionText>
@@ -58,18 +72,23 @@ function MainQuestionSection() {
     </MainQuestionWrapper>
   );
 }
+
+//
+//
+//
+
 const MainQuestionWrapper = styled.section`
   display: flex;
   padding: 1.2rem 2rem;
   flex-direction: column;
   gap: 1.2rem;
+  background-color: ${Grey6};
   border-bottom: 1px solid ${Grey6};
 `;
 
 const MainQuestionText = styled.div`
   width: 100%;
   position: relative;
-  background-color: ${Grey6};
   padding: 1.6rem;
   box-sizing: border-box;
   background-color: ${White};

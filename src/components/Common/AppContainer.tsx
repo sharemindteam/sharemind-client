@@ -21,11 +21,13 @@ interface AppContainerProps {
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
+
   var { pathname, search } = useLocation();
-  var { pathname, search } = useLocation();
+
   const [isGray, setIsGray] = useState(false);
 
-  const isOpenConsultWithNumber = /^\/open-consult\/\d+$/.test(pathname);
+  const isOpenConsultDetailPage =
+    /^(\/open-consult\/\d+|\/minder\/open-consult\/\d+)$/.test(pathname);
 
   const isGreyBackground =
     pathname === '/minder/mypage/viewProfile' ||
@@ -35,7 +37,7 @@ export const AppContainer = ({ children }: AppContainerProps) => {
     pathname === '/review' ||
     pathname === '/paymentDetail' ||
     pathname.includes('/chat/') ||
-    (pathname.includes('/open-consult') && !isOpenConsultWithNumber) ||
+    (pathname.includes('/open-consult') && !isOpenConsultDetailPage) ||
     (pathname.includes('/consult') && search.includes('type=open-consult'));
 
   //
