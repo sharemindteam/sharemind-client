@@ -77,7 +77,11 @@ const BuyerOpenConsultLikes = () => {
           navigate('/open-consult');
         }}
       />
-      <Flex direction="column" gap="1.2rem" padding="1.6rem 2rem 7.2rem 2rem">
+      <Flex
+        direction="column"
+        gap="1.2rem"
+        style={{ padding: '1.6rem 2rem 7.2rem 2rem' }}
+      >
         {hotConsultList?.map((consult) => (
           <OpenConsultCard
             key={consult.postId}
