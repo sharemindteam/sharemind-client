@@ -7,7 +7,9 @@ import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentLis
 import { BackDrop } from 'components/Common/BackDrop';
 import IsPickPopup from './IsPickPopup';
 import CommentCard from './CommentCard';
-import { White } from 'styles/color';
+import { Green, LightGreen, White } from 'styles/color';
+import { Flex } from 'components/Common/Flex';
+import { Caption1 } from 'styles/font';
 
 //
 //
@@ -26,6 +28,36 @@ function CommentListSection() {
   const [isEndConsult, setIsEndConsult] = useState<boolean | undefined>();
   // 선택한 댓글 아이디 (좋아요, 채택)
   const [pickedCommentId, setPickedCommentId] = useState<string>('');
+
+  /**
+   *
+   */
+  const renderCommentCards = () => {
+    if (commentCard?.length === 0) {
+      return (
+        <NoCommentBox
+          align="center"
+          justify="center"
+          style={{ padding: '0.7rem 0' }}
+        >
+          <Caption1 color={Green}>
+            아직 마인더의 답변이 달리지 않았어요
+          </Caption1>
+        </NoCommentBox>
+      );
+    }
+
+    return commentCard?.map((item) => (
+      <CommentCard
+        key={item.commentId}
+        item={item}
+        isMyPost={isMyPost}
+        isEndConsult={isEndConsult}
+        setIsPickPopup={setIsPickPopup}
+        setPickedCommentId={setPickedCommentId}
+      />
+    ));
+  };
 
   //
   //
@@ -78,17 +110,7 @@ function CommentListSection() {
       )}
 
       <CommentListSectionWrapper>
-        {/* 댓글 리스트 , 최대 5개까지*/}
-        {commentCard?.map((item) => (
-          <CommentCard
-            key={item.commentId}
-            item={item}
-            isMyPost={isMyPost}
-            isEndConsult={isEndConsult}
-            setIsPickPopup={setIsPickPopup}
-            setPickedCommentId={setPickedCommentId}
-          />
-        ))}
+        {renderCommentCards()}
         <Space height="3.2rem" />
       </CommentListSectionWrapper>
     </>
@@ -105,6 +127,10 @@ const CommentListSectionWrapper = styled.section`
   flex-direction: column;
   gap: 0.6rem;
   background-color: ${White};
+`;
+
+const NoCommentBox = styled(Flex)`
+  background-color: ${LightGreen};
 `;
 
 export default CommentListSection;
