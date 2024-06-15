@@ -68,8 +68,8 @@ export const StompProvider: React.FC<{ children: ReactNode }> = ({
       });
       if (tokenResponse.status === 200) {
         const { accessToken, refreshToken } = tokenResponse.data;
-        setCookie('accessToken', accessToken);
-        setCookie('refreshToken', refreshToken);
+        setCookie('accessToken', accessToken, { path: '/' });
+        setCookie('refreshToken', refreshToken, { path: '/' });
         connectChat();
       }
     } catch (error) {
