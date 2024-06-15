@@ -70,10 +70,7 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
   } = useInfiniteQuery<GetPostsCutsomersResponse[]>({
     queryKey: ['infiniteGetPostsCutsomersResponse', isChecked],
     queryFn: async ({ pageParam }) =>
-      await getPostsCutsomers(pageParam).then((res) => {
-        console.log(res.data);
-        return res.data;
-      }),
+      await getPostsCutsomers(pageParam).then((res) => res.data),
     initialPageParam: {
       filter: isChecked,
       postId: 0,
