@@ -7,18 +7,29 @@ import { RecoilRoot } from 'recoil';
 import 'styles/font.css';
 import axios from 'axios';
 import { StompProvider } from 'contexts/StompContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AppLayout from 'App.Layout';
+
 axios.defaults.withCredentials = true;
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
+
+const queryClient = new QueryClient();
+
 root.render(
   <BrowserRouter>
     <RecoilRoot>
       <GlobalStyle />
       <StompProvider>
-        <AppContainer>
-          <App />
-        </AppContainer>
+        <QueryClientProvider client={queryClient}>
+          <AppLayout>
+            <AppContainer>
+              <App />
+            </AppContainer>
+          </AppLayout>
+        </QueryClientProvider>
       </StompProvider>
     </RecoilRoot>
   </BrowserRouter>,

@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import { Green, Grey5, White } from 'styles/color';
 import { Button1, Button2 } from 'styles/font';
+
+//
+//
+//
+
 interface ButtonProps {
   width?: string;
   height?: string;
@@ -14,7 +19,13 @@ interface ButtonProps {
   border?: string;
   isActive?: boolean;
   margin?: string;
+  padding?: string;
 }
+
+//
+//
+//
+
 export const Button = ({
   width = 'fit-content',
   height = 'auto',
@@ -28,6 +39,7 @@ export const Button = ({
   border = '',
   isActive = true,
   margin = '',
+  padding = '',
 }: ButtonProps) => {
   if (isActive === true) {
     if (buttonTextType === 1 || buttonTextType === undefined) {
@@ -41,6 +53,7 @@ export const Button = ({
           $borderRadius={borderRadius}
           $border={border}
           $margin={margin}
+          $padding={padding}
         >
           <Button1 color={color}>{text}</Button1>
         </StyledButton>
@@ -56,6 +69,7 @@ export const Button = ({
           $borderRadius={borderRadius}
           $border={border}
           $margin={margin}
+          $padding={padding}
         >
           <Button2 color={color}>{text}</Button2>
         </StyledButton>
@@ -71,6 +85,7 @@ export const Button = ({
           $borderRadius={borderRadius}
           $border={border}
           $margin={margin}
+          $padding={padding}
         >
           <Button1 color={color}>{text}</Button1>
         </StyledDiv>
@@ -84,6 +99,7 @@ export const Button = ({
           $borderRadius={borderRadius}
           $border={border}
           $margin={margin}
+          $padding={padding}
         >
           <Button2 color={color}>{text}</Button2>
         </StyledDiv>
@@ -99,6 +115,7 @@ const StyledButton = styled.button<{
   $borderRadius: string;
   $border: string;
   $margin: string;
+  $padding: string;
 }>`
   font-family: Pretendard;
   border-radius: ${(props) => props.$borderRadius};
@@ -107,6 +124,7 @@ const StyledButton = styled.button<{
   height: ${(props) => props.$height};
   border: ${(props) => props.$border};
   margin: ${(props) => props.$margin};
+  padding: ${(props) => props.$padding};
 `;
 
 const StyledDiv = styled.button<{
@@ -116,6 +134,7 @@ const StyledDiv = styled.button<{
   $borderRadius: string;
   $border: string;
   $margin: string;
+  $padding: string;
 }>`
   font-family: Pretendard;
   border-radius: ${(props) => props.$borderRadius};
@@ -124,4 +143,5 @@ const StyledDiv = styled.button<{
   height: ${(props) => props.$height};
   border: ${(props) => props.$border};
   margin: ${(props) => props.$margin};
+  padding: ${(props) => props.$padding};
 `;

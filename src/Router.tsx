@@ -16,7 +16,7 @@ import { SellerMypageModifyProfile } from 'pages/Seller/SellerMyPageModifyProfil
 import { SellerMypageViewProfile } from 'pages/Seller/SellerMyPageViewProfile';
 import { SellerMypage } from 'pages/Seller/SellerMypage';
 import { SellerLetterWrite } from 'pages/Seller/SellerLetterWrite';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { SellerMyPageReview } from 'pages/Seller/SellerMyPageReview';
 import { BuyerSignupComplete } from 'pages/Buyer/BuyerSignupComplete';
 import { BuyerFindInfo } from 'pages/Buyer/BuyerFindInfo';
@@ -51,6 +51,9 @@ import { BuyerOpenPaymentDetail } from 'pages/Buyer/BuyerOpenPaymentDetail';
 import BuyerWriteOpenConsult from 'pages/Buyer/BuyerWriteOpenConsult';
 import BuyerOpenConsultDetail from 'pages/Buyer/BuyerOpenConsultDetail';
 import BuyerFinishPayment from 'pages/Buyer/BuyerFinishPayment';
+import BuyerOpenConsultLikes from 'pages/Buyer/BuyerOpenConsultLikes';
+import BuyerOpenConsultRecents from 'pages/Buyer/BuyerOpenConsultRecents';
+
 const Router = () => {
   return (
     <Routes>
@@ -58,9 +61,14 @@ const Router = () => {
       <Route path="/admin" element={<Admin />} />
       {/* minder(buyer) */}
       <Route path="/share" element={<BuyerHome />} />
-      <Route path="/" element={<BuyerHome />} />
+      <Route path="/" element={<Navigate to="/share" />} />
       <Route path="/consult" element={<BuyerConsult />} />
       <Route path="/open-consult" element={<BuyerOpenConsult />} />
+      <Route path="/open-consult/likes" element={<BuyerOpenConsultLikes />} />
+      <Route
+        path="/open-consult/recents"
+        element={<BuyerOpenConsultRecents />}
+      />
       <Route path="/open-consult/:id" element={<BuyerOpenConsultDetail />} />
       <Route path="/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/search" element={<BuyerSearch />} />

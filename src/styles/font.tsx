@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { CSSProp } from 'styled-components';
 //<Heading color={Red}> 이런식으로 사용
 //semi-bold : 600 regular : 400
 interface FontProps {
@@ -7,6 +7,7 @@ interface FontProps {
   margin?: string;
   underline?: boolean;
   textAlign?: string;
+  customStyles?: CSSProp;
 }
 export const Heading = styled.div<FontProps>`
   font-family: Pretendard;
@@ -18,6 +19,7 @@ export const Heading = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;
 export const Subtitle = styled.div<FontProps>`
   font-family: Pretendard;
@@ -29,6 +31,7 @@ export const Subtitle = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;
 export const Body1 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -40,6 +43,7 @@ export const Body1 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;
 export const Body2 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -51,6 +55,7 @@ export const Body2 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;
 //피그마 상에선 body4
 export const Body3 = styled.div<FontProps>`
@@ -63,6 +68,7 @@ export const Body3 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
   text-align: ${(props) => props?.textAlign};
 `;
 //피그마 상에선 body3
@@ -76,6 +82,7 @@ export const Body4 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;
 export const Button1 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -87,6 +94,7 @@ export const Button1 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;
 export const Button2 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -98,6 +106,7 @@ export const Button2 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;
 export const Caption1 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -109,6 +118,7 @@ export const Caption1 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;
 export const Caption2 = styled.div<FontProps>`
   font-family: Pretendard;
@@ -120,4 +130,5 @@ export const Caption2 = styled.div<FontProps>`
   padding: ${(props) => props.padding || ''};
   margin: ${(props) => props.margin || ''};
   text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
 `;

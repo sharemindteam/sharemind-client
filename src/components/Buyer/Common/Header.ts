@@ -1,7 +1,12 @@
 import { ReactComponent as Back } from 'assets/icons/icon-back.svg';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
-export const HeaderWrapper = styled.div<{ border?: boolean }>`
+
+//
+//
+//
+
+export const HeaderWrapper = styled.header<{ border?: boolean }>`
   height: 5.2rem;
   background-color: ${White};
   position: relative;

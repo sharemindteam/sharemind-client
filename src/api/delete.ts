@@ -1,4 +1,4 @@
-import { deleteInstance } from './axios';
+import { deleteInstance } from './axios.deprecated';
 
 //Auth Controller
 export const deleteAuthQuit = async (body: any) =>

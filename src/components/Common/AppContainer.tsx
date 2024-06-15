@@ -20,29 +20,37 @@ interface AppContainerProps {
 
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
-  // useTokenRefresh();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
-  var { pathname } = useLocation();
+
+  var { pathname, search } = useLocation();
+
   const [isGray, setIsGray] = useState(false);
+
+  const isOpenConsultDetailPage =
+    /^(\/open-consult\/\d+|\/minder\/open-consult\/\d+)$/.test(pathname);
+
+  const isGreyBackground =
+    pathname === '/minder/mypage/viewProfile' ||
+    pathname === '/minder/mypage' ||
+    pathname === '/minder/mypage/modifyProfile' ||
+    pathname === '/mypage' ||
+    pathname === '/review' ||
+    pathname === '/paymentDetail' ||
+    pathname.includes('/chat/') ||
+    (pathname.includes('/open-consult') && !isOpenConsultDetailPage) ||
+    (pathname.includes('/consult') && search.includes('type=open-consult'));
 
   //
   //
   //
   useEffect(() => {
-    if (
-      pathname === '/minder/mypage/viewProfile' ||
-      pathname === '/minder/mypage' ||
-      pathname === '/minder/mypage/modifyProfile' ||
-      pathname === '/mypage' ||
-      pathname === '/review' ||
-      pathname === '/paymentDetail' ||
-      pathname.includes('/chat/')
-    ) {
+    if (isGreyBackground) {
       setIsGray(true);
     } else {
       setIsGray(false);
     }
-  }, [pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, search]);
 
   //
   //
@@ -65,4 +73,5 @@ const StyledApp = styled.div<{ $isGray: boolean; $scrollLock: boolean }>`
   }
   background-color: ${(props) => (props.$isGray ? Grey6 : White)};
   overflow-y: ${(props) => (props.$scrollLock ? 'hidden' : 'scroll')};
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
 `;

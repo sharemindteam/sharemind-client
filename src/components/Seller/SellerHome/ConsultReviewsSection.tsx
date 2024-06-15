@@ -8,6 +8,10 @@ import { useEffect, useState } from 'react';
 import { getMinderReviewsHome } from 'api/get';
 import { HeartRate } from 'utils/HeartRate';
 
+//
+//
+//
+
 interface ReviewData {
   comment: string;
   nickname: string;
@@ -15,6 +19,11 @@ interface ReviewData {
   reviewId: string;
   updatedAt: string;
 }
+
+//
+//
+//
+
 export const ConsultReviewSection = () => {
   const navigate = useNavigate();
   const [reviewData, setReviewData] = useState<ReviewData[]>([]);

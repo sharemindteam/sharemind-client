@@ -1,4 +1,4 @@
-import { patchInstance, patchPublicInstance } from './axios';
+import { patchInstance, patchPublicInstance } from './axios.deprecated';
 //Admin Controller
 //admin 미결제 상담 승인
 export const patchAdminsUnpaidConsults = async (consultId: number) =>
@@ -24,9 +24,7 @@ export const patchAdminsRefundWaiting = async (paymentId: number) =>
 
 export const patchAuthPassword = async (body: any) =>
   await patchInstance('/auth/password', body);
-//아이디 찾기
-export const patchAuthFindId = async (body: any) =>
-  await patchPublicInstance('/auth/find-id', body);
+
 //비밀번호 찾기
 export const patchAuthFindPassword = async (body: any) =>
   await patchPublicInstance('/auth/find-password', body);

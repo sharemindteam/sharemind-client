@@ -12,117 +12,137 @@ export const CartegorySearch = () => {
     <Wrapper>
       <Line>
         <CartegoryItem>
-          <Characters
-            number={1}
-            onClick={() => {
-              setSearchKeyword('연애갈등');
-              if (pathname === '/search') {
-                navigate('/categorySearch?from=search');
-              } else {
-                navigate('/categorySearch');
-              }
-            }}
-          />
+          <div className="character-icon">
+            <Characters
+              number={1}
+              onClick={() => {
+                setSearchKeyword('연애갈등');
+                if (pathname === '/search') {
+                  navigate('/categorySearch?from=search');
+                } else {
+                  navigate('/categorySearch');
+                }
+              }}
+            />
+          </div>
           <Text>연애갈등</Text>
         </CartegoryItem>
         <CartegoryItem>
-          <Characters
-            number={2}
-            onClick={() => {
-              setSearchKeyword('이별/재회');
-              if (pathname === '/search') {
-                navigate('/categorySearch?from=search');
-              } else {
-                navigate('/categorySearch');
-              }
-            }}
-          />
+          <div className="character-icon">
+            <Characters
+              number={2}
+              onClick={() => {
+                setSearchKeyword('이별/재회');
+                if (pathname === '/search') {
+                  navigate('/categorySearch?from=search');
+                } else {
+                  navigate('/categorySearch');
+                }
+              }}
+            />
+          </div>
+
           <Text>이별/재회</Text>
         </CartegoryItem>
         <CartegoryItem>
-          <Characters
-            number={3}
-            onClick={() => {
-              setSearchKeyword('여자심리');
-              if (pathname === '/search') {
-                navigate('/categorySearch?from=search');
-              } else {
-                navigate('/categorySearch');
-              }
-            }}
-          />
+          <div className="character-icon">
+            <Characters
+              number={3}
+              onClick={() => {
+                setSearchKeyword('여자심리');
+                if (pathname === '/search') {
+                  navigate('/categorySearch?from=search');
+                } else {
+                  navigate('/categorySearch');
+                }
+              }}
+            />
+          </div>
           <Text>여자심리</Text>
         </CartegoryItem>
         <CartegoryItem>
-          <Characters
-            number={4}
-            onClick={() => {
-              setSearchKeyword('남자심리');
-              if (pathname === '/search') {
-                navigate('/categorySearch?from=search');
-              } else {
-                navigate('/categorySearch');
-              }
-            }}
-          />
+          <div className="character-icon">
+            <Characters
+              number={4}
+              onClick={() => {
+                setSearchKeyword('남자심리');
+                if (pathname === '/search') {
+                  navigate('/categorySearch?from=search');
+                } else {
+                  navigate('/categorySearch');
+                }
+              }}
+            />
+          </div>
+
           <Text>남자심리</Text>
         </CartegoryItem>
       </Line>
       <Line>
         <CartegoryItem>
-          <Characters
-            number={5}
-            onClick={() => {
-              setSearchKeyword('썸/연애시작');
-              if (pathname === '/search') {
-                navigate('/categorySearch?from=search');
-              } else {
-                navigate('/categorySearch');
-              }
-            }}
-          />
+          <div className="character-icon">
+            <Characters
+              number={5}
+              onClick={() => {
+                setSearchKeyword('썸/연애시작');
+                if (pathname === '/search') {
+                  navigate('/categorySearch?from=search');
+                } else {
+                  navigate('/categorySearch');
+                }
+              }}
+            />
+          </div>
+
           <Text>썸/연애시작</Text>
         </CartegoryItem>
         <CartegoryItem>
-          <Characters
-            number={6}
-            onClick={() => {
-              setSearchKeyword('짝사랑');
-              if (pathname === '/search') {
-                navigate('/categorySearch?from=search');
-              } else {
-                navigate('/categorySearch');
-              }
-            }}
-          />
+          <div className="character-icon">
+            <Characters
+              number={6}
+              onClick={() => {
+                setSearchKeyword('짝사랑');
+                if (pathname === '/search') {
+                  navigate('/categorySearch?from=search');
+                } else {
+                  navigate('/categorySearch');
+                }
+              }}
+            />
+          </div>
           <Text>짝사랑</Text>
         </CartegoryItem>
         <CartegoryItem>
-          <Characters
-            number={7}
-            onClick={() => {
-              setSearchKeyword('권태기');
-              if (pathname === '/search') {
-                navigate('/categorySearch?from=search');
-              } else {
-                navigate('/categorySearch');
-              }
-            }}
-          />
+          <div className="character-icon">
+            <Characters
+              number={7}
+              onClick={() => {
+                setSearchKeyword('권태기');
+                if (pathname === '/search') {
+                  navigate('/categorySearch?from=search');
+                } else {
+                  navigate('/categorySearch');
+                }
+              }}
+            />
+          </div>
+
           <Text>권태기</Text>
         </CartegoryItem>
         <CartegoryItem>
-          <Characters
-            number={8}
-            onClick={() => {
-              setSearchKeyword('기타');
-              if (pathname === '/search') {
-                navigate('/categorySearch?from=search');
-              } else {
-                navigate('/categorySearch');
-              }
-            }}
-          />
+          <div className="character-icon">
+            <Characters
+              number={8}
+              onClick={() => {
+                setSearchKeyword('기타');
+                if (pathname === '/search') {
+                  navigate('/categorySearch?from=search');
+                } else {
+                  navigate('/categorySearch');
+                }
+              }}
+            />
+          </div>
           <Text>기타</Text>
         </CartegoryItem>
       </Line>
@@ -134,19 +154,24 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 2.5rem;
   padding: 1.6rem 2rem 1.6rem 2.1rem;
-  border-bottom: 1px solid ${Grey6};
+  background-color: ${Grey6};
 `;
 const Line = styled.div`
   display: flex;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.4rem;
 `;
 const CartegoryItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.6rem;
   cursor: pointer;
+  .character-icon {
+    width: 60%;
+    height: 100%;
+    align-self: center;
+  }
 `;
 const Text = styled.div`
   font-family: Pretendard;

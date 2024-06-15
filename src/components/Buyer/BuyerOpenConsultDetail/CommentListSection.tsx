@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Space } from 'components/Common/Space';
 import { getCustomerIsWriter, getCustomersComments } from 'api/get';
@@ -7,8 +7,18 @@ import { commentApiObject } from 'components/Seller/SellerOpenConsult/CommentLis
 import { BackDrop } from 'components/Common/BackDrop';
 import IsPickPopup from './IsPickPopup';
 import CommentCard from './CommentCard';
+import { Green, LightGreen, White } from 'styles/color';
+import { Flex } from 'components/Common/Flex';
+import { Caption1 } from 'styles/font';
+
+//
+//
+//
 
 function CommentListSection() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const [commentCard, setCommendCard] = useState<commentApiObject[]>([]);
   // 내 게시물인지 아닌지
   const [isMyPost, setIsMyPost] = useState<boolean>(false);
@@ -18,9 +28,40 @@ function CommentListSection() {
   const [isEndConsult, setIsEndConsult] = useState<boolean | undefined>();
   // 선택한 댓글 아이디 (좋아요, 채택)
   const [pickedCommentId, setPickedCommentId] = useState<string>('');
-  const { id } = useParams();
-  const navigate = useNavigate();
 
+  /**
+   *
+   */
+  const renderCommentCards = () => {
+    if (commentCard?.length === 0) {
+      return (
+        <NoCommentBox
+          align="center"
+          justify="center"
+          style={{ padding: '0.7rem 0' }}
+        >
+          <Caption1 color={Green}>
+            아직 마인더의 답변이 달리지 않았어요
+          </Caption1>
+        </NoCommentBox>
+      );
+    }
+
+    return commentCard?.map((item) => (
+      <CommentCard
+        key={item.commentId}
+        item={item}
+        isMyPost={isMyPost}
+        isEndConsult={isEndConsult}
+        setIsPickPopup={setIsPickPopup}
+        setPickedCommentId={setPickedCommentId}
+      />
+    ));
+  };
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchComment = async () => {
       try {
@@ -48,7 +89,13 @@ function CommentListSection() {
       }
     };
     fetchComment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, isPickPopup]);
+
+  //
+  //
+  //
+
   return (
     <>
       {isPickPopup && (
@@ -63,28 +110,27 @@ function CommentListSection() {
       )}
 
       <CommentListSectionWrapper>
-        {/* 댓글 리스트 , 최대 5개까지*/}
-        {commentCard?.map((item) => (
-          <CommentCard
-            key={item.commentId}
-            item={item}
-            isMyPost={isMyPost}
-            isEndConsult={isEndConsult}
-            setIsPickPopup={setIsPickPopup}
-            setPickedCommentId={setPickedCommentId}
-          />
-        ))}
-        <Space height="10rem" />
+        {renderCommentCards()}
+        <Space height="3.2rem" />
       </CommentListSectionWrapper>
     </>
   );
 }
+
+//
+//
+//
 
 const CommentListSectionWrapper = styled.section`
   padding: 1.2rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  background-color: ${White};
+`;
+
+const NoCommentBox = styled(Flex)`
+  background-color: ${LightGreen};
 `;
 
 export default CommentListSection;

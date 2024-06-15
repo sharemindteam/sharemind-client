@@ -17,7 +17,6 @@ function NoProfileSection() {
 
   return (
     <>
-      {' '}
       <NotWriteSection>
         <NotWriteGraphic />
         <NotWriteMessage>판매 정보를 작성해주세요</NotWriteMessage>

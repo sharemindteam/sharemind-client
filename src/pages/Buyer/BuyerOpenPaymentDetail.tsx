@@ -19,7 +19,6 @@ export const BuyerOpenPaymentDetail = () => {
     try {
       const res: any = await postOpenConsult(body);
       if (res.status === 201) {
-        console.log(res);
         navigate('/paymentComplete');
       } else if (res?.response.status === 404) {
         alert('존재하지 않는 회원입니다.');
