@@ -1,65 +1,103 @@
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as FireIcon } from 'assets/icons/icon-fire.svg';
-import { Body4 } from 'styles/font';
-import { Grey6 } from 'styles/color';
-import { getCustomerPopularConsultList } from 'api/get';
+import { ReactComponent as FireIcon } from 'assets/open-consult/open-consult-fire.svg';
+import { ReactComponent as ArrowIcon } from 'assets/open-consult/open-consult-arrow.svg';
+import { Body1, Caption2 } from 'styles/font';
+import { getPostsCustomersPublicLikes } from 'api/get';
 import { useNavigate } from 'react-router-dom';
-interface apiHotConsultObj {
+import { Flex } from 'components/Common/Flex';
+import OpenConsultCard from './OpenConsultCard';
+import { Grey2 } from 'styles/color';
+import { Space } from 'components/Common/Space';
+import { useQuery } from '@tanstack/react-query';
+
+//
+//
+//
+
+export interface getPostsCustomersPublicLikesResponse {
   postId: number;
   title: string;
+  content: string;
+  isLiked: boolean;
+  isScrapped: boolean;
+  totalLike: number;
+  totalScrap: number;
+  totalComment: number;
+  updatedAt: string;
+  finishedAt: string;
 }
-function HotOpenConsultList() {
-  const [hotConsultList, setHotConsultList] = useState<apiHotConsultObj[]>([]);
+
+//
+//
+//
+
+const HotOpenConsultList = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchHotConsultList = async () => {
-      const res: any = await getCustomerPopularConsultList();
-      if (res.status === 200) {
-        setHotConsultList(res.data);
-      }
-    };
-    fetchHotConsultList();
-  }, []);
+
+  const params = {
+    postId: 0,
+    finishedAt: new Date().toISOString().slice(0, 19),
+  };
+
+  const { data: hotConsultList } = useQuery<
+    getPostsCustomersPublicLikesResponse[]
+  >({
+    queryKey: ['getPostsCustomersPublicLikes'],
+    queryFn: async () =>
+      await getPostsCustomersPublicLikes(params).then((res) => res.data),
+  });
+
+  //
+  //
+  //
+
   return (
-    <HotList>
-      <FireIconWrapper>
-        <FireIcon />
-      </FireIconWrapper>
-      {hotConsultList?.map((item) => (
-        <HotTitleItem
-          key={item.postId}
-          onClick={() => {
-            navigate(`/open-consult/${item.postId}`);
-          }}
-        >
-          <Body4>
-            {item.title.length > 19
-              ? item.title.slice(0, 19) + '...'
-              : item.title}
-          </Body4>
-        </HotTitleItem>
-      ))}
-    </HotList>
+    <Wrapper>
+      <PointerFlex
+        justify="space-between"
+        onClick={() => {
+          navigate('/open-consult/likes');
+        }}
+      >
+        <Flex gap="0.6rem">
+          <FireIcon />
+          <Body1>인기글</Body1>
+        </Flex>
+        <ArrowIcon />
+      </PointerFlex>
+      <Caption2 color={Grey2} margin="0 0 0 3rem">
+        공감을 10개 이상 받았어요
+      </Caption2>
+      <Space height="1rem" />
+      <Flex direction="column" gap="1.2rem">
+        {hotConsultList?.map((consult) => (
+          <OpenConsultCard
+            key={consult.postId}
+            title={consult.title}
+            totalLike={consult.totalLike}
+            totalScrap={consult.totalScrap}
+            totalComment={consult.totalComment}
+            updatedAt={consult.updatedAt}
+            onClick={() => {
+              navigate(`/open-consult/${consult.postId}`);
+            }}
+          />
+        ))}
+      </Flex>
+    </Wrapper>
   );
-}
+};
 
-const HotList = styled.div`
-  display: flex;
-  white-space: nowrap;
-  flex-wrap: nowrap;
-  overflow-x: scroll;
-  gap: 1.2rem;
-  align-items: center;
+//
+//
+//
+
+const Wrapper = styled.section`
+  padding: 1.2rem 2rem 2.3rem 2rem;
 `;
 
-const HotTitleItem = styled.div`
-  padding: 1.2rem 1.6rem;
+const PointerFlex = styled(Flex)`
   cursor: pointer;
-  background-color: ${Grey6};
-  border-radius: 1.2rem;
 `;
-
-const FireIconWrapper = styled.div``;
 
 export default HotOpenConsultList;

@@ -21,28 +21,35 @@ interface AppContainerProps {
 export const AppContainer = ({ children }: AppContainerProps) => {
   useViewResize();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
+
   var { pathname, search } = useLocation();
+
   const [isGray, setIsGray] = useState(false);
+
+  const isOpenConsultDetailPage =
+    /^(\/open-consult\/\d+|\/minder\/open-consult\/\d+)$/.test(pathname);
+
+  const isGreyBackground =
+    pathname === '/minder/mypage/viewProfile' ||
+    pathname === '/minder/mypage' ||
+    pathname === '/minder/mypage/modifyProfile' ||
+    pathname === '/mypage' ||
+    pathname === '/review' ||
+    pathname === '/paymentDetail' ||
+    pathname.includes('/chat/') ||
+    (pathname.includes('/open-consult') && !isOpenConsultDetailPage) ||
+    (pathname.includes('/consult') && search.includes('type=open-consult'));
 
   //
   //
   //
   useEffect(() => {
-    if (
-      pathname === '/minder/mypage/viewProfile' ||
-      pathname === '/minder/mypage' ||
-      pathname === '/minder/mypage/modifyProfile' ||
-      pathname === '/mypage' ||
-      pathname === '/review' ||
-      pathname === '/paymentDetail' ||
-      pathname.includes('/chat/') ||
-      pathname.includes('/open-consult') ||
-      (pathname.includes('/consult') && search.includes('type=open-consult'))
-    ) {
+    if (isGreyBackground) {
       setIsGray(true);
     } else {
       setIsGray(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, search]);
 
   //

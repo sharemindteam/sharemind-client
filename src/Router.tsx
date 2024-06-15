@@ -51,6 +51,9 @@ import { BuyerOpenPaymentDetail } from 'pages/Buyer/BuyerOpenPaymentDetail';
 import BuyerWriteOpenConsult from 'pages/Buyer/BuyerWriteOpenConsult';
 import BuyerOpenConsultDetail from 'pages/Buyer/BuyerOpenConsultDetail';
 import BuyerFinishPayment from 'pages/Buyer/BuyerFinishPayment';
+import BuyerOpenConsultLikes from 'pages/Buyer/BuyerOpenConsultLikes';
+import BuyerOpenConsultRecents from 'pages/Buyer/BuyerOpenConsultRecents';
+
 const Router = () => {
   return (
     <Routes>
@@ -61,6 +64,11 @@ const Router = () => {
       <Route path="/" element={<Navigate to="/share" />} />
       <Route path="/consult" element={<BuyerConsult />} />
       <Route path="/open-consult" element={<BuyerOpenConsult />} />
+      <Route path="/open-consult/likes" element={<BuyerOpenConsultLikes />} />
+      <Route
+        path="/open-consult/recents"
+        element={<BuyerOpenConsultRecents />}
+      />
       <Route path="/open-consult/:id" element={<BuyerOpenConsultDetail />} />
       <Route path="/profile/:id" element={<BuyerCounselorProfile />} />
       <Route path="/search" element={<BuyerSearch />} />

@@ -1,4 +1,4 @@
-import { postInstance, postPublicInstance } from './axios';
+import { postInstance, postPublicInstance } from './axios.deprecated';
 //Auth controller
 //로그인
 export const postLogin = async (body: any) =>

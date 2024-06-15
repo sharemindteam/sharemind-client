@@ -19,7 +19,7 @@ const BuyerOpenConsult = () => {
   //
 
   return (
-    <Wrapper>
+    <>
       <Header
         isBuyer={true}
         onClick={() => {
@@ -27,13 +27,11 @@ const BuyerOpenConsult = () => {
         }}
       />
       <TabA1 isBuyer={true} initState={3} />
-      <section className="hot-consult-list">
-        <HotOpenConsultList />
-      </section>
-      <section className="open-consult-list">
-        <OpenConsultList />
-        <Space height="5.2rem" />
-      </section>
+
+      <HotOpenConsultList />
+      <OpenConsultList />
+      <Space height="8.9rem" />
+
       <CreateConsultButtonWrapper>
         <Button
           text="공개상담 신청하기"
@@ -44,7 +42,7 @@ const BuyerOpenConsult = () => {
           }}
         />
       </CreateConsultButtonWrapper>
-    </Wrapper>
+    </>
   );
 };
 
@@ -52,23 +50,12 @@ const BuyerOpenConsult = () => {
 //
 //
 
-const Wrapper = styled.div`
-  section.hot-consult-list {
-    height: 4.6rem;
-    margin: 1.2rem 0rem 1.2rem 2rem;
-    overflow: hidden;
-    width: calc(100% - 2rem);
-  }
-`;
-
 const CreateConsultButtonWrapper = styled.div`
   width: 100%;
   padding: 0 2rem;
   box-sizing: border-box;
-  display: flex;
   position: fixed;
   bottom: 1.5rem;
-  flex-direction: column;
   @media (min-width: 768px) {
     width: 375px;
   }

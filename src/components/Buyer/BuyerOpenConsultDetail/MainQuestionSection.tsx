@@ -1,12 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey3, Grey6 } from 'styles/color';
+import { Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
+
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
-import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart1.svg';
-import { ReactComponent as SaveIcon } from 'assets/icons/icon-save2.svg';
-import { ReactComponent as HeartEmptyIcon } from 'assets/icons/icon-heart3.svg';
-import { ReactComponent as SaveEmptyIcon } from 'assets/icons/icon-save3.svg';
-import { Body1, Caption1, Caption2 } from 'styles/font';
+import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart-button.svg';
+import { ReactComponent as SaveIcon } from 'assets/open-consult/open-consult-scrap-button.svg';
+import { ReactComponent as HeartEmptyIcon } from 'assets/open-consult/open-consult-heart-empty-button.svg';
+import { ReactComponent as SaveEmptyIcon } from 'assets/open-consult/open-consult-scrap-empty-button.svg';
+
+import { Body1, Button2, Caption1, Caption2 } from 'styles/font';
 import { Space } from 'components/Common/Space';
 import { openConsultApiObject } from 'pages/Buyer/BuyerConsult';
 import { getOneOpenConsult } from 'api/get';
@@ -14,14 +16,26 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { postLikeOpenConsult, postScrapOpenConsult } from 'api/post';
 import { deletePostLikes, deletePostScraps } from 'api/delete';
 import { formattedMessage } from 'utils/formattedMessage';
+import { Flex } from 'components/Common/Flex';
+
+//
+//
+//
+
 function MainQuestionSection() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [isSave, setIsSave] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [card, setCard] = useState<openConsultApiObject>();
+
   // 보내기 중복 방지
   const [isSending, setIsSending] = useState<boolean>(false);
-  const { id } = useParams();
-  const navigate = useNavigate();
+
+  /**
+   *
+   */
   const handleClickLikeButton = useCallback(async () => {
     if (isSending) {
       return;
@@ -50,8 +64,12 @@ function MainQuestionSection() {
         setIsSending(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, isLike, isSending]);
 
+  /**
+   *
+   */
   const handleClickScrapButton = useCallback(async () => {
     if (isSending) {
       return;
@@ -80,7 +98,12 @@ function MainQuestionSection() {
         setIsSending(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, isSave, isSending]);
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchOneConsult = async () => {
       try {
@@ -89,13 +112,21 @@ function MainQuestionSection() {
           setCard(res.data);
           setIsLike(res.data.isLiked);
           setIsSave(res.data.isScrapped);
+        } else {
+          alert('존재하지 않는 게시물입니다.');
+          navigate('/open-consult');
         }
       } catch (err) {
         alert(err);
       }
     };
     fetchOneConsult();
-  }, [isLike, isSave, id]);
+  }, [isLike, isSave, id, navigate]);
+
+  //
+  //
+  //
+
   return (
     <MainQuestionWrapper>
       <MainQuestionText>
@@ -118,7 +149,7 @@ function MainQuestionSection() {
         </div>
         <Space height="1rem" />
       </MainQuestionText>
-      <ButtonList>
+      <Flex gap="1rem" justify="flex-end">
         <ButtonItem>
           {isLike ? (
             <HeartIcon onClick={handleClickLikeButton} />
@@ -126,33 +157,40 @@ function MainQuestionSection() {
             <HeartEmptyIcon onClick={handleClickLikeButton} />
           )}
 
-          <Caption1 color={Grey2}>{card?.totalLike}</Caption1>
+          <Button2 color={Grey2}>{card?.totalLike}</Button2>
         </ButtonItem>
         <ButtonItem>
           {isSave ? (
-            <SaveResizeIcon onClick={handleClickScrapButton} />
+            <SaveIcon onClick={handleClickScrapButton} />
           ) : (
             <SaveEmptyIcon onClick={handleClickScrapButton} />
           )}
 
-          <Caption1 color={Grey2}>{card?.totalScrap}</Caption1>
+          <Button2 color={Grey2}>{card?.totalScrap}</Button2>
         </ButtonItem>
-      </ButtonList>
+      </Flex>
     </MainQuestionWrapper>
   );
 }
+
+export default MainQuestionSection;
+
+//
+//
+//
+
 const MainQuestionWrapper = styled.section`
   display: flex;
   padding: 1.2rem 2rem;
   flex-direction: column;
   gap: 1.2rem;
-  border-bottom: 1px solid ${Grey6};
+  background-color: ${Grey6};
 `;
 
 const MainQuestionText = styled.div`
   width: 100%;
   position: relative;
-  background-color: ${Grey6};
+  background-color: ${White};
   padding: 1.6rem;
   box-sizing: border-box;
   border-radius: 1.2rem;
@@ -185,22 +223,11 @@ const Circle = styled.div`
   background-color: ${Grey3};
 `;
 
-const ButtonList = styled.div`
-  display: flex;
-  gap: 1.2rem;
-`;
-
 const ButtonItem = styled.div`
   border-radius: 0.8rem;
-  background: ${Grey6};
+  background: ${White};
   display: flex;
-  padding: 0.6rem 1.2rem 0.6rem 0.6rem;
+  padding: 0.8rem 1.2rem;
   align-items: center;
   gap: 0.4rem;
 `;
-
-const SaveResizeIcon = styled(SaveIcon)`
-  width: 2rem;
-  height: 2rem;
-`;
-export default MainQuestionSection;

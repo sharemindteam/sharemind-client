@@ -8,6 +8,7 @@ interface FlexProps extends FlexBaseProps {
   children: React.ReactNode;
   className?: string;
   style?: CSSProperties;
+  onClick?: () => void;
 }
 
 interface FlexBaseProps {
@@ -41,6 +42,7 @@ export const Flex = ({
   wrap = 'nowrap',
   className,
   style,
+  onClick,
 }: FlexProps) => {
   return (
     <FlexBase
@@ -53,6 +55,7 @@ export const Flex = ({
       wrap={wrap}
       className={className}
       style={style}
+      onClick={onClick}
     >
       {children}
     </FlexBase>

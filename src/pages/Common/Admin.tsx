@@ -67,7 +67,7 @@ export const Admin = () => {
   const navigate = useNavigate();
   const [consultData, setConsultData] = useState<PayArray>([]);
   const [openConsultData, setOpenConsultData] = useState<OpenPay[]>([]);
-  console.log(openConsultData);
+
   const [profileData, setProfileData] = useState<Counselor[]>([]);
   const [refundData, setRefundData] = useState<Refund[]>([]);
   const [valid, setValid] = useState<boolean>(false);

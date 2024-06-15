@@ -1,4 +1,5 @@
-import { getInstance, getPublicInstance } from './axios';
+import { axiosGet, axiosPublicGet } from './axios';
+import { getInstance, getPublicInstance } from './axios.deprecated';
 
 /**
  * Admin Controller
@@ -165,13 +166,16 @@ export const getCounselorsRandomConsult = async () =>
   await getInstance(`/posts/counselors/random`);
 
 export const getCustomerOpenConsultList = async (params: any) =>
-  await getInstance('/posts/customers', params);
+  await getInstance('/posts/customers', { params });
 
-export const getCustomerPopularConsultList = async () =>
-  await getPublicInstance('/posts/customers/public/likes');
+export const getPostsCutsomers = async (params: any) =>
+  axiosGet('/posts/customers', params);
 
-export const getCustomerPublicConsultList = async (params: any) =>
-  await getPublicInstance('/posts/customers/public', params);
+export const getPostsCustomersPublicLikes = (params: any) =>
+  axiosPublicGet('/posts/customers/public/likes', params);
+
+export const getPostsCustomersPublic = (params: any) =>
+  axiosPublicGet('/posts/customers/public', params);
 
 export const getCustomerIsWriter = async (postId: any) =>
   await getInstance(`/posts/customers/public/${postId}`);

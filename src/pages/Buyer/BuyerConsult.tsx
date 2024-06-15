@@ -15,6 +15,16 @@ import { BuyerConsultLetterSection } from 'components/Buyer/BuyerConsult/BuyerCo
 import { useConsultParams } from 'hooks/useConsultParams';
 import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenConsultSection';
 
+//
+//
+//
+
+const SORT_LIST = ['최근순', '읽지않은순'];
+
+//
+//
+//
+
 export interface consultApiObject {
   consultStyle: string;
   consultCategory: string;
@@ -28,6 +38,7 @@ export interface consultApiObject {
   reviewCompleted: boolean | null;
   consultId: number | null;
 }
+
 export interface openConsultApiObject {
   postId: number;
   postScrapId: number;
@@ -48,9 +59,13 @@ export interface openConsultApiObject {
   consultCategory?: string;
 }
 
+//
+//
+//
+
 export const BuyerConsult = () => {
   const navigate = useNavigate();
-  const sortList = ['최근순', '읽지않은순'];
+
   const {
     consultType,
     sortType,
@@ -69,6 +84,78 @@ export const BuyerConsult = () => {
   ); // Modal 여부(recoil)
 
   const setScrollLock = useSetRecoilState(scrollLockState);
+
+  /**
+   *
+   */
+  const renderCheckBox = () => {
+    return (
+      <div
+        className="exception-toggle"
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          setIsChecked(!isChecked);
+          searchParams.set('check', String(!isChecked));
+          setSearchParams(searchParams);
+        }}
+      >
+        {isChecked ? <CheckIcon /> : <NonCheckIcon />}
+        <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
+      </div>
+    );
+  };
+
+  /**
+   *
+   */
+  const renderConsultSection = () => {
+    switch (consultType) {
+      case 'letter':
+        return (
+          <BuyerConsultLetterSection
+            sortType={sortType}
+            isChecked={isChecked}
+          />
+        );
+      case 'chat':
+        return (
+          <BuyerConsultChatSection sortType={sortType} isChecked={isChecked} />
+        );
+      case 'open-consult':
+        return <BuyerOpenConsultSection isChecked={isChecked} />;
+      default:
+        return null;
+    }
+  };
+
+  /**
+   *
+   */
+  const renderSortModal = () => {
+    if (!isModalOpen) {
+      return null;
+    }
+
+    return (
+      <>
+        <BackDrop
+          onClick={() => {
+            setIsModalOpen(false);
+          }}
+        />
+        <ConsultModal
+          sortType={sortType}
+          setSortType={setSortType}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
+      </>
+    );
+  };
+
+  //
+  //
+  //
 
   return (
     <Wrapper>
@@ -115,50 +202,23 @@ export const BuyerConsult = () => {
                 setScrollLock(true);
               }}
             >
-              <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+              <Button2 color={Grey3}>{SORT_LIST[sortType]}</Button2>
               <Down />
             </div>
           )}
         </div>
-
-        <div
-          className="exception-toggle"
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            setIsChecked(!isChecked);
-            searchParams.set('check', String(!isChecked));
-            setSearchParams(searchParams);
-          }}
-        >
-          {isChecked ? <CheckIcon /> : <NonCheckIcon />}
-          <Body3 color={Grey3}>종료/취소된 상담 제외</Body3>
-        </div>
+        {renderCheckBox()}
       </div>
-      {consultType === 'letter' ? (
-        <BuyerConsultLetterSection sortType={sortType} isChecked={isChecked} />
-      ) : consultType === 'chat' ? (
-        <BuyerConsultChatSection sortType={sortType} isChecked={isChecked} />
-      ) : (
-        <BuyerOpenConsultSection isChecked={isChecked} />
-      )}
-      {isModalOpen ? (
-        <>
-          <BackDrop
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-          />
-          <ConsultModal
-            sortType={sortType}
-            setSortType={setSortType}
-            searchParams={searchParams}
-            setSearchParams={setSearchParams}
-          />
-        </>
-      ) : null}
+      {renderConsultSection()}
+      {renderSortModal()}
     </Wrapper>
   );
 };
+
+//
+//
+//
+
 const Wrapper = styled.div`
   .options {
     padding: 0.8rem 2rem 1.6rem;
@@ -179,7 +239,7 @@ const Wrapper = styled.div`
   .select-wrapper {
     display: flex;
     gap: 0.4rem;
-    cursor: pointer;  
+    cursor: pointer;
   }
   .select-button {
     display: flex;
