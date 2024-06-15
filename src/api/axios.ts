@@ -40,9 +40,8 @@ instance.interceptors.response.use(
 
         if (tokenResponse.status === 200) {
           const { accessToken, refreshToken } = tokenResponse.data;
-
-          setCookie('accessToken', accessToken);
-          setCookie('refreshToken', refreshToken);
+          setCookie('accessToken', accessToken, { path: '/' });
+          setCookie('refreshToken', refreshToken, { path: '/' });
           axios.defaults.headers.common.Authorization = `${accessToken}`;
           originRequest.headers.Authorization = `${accessToken}`;
           return instance(originRequest);
@@ -97,9 +96,8 @@ publicInstance.interceptors.response.use(
         });
         if (tokenResponse.status === 200) {
           const { accessToken, refreshToken } = tokenResponse.data;
-
-          setCookie('accessToken', accessToken);
-          setCookie('refreshToken', refreshToken);
+          setCookie('accessToken', accessToken, { path: '/' });
+          setCookie('refreshToken', refreshToken, { path: '/' });
           axios.defaults.headers.common.Authorization = `${accessToken}`;
           originRequest.headers.Authorization = `${accessToken}`;
           return axios(originRequest);
