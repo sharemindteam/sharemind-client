@@ -4,10 +4,16 @@ import { ReactComponent as LogoSeller } from 'assets/icons/logo-seller.svg';
 import { ReactComponent as LogoText } from 'assets/icons/logo-text.svg';
 import { ReactComponent as Search } from 'assets/icons/search.svg';
 import { useNavigate } from 'react-router-dom';
+//
+//
+//
 interface HeaderProps {
   isBuyer: boolean;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
+//
+//
+//
 export const Header = ({ isBuyer, onClick }: HeaderProps) => {
   const navigate = useNavigate();
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Subtitle } from 'styles/font';
+import { Caption2, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 
@@ -7,9 +7,17 @@ import { useNavigate } from 'react-router-dom';
 import { SearchResultData } from 'utils/type';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
+import { Green, Grey2 } from 'styles/color';
+import { Space } from 'components/Common/Space';
+///
+///
+///
 interface HomeConsultInReadyProps {
   searchData: SearchResultData[];
 }
+///
+///
+///
 export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
   const navigate = useNavigate();
 
@@ -22,9 +30,16 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
         }}
       >
         <NavConsult>
-          <Subtitle>들을 준비가 된 마인더들</Subtitle>
+          <div className="row1">
+            <Subtitle>들을 준비가 된 마인더들</Subtitle>
+            <MoreIcon />
+          </div>
+          <Space height="0.2rem" />
+          <Caption2 color={Grey2}>
+            현재 시간 <span id="current-time">20</span>시 기준, 실시간 상담을
+            신청할 수 있어요
+          </Caption2>
         </NavConsult>
-        <MoreIcon />
       </div>
       {searchData.map((value, index) => {
         if (index <= 2) {
@@ -54,7 +69,7 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
     </Wrapper>
   );
 };
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -62,7 +77,6 @@ const Wrapper = styled.div`
   margin-bottom: 3.5rem;
   .nav-consult {
     width: 100%;
-    height: 4.4rem;
     display: flex;
     box-sizing: border-box;
     align-items: center;
@@ -73,9 +87,16 @@ const Wrapper = styled.div`
   }
 `;
 const NavConsult = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin: 0px auto 0px 0px;
+  width: 100%;
+  span#current-time {
+    color: ${Green};
+  }
+  .row1 {
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
 `;
-const MoreIcon = styled(More)``;
+const MoreIcon = styled(More)`
+  margin-left: auto;
+`;
