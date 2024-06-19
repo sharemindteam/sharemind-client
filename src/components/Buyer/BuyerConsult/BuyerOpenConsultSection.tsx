@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Grey1, Grey2, Grey3, White } from 'styles/color';
-import { Body1, Body3, Caption1, Heading } from 'styles/font';
+import { Body1, Body2, Body3, Caption1, Heading } from 'styles/font';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isBuyPopupOpenState } from 'utils/atom';
 import { ReactComponent as LockIcon } from 'assets/icons/icon-lock.svg';
@@ -115,93 +115,88 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
         >
           <LoadingSpinner />
         </div>
+      ) : // 상담카드 부분
+      openConsultList.length !== 0 ? (
+        <EmptyWrapper>
+          <EmptyIcon />
+          <Heading>아직 진행한 상담이 없어요</Heading>
+          <Space height="1rem" />
+          <Body2>상담은 공개상담 탭에서 신청할 수 있어요.</Body2>
+        </EmptyWrapper>
       ) : (
         <BuyerOpenConsultCardList>
-          {/* 상담카드 부분 */}
-          {openConsultList.length === 0 ? (
-            <EmptyWrapper>
-              <EmptyIcon />
-              <Heading>아직 진행한 상담이 없어요</Heading>
-            </EmptyWrapper>
-          ) : (
-            openConsultList?.map((item) => {
-              if (item.title === null) {
-                return (
-                  <BuyerPendingOpenConsultCard key={item.postId}>
-                    <Body1>
-                      {item.isCompleted === null
-                        ? '상담 글을 작성해주세요!'
-                        : '임시저장된 글입니다.'}
-                    </Body1>
-                    <Body3>
-                      {item.isCompleted === null
-                        ? '결제 후 작성전'
-                        : '이어서 작성하기'}
-                    </Body3>
-                    <Button
-                      text={
-                        item.isCompleted === null
-                          ? '상담 글 작성하기'
-                          : '이어서 작성하기'
-                      }
-                      width="100%"
-                      height="4rem"
-                      onClick={() => {
-                        navigate(`/writeOpenConsult/${item.postId}`);
-                      }}
-                    ></Button>
-                  </BuyerPendingOpenConsultCard>
-                );
-              } else {
-                return (
-                  <BuyerOpenConsultCard
-                    key={item.postId}
+          {openConsultList?.map((item) => {
+            if (item.title === null) {
+              return (
+                <BuyerPendingOpenConsultCard key={item.postId}>
+                  <Body1>
+                    {item.isCompleted === null
+                      ? '상담 글을 작성해주세요!'
+                      : '임시저장된 글입니다.'}
+                  </Body1>
+                  <Body3>
+                    {item.isCompleted === null
+                      ? '결제 후 작성전'
+                      : '이어서 작성하기'}
+                  </Body3>
+                  <Button
+                    text={
+                      item.isCompleted === null
+                        ? '상담 글 작성하기'
+                        : '이어서 작성하기'
+                    }
+                    width="100%"
+                    height="4rem"
                     onClick={() => {
-                      navigate(`/open-consult/${item.postId}?isMine=true`);
+                      navigate(`/writeOpenConsult/${item.postId}`);
                     }}
-                  >
-                    <div className="row1">
-                      <Body1>{item?.title}</Body1>
-                      {!item?.isPublic && (
-                        <PrivateSign>
-                          <LockIcon />
-                          <Caption1 color={Grey3}>비공개</Caption1>
-                        </PrivateSign>
-                      )}
-                    </div>
-                    <Space height="1.2rem" />
-                    <div className="row2">{item?.content}</div>
-                    <div className="row3">
-                      <IconItem>
-                        {item?.isLiked ? (
-                          <HeartResizeIcon />
-                        ) : (
-                          <HeartEmptyIcon />
-                        )}
-
-                        <Caption1 color={Grey2}>{item?.totalLike}</Caption1>
-                      </IconItem>
-                      <IconItem>
-                        {item?.isScrapped ? <SaveIcon /> : <SaveEmptyIcon />}
-
-                        <Caption1 color={Grey2}>{item?.totalScrap}</Caption1>
-                      </IconItem>
-                      <IconItem>
-                        <CommentIcon />
-                        <Caption1 color={Grey2}>{item?.totalComment}</Caption1>
-                      </IconItem>
-                    </div>
-                    <TimeLeft>{item?.updatedAt}</TimeLeft>
-                  </BuyerOpenConsultCard>
-                );
-              }
-            })
-          )}
-          {/* 상담카드 부분 */}
-          {/* 마지막 요소가 가려지지 않도록 마진 영역을 추가 */}
-          <Space height="4rem" />
+                  ></Button>
+                </BuyerPendingOpenConsultCard>
+              );
+            } else {
+              return (
+                <BuyerOpenConsultCard
+                  key={item.postId}
+                  onClick={() => {
+                    navigate(`/open-consult/${item.postId}?isMine=true`);
+                  }}
+                >
+                  <div className="row1">
+                    <Body1>{item?.title}</Body1>
+                    {!item?.isPublic && (
+                      <PrivateSign>
+                        <LockIcon />
+                        <Caption1 color={Grey3}>비공개</Caption1>
+                      </PrivateSign>
+                    )}
+                  </div>
+                  <Space height="1.2rem" />
+                  <div className="row2">{item?.content}</div>
+                  <div className="row3">
+                    <IconItem>
+                      {item?.isLiked ? <HeartResizeIcon /> : <HeartEmptyIcon />}
+                      <Caption1 color={Grey2}>{item?.totalLike}</Caption1>
+                    </IconItem>
+                    <IconItem>
+                      {item?.isScrapped ? <SaveIcon /> : <SaveEmptyIcon />}
+                      <Caption1 color={Grey2}>{item?.totalScrap}</Caption1>
+                    </IconItem>
+                    <IconItem>
+                      <CommentIcon />
+                      <Caption1 color={Grey2}>{item?.totalComment}</Caption1>
+                    </IconItem>
+                  </div>
+                  <TimeLeft>{item?.updatedAt}</TimeLeft>
+                </BuyerOpenConsultCard>
+              );
+            }
+          })}
         </BuyerOpenConsultCardList>
-      )}
+      )
+      // 상담카드 부분 끝
+      }
+      {/* 마지막 요소가 가려지지 않도록 마진 영역을 추가 */}
+      <Space height="4rem" />
 
       <div ref={observerElem} />
 
@@ -331,7 +326,7 @@ const EmptyIcon = styled(Empty)`
   padding: 4.7rem 4.41rem 4.603rem 4.5rem;
 `;
 const EmptyWrapper = styled.div`
-  margin: 10vh auto 0px;
+  margin: calc(10vh - 1px) auto 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
