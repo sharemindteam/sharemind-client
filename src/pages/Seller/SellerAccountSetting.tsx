@@ -30,10 +30,10 @@ function SellerAccountSetting() {
         <div
           className="row"
           onClick={() => {
-            navigate('/minder/refundBankAccount');
+            navigate('/minder/profitBankAccount');
           }}
         >
-          <Body2 color={Grey1}>환불계좌 관리</Body2>
+          <Body2 color={Grey1}>수익계좌 관리</Body2>
         </div>
         <div
           className="row"

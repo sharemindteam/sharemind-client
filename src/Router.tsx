@@ -117,7 +117,7 @@ const Router = () => {
         element={<SellerPwChange />}
       />
       <Route
-        path="/minder/refundBankAccount"
+        path="/minder/profitBankAccount"
         element={<SellerRefundBankAccount />}
       />
       <Route path="/minder/setting/terminate" element={<SellerTerminate />} />

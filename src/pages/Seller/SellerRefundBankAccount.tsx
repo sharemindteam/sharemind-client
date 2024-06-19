@@ -76,7 +76,7 @@ function SellerRefundBankAccount() {
             navigate('/minder/setting');
           }}
         />
-        <Heading color={Grey1}>환불계좌 관리</Heading>
+        <Heading color={Grey1}>수익계좌 관리</Heading>
       </HeaderWrapper>
       <Space height="0.8rem" />
       <Form>
