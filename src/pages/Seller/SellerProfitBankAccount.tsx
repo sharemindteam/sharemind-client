@@ -16,11 +16,12 @@ import { Body1, Heading } from 'styles/font';
 import { BankIcon } from 'utils/BankIcon';
 import { isBankModalOpenState } from 'utils/atom';
 
-function SellerRefundBankAccount() {
+function SellerProfitBankAccount() {
   const navigate = useNavigate();
   const [accountNum, setAccountNum] = useState<string>('');
-  const [bankType, setBankType] = useState<string | null>(null);
-  const [owner, setOwner] = useState('');
+  const [bankType, setBankType] = useState<string>('');
+  const [owner, setOwner] = useState<string>('');
+  
   // 은행 모달
   const [isBankModalOpen, setIsBankModalOpen] =
     useRecoilState(isBankModalOpenState);
@@ -42,7 +43,7 @@ function SellerRefundBankAccount() {
     fetchAccountData();
   }, []);
   useEffect(() => {
-    if (accountNum !== '' && bankType !== '' && owner !== '') {
+    if (accountNum?.length > 0 && bankType?.length > 0 && owner?.length > 0) {
       setIsActiveFinishButton(true);
     } else {
       setIsActiveFinishButton(false);
@@ -162,4 +163,4 @@ const Form = styled.div`
   }
 `;
 
-export default SellerRefundBankAccount;
+export default SellerProfitBankAccount;

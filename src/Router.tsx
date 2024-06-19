@@ -35,7 +35,6 @@ import { BuyerConsultRequest } from 'pages/Buyer/BuyerConsultRequest';
 import { BuyerPaymentDetail } from 'pages/Buyer/BuyerPaymentDetail';
 import { BuyerPaymentComplete } from 'pages/Buyer/BuyerPaymentComplete';
 import SellerAccountSetting from 'pages/Seller/SellerAccountSetting';
-import SellerRefundBankAccount from 'pages/Seller/SellerRefundBankAccount';
 import { SellerPwChange } from 'pages/Seller/SellerPwChange';
 import { SellerTerminate } from 'pages/Seller/SellerTerminate';
 import { SellerLogout } from 'pages/Seller/SellerLogout';
@@ -53,6 +52,7 @@ import BuyerOpenConsultDetail from 'pages/Buyer/BuyerOpenConsultDetail';
 import BuyerFinishPayment from 'pages/Buyer/BuyerFinishPayment';
 import BuyerOpenConsultLikes from 'pages/Buyer/BuyerOpenConsultLikes';
 import BuyerOpenConsultRecents from 'pages/Buyer/BuyerOpenConsultRecents';
+import SellerProfitBankAccount from 'pages/Seller/SellerProfitBankAccount';
 
 const Router = () => {
   return (
@@ -118,7 +118,7 @@ const Router = () => {
       />
       <Route
         path="/minder/profitBankAccount"
-        element={<SellerRefundBankAccount />}
+        element={<SellerProfitBankAccount />}
       />
       <Route path="/minder/setting/terminate" element={<SellerTerminate />} />
       <Route path="/minder/setting/logout" element={<SellerLogout />} />
