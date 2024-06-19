@@ -9,6 +9,7 @@ import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { Green, Grey2 } from 'styles/color';
 import { Space } from 'components/Common/Space';
+import { getCurrentHour } from 'utils/getCurrentHour';
 ///
 ///
 ///
@@ -36,8 +37,8 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
           </div>
           <Space height="0.2rem" />
           <Caption2 color={Grey2}>
-            현재 시간 <span id="current-time">20</span>시 기준, 실시간 상담을
-            신청할 수 있어요
+            현재 시간 <span id="current-time">{getCurrentHour()}</span>시 기준,
+            실시간 상담을 신청할 수 있어요
           </Caption2>
         </NavConsult>
       </div>
