@@ -98,11 +98,7 @@ export const ReadyConsultCard = ({
 
   return (
     <Wrapper>
-      <UpperWrapper
-        onClick={() => {
-          navigate(`/profile/${counselorId}`);
-        }}
-      >
+      <UpperWrapper>
         <Body1>{introduction}</Body1>
         <Space height="1.5rem" />
         <TagWrapper>
@@ -147,6 +143,9 @@ export const ReadyConsultCard = ({
           color={Green}
           backgroundColor={White}
           border={`1px solid ${Green}`}
+          onClick={() => {
+            navigate(`/profile/${counselorId}`);
+          }}
         />
         {isSaved ? (
           <BookMarkIcon onClick={handleUnBookmark} />
@@ -166,7 +165,6 @@ const Wrapper = styled.div`
 `;
 const UpperWrapper = styled.div`
   border-bottom: 1px solid ${White};
-  cursor: pointer;
   background: linear-gradient(90deg, #2dc7bd 0%, #ecfaf9 100%);
   padding: 1.4rem 2rem 1.2rem 1.6rem;
   border-radius: 0.8rem 0.8rem 0 0;
@@ -179,7 +177,6 @@ const LowerWrapper = styled.div`
   padding: 1.5rem 2rem;
   gap: 0.8rem;
   position: relative;
-  cursor: pointer;
   .row1 {
     display: flex;
     align-items: center;
