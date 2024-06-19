@@ -20,6 +20,7 @@ import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { getPostsCutsomers } from 'api/get';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import useInfiniteObserver from 'hooks/useInfiniteObserver';
+import { Flex } from 'components/Common/Flex';
 
 //
 //
@@ -117,7 +118,7 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
             <LoadingSpinner />
           </div>
         ) : // 상담카드 부분
-        openConsultList.length !== 0 ? (
+        openConsultList.length === 0 ? (
           <EmptyWrapper>
             <EmptyIcon />
             <Heading>아직 진행한 상담이 없어요</Heading>
@@ -130,24 +131,29 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
               if (item.title === null) {
                 return (
                   <BuyerPendingOpenConsultCard key={item.postId}>
-                    <Body1>
-                      {item.isCompleted === null
-                        ? '상담 글을 작성해주세요!'
-                        : '임시저장된 글입니다.'}
-                    </Body1>
+                    <Flex className="row-1" justify="space-between">
+                      <Body1>
+                        {item.isCompleted === null
+                          ? '상담 글을 작성해주세요!'
+                          : '임시저장된 글입니다.'}
+                      </Body1>
+                      <Caption1 color={Grey3}>{item.updatedAt}</Caption1>
+                    </Flex>
+
                     <Body3>
                       {item.isCompleted === null
-                        ? '결제 후 작성전'
+                        ? '공개상담을 결제한 후 아직 글을 작성하지 않으셨어요. 구매 후 24시간이 지나면 자동으로 환불이 진행됩니다.'
                         : '이어서 작성하기'}
                     </Body3>
                     <Button
                       text={
                         item.isCompleted === null
-                          ? '상담 글 작성하기'
+                          ? '작성하기'
                           : '이어서 작성하기'
                       }
                       width="100%"
-                      height="4rem"
+                      height="4.4rem"
+                      buttonTextType={2}
                       onClick={() => {
                         navigate(`/writeOpenConsult/${item.postId}`);
                       }}
@@ -233,7 +239,7 @@ const BuyerPendingOpenConsultCard = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   padding: 1.6rem;
-  gap: 0.8rem;
+  gap: 1.4rem;
   position: relative;
   background-color: ${White};
   border-radius: 1.2rem;
@@ -302,19 +308,6 @@ const TimeLeft = styled.div`
   position: absolute;
   bottom: 1.8rem;
   right: 1.6rem;
-`;
-
-const CreateConsultButtonWrapper = styled.div`
-  width: 100%;
-  padding: 0 2rem;
-  box-sizing: border-box;
-  display: flex;
-  position: fixed;
-  bottom: 1.5rem;
-  flex-direction: column;
-  @media (min-width: 768px) {
-    width: 375px;
-  }
 `;
 
 const EmptyIcon = styled(Empty)`
