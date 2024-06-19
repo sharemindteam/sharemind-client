@@ -140,7 +140,7 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
                       <Caption1 color={Grey3}>{item.updatedAt}</Caption1>
                     </Flex>
 
-                    <Body3>
+                    <Body3 color={Grey2}>
                       {item.isCompleted === null
                         ? '공개상담을 결제한 후 아직 글을 작성하지 않으셨어요. 구매 후 24시간이 지나면 자동으로 환불이 진행됩니다.'
                         : '이어서 작성하기'}
