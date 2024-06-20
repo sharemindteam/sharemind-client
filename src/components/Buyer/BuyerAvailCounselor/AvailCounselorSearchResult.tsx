@@ -3,10 +3,14 @@ import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+//
+//
+//
 interface AvailCounselorSearchResultsProps {
   searchData: SearchResultData[];
 }
-
+//
+//
 //임의로 ConsultInReady 그대로 사용
 export const AvailCounselorSearchResults = ({
   searchData,
@@ -29,6 +33,7 @@ export const AvailCounselorSearchResults = ({
             nickname={value.nickname}
             level={value.level}
             isWishList={value.isWishList}
+            totalConsult={value.totalConsult}
             rating={value.ratingAverage}
             totalReview={value.totalReview}
             consultType={value.consultTypes}

@@ -30,6 +30,7 @@ interface ReadyConsultCardProps {
   letterPrice: number;
   chattingPrice: number;
   consultStyle: number;
+  totalConsult: number;
 }
 //
 //
@@ -48,6 +49,7 @@ export const ReadyConsultCard = ({
   letterPrice,
   chattingPrice,
   consultStyle,
+  totalConsult,
 }: ReadyConsultCardProps) => {
   const navigate = useNavigate();
   //찜하기 여부
@@ -124,13 +126,13 @@ export const ReadyConsultCard = ({
               <Caption2 color={Grey3}>{'LV. ' + level}</Caption2>
             </div>
             <div className="col2 row2">
-              <Body3 color={Grey2}>상담 17회</Body3>
+              <Body3 color={Grey2}>상담 {totalConsult}회</Body3>
               <DivideLine />
-              <Body3 color={Grey2}>후기 132회</Body3>
+              <Body3 color={Grey2}>후기 {totalReview}회</Body3>
               <DivideLine />
               <div className="heart">
                 <HeartIcon />
-                <Body3 color={Grey2}>4.3</Body3>
+                <Body3 color={Grey2}>{rating}</Body3>
               </div>
             </div>
           </div>

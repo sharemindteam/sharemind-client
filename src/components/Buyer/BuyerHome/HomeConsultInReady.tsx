@@ -63,6 +63,7 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
               consultType={value.consultTypes}
               letterPrice={value.consultCosts.편지}
               chattingPrice={value.consultCosts.채팅}
+              totalConsult={value.totalConsult}
             />
           );
         }

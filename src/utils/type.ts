@@ -85,6 +85,7 @@ export type SearchResultData = {
   nickname: string;
   ratingAverage: number;
   totalReview: number;
+  totalConsult: number;
 };
 
 export interface BuyerReview {
