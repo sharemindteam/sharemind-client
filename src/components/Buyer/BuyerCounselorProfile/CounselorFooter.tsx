@@ -102,22 +102,22 @@ const Wrapper = styled.div`
   }
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 2rem;
   background-color: ${White};
   padding: 0.8rem 2rem 1.2rem 2rem;
   position: fixed;
   bottom: 0;
   z-index: 999;
+  box-shadow: 0px -2px 10px 0px rgba(0, 0, 0, 0.1);
 `;
 const NoneBookMarkIcon = styled(NoneBookMark)`
-  width: 4.2rem;
-  height: 3.9rem;
+  width: 2.8rem;
+  height: 2.8rem;
   cursor: pointer;
-  margin-top: 0.5rem;
 `;
 const BookMarkIcon = styled(BookMark)`
-  width: 4.2rem;
-  height: 3.9rem;
+  width: 2.8rem;
+  height: 2.8rem;
   cursor: pointer;
-  margin-top: 0.5rem;
 `;
