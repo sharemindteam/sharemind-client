@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { Grey1, Grey4, White } from 'styles/color';
 import Input from 'components/Common/Input';
 import { ChangeEvent, useState } from 'react';
-
+//
+//
+//
 export const SearchHeader = () => {
   const navigate = useNavigate();
   //input value
@@ -64,7 +66,7 @@ const FormWrapper = styled.form`
 `;
 const SearchIcon = styled(Search)`
   position: absolute;
-  right: 0.8rem;
   top: 0.8rem;
+  right: 0.8rem;
   cursor: pointer;
 `;

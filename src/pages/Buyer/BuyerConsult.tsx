@@ -226,7 +226,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     gap: 1.2rem;
     position: sticky;
-    top: 10.5rem;
+    top: 10rem;
     background-color: white;
     z-index: 10;
   }

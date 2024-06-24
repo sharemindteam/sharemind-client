@@ -118,11 +118,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               onClick={() => {
                 navigate('/service');
               }}
+              style={{ cursor: 'pointer' }}
             />
           </ButtonWrapper>
         </BottomGreenBox>
       </LeftSection>
-      <div style={{ flex: 1 }}>{children}</div>
+      <div>{children}</div>
       <RightSection>
         <BottomGreenBox />
       </RightSection>
