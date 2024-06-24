@@ -14,11 +14,13 @@ import { patchCounselorsAll } from 'api/patch';
 import { ConverSortType } from 'utils/convertSortType';
 import { AvailCounselorSearchResults } from 'components/Buyer/BuyerAvailCounselor/AvailCounselorSearchResult';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
-//백 연동 시 page에서 상담사 리스트 받아서 뿌려줘야함
+
+//
+//
+//
+
 export const BuyerAvailCounselor = () => {
   //0 : 최신순 1:인기순 2: 별점순
-  // 바뀔 때마다 useEffect로 request
-  // using query params to store sorting type
   const [searchParams, setSearchParams] = useSearchParams();
 
   // sortType - 0 : 최신순 1:인기순 2: 별점순, 기본값: 0, 최신순
@@ -28,20 +30,30 @@ export const BuyerAvailCounselor = () => {
       : searchParams.get('sort') === 'popular'
       ? 1
       : 0;
+
   const [sortType, setSortType] = useState<number>(initialSortType);
+
   // Modal 여부(recoil)
   const [isModalOpen, setIsModalOpen] =
     useRecoilState<boolean>(isSortModalOpenState);
+
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
   const navigate = useNavigate();
+
   //결과저장
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
+
   //무한스크롤 위한 page num
   const [pageNum, setPageNum] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true); //로딩 state
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
+
   const preventRef = useRef(true); // 중복 방지 옵션
+
+  /**
+   *
+   */
   const fectchSearchResults = async (pageIndex: number) => {
     try {
       const body = {
@@ -74,6 +86,7 @@ export const BuyerAvailCounselor = () => {
       }
     }
   };
+
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
@@ -86,6 +99,7 @@ export const BuyerAvailCounselor = () => {
       preventRef.current = true;
     }
   };
+
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
@@ -93,10 +107,19 @@ export const BuyerAvailCounselor = () => {
     threshold: 0.8,
     onIntersect,
   });
+
+  //
+  //
+  //
   useEffect(() => {
     setIsLastElem(false);
     fectchSearchResults(0);
   }, [sortType]);
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -129,7 +152,6 @@ export const BuyerAvailCounselor = () => {
         <>
           <BackDrop
             onClick={() => {
-              //여기서 api 호출
               setIsModalOpen(false);
               setScrollLock(false);
             }}
