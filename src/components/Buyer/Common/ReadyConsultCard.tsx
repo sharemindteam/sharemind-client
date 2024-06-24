@@ -145,6 +145,7 @@ export const ReadyConsultCard = ({
           color={Green}
           backgroundColor={White}
           border={`1px solid ${Green}`}
+          borderRadius="0.8rem"
           onClick={() => {
             navigate(`/profile/${counselorId}`);
           }}
@@ -158,6 +159,10 @@ export const ReadyConsultCard = ({
     </Wrapper>
   );
 };
+
+//
+//
+//
 
 const Wrapper = styled.div`
   width: 89%;
