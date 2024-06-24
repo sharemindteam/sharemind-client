@@ -92,6 +92,7 @@ const Router = () => {
       <Route path="/paymentFinish" element={<BuyerFinishPayment />} />
       <Route path="/counselors" element={<BuyerAvailCounselor />} />
       <Route path="/mypage" element={<BuyerMypage />} />
+      {/* TODO: 여기부터 고쳐야함 */}
       <Route path="/reviewManage" element={<BuyerReviewManage />} />
       <Route path="/review" element={<BuyerWriteReview />} />
       <Route path="/saved" element={<BuyerSavedCounselor />} />
