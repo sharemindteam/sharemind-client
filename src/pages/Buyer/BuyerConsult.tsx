@@ -209,7 +209,9 @@ export const BuyerConsult = () => {
         </div>
         {renderCheckBox()}
       </div>
-      <div style={{ padding: '1.2rem 2rem' }}>{renderConsultSection()}</div>
+      <div style={{ padding: '1.2rem 2rem', width: '100%' }}>
+        {renderConsultSection()}
+      </div>
       {renderSortModal()}
     </Wrapper>
   );
