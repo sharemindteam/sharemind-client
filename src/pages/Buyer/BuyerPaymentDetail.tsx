@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { getCounselorConsults } from 'api/get';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { postConsults } from 'api/post';
+import { APP_WIDTH } from 'styles/AppStyle';
 interface ConsultInfo {
   consultCategories: string[]; // 상담 카테고리 배열
   consultStyle: string; // 상담 스타일
@@ -404,18 +405,16 @@ const Line = styled.div`
   background-color: ${Grey6};
 `;
 const ButtonWrapper = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
-  height: 7.9rem;
+
   background-color: ${White};
   position: fixed;
   bottom: 0;
   display: flex;
   justify-content: center;
-  padding-top: 0.8rem;
+  padding: 0.8rem 2rem;
   box-sizing: border-box;
 `;
