@@ -42,31 +42,29 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
           </Caption2>
         </NavConsult>
       </div>
-      {searchData.map((value, index) => {
-        if (index <= 2) {
-          return (
-            <ReadyConsultCard
-              key={value.counselorId}
-              counselorId={value.counselorId}
-              tagList={AppendCategoryType(
-                value.consultCategories,
-                value.consultStyle,
-              )}
-              consultStyle={consultStyleToCharNum(value.consultStyle)}
-              consultTimes={value.consultTimes}
-              introduction={value.introduction}
-              nickname={value.nickname}
-              level={value.level}
-              isWishList={value.isWishList}
-              rating={value.ratingAverage}
-              totalReview={value.totalReview}
-              consultType={value.consultTypes}
-              letterPrice={value.consultCosts.편지}
-              chattingPrice={value.consultCosts.채팅}
-              totalConsult={value.totalConsult}
-            />
-          );
-        }
+      {searchData.slice(0, 3).map((value) => {
+        return (
+          <ReadyConsultCard
+            key={value.counselorId}
+            counselorId={value.counselorId}
+            tagList={AppendCategoryType(
+              value.consultCategories,
+              value.consultStyle,
+            )}
+            consultStyle={consultStyleToCharNum(value.consultStyle)}
+            consultTimes={value.consultTimes}
+            introduction={value.introduction}
+            nickname={value.nickname}
+            level={value.level}
+            isWishList={value.isWishList}
+            rating={value.ratingAverage}
+            totalReview={value.totalReview}
+            consultType={value.consultTypes}
+            letterPrice={value.consultCosts.편지}
+            chattingPrice={value.consultCosts.채팅}
+            totalConsult={value.totalConsult}
+          />
+        );
       })}
     </Wrapper>
   );

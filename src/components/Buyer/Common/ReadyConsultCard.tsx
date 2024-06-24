@@ -29,7 +29,7 @@ interface ReadyConsultCardProps {
   consultType: string[];
   letterPrice: number;
   chattingPrice: number;
-  consultStyle: number;
+  consultStyle: number | undefined;
   totalConsult: number;
 }
 //
