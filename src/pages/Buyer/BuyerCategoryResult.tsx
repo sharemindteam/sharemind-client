@@ -21,9 +21,9 @@ import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/Cate
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 
-///
-///
-///
+//
+//
+//
 
 export const BuyerCategoryResult = () => {
   const navigate = useNavigate();
@@ -57,7 +57,9 @@ export const BuyerCategoryResult = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const preventRef = useRef(true);
 
-  // functio with fetch API
+  /**
+   *
+   */
   const fetchSearchResults = async (pageIndex: number) => {
     try {
       const body = {
@@ -92,6 +94,9 @@ export const BuyerCategoryResult = () => {
     }
   };
 
+  /**
+   *
+   */
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
@@ -112,60 +117,73 @@ export const BuyerCategoryResult = () => {
     onIntersect,
   });
 
+  //
+  //
+  //
   useLayoutEffect(() => {
     setIsLastElem(false);
     setSearchData([]);
     fetchSearchResults(0);
   }, [sortType]);
+
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <>
         <CategoryResultHeader categoryType={searchKeyword} />
       </>
     );
-  } else {
-    return (
-      <Wrapper>
-        <CategoryResultHeader categoryType={searchKeyword} />
-        <div className="select">
-          <div
-            className="select-wrapper"
-            onClick={() => {
-              setIsModalOpen(true);
-              setScrollLock(true);
-            }}
-          >
-            <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-            <Down />
-          </div>
-        </div>
-        <CategorySearchResults searchData={searchData} />
-        {!isLastElem ? (
-          <div ref={setTarget} style={{ height: '5rem' }} />
-        ) : (
-          <div style={{ height: '5rem' }} />
-        )}
-        {isModalOpen ? (
-          <>
-            <BackDrop
-              onClick={() => {
-                setIsModalOpen(false);
-                setScrollLock(false);
-              }}
-            />
-            <SortModal
-              searchParams={searchParams}
-              setSearchParams={setSearchParams}
-              sortType={sortType}
-              setSortType={setSortType}
-              setPageNum={setPageNum}
-            />
-          </>
-        ) : null}
-      </Wrapper>
-    );
   }
+
+  return (
+    <Wrapper>
+      <CategoryResultHeader categoryType={searchKeyword} />
+      <div className="select">
+        <div
+          className="select-wrapper"
+          onClick={() => {
+            setIsModalOpen(true);
+            setScrollLock(true);
+          }}
+        >
+          <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+          <Down />
+        </div>
+      </div>
+      <CategorySearchResults searchData={searchData} />
+      {!isLastElem ? (
+        <div ref={setTarget} style={{ height: '5rem' }} />
+      ) : (
+        <div style={{ height: '5rem' }} />
+      )}
+      {isModalOpen ? (
+        <>
+          <BackDrop
+            onClick={() => {
+              setIsModalOpen(false);
+              setScrollLock(false);
+            }}
+          />
+          <SortModal
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+            sortType={sortType}
+            setSortType={setSortType}
+            setPageNum={setPageNum}
+          />
+        </>
+      ) : null}
+    </Wrapper>
+  );
 };
+
+//
+//
+//
+
 const Wrapper = styled.div`
   .select {
     display: flex;

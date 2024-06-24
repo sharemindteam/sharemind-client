@@ -3,6 +3,7 @@ import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { Flex } from 'components/Common/Flex';
 interface CategorySearchResultsProps {
   searchData: SearchResultData[];
 }
@@ -12,7 +13,7 @@ export const CategorySearchResults = ({
   searchData,
 }: CategorySearchResultsProps) => {
   return (
-    <Wrapper>
+    <Flex direction="column" gap="0.8rem" style={{ padding: '0 2rem' }}>
       {searchData.map((value) => {
         return (
           <ReadyConsultCard
@@ -37,12 +38,6 @@ export const CategorySearchResults = ({
           />
         );
       })}
-    </Wrapper>
+    </Flex>
   );
 };
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-`;
