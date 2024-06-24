@@ -390,7 +390,7 @@ const SlideList = styled.div`
   width: fit-content;
   align-items: center;
   animation-name: ${loopAnimation};
-  animation-duration: 20s;
+  animation-duration: 30s;
   animation-direction: reverse;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -401,7 +401,7 @@ const SlideReverseList = styled.div`
   width: fit-content;
   align-items: center;
   animation-name: ${loopAnimation};
-  animation-duration: 20s;
+  animation-duration: 30s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 `;
