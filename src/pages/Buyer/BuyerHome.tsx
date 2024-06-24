@@ -9,6 +9,9 @@ import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
 import { SearchResultData } from 'utils/type';
 import { useEffect, useState } from 'react';
 import { patchCounselorsAll } from 'api/patch';
+//
+//
+//
 export const BuyerHome = () => {
   const navigate = useNavigate();
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);

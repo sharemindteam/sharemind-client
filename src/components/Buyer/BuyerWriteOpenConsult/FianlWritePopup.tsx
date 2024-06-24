@@ -2,8 +2,8 @@ import { patchOpenConsult } from 'api/patch';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Green, LightGreen, White } from 'styles/color';
-import { Body1 } from 'styles/font';
+import { Green, Grey4, LightGreen, White } from 'styles/color';
+import { Body1, Body3 } from 'styles/font';
 import { isPostPopupOpenState } from 'utils/atom';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 interface FianlWritePopupProps {
@@ -52,14 +52,17 @@ function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
   return (
     <IsSendModalBox>
       <ModalBox>
-        <Body1>게시 후 더이상 수정 또는 삭제가 불가능해요.</Body1>
+        <Body1>상담 글을 게시하겠어요?</Body1>
+        <Body3 color={Grey4}>
+          게시 후에는 글을 수정하거나 삭제할 수 없어요.
+        </Body3>
         <ButtonWrapper>
           <NoButton
             onClick={() => {
               setIsPostPopupOpen(false);
             }}
           >
-            닫기
+            이어서 작성하기
           </NoButton>
           <YesButton onClick={handlePost}>게시하기</YesButton>
         </ButtonWrapper>
@@ -69,7 +72,7 @@ function FinalWritePopup({ title, content, category }: FianlWritePopupProps) {
 }
 const IsSendModalBox = styled.div`
   width: 100%;
-  height: 12.8rem;
+  height: 15rem;
   z-index: 9999;
   display: flex;
   justify-content: center;

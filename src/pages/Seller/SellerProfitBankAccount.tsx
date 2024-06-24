@@ -7,7 +7,7 @@ import Input from 'components/Common/Input';
 import { Space } from 'components/Common/Space';
 import BankSelectModal from 'components/Seller/Common/BankSelectModal';
 import { BottomButtonWrapper } from 'components/Seller/Common/BottomButton';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
@@ -15,17 +15,23 @@ import { Grey1, Grey6 } from 'styles/color';
 import { Body1, Heading } from 'styles/font';
 import { BankIcon } from 'utils/BankIcon';
 import { isBankModalOpenState } from 'utils/atom';
-
-function SellerRefundBankAccount() {
+//
+//
+//
+function SellerProfitBankAccount() {
   const navigate = useNavigate();
   const [accountNum, setAccountNum] = useState<string>('');
-  const [bankType, setBankType] = useState<string | null>(null);
-  const [owner, setOwner] = useState('');
+  const [bankType, setBankType] = useState<string>('');
+  const [owner, setOwner] = useState<string>('');
+
+  // 완료버튼 활성화 여부
+  const isActiveFinishButton =
+    accountNum?.length > 0 && bankType?.length > 0 && owner?.length > 0;
+
   // 은행 모달
   const [isBankModalOpen, setIsBankModalOpen] =
     useRecoilState(isBankModalOpenState);
 
-  const [isActiveFisnishButton, setIsActiveFinishButton] = useState(false);
   useEffect(() => {
     const fetchAccountData = async () => {
       try {
@@ -41,32 +47,35 @@ function SellerRefundBankAccount() {
     };
     fetchAccountData();
   }, []);
-  useEffect(() => {
-    if (accountNum !== '' && bankType !== '' && owner !== '') {
-      setIsActiveFinishButton(true);
-    } else {
-      setIsActiveFinishButton(false);
-    }
-  }, [accountNum, bankType, owner]);
 
-  const handleAccountNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const sanitizedValue = value.replace(/[^0-9]/g, '');
-    setAccountNum(sanitizedValue);
-  };
+  const handleAccountNumChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      const sanitizedValue = value.replace(/[^0-9]/g, '');
+      setAccountNum(sanitizedValue);
+    },
+    [],
+  );
 
-  const handlePostAccountInfo = async () => {
-    // 임시조건
+  const handlePostAccountInfo = useCallback(async () => {
     if (accountNum !== '' && bankType !== '' && owner !== '') {
       const body = {
         account: accountNum,
         bank: bankType,
         accountHolder: owner,
       };
-      await patchCounselorsAccount(body);
-      navigate('/minder/mypage');
+      try {
+        const res: any = await patchCounselorsAccount(body);
+        if (res.status === 200) {
+          navigate('/minder/mypage');
+        } else {
+          alert('수익계좌 업데이트 중 오류가 발생했습니다.');
+        }
+      } catch (err) {
+        alert(err);
+      }
     }
-  };
+  }, [accountNum, bankType, owner, navigate]);
 
   return (
     <Wrapper>
@@ -76,7 +85,7 @@ function SellerRefundBankAccount() {
             navigate('/minder/setting');
           }}
         />
-        <Heading color={Grey1}>환불계좌 관리</Heading>
+        <Heading color={Grey1}>수익계좌 관리</Heading>
       </HeaderWrapper>
       <Space height="0.8rem" />
       <Form>
@@ -124,7 +133,7 @@ function SellerRefundBankAccount() {
           text="완료"
           width="calc(100% - 4rem)"
           height="5.2rem"
-          isActive={isActiveFisnishButton ? true : false}
+          isActive={isActiveFinishButton ? true : false}
           onClick={() => {
             handlePostAccountInfo();
           }}
@@ -162,4 +171,4 @@ const Form = styled.div`
   }
 `;
 
-export default SellerRefundBankAccount;
+export default SellerProfitBankAccount;

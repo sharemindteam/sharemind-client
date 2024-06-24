@@ -7,7 +7,7 @@ import { BankIcon } from 'utils/BankIcon';
 import { isBankModalOpenState } from 'utils/atom';
 import { bankNameList } from 'utils/constant';
 interface BankSelectModalProps {
-  setSelectBankType: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectBankType: React.Dispatch<React.SetStateAction<string>>;
 }
 function BankSelectModal({ setSelectBankType }: BankSelectModalProps) {
   const [isBankModalOpen, setIsBankModalOpen] =
