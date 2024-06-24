@@ -129,12 +129,8 @@ function CommentCard({
       </Flex>
       <Body3 color={Grey1}>{formattedMessage(item.content)}</Body3>
       <Flex justify="flex-end" width="100%">
-        <LikeButton>
-          {isLike ? (
-            <HeartIcon onClick={handleClickLikeButton} />
-          ) : (
-            <HeartEmptyIcon onClick={handleClickLikeButton} />
-          )}
+        <LikeButton onClick={handleClickLikeButton}>
+          {isLike ? <HeartIcon /> : <HeartEmptyIcon />}
           <Button2 color={Grey2}>
             {isFirstRendering
               ? item.totalLike
