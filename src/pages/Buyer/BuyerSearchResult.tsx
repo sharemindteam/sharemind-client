@@ -27,6 +27,11 @@ import { openConsultApiObject } from './BuyerConsult';
 import { OpenConsultSortModal } from 'components/Buyer/Common/OpenConsultSortModal';
 import { ConvertOpenSortType } from 'utils/convertOpenSortType';
 import { useSearchPageParams } from 'hooks/useSearchPageParams';
+
+//
+//
+//
+
 export const BuyerSearchResult = () => {
   const navigate = useNavigate();
 
@@ -183,6 +188,10 @@ export const BuyerSearchResult = () => {
     }
   }, [keyword, sortType, tabState, openSortType]);
 
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <>
@@ -222,172 +231,172 @@ export const BuyerSearchResult = () => {
         </div>
       </>
     );
-  } else {
-    if (tabState === 1) {
-      return (
-        <Wrapper>
-          <FixedContainer>
-            <HeaderWrapper>
-              <BackIcon
-                onClick={() => {
-                  navigate('/search');
-                }}
+  }
+
+  if (tabState === 1) {
+    return (
+      <Wrapper>
+        <FixedContainer>
+          <HeaderWrapper>
+            <BackIcon
+              onClick={() => {
+                navigate('/search');
+              }}
+            />
+            <FormWrapper onSubmit={handleSubmit}>
+              <Input
+                value={input}
+                onChange={handleChangeInput}
+                placeholder="상담사명, 제목, 키워드"
+                fontSize="1.6rem"
+                fontWeight="400"
+                fontColor={Grey1}
+                placeHolderColor={Grey4}
+                height="4.4rem"
+                width="100%"
+                isBoxSizing={true}
+                padding="0.8rem 3.4rem 0.8rem 1.6rem"
               />
-              <FormWrapper onSubmit={handleSubmit}>
-                <Input
-                  value={input}
-                  onChange={handleChangeInput}
-                  placeholder="상담사명, 제목, 키워드"
-                  fontSize="1.6rem"
-                  fontWeight="400"
-                  fontColor={Grey1}
-                  placeHolderColor={Grey4}
-                  height="4.4rem"
-                  width="100%"
-                  isBoxSizing={true}
-                  padding="0.8rem 3.4rem 0.8rem 1.6rem"
-                />
-                <SearchIcon onClick={handleSubmit} />
-              </FormWrapper>
-            </HeaderWrapper>
-            <Divider2 tabState={tabState} setTabState={handleClickTab} />
-            <div className="select">
-              <div
-                className="select-wrapper"
-                onClick={() => {
-                  setIsModalOpen(true);
-                  setScrollLock(true);
-                }}
-              >
-                <Button2 color={Grey3}>{sortList[sortType]}</Button2>
-                <Down />
-              </div>
+              <SearchIcon onClick={handleSubmit} />
+            </FormWrapper>
+          </HeaderWrapper>
+          <Divider2 tabState={tabState} setTabState={handleClickTab} />
+          <div className="select">
+            <div
+              className="select-wrapper"
+              onClick={() => {
+                setIsModalOpen(true);
+                setScrollLock(true);
+              }}
+            >
+              <Button2 color={Grey3}>{sortList[sortType]}</Button2>
+              <Down />
             </div>
-          </FixedContainer>
+          </div>
+        </FixedContainer>
 
-          {searchData.length !== 0 ? (
-            <>
-              <SearchResults searchData={searchData} />
-              {!isLastElem ? (
-                <div ref={setTarget} style={{ height: '3.5rem' }} />
-              ) : (
-                <div style={{ height: '3.5rem' }} />
-              )}
-            </>
-          ) : (
-            <EmptyWrapper>
-              <EmptyIcon />
-              <Heading color={Grey1} margin="0 0 1.5rem 0">
-                검색 결과가 없어요.
-              </Heading>
-              <Body2 color={Grey1}>마인더명, 제목, 상담 스타일 등</Body2>
-              <Body2 color={Grey1}>더 간단한 단어로 검색해보세요.</Body2>
-            </EmptyWrapper>
-          )}
+        {searchData.length !== 0 ? (
+          <>
+            <SearchResults searchData={searchData} />
+            {!isLastElem ? (
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
+            ) : (
+              <div style={{ height: '3.5rem' }} />
+            )}
+          </>
+        ) : (
+          <EmptyWrapper>
+            <EmptyIcon />
+            <Heading color={Grey1} margin="0 0 1.5rem 0">
+              검색 결과가 없어요.
+            </Heading>
+            <Body2 color={Grey1}>마인더명, 제목, 상담 스타일 등</Body2>
+            <Body2 color={Grey1}>더 간단한 단어로 검색해보세요.</Body2>
+          </EmptyWrapper>
+        )}
 
-          {isModalOpen ? (
-            <>
-              <BackDrop
-                onClick={() => {
-                  //여기서 api 호출
-                  setIsModalOpen(false);
-                  setScrollLock(false);
-                }}
+        {isModalOpen ? (
+          <>
+            <BackDrop
+              onClick={() => {
+                //여기서 api 호출
+                setIsModalOpen(false);
+                setScrollLock(false);
+              }}
+            />
+            <SortModal
+              sortType={sortType}
+              setSortType={setSortType}
+              setPageNum={setPageNum}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
+          </>
+        ) : null}
+      </Wrapper>
+    );
+  } else if (tabState === 2) {
+    return (
+      <Wrapper>
+        <FixedContainer>
+          <HeaderWrapper>
+            <BackIcon
+              onClick={() => {
+                navigate('/search');
+              }}
+            />
+            <FormWrapper onSubmit={handleSubmit}>
+              <Input
+                value={input}
+                onChange={handleChangeInput}
+                placeholder="상담사명, 제목, 키워드"
+                fontSize="1.6rem"
+                fontWeight="400"
+                fontColor={Grey1}
+                placeHolderColor={Grey4}
+                height="4.4rem"
+                width="100%"
+                isBoxSizing={true}
+                padding="0.8rem 3.4rem 0.8rem 1.6rem"
               />
-              <SortModal
-                sortType={sortType}
-                setSortType={setSortType}
-                setPageNum={setPageNum}
-                searchParams={searchParams}
-                setSearchParams={setSearchParams}
-              />
-            </>
-          ) : null}
-        </Wrapper>
-      );
-    } else if (tabState === 2) {
-      return (
-        <Wrapper>
-          <FixedContainer>
-            <HeaderWrapper>
-              <BackIcon
-                onClick={() => {
-                  navigate('/search');
-                }}
-              />
-              <FormWrapper onSubmit={handleSubmit}>
-                <Input
-                  value={input}
-                  onChange={handleChangeInput}
-                  placeholder="상담사명, 제목, 키워드"
-                  fontSize="1.6rem"
-                  fontWeight="400"
-                  fontColor={Grey1}
-                  placeHolderColor={Grey4}
-                  height="4.4rem"
-                  width="100%"
-                  isBoxSizing={true}
-                  padding="0.8rem 3.4rem 0.8rem 1.6rem"
-                />
-                <SearchIcon onClick={handleSubmit} />
-              </FormWrapper>
-            </HeaderWrapper>
-            <Divider2 tabState={tabState} setTabState={handleClickTab} />
-            <div className="select">
-              <div
-                className="select-wrapper"
-                onClick={() => {
-                  setIsModalOpen(true);
-                  setScrollLock(true);
-                }}
-              >
-                <Button2 color={Grey3}>{openSortList[openSortType]}</Button2>
-                <Down />
-              </div>
+              <SearchIcon onClick={handleSubmit} />
+            </FormWrapper>
+          </HeaderWrapper>
+          <Divider2 tabState={tabState} setTabState={handleClickTab} />
+          <div className="select">
+            <div
+              className="select-wrapper"
+              onClick={() => {
+                setIsModalOpen(true);
+                setScrollLock(true);
+              }}
+            >
+              <Button2 color={Grey3}>{openSortList[openSortType]}</Button2>
+              <Down />
             </div>
-          </FixedContainer>
+          </div>
+        </FixedContainer>
 
-          {openConsultSearchData.length !== 0 ? (
-            <>
-              <OpenConsultResults openConsultList={openConsultSearchData} />
-              {!isLastElem ? (
-                <div ref={setTarget} style={{ height: '3.5rem' }} />
-              ) : (
-                <div style={{ height: '3.5rem' }} />
-              )}
-            </>
-          ) : (
-            <EmptyWrapper>
-              <EmptyIcon />
-              <Heading color={Grey1} margin="0 0 1.5rem 0">
-                검색 결과가 없어요.
-              </Heading>
-              <Body2 color={Grey1}>마인더명, 제목, 상담 스타일 등</Body2>
-              <Body2 color={Grey1}>더 간단한 단어로 검색해보세요.</Body2>
-            </EmptyWrapper>
-          )}
+        {openConsultSearchData.length !== 0 ? (
+          <>
+            <OpenConsultResults openConsultList={openConsultSearchData} />
+            {!isLastElem ? (
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
+            ) : (
+              <div style={{ height: '3.5rem' }} />
+            )}
+          </>
+        ) : (
+          <EmptyWrapper>
+            <EmptyIcon />
+            <Heading color={Grey1} margin="0 0 1.5rem 0">
+              검색 결과가 없어요.
+            </Heading>
+            <Body2 color={Grey1}>마인더명, 제목, 상담 스타일 등</Body2>
+            <Body2 color={Grey1}>더 간단한 단어로 검색해보세요.</Body2>
+          </EmptyWrapper>
+        )}
 
-          {isModalOpen ? (
-            <>
-              <BackDrop
-                onClick={() => {
-                  //여기서 api 호출
-                  setIsModalOpen(false);
-                  setScrollLock(false);
-                }}
-              />
-              <OpenConsultSortModal
-                sortType={openSortType}
-                setSortType={setOpenSortType}
-                setPostId={setLastId}
-                searchParams={searchParams}
-                setSearchParams={setSearchParams}
-              />
-            </>
-          ) : null}
-        </Wrapper>
-      );
-    }
+        {isModalOpen ? (
+          <>
+            <BackDrop
+              onClick={() => {
+                //여기서 api 호출
+                setIsModalOpen(false);
+                setScrollLock(false);
+              }}
+            />
+            <OpenConsultSortModal
+              sortType={openSortType}
+              setSortType={setOpenSortType}
+              setPostId={setLastId}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
+          </>
+        ) : null}
+      </Wrapper>
+    );
   }
 };
 
