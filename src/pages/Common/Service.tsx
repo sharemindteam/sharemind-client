@@ -284,6 +284,7 @@ const ServicePageContainer = styled.div`
     align-items: center;
     height: 33.1rem;
     background-color: ${LightGreen};
+    padding-bottom: 3rem;
   }
   .main-caption {
     display: flex;
