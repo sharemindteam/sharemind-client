@@ -209,7 +209,7 @@ export const BuyerConsult = () => {
         </div>
         {renderCheckBox()}
       </div>
-      {renderConsultSection()}
+      <div style={{ padding: '1.2rem 2rem' }}>{renderConsultSection()}</div>
       {renderSortModal()}
     </Wrapper>
   );
@@ -221,7 +221,7 @@ export const BuyerConsult = () => {
 
 const Wrapper = styled.div`
   .options {
-    padding: 0.8rem 2rem 1.6rem;
+    padding: 0.4rem 2rem;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
