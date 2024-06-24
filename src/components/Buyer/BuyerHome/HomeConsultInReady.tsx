@@ -10,6 +10,7 @@ import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { Green, Grey2 } from 'styles/color';
 import { Space } from 'components/Common/Space';
 import { getCurrentHour } from 'utils/getCurrentHour';
+import { Flex } from 'components/Common/Flex';
 ///
 ///
 ///
@@ -42,33 +43,40 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
           </Caption2>
         </NavConsult>
       </div>
-      {searchData.slice(0, 3).map((value) => {
-        return (
-          <ReadyConsultCard
-            key={value.counselorId}
-            counselorId={value.counselorId}
-            tagList={AppendCategoryType(
-              value.consultCategories,
-              value.consultStyle,
-            )}
-            consultStyle={consultStyleToCharNum(value.consultStyle)}
-            consultTimes={value.consultTimes}
-            introduction={value.introduction}
-            nickname={value.nickname}
-            level={value.level}
-            isWishList={value.isWishList}
-            rating={value.ratingAverage}
-            totalReview={value.totalReview}
-            consultType={value.consultTypes}
-            letterPrice={value.consultCosts.편지}
-            chattingPrice={value.consultCosts.채팅}
-            totalConsult={value.totalConsult}
-          />
-        );
-      })}
+      <Flex direction="column" gap="0.8rem" style={{ padding: '0.4rem 2rem' }}>
+        {searchData.slice(0, 3).map((value) => {
+          return (
+            <ReadyConsultCard
+              key={value.counselorId}
+              counselorId={value.counselorId}
+              tagList={AppendCategoryType(
+                value.consultCategories,
+                value.consultStyle,
+              )}
+              consultStyle={consultStyleToCharNum(value.consultStyle)}
+              consultTimes={value.consultTimes}
+              introduction={value.introduction}
+              nickname={value.nickname}
+              level={value.level}
+              isWishList={value.isWishList}
+              rating={value.ratingAverage}
+              totalReview={value.totalReview}
+              consultType={value.consultTypes}
+              letterPrice={value.consultCosts.편지}
+              chattingPrice={value.consultCosts.채팅}
+              totalConsult={value.totalConsult}
+            />
+          );
+        })}
+      </Flex>
     </Wrapper>
   );
 };
+
+//
+//
+//
+
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -83,7 +91,6 @@ const Wrapper = styled.section`
     justify-content: space-between;
     padding: 2.2rem 3.2rem 1.2rem 2rem;
     cursor: pointer;
-    margin-bottom: 0.4rem;
   }
 `;
 const NavConsult = styled.div`
