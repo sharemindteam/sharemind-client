@@ -136,7 +136,12 @@ export const HomeConsultInProgress = () => {
           <Body3 color={Grey4}>진행중인 상담이 없어요.</Body3>
         </div>
       )}
-      <Flex direction="column" gap="0.8rem" style={{ padding: '0 2rem' }}>
+      <Flex
+        direction="column"
+        gap="0.8rem"
+        width="100%"
+        style={{ padding: '0 2rem', boxSizing: 'border-box' }}
+      >
         {totalOngoing !== 0 && consultCard && (
           <ConsultCard
             consultStyle={consultCard.consultStyle}
