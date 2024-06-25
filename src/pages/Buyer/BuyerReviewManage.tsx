@@ -31,7 +31,9 @@ export const BuyerReviewManage = () => {
 
   const preventRef = useRef(true); // 중복 방지 옵션
 
-  //review fetch
+  /**
+   *
+   */
   const fetchReviewData = async (lastReviewId: number) => {
     const params = { isCompleted: !isReviewWrite, reviewId: lastReviewId };
     try {
@@ -79,12 +81,20 @@ export const BuyerReviewManage = () => {
     onIntersect,
   });
 
+  //
+  //
+  //
   useLayoutEffect(() => {
     setIsLastElem(false);
     setIsLoading(true);
     setReviewData([]);
     fetchReviewData(0);
   }, [isReviewWrite]);
+
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <>
@@ -102,85 +112,80 @@ export const BuyerReviewManage = () => {
         />
       </>
     );
-  } else {
-    return (
-      <>
-        <HeaderWrapper border={false}>
-          <BackIcon
-            onClick={() => {
-              navigate('/mypage');
-            }}
-          />
-          <Heading color={Grey1}>리뷰관리</Heading>
-        </HeaderWrapper>
-        <ReviewManageNav
-          isWrite={isReviewWrite}
-          setIsWrite={setIsReviewWrite}
+  }
+
+  return (
+    <>
+      <HeaderWrapper border={false}>
+        <BackIcon
+          onClick={() => {
+            navigate('/mypage');
+          }}
         />
-        {isReviewWrite ? (
-          <CardWrapper>
-            {reviewData.map((value) => {
-              return (
-                <ReviewManageCard key={value?.reviewId} reviewData={value} />
-              );
-            })}
-            {!isLastElem ? (
-              <div
-                ref={setTarget}
-                style={{
-                  height: '3.5rem',
-                  width: '10rem',
-                }}
-              />
-            ) : (
-              <div
-                style={{
-                  height: '3.5rem',
-                  width: '10rem',
-                }}
-              />
-            )}
-          </CardWrapper>
-        ) : (
-          <CardWrapper>
-            {reviewData.map((value) => {
-              return (
-                <ReviewWroteCard key={value?.reviewId} reviewData={value} />
-              );
-            })}
-            {!isLastElem ? (
-              <div
-                ref={setTarget}
-                style={{
-                  height: '3.5rem',
-                  width: '10rem',
-                }}
-              />
-            ) : (
-              <div
-                style={{
-                  height: '3.5rem',
-                  width: '10rem',
-                }}
-              />
-            )}
-          </CardWrapper>
-        )}
-        {isModalOpen ? (
-          <>
-            <BackDrop
-              onClick={() => {
-                //여기서 api 호출
-                setIsModalOpen(false);
-                setScrollLock(false);
+        <Heading color={Grey1}>리뷰관리</Heading>
+      </HeaderWrapper>
+      <ReviewManageNav isWrite={isReviewWrite} setIsWrite={setIsReviewWrite} />
+      {isReviewWrite ? (
+        <CardWrapper>
+          {reviewData.map((value) => {
+            return (
+              <ReviewManageCard key={value?.reviewId} reviewData={value} />
+            );
+          })}
+          {!isLastElem ? (
+            <div
+              ref={setTarget}
+              style={{
+                height: '3.5rem',
+                width: '10rem',
               }}
             />
-            <ReviewModal />
-          </>
-        ) : null}
-      </>
-    );
-  }
+          ) : (
+            <div
+              style={{
+                height: '3.5rem',
+                width: '10rem',
+              }}
+            />
+          )}
+        </CardWrapper>
+      ) : (
+        <CardWrapper>
+          {reviewData.map((value) => {
+            return <ReviewWroteCard key={value?.reviewId} reviewData={value} />;
+          })}
+          {!isLastElem ? (
+            <div
+              ref={setTarget}
+              style={{
+                height: '3.5rem',
+                width: '10rem',
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                height: '3.5rem',
+                width: '10rem',
+              }}
+            />
+          )}
+        </CardWrapper>
+      )}
+      {isModalOpen ? (
+        <>
+          <BackDrop
+            onClick={() => {
+              //여기서 api 호출
+              setIsModalOpen(false);
+              setScrollLock(false);
+            }}
+          />
+          <ReviewModal />
+        </>
+      ) : null}
+    </>
+  );
 };
 const CardWrapper = styled.div`
   display: flex;
