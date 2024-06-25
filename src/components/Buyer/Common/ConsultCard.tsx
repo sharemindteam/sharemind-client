@@ -204,4 +204,5 @@ export const CardText = styled.div<{ $color: string }>`
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 155%;
+  text-align: left;
 `;
