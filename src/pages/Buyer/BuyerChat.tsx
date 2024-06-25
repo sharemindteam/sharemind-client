@@ -15,6 +15,7 @@ import BuyerChatFooter from 'components/Buyer/BuyerChat/BuyerChatFooter';
 import BuyerChatSection from 'components/Buyer/BuyerChat/BuyerChatSection';
 import { CHAT_START_REQUEST_TIME } from 'utils/constant';
 import useCustomerChat from 'ws/useCustomerChat';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -469,11 +470,11 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
   align-items: center;
   position: fixed;
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+
+  width: 100%;
+
   top: 0;
   z-index: 999;
 `;

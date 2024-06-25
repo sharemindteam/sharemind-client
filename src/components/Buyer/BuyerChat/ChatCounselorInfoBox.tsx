@@ -84,7 +84,7 @@ export const ChatCounselorInfoBox = ({ info }: ChatCounselorInfoBoxProps) => {
 
 const CounselorInfoBox = styled.div`
   background-color: ${White};
-  width: 89.33%;
+  width: 100%;
   margin-top: 1.8rem;
   margin-bottom: 0.4rem;
   box-sizing: border-box;
