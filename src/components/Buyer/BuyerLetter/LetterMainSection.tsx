@@ -7,13 +7,23 @@ import { Button } from 'components/Common/Button';
 import { Space } from 'components/Common/Space';
 import { useNavigate } from 'react-router-dom';
 import { GetMessagesType } from 'utils/type';
+import { APP_WIDTH } from 'styles/AppStyle';
+
+//
+//
+//
+
 interface LetterMainSectionProps {
   tagStatus: number;
   consultId: string;
   messageResponse: GetMessagesType;
   deadline: string;
 }
-//TODO :마감시간 api로 받아서 전달
+
+//
+//
+//
+
 export const LetterMainSection = ({
   tagStatus,
   consultId,
@@ -21,6 +31,7 @@ export const LetterMainSection = ({
   deadline,
 }: LetterMainSectionProps) => {
   const navigate = useNavigate();
+
   const formattedMessage = (message: string | null): JSX.Element[] | null => {
     return message
       ? message.split('\n').map((item, key) => (
@@ -31,6 +42,11 @@ export const LetterMainSection = ({
         ))
       : null;
   };
+
+  //
+  //
+  //
+
   if (messageResponse.messageId === null) {
     if (tagStatus === 0) {
       return (
@@ -50,7 +66,7 @@ export const LetterMainSection = ({
           <ButtonWrapper>
             <Button
               text="질문 작성하기"
-              width="89.33%"
+              width="100%"
               height="5.2rem"
               onClick={() => {
                 navigate(`/writeLetter/${consultId}`, {
@@ -58,7 +74,6 @@ export const LetterMainSection = ({
                 });
               }}
             />
-            <Space height="3.2rem" />
           </ButtonWrapper>
         </SectionWrapper>
       );
@@ -92,7 +107,7 @@ export const LetterMainSection = ({
           <ButtonWrapper>
             <Button
               text="추가질문 작성하기"
-              width="89.33%"
+              width="100%"
               height="5.2rem"
               onClick={() => {
                 navigate(`/writeLetter/${consultId}`, {
@@ -100,7 +115,6 @@ export const LetterMainSection = ({
                 });
               }}
             />
-            <Space height="3.2rem" />
           </ButtonWrapper>
         </SectionWrapper>
       );
@@ -135,6 +149,7 @@ export const LetterMainSection = ({
     );
   }
 };
+
 const SectionWrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -171,14 +186,15 @@ const BodyText = styled.div`
 const ButtonWrapper = styled.div`
   position: fixed;
   bottom: 0;
+  box-sizing: border-box;
+  padding: 0 2rem 1rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
 `;
 const ContentBox = styled.div`
