@@ -224,6 +224,9 @@ function SellerChatList({
     };
   }, [stompClient, stompClient.current?.connected, isConnected]);
 
+  /**
+   *
+   */
   const fetchChatData = useCallback(async () => {
     setIsLoading(true);
     const params = {
@@ -316,7 +319,7 @@ function SellerChatList({
 const ConsultBoxList = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 0.5rem;
+  margin-top: 1.2rem;
   gap: 0.8rem;
 `;
 const BackDrop = styled.div`
