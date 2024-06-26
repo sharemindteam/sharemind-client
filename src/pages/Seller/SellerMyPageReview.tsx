@@ -5,10 +5,9 @@ export const SellerMyPageReview = () => {
   return (
     <>
       <SellerReviewHeader />
-      <div style={{ height: 'calc(100% - 5rem)', overflow: 'scroll' }}>
+      <div style={{ height: 'calc(100% - 5.3rem)', overflow: 'scroll' }}>
         <SellerReviewMainSection />
       </div>
     </>
   );
 };
-
