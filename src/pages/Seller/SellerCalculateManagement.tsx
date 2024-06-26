@@ -14,19 +14,22 @@ import { useNavigate } from 'react-router-dom';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 
-///
-///
-///
+//
+//
+//
+
 const manageStatusMap = {
   '정산 중': 'SETTLEMENT_ONGOING',
   '정산 예정': 'SETTLEMENT_WAITING',
   완료: 'SETTLEMENT_COMPLETE',
 };
+
 const sortTypeMap = ['WEEK', 'MONTH', 'ALL'];
 
-///
-///
-///
+//
+//
+//
+
 interface ManageItem {
   paymentId: number;
   nickname: string;
@@ -38,22 +41,33 @@ interface ManageItem {
   account: null;
   total: number;
 }
+
 type ManageList = ManageItem[];
 
-///
-///
-///
+//
+//
+//
 
 export const SellerCaculateManagement = () => {
+  const navigate = useNavigate();
+
   // 상단 탭의 상태
   const [manageStatus, setManageStatus] = useState<string>('완료');
+
   // 드롭다운 메뉴, 최근 일주일 : 0 , 최근 1개월 : 1, 전체 : 2
   const [sortType, setSortType] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
+  const [isLastElem, setIsLastElem] = useState<boolean>(false);
+  const [managementList, setManagementList] = useState<ManageList>([]);
+  const [toatlMoney, setTotalMoney] = useState<number>(0);
+  const [isCompleteApplyManage, setIsCompleteApplyManage] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+
   const preventRef = useRef(true);
 
   const onIntersect: IntersectionObserverCallback = async (entry) => {
@@ -65,6 +79,7 @@ export const SellerCaculateManagement = () => {
       preventRef.current = true;
     }
   };
+
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
@@ -72,15 +87,12 @@ export const SellerCaculateManagement = () => {
     onIntersect,
   });
 
-  const [isLastElem, setIsLastElem] = useState<boolean>(false);
-  const [managementList, setManagementList] = useState<ManageList>([]);
-  const [toatlMoney, setTotalMoney] = useState<number>(0);
-  const [isCompleteApplyManage, setIsCompleteApplyManage] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+  /**
+   *
+   */
   const fetchManagements = async (lastId: number) => {
     const params = {
-      status: manageStatusMap[manageStatus],
+      status: manageStatusMap[manageStatus as keyof typeof manageStatusMap],
       sort: sortTypeMap[sortType],
       paymentId: lastId,
     };
@@ -125,9 +137,18 @@ export const SellerCaculateManagement = () => {
       }
     }
   };
+
+  //
+  //
+  //
   useEffect(() => {
     fetchManagements(0);
   }, [manageStatus, sortType, isCompleteApplyManage, navigate]);
+
+  //
+  //
+  //
+
   return (
     <>
       <ManagementHeader />
@@ -221,6 +242,7 @@ const SellerCalculateCardList = styled.div`
   align-items: center;
   flex-direction: column;
 `;
+
 const BackDrop = styled.div`
   @media (max-width: 767px) {
     width: 100vw;
