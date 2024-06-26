@@ -5,12 +5,21 @@ import { Green, Grey1, Grey4, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { convertAMPMToStringYear } from 'utils/convertDate';
 
+//
+//
+//
+
 interface ChatAlertModalProps {
   setAlertModalActive: React.Dispatch<SetStateAction<boolean>>;
   opponentName: string;
   chatStatus: string;
   alertModalTime: string;
 }
+
+//
+//
+//
+
 export const ChatAlertModal = ({
   setAlertModalActive,
   opponentName,
