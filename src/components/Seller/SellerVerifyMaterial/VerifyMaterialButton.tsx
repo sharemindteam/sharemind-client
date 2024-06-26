@@ -7,6 +7,7 @@ import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { isTakingQuizModalOpenState } from 'utils/atom';
+import { APP_WIDTH } from 'styles/AppStyle';
 interface VerifyMaterialButtonProps {
   level: number;
 }
@@ -93,7 +94,6 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
   } else if (level === 4) {
     return (
       <VerifyMaterialButtonWrapper>
-        {' '}
         <div className="buttons">
           <Button
             text={'이전'}
@@ -120,7 +120,6 @@ function VerifyMaterialButton({ level }: VerifyMaterialButtonProps) {
   }
 }
 
-export default VerifyMaterialButton;
 const VerifyMaterialButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -139,10 +138,12 @@ const VerifyMaterialButtonWrapper = styled.div`
     gap: 0.7rem;
     width: 100%;
   }
-  @media (max-width: 767px) {
-    width: calc(100% - 4rem);
-  }
+
+  width: calc(100% - 4rem);
+
   @media (min-width: 768px) {
-    width: calc(375px - 4rem);
+    width: calc(${APP_WIDTH} - 4rem);
   }
 `;
+
+export default VerifyMaterialButton;

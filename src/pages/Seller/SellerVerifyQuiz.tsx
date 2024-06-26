@@ -13,10 +13,14 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Green, Grey1, Grey6, LightGreen } from 'styles/color';
 import { quizChoiceList, quizList } from 'utils/constant';
+
 //
 //
 //
+
 export const SellerVerifyQuiz = () => {
+  const navigate = useNavigate();
+
   // 현재 몇번쨰 문제를 나타내는 상태 (1~5)
   const [quizLevel, setQuizLevel] = useState<number>(1);
 
@@ -31,8 +35,10 @@ export const SellerVerifyQuiz = () => {
 
   // 하나의 컴포넌트에 인증 전, 인증 성공, 인증 실패 상태에 따른 뷰 구현을 위한 상태
   const [verifyStatus, setVerifyStatus] = useState<string>('인증 전');
-  const navigate = useNavigate();
 
+  //
+  //
+  //
   useEffect(() => {
     const fetchIsPassQuiz = async () => {
       try {
@@ -48,8 +54,13 @@ export const SellerVerifyQuiz = () => {
         navigate('/minder/mypage');
       }
     };
+
     fetchIsPassQuiz();
   }, [navigate]);
+
+  //
+  //
+  //
 
   return (
     <>
