@@ -6,18 +6,20 @@ import { Button } from 'components/Common/Button';
 import Input from 'components/Common/Input';
 import { Space } from 'components/Common/Space';
 import BankSelectModal from 'components/Seller/Common/BankSelectModal';
-import { BottomButtonWrapper } from 'components/Seller/Common/BottomButton';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Grey1, Grey6 } from 'styles/color';
 import { Body1, Heading } from 'styles/font';
 import { BankIcon } from 'utils/BankIcon';
 import { isBankModalOpenState } from 'utils/atom';
+
 //
 //
 //
+
 function SellerProfitBankAccount() {
   const navigate = useNavigate();
   const [accountNum, setAccountNum] = useState<string>('');
@@ -32,6 +34,9 @@ function SellerProfitBankAccount() {
   const [isBankModalOpen, setIsBankModalOpen] =
     useRecoilState(isBankModalOpenState);
 
+  //
+  //
+  //
   useEffect(() => {
     const fetchAccountData = async () => {
       try {
@@ -45,9 +50,13 @@ function SellerProfitBankAccount() {
         alert(err);
       }
     };
+
     fetchAccountData();
   }, []);
 
+  /**
+   *
+   */
   const handleAccountNumChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
@@ -57,6 +66,9 @@ function SellerProfitBankAccount() {
     [],
   );
 
+  /**
+   *
+   */
   const handlePostAccountInfo = useCallback(async () => {
     if (accountNum !== '' && bankType !== '' && owner !== '') {
       const body = {
@@ -76,6 +88,10 @@ function SellerProfitBankAccount() {
       }
     }
   }, [accountNum, bankType, owner, navigate]);
+
+  //
+  //
+  //
 
   return (
     <Wrapper>
@@ -128,17 +144,17 @@ function SellerProfitBankAccount() {
         </div>
       </Form>
 
-      <BottomButtonWrapper>
+      <ButtonWrapper>
         <Button
           text="완료"
-          width="calc(100% - 4rem)"
+          width="100%"
           height="5.2rem"
           isActive={isActiveFinishButton ? true : false}
           onClick={() => {
             handlePostAccountInfo();
           }}
         />
-      </BottomButtonWrapper>
+      </ButtonWrapper>
       {isBankModalOpen && (
         <>
           <BackDrop /> <BankSelectModal setSelectBankType={setBankType} />
@@ -159,6 +175,7 @@ const BankTypeInput = styled.div`
   box-sizing: border-box;
   padding: 1.2rem 1.6rem;
 `;
+
 const Form = styled.div`
   display: flex;
   flex-direction: column;
@@ -169,6 +186,19 @@ const Form = styled.div`
     flex-direction: column;
     gap: 0.6rem;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: ${APP_WIDTH};
+  }
+
+  padding: 0.8rem 2rem 1.2rem 2rem;
+  box-sizing: border-box;
 `;
 
 export default SellerProfitBankAccount;
