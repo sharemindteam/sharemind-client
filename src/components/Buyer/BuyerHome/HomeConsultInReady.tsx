@@ -43,7 +43,12 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
           </Caption2>
         </NavConsult>
       </div>
-      <Flex direction="column" gap="0.8rem" style={{ padding: '0.4rem 2rem' }}>
+      <Flex
+        direction="column"
+        gap="0.8rem"
+        width="100%"
+        style={{ padding: '0.4rem 2rem', boxSizing: 'border-box' }}
+      >
         {searchData.slice(0, 3).map((value) => {
           return (
             <ReadyConsultCard
