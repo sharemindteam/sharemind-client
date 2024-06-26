@@ -14,6 +14,7 @@ import { patchCounselorsAll } from 'api/patch';
 import { ConverSortType } from 'utils/convertSortType';
 import { AvailCounselorSearchResults } from 'components/Buyer/BuyerAvailCounselor/AvailCounselorSearchResult';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { BackDrop } from 'components/Common/BackDrop';
 
 //
 //
@@ -183,6 +184,7 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 `;
+
 const HeaderWrapper = styled.div`
   height: 5.2rem;
   background-color: ${White};
@@ -195,23 +197,10 @@ const HeaderWrapper = styled.div`
   top: 0;
   z-index: 999;
 `;
+
 const BackIcon = styled(Back)`
   position: absolute;
   top: 1.2rem;
   left: 2rem;
   cursor: pointer;
-`;
-const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  position: fixed;
-  top: 0;
-  z-index: 2001;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
 `;

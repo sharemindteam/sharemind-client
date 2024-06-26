@@ -1,6 +1,7 @@
 import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { White } from 'styles/color';
 import { Body1 } from 'styles/font';
 interface FindInfoIdModalProps {
@@ -36,9 +37,11 @@ export const FindInfoIdModal = ({
 
 const SaveModalBox = styled.div`
   width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
+
   height: 12.8rem;
   z-index: 9999;
   display: flex;

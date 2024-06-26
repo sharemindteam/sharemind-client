@@ -1,18 +1,32 @@
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { isOutPopupOpenState } from 'utils/atom';
 
+//
+//
+//
+
 function IsOutPopup() {
   const navigate = useNavigate();
   const setIsOutPopupOpen = useSetRecoilState(isOutPopupOpenState);
+
+  /**
+   *
+   */
   const handlePostSaveSettings = () => {
     // 프로플 수정 메인 섹션에서 반영
     setIsOutPopupOpen(false);
     navigate('/minder/mypage/viewProfile');
   };
+
+  //
+  //
+  //
+
   return (
     <IsOutModalBox>
       <ModalBox>
@@ -32,6 +46,7 @@ function IsOutPopup() {
     </IsOutModalBox>
   );
 }
+
 const IsOutModalBox = styled.div`
   width: 100%;
   height: 15rem;
@@ -39,12 +54,10 @@ const IsOutModalBox = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 22.3rem;
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  top: 36vh;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
 `;
 

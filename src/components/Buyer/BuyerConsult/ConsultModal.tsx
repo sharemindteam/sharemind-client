@@ -7,6 +7,7 @@ import { Body1 } from 'styles/font';
 import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
 import { SetURLSearchParams } from 'react-router-dom';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -32,16 +33,10 @@ export const ConsultModal = ({
 }: SortModalProps) => {
   //modal 여부
   const [isModalOpen, setIsModalOpen] = useRecoilState(isConsultModalOpenState);
-  //여기서 unmount 시 sortType 바꾸고 새로 request
-  //바뀌고 unmount 될 때 sortType 바꾸기 위해 따로 정의
+
   const [modalSortType, setModalSortType] = useState<number>(sortType);
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
-  // useEffect(() => {
-  //   return () => {
-  //     setSortType(modalSortType);
-  //   };
-  // });
 
   //
   //
@@ -93,6 +88,7 @@ export const ConsultModal = ({
     </Wrapper>
   );
 };
+
 const slideIn = keyframes`
   from{
     transform : translateY(100%);
@@ -101,6 +97,7 @@ const slideIn = keyframes`
     transform : translateY(0%);
   }
 `;
+
 const slideOut = keyframes`
   from{
     transform : translateY(0%);
@@ -109,12 +106,12 @@ const slideOut = keyframes`
     transform : translateY(100%);
   }
 `;
+
 const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
   position: fixed;
   height: 14.3rem;

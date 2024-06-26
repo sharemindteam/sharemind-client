@@ -16,6 +16,7 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Space } from 'components/Common/Space';
 import { CartegoryState } from 'utils/type';
 import { APP_WIDTH } from 'styles/AppStyle';
+import { BackDrop } from 'components/Common/BackDrop';
 
 //
 //
@@ -372,19 +373,4 @@ const PostButton = styled.button<{ isActive: boolean }>`
   font-weight: 600;
   line-height: 125%; /* 2rem */
   height: 5.2rem;
-`;
-
-const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  position: fixed;
-  top: 0;
-  z-index: 2001;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
 `;

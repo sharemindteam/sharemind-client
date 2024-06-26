@@ -2,14 +2,22 @@ import { Button } from 'components/Common/Button';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled, { keyframes } from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Grey4, Grey6 } from 'styles/color';
 import { isModifyReviewState } from 'utils/atom';
-//최근순 읽지않은순 modal
+
+//
+//
+//
+
 export const ReviewModal = () => {
   const navigate = useNavigate();
   //modal 여부
   const isModalOpen = useRecoilValue(isModifyReviewState);
-  //여기서 unmount 시 sortType 바꾸고 새로 request
+
+  //
+  //
+  //
 
   return (
     <Wrapper visible={isModalOpen}>
@@ -22,8 +30,6 @@ export const ReviewModal = () => {
           width="89.33%"
           height="5.2rem"
           onClick={() => {
-            //추후 클릭한 consult id에 대한 리뷰로 넘어감
-            //props로 받으면될듯
             navigate('/review/0');
           }}
         />
@@ -31,6 +37,7 @@ export const ReviewModal = () => {
     </Wrapper>
   );
 };
+
 const slideIn = keyframes`
   from{
     transform : translateY(100%);
@@ -47,12 +54,11 @@ const slideOut = keyframes`
     transform : translateY(100%);
   }
 `;
+
 const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
   position: fixed;
   height: 9.8rem;
@@ -75,6 +81,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
     margin: 0.4rem 0;
   }
 `;
+
 const Bar = styled.div`
   margin-top: 1.2rem;
   width: 3.1rem;

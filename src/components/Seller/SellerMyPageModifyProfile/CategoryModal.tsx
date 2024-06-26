@@ -6,6 +6,7 @@ import styled, { keyframes } from 'styled-components';
 import { Green, Grey1, Grey3, Grey4, Grey6 } from 'styles/color';
 import { Body1, Button2, Caption2 } from 'styles/font';
 import { isCategoryModalOpenState } from 'utils/atom';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 interface CategoryModalProps {
   selectCategory: number[];
@@ -203,11 +204,10 @@ const CompleteButton = styled(Button2)`
 `;
 
 const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
   position: fixed;
   height: 48rem;

@@ -3,6 +3,7 @@ import { SetStateAction } from 'react';
 import { SetURLSearchParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, Grey1, Grey4, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
 import { isSortModalOpenState, scrollLockState } from 'utils/atom';
@@ -111,11 +112,10 @@ const slideOut = keyframes`
   }
 `;
 const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
   position: fixed;
   height: 22.7rem;

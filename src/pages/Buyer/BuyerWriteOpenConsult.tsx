@@ -223,6 +223,7 @@ const Wrapper = styled.div`
     align-items: center;
   }
 `;
+
 const CategoryDropDown = styled.div`
   padding: 0.9rem 1.6rem;
   box-sizing: border-box;
@@ -236,6 +237,7 @@ const CategoryDropDown = styled.div`
   margin-bottom: 0.8rem;
   cursor: pointer;
 `;
+
 const TitleInput = styled.input`
   width: 89.33%;
   border-radius: 1.2rem;
@@ -255,6 +257,7 @@ const TextCount = styled.div`
   margin-top: 0.4rem;
   margin-right: 2rem;
 `;
+
 const TextArea = styled.textarea`
   resize: none;
   width: 89.33%;
@@ -279,6 +282,7 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
   white-space: pre-wrap; 
   `;
+
 const ButtonWrapper = styled.div`
   width: 100%;
   @media (min-width: 768px) {

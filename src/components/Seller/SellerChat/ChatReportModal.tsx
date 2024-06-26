@@ -2,6 +2,12 @@ import styled from 'styled-components';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
 import { White } from 'styles/color';
 import { Button } from 'components/Common/Button';
+import { APP_WIDTH } from 'styles/AppStyle';
+
+//
+//
+//
+
 export const ChatReportModal = () => {
   return (
     <ChatReportModalWrapper>
@@ -19,18 +25,19 @@ export const ChatReportModal = () => {
     </ChatReportModalWrapper>
   );
 };
+
 const ChatReportModalWrapper = styled.div`
   position: fixed;
   background-color: ${White};
   border-radius: 2rem 2rem 0 0;
   box-shadow: 0 -0.2rem 1rem 0 rgba(0, 0, 0, 0.1);
   bottom: 0;
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+
   .bar-wrapper {
     height: 1.9rem;
     display: flex;

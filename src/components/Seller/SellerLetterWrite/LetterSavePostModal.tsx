@@ -10,7 +10,6 @@ interface LetterWriteSavePostModal {
   isSave: boolean;
   messageType: string;
   saveId: string;
-
 }
 // 임시저장 할까요? 모달
 export const LetterSavePostModal = ({
@@ -74,7 +73,7 @@ const PostModalBox = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 22.3rem;
+  top: 36vh;
 `;
 
 const ModalBox = styled.div`

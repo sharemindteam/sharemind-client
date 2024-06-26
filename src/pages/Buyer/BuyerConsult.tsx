@@ -14,6 +14,7 @@ import { BuyerConsultChatSection } from 'components/Buyer/BuyerConsult/BuyerCons
 import { BuyerConsultLetterSection } from 'components/Buyer/BuyerConsult/BuyerConsultLetterSection';
 import { useConsultParams } from 'hooks/useConsultParams';
 import BuyerOpenConsultSection from 'components/Buyer/BuyerConsult/BuyerOpenConsultSection';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -250,6 +251,7 @@ const Wrapper = styled.div`
     gap: 0.4rem;
   }
 `;
+
 const SelectButton = styled.div<{ $isSelected: boolean; $isLong?: boolean }>`
   background-color: ${(props) => (props.$isSelected ? LightGreen : Grey6)};
   cursor: pointer;
@@ -259,11 +261,10 @@ const SelectButton = styled.div<{ $isSelected: boolean; $isLong?: boolean }>`
 `;
 
 const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
   position: fixed;
   top: 0;

@@ -20,6 +20,7 @@ import { SearchResultData } from 'utils/type';
 import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/CategorySearchResult';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -199,13 +200,14 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 `;
+
 const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
+
   position: fixed;
   top: 0;
   z-index: 2001;

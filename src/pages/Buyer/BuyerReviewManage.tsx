@@ -4,6 +4,7 @@ import { ReviewManageNav } from 'components/Buyer/BuyerReviewManage/ReviewManage
 import { ReviewModal } from 'components/Buyer/BuyerReviewManage/ReviewModal';
 import { ReviewWroteCard } from 'components/Buyer/BuyerReviewManage/ReviewWroteCard';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
+import { BackDrop } from 'components/Common/BackDrop';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -187,25 +188,11 @@ export const BuyerReviewManage = () => {
     </>
   );
 };
+
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
   margin-top: 1.2rem;
-`;
-
-const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  position: fixed;
-  top: 0;
-  z-index: 2001;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
 `;

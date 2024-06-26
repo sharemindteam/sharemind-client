@@ -13,16 +13,26 @@ import { Space } from 'components/Common/Space';
 import { BuyerReview } from 'utils/type';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { patchReviews } from 'api/patch';
+
+//
+//
+//
+
 export const BuyerWriteReview = () => {
   const navigate = useNavigate();
   //location으로 review data 넘어옴
   const location = useLocation();
   const { state } = location;
+
   const reviewData: BuyerReview = state?.reviewData;
   //평점
   const [rating, setRating] = useState<number>(0);
   //comment
   const [comment, setComment] = useState<string>('');
+
+  /**
+   *
+   */
   const handleCompleteClick = async () => {
     const body = {
       reviewId: reviewData.reviewId,
@@ -40,12 +50,21 @@ export const BuyerWriteReview = () => {
       alert(res.response.data.message.split(' : ')[0]);
     }
   };
+
+  //
+  //
+  //
   useEffect(() => {
     if (reviewData === null || reviewData === undefined) {
       alert('잘못된 접근입니다.');
       navigate('/reviewManage');
     }
   }, []);
+
+  //
+  //
+  //
+
   if (!(reviewData === null || reviewData === undefined)) {
     return (
       <Wrapper>
@@ -200,6 +219,7 @@ export const BuyerWriteReview = () => {
     <>404 error</>;
   }
 };
+
 const Wrapper = styled.div`
   .body-wrapper {
     display: flex;
@@ -226,6 +246,7 @@ const Wrapper = styled.div`
     margin-bottom: 3rem;
   }
 `;
+
 const InfoCard = styled.div`
   height: 16.8rem;
   width: 89.33%;
@@ -260,18 +281,23 @@ const InfoCard = styled.div`
     }
   }
 `;
+
 const HeartIcon = styled(Heart)`
   padding-bottom: 0.2rem;
 `;
+
 const RateWrapper = styled.div`
   display: flex;
 `;
+
 const RateIcon = styled(Rate)`
   cursor: pointer;
 `;
+
 const EmptyRateIcon = styled(EmptyRate)`
   cursor: pointer;
 `;
+
 const Textarea = styled.textarea`
   width: 89.33%;
   height: 12.9rem;

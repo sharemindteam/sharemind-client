@@ -4,6 +4,7 @@ import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { Heading } from 'styles/font';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 function OpenConsultHeader() {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const OpenConsultHeaderWrapper = styled.div`
   justify-content: center;
   position: fixed;
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
   width: 100%;
   border-bottom: 1px solid rgba(242, 241, 248, 0.95);

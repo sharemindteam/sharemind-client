@@ -13,6 +13,7 @@ import { useStompContext } from 'contexts/StompContext';
 import { convertChatListDate } from 'utils/convertDate';
 import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
 import { StompSubscription } from '@stomp/stompjs';
+import { BackDrop } from 'components/Common/BackDrop';
 
 //
 //
@@ -316,26 +317,14 @@ function SellerChatList({
     </>
   );
 }
+
 const ConsultBoxList = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1.2rem;
   gap: 0.8rem;
 `;
-const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  position: fixed;
-  top: 0;
-  z-index: 2001;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
-`;
+
 const NoConsultSection = styled.section`
   display: flex;
   flex-direction: column;
@@ -352,4 +341,5 @@ const NoConsultText = styled.div`
   font-weight: 600;
   line-height: 3rem;
 `;
+
 export default SellerChatList;

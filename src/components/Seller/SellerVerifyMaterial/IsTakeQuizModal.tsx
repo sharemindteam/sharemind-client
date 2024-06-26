@@ -2,17 +2,28 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { isTakingQuizModalOpenState } from 'utils/atom';
+
+//
+//
+//
+
 function IsTakeQuizModal() {
+  const navigate = useNavigate();
+
   const setIsTakingQuizModalOpen = useSetRecoilState(
     isTakingQuizModalOpenState,
   );
-  const navigate = useNavigate();
+
+  //
+  //
+  //
+
   return (
     <IsTakeQuizModalBox>
-      {' '}
       <ModalBox>
         <Body1>퀴즈를 응시하시겠습니까?</Body1>
         <Body3 color={Grey4}>퀴즈는 24시간 내 1회만 응시가 가능해요.</Body3>
@@ -45,12 +56,10 @@ const IsTakeQuizModalBox = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 22.3rem;
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  top: 36vh;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
 `;
 const ModalBox = styled.div`

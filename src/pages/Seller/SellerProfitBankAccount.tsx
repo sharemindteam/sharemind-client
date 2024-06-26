@@ -157,7 +157,8 @@ function SellerProfitBankAccount() {
       </ButtonWrapper>
       {isBankModalOpen && (
         <>
-          <BackDrop /> <BankSelectModal setSelectBankType={setBankType} />
+          <BackDrop />
+          <BankSelectModal setSelectBankType={setBankType} />
         </>
       )}
     </Wrapper>
