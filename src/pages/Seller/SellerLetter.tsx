@@ -61,7 +61,10 @@ export const SellerLetter = () => {
   // 로딩스피너 여부
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
   const [isCancel, setIsCancel] = useState<boolean>();
+
+  //
   // 처음 마운트될 떄 호출하는 API
+  //
   useEffect(() => {
     const fetchLetterInfo = async () => {
       try {
@@ -101,6 +104,7 @@ export const SellerLetter = () => {
 
     fetchLetterInfo();
   }, []);
+
   // 태그 바뀜에 따라 getLetterMessages API 호출
   const messageTypeMap = useMemo(
     () => ({
@@ -111,6 +115,10 @@ export const SellerLetter = () => {
     }),
     [],
   );
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchMessages = async () => {
       setIsLoading(true);
@@ -133,6 +141,11 @@ export const SellerLetter = () => {
     };
     fetchMessages();
   }, [tagStatus]);
+
+  //
+  //
+  //
+
   return (
     <>
       <LetterHeader />

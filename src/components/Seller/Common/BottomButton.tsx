@@ -1,5 +1,6 @@
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Green } from 'styles/color';
 
 interface BottomButtonProps {
@@ -18,7 +19,7 @@ export const BottomButton = ({
         isActive={isActive}
         onClick={onClick}
         text={text}
-        width="80%"
+        width="100%"
         backgroundColor={Green}
         height="5.2rem"
       ></Button>
@@ -27,19 +28,17 @@ export const BottomButton = ({
 };
 
 export const BottomButtonWrapper = styled.div`
-  display: block;
-  height: 5.2rem;
+  position: fixed;
+  bottom: 1rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
   width: 100%;
+
+  @media (min-width: 768px) {
+    width: ${APP_WIDTH};
+  }
+
   text-align: center;
   margin-bottom: 1.6rem;
   border-radius: 1.2rem;
-  @media (max-width: 767px) {
-    position: fixed;
-    bottom: 1rem;
-  }
-  @media (min-width: 768px) {
-    width: 375px;
-    position: fixed;
-    bottom: 1rem;
-  }
 `;
