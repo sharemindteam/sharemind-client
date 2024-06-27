@@ -17,6 +17,10 @@ import { ConsultState } from 'utils/type';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Button } from 'components/Common/Button';
 
+//
+//
+//
+
 interface ConsultCardProps {
   consultStyle: string;
   id: number;
@@ -30,6 +34,11 @@ interface ConsultCardProps {
   consultId: number | null;
   isLetter: boolean;
 }
+
+//
+//
+//
+
 export const ConsultCard = ({
   consultStyle,
   id,
@@ -50,6 +59,9 @@ export const ConsultCard = ({
 
   const filterdUnreadMessageCount = unreadMessageCount ?? 0;
 
+  /**
+   *
+   */
   const handleReviewClick = (e?: React.MouseEvent<HTMLElement>) => {
     e?.stopPropagation();
     navigate('/reviewManage');
@@ -63,7 +75,9 @@ export const ConsultCard = ({
     <Wrapper
       onClick={() => {
         if (isLetter) {
-          navigate(`/letter/${id}`);
+          navigate(`/letter/${id}`, {
+            state: { isReviewCompleted: reviewCompleted },
+          });
         } else {
           navigate(`/chat/${id}`);
         }

@@ -5,7 +5,7 @@ import { Body1, Body2, Body3 } from 'styles/font';
 import { Grey1, Grey3, Grey6 } from 'styles/color';
 import { Button } from 'components/Common/Button';
 import { Space } from 'components/Common/Space';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { GetMessagesType } from 'utils/type';
 import { APP_WIDTH } from 'styles/AppStyle';
 
@@ -20,6 +20,10 @@ interface LetterMainSectionProps {
   deadline: string;
 }
 
+interface locationStateType {
+  isReviewCompleted: boolean | null;
+}
+
 //
 //
 //
@@ -31,6 +35,10 @@ export const LetterMainSection = ({
   deadline,
 }: LetterMainSectionProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isReviewCompleted } = location.state as locationStateType;
+
+  const isReviewButtonVisible = tagStatus === 3 && isReviewCompleted === false;
 
   const formattedMessage = (message: string | null): JSX.Element[] | null => {
     return message
@@ -145,6 +153,18 @@ export const LetterMainSection = ({
             {formattedMessage(messageResponse.content)}
           </Body2>
         </ContentBox>
+        {isReviewButtonVisible ? (
+          <ButtonWrapper>
+            <Button
+              text="리뷰 작성하기"
+              width="100%"
+              height="5.2rem"
+              onClick={() => {
+                navigate(`/reviewManage`);
+              }}
+            />
+          </ButtonWrapper>
+        ) : null}
       </SectionWrapper>
     );
   }

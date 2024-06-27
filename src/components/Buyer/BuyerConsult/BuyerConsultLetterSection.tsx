@@ -9,10 +9,18 @@ import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import { Heading } from 'styles/font';
 import { Space } from 'components/Common/Space';
 
+//
+//
+//
+
 interface BuyerConsultLetterSectionProps {
   sortType: number;
   isChecked: boolean;
 }
+
+//
+//
+//
 
 export const BuyerConsultLetterSection = ({
   sortType,
@@ -21,6 +29,10 @@ export const BuyerConsultLetterSection = ({
   const [cardData, setCardData] = useState<consultApiObject[]>([]); //card에 넘길 데이터
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  //
+  //
+  //
   useLayoutEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -47,8 +59,14 @@ export const BuyerConsultLetterSection = ({
         setIsLoading(false);
       }
     };
+
     fetchData();
   }, [sortType, isChecked, setIsLoading]);
+
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <>
@@ -64,41 +82,46 @@ export const BuyerConsultLetterSection = ({
         </div>
       </>
     );
-  } else {
-    return (
-      <>
-        {cardData.length !== 0 ? (
-          <BuyerConsultLetterSectionWrapper>
-            {cardData.map((value) => {
-              return (
-                <ConsultCard
-                  key={value.id}
-                  consultStyle={value.consultStyle}
-                  id={value.id}
-                  latestMessageContent={value.latestMessageContent}
-                  latestMessageIsCustomer={value.latestMessageIsCustomer}
-                  latestMessageUpdatedAt={value.latestMessageUpdatedAt}
-                  opponentNickname={value.opponentNickname}
-                  status={value.status}
-                  unreadMessageCount={value.unreadMessageCount}
-                  reviewCompleted={value.reviewCompleted}
-                  consultId={value.consultId}
-                  isLetter={true}
-                />
-              );
-            })}
-            <Space height="4rem" />
-          </BuyerConsultLetterSectionWrapper>
-        ) : (
-          <EmptyWrapper>
-            <EmptyIcon />
-            <Heading>아직 진행한 상담이 없어요</Heading>
-          </EmptyWrapper>
-        )}{' '}
-      </>
-    );
   }
+
+  return (
+    <>
+      {cardData.length !== 0 ? (
+        <BuyerConsultLetterSectionWrapper>
+          {cardData.map((value) => {
+            return (
+              <ConsultCard
+                key={value.id}
+                consultStyle={value.consultStyle}
+                id={value.id}
+                latestMessageContent={value.latestMessageContent}
+                latestMessageIsCustomer={value.latestMessageIsCustomer}
+                latestMessageUpdatedAt={value.latestMessageUpdatedAt}
+                opponentNickname={value.opponentNickname}
+                status={value.status}
+                unreadMessageCount={value.unreadMessageCount}
+                reviewCompleted={value.reviewCompleted}
+                consultId={value.consultId}
+                isLetter={true}
+              />
+            );
+          })}
+          <Space height="4rem" />
+        </BuyerConsultLetterSectionWrapper>
+      ) : (
+        <EmptyWrapper>
+          <EmptyIcon />
+          <Heading>아직 진행한 상담이 없어요</Heading>
+        </EmptyWrapper>
+      )}
+    </>
+  );
 };
+
+//
+//
+//
+
 const BuyerConsultLetterSectionWrapper = styled.section`
   margin-bottom: 2rem;
   display: flex;
@@ -110,6 +133,7 @@ const BuyerConsultLetterSectionWrapper = styled.section`
 const EmptyIcon = styled(Empty)`
   padding: 4.7rem 4.41rem 4.603rem 4.5rem;
 `;
+
 const EmptyWrapper = styled.div`
   margin-top: 10vh;
   display: flex;
