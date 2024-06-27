@@ -22,7 +22,11 @@ const EmptySection = ({ title, subtitle }: EmptySectionProps) => {
       <EmptyIcon />
       {title ? <Heading>{title}</Heading> : null}
       <Space height="1.5rem" />
-      {subtitle ? <Body2>{subtitle}</Body2> : null}
+      {subtitle ? (
+        <Body2 style={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
+          {subtitle}
+        </Body2>
+      ) : null}
     </EmptyWrapper>
   );
 };

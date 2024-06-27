@@ -5,6 +5,7 @@ import { ReviewModal } from 'components/Buyer/BuyerReviewManage/ReviewModal';
 import { ReviewWroteCard } from 'components/Buyer/BuyerReviewManage/ReviewWroteCard';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { BackDrop } from 'components/Common/BackDrop';
+import EmptySection from 'components/Common/EmptySection';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +15,10 @@ import { Grey1 } from 'styles/color';
 import { Heading } from 'styles/font';
 import { isModifyReviewState, scrollLockState } from 'utils/atom';
 import { BuyerReview } from 'utils/type';
+
+//
+//
+//
 
 export const BuyerReviewManage = () => {
   const navigate = useNavigate();
@@ -31,6 +36,13 @@ export const BuyerReviewManage = () => {
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
 
   const preventRef = useRef(true); // 중복 방지 옵션
+
+  const emptySectionText = isReviewWrite
+    ? { title: '아직 작성할 리뷰가 없어요' }
+    : {
+        title: '아직 남긴 리뷰가 없어요',
+        subtitle: '진행한 상담이 있다면,\n리뷰 작성 탭에서 리뷰를 남겨주세요!',
+      };
 
   /**
    *
@@ -82,6 +94,74 @@ export const BuyerReviewManage = () => {
     onIntersect,
   });
 
+  /**
+   *
+   */
+  const renderReviewList = () => {
+    if (reviewData.length === 0) {
+      return (
+        <EmptySection
+          title={emptySectionText.title}
+          subtitle={emptySectionText.subtitle}
+        />
+      );
+    }
+
+    return (
+      <>
+        {isReviewWrite ? (
+          <CardWrapper>
+            {reviewData.map((value) => {
+              return (
+                <ReviewManageCard key={value?.reviewId} reviewData={value} />
+              );
+            })}
+            {!isLastElem ? (
+              <div
+                ref={setTarget}
+                style={{
+                  height: '3.5rem',
+                  width: '10rem',
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  height: '3.5rem',
+                  width: '10rem',
+                }}
+              />
+            )}
+          </CardWrapper>
+        ) : (
+          <CardWrapper>
+            {reviewData.map((value) => {
+              return (
+                <ReviewWroteCard key={value?.reviewId} reviewData={value} />
+              );
+            })}
+            {!isLastElem ? (
+              <div
+                ref={setTarget}
+                style={{
+                  height: '3.5rem',
+                  width: '10rem',
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  height: '3.5rem',
+                  width: '10rem',
+                }}
+              />
+            )}
+          </CardWrapper>
+        )}
+      </>
+    );
+  };
+
   //
   //
   //
@@ -126,53 +206,9 @@ export const BuyerReviewManage = () => {
         <Heading color={Grey1}>리뷰관리</Heading>
       </HeaderWrapper>
       <ReviewManageNav isWrite={isReviewWrite} setIsWrite={setIsReviewWrite} />
-      {isReviewWrite ? (
-        <CardWrapper>
-          {reviewData.map((value) => {
-            return (
-              <ReviewManageCard key={value?.reviewId} reviewData={value} />
-            );
-          })}
-          {!isLastElem ? (
-            <div
-              ref={setTarget}
-              style={{
-                height: '3.5rem',
-                width: '10rem',
-              }}
-            />
-          ) : (
-            <div
-              style={{
-                height: '3.5rem',
-                width: '10rem',
-              }}
-            />
-          )}
-        </CardWrapper>
-      ) : (
-        <CardWrapper>
-          {reviewData.map((value) => {
-            return <ReviewWroteCard key={value?.reviewId} reviewData={value} />;
-          })}
-          {!isLastElem ? (
-            <div
-              ref={setTarget}
-              style={{
-                height: '3.5rem',
-                width: '10rem',
-              }}
-            />
-          ) : (
-            <div
-              style={{
-                height: '3.5rem',
-                width: '10rem',
-              }}
-            />
-          )}
-        </CardWrapper>
-      )}
+
+      {renderReviewList()}
+
       {isModalOpen ? (
         <>
           <BackDrop
