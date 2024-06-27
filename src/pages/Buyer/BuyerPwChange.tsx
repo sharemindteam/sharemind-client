@@ -94,7 +94,9 @@ export const BuyerPwChange = () => {
     }
   }, [pw.isValid, newPw.isValid, newPwCheck.isValid, newPw.typeValid]);
 
+  //
   /** new password and new password valid check logic */
+  //
   useUpdateEffect(() => {
     /** check which value is changed */
     const newPwChanged = newPw.prevValue !== newPw.value;
@@ -228,9 +230,10 @@ export const BuyerPwChange = () => {
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   .body-wrapper {
-    height: calc(var(--vh, 1vh) * 100 - 8.7rem);
+    height: calc(var(--vh, 1vh) * 100 - 6.7rem);
     display: flex;
     flex-direction: column;
     justify-content: space-between;

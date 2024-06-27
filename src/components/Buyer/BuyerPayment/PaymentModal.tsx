@@ -44,28 +44,30 @@ export const PaymentModal = ({
   };
   //여기서 unmount 시 sortType 바꾸고 새로 request
   return (
-    <Wrapper visible={isModalOpen}>
-      <Body1 color={Grey1}>해당 상담의 결제를 취소할까요?</Body1>
-      <Body3 color={Grey4}>결제 취소 O일 안으로 환불이 진행됩니다.</Body3>
-      <Space height="2rem" />
-      <div className="button-wrapper">
-        <Button
-          text="닫기"
-          width="14.8rem"
-          height="5.2rem"
-          backgroundColor={LightGreen}
-          color={Green}
-          onClick={() => {
-            setIsModalOpen(false);
-          }}
-        />
-        <Button
-          text="결제 취소하기"
-          width="14.8rem"
-          height="5.2rem"
-          onClick={handleCancelPayment}
-        />
-      </div>
+    <Wrapper>
+      <ModalWrapepr visible={isModalOpen}>
+        <Body1 color={Grey1}>해당 상담의 결제를 취소할까요?</Body1>
+        <Body3 color={Grey4}>결제 취소 O일 안으로 환불이 진행됩니다.</Body3>
+        <Space height="2rem" />
+        <div className="button-wrapper">
+          <Button
+            text="닫기"
+            width="14.8rem"
+            height="5.2rem"
+            backgroundColor={LightGreen}
+            color={Green}
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+          />
+          <Button
+            text="결제 취소하기"
+            width="14.8rem"
+            height="5.2rem"
+            onClick={handleCancelPayment}
+          />
+        </div>
+      </ModalWrapepr>
     </Wrapper>
   );
 };
@@ -85,18 +87,16 @@ const fadeOut = keyframes`
     opacity:0;
   }
 `;
-const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 90vw;
-    margin-left: 5vw;
-  }
-  @media (min-width: 768px) {
-    width: 33.5rem;
-    margin-left: 2rem;
-  }
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const ModalWrapepr = styled.div<{ visible: boolean }>`
   position: fixed;
   z-index: 2002;
-  top: 39%;
+  top: 36vh;
   display: flex;
   flex-direction: column;
   align-items: center;

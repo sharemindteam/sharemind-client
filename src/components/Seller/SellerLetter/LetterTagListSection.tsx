@@ -1,5 +1,6 @@
 import { TagLetterStatus } from 'components/Common/TagLetterStatus';
 import styled from 'styled-components';
+import { Grey6 } from 'styles/color';
 
 //
 //
@@ -7,7 +8,7 @@ import styled from 'styled-components';
 
 interface LetterTagListSectionProps {
   tagStatus?: number;
-  setTagStatus: React.Dispatch<React.SetStateAction<number>>;
+  setTagStatus: React.Dispatch<React.SetStateAction<number | undefined>>;
   tagActiveLevel: number;
 }
 
@@ -29,7 +30,6 @@ export const LetterTagListSection = ({
         onClick={() => {
           setTagStatus(0);
         }}
-        // isActive: 태그에 따른 탭 활성화 되었는지, isSelect: 태그에 따른 탭이 선택되었는지
         isActive={true}
         isSelect={tagStatus === 0 ? true : false}
       />
@@ -38,7 +38,6 @@ export const LetterTagListSection = ({
         onClick={() => {
           setTagStatus(1);
         }}
-        // isActive: 태그에 따른 탭 활성화 되었는지, isSelect: 태그에 따른 탭이 선택되었는지
         isActive={tagActiveLevel >= 1}
         isSelect={tagStatus === 1 ? true : false}
       />
@@ -47,7 +46,6 @@ export const LetterTagListSection = ({
         onClick={() => {
           setTagStatus(2);
         }}
-        // isActive: 태그에 따른 탭 활성화 되었는지, isSelect: 태그에 따른 탭이 선택되었는지
         isActive={tagActiveLevel >= 2}
         isSelect={tagStatus === 2 ? true : false}
       />
@@ -56,7 +54,6 @@ export const LetterTagListSection = ({
         onClick={() => {
           setTagStatus(3);
         }}
-        // isActive: 태그에 따른 탭 활성화 되었는지, isSelect: 태그에 따른 탭이 선택되었는지
         isActive={tagActiveLevel >= 3}
         isSelect={tagStatus === 3 ? true : false}
       />
@@ -70,5 +67,5 @@ const LetterTagListSectionWrapper = styled.div`
   align-items: center;
   margin-left: 2rem;
   gap: 0.8rem;
-  border-bottom: 1px solid var(--Greyscale-Grey-6, #f6f6fa);
+  border-bottom: 1px solid ${Grey6};
 `;

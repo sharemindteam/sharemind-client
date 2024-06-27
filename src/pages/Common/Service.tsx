@@ -20,6 +20,10 @@ import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Characters } from 'utils/Characters';
 
+//
+//
+//
+
 const slideArray = [
   '연애갈등',
   '이별/재회',
@@ -30,15 +34,29 @@ const slideArray = [
   '권태기',
   '기타',
 ];
+
+//
+//
+//
+
 function Service() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+
+  //
+  //
+  //
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 600);
     window.scrollTo(0, 0);
   }, []);
+
+  //
+  //
+  //
+
   return (
     <ServicePageContainer>
       <HeaderWrapper>
@@ -284,6 +302,7 @@ const ServicePageContainer = styled.div`
     align-items: center;
     height: 33.1rem;
     background-color: ${LightGreen};
+    padding-bottom: 3rem;
   }
   .main-caption {
     display: flex;
@@ -390,7 +409,7 @@ const SlideList = styled.div`
   width: fit-content;
   align-items: center;
   animation-name: ${loopAnimation};
-  animation-duration: 20s;
+  animation-duration: 30s;
   animation-direction: reverse;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -401,7 +420,7 @@ const SlideReverseList = styled.div`
   width: fit-content;
   align-items: center;
   animation-name: ${loopAnimation};
-  animation-duration: 20s;
+  animation-duration: 30s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 `;

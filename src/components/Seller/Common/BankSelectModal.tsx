@@ -1,17 +1,33 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Grey4, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
 import { BankIcon } from 'utils/BankIcon';
 import { isBankModalOpenState } from 'utils/atom';
 import { bankNameList } from 'utils/constant';
+
+//
+//
+//
+
 interface BankSelectModalProps {
   setSelectBankType: React.Dispatch<React.SetStateAction<string>>;
 }
+
+//
+//
+//
+
 function BankSelectModal({ setSelectBankType }: BankSelectModalProps) {
   const [isBankModalOpen, setIsBankModalOpen] =
     useRecoilState(isBankModalOpenState);
+
+  //
+  //
+  //
+
   return (
     <Wrapper visible={isBankModalOpen}>
       <div className="bar-wrapper">
@@ -66,17 +82,14 @@ const BankItem = styled.div`
 const BankName = styled.div``;
 
 const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 100vw;
-    height: calc(100% - 9.6rem);
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
-    height: calc(100% - 9.6rem);
+    width: ${APP_WIDTH};
   }
   box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.1);
   position: fixed;
-  height: 28rem;
+  height: calc(100% - 9.6rem);
   background-color: ${Grey6};
   bottom: 0;
   border-radius: 2rem 2rem 0 0;

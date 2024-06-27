@@ -13,9 +13,11 @@ import { deleteWishLists } from 'api/delete';
 import { patchWishLists } from 'api/patch';
 import { Space } from 'components/Common/Space';
 import { Button } from 'components/Common/Button';
+
 //
 //
 //
+
 interface ReadyConsultCardProps {
   counselorId: number;
   tagList: CartegoryState[];
@@ -32,9 +34,11 @@ interface ReadyConsultCardProps {
   consultStyle: number | undefined;
   totalConsult: number;
 }
+
 //
 //
 //
+
 export const ReadyConsultCard = ({
   counselorId,
   tagList,
@@ -98,10 +102,14 @@ export const ReadyConsultCard = ({
     }
   };
 
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <UpperWrapper>
-        <Body1>{introduction}</Body1>
+        <Body1 style={{ textAlign: 'left' }}>{introduction}</Body1>
         <Space height="1.5rem" />
         <TagWrapper>
           {tagList.map((value: any, index) => {
@@ -145,6 +153,7 @@ export const ReadyConsultCard = ({
           color={Green}
           backgroundColor={White}
           border={`1px solid ${Green}`}
+          borderRadius="0.8rem"
           onClick={() => {
             navigate(`/profile/${counselorId}`);
           }}
@@ -159,10 +168,13 @@ export const ReadyConsultCard = ({
   );
 };
 
+//
+//
+//
+
 const Wrapper = styled.div`
-  width: 89%;
+  width: 100%;
   border-radius: 0.8rem;
-  margin-bottom: 0.8rem;
   background-color: ${Grey6};
 `;
 const UpperWrapper = styled.div`

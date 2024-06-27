@@ -19,6 +19,7 @@ import SellerChatFooter from 'components/Seller/SellerChat/SellerChatFooter';
 import SellerChatSection from 'components/Seller/SellerChat/SellerChatSection';
 import { CHAT_START_REQUEST_TIME } from 'utils/constant';
 import useCounselorChat from 'ws/useCounselorChat';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -467,6 +468,7 @@ const Wrapper = styled.main`
   width: 100%;
   position: relative;
 `;
+
 const HeaderWrapper = styled.div<{ border?: boolean }>`
   height: 5.2rem;
   background-color: ${White};
@@ -478,12 +480,13 @@ const HeaderWrapper = styled.div<{ border?: boolean }>`
   justify-content: center;
   align-items: center;
   position: fixed;
+
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+
   top: 0;
   z-index: 999;
 `;

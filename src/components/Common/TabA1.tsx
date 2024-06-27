@@ -6,11 +6,21 @@ import { Black, Green, Grey6 } from 'styles/color';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCounselorsRandomConsult } from 'api/get';
+
+//
+//
+//
+
 interface TabA1Props {
   isBuyer: boolean;
   //넘어온 state는 홈이면 1, 상담이면 2, 내정보면 3(초깃값)
   initState: number;
 }
+
+//
+//
+//
+
 export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
   const navigate = useNavigate();
   const [tabState, setTabState] = useState<number>();
@@ -128,6 +138,11 @@ export const TabA1 = ({ isBuyer, initState }: TabA1Props) => {
     </Wrapper>
   );
 };
+
+//
+//
+//
+
 const Wrapper = styled.nav`
   width: 100%;
   height: 4rem;

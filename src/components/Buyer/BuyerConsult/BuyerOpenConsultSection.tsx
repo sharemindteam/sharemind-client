@@ -227,7 +227,6 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
 
 const BuyerOpenConsultCardList = styled.div`
   display: flex;
-  padding: 1.2rem 2rem;
   flex-direction: column;
   align-items: flex-start;
   gap: 1.2rem;

@@ -1,5 +1,6 @@
 import { ReactComponent as Search } from 'assets/icons/chat-send-button.svg';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
 
 //
@@ -62,12 +63,13 @@ const SellerChatFooter = ({
 const FooterWrapper = styled.footer`
   position: fixed;
   z-index: 999;
+
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+
   background-color: ${White};
   bottom: 0;
   display: flex;

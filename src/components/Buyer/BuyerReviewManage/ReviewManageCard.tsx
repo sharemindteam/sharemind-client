@@ -7,12 +7,26 @@ import { ReactComponent as Heart } from 'assets/icons/icon-review-empty-heart.sv
 import { Button } from 'components/Common/Button';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { BuyerReview } from 'utils/type';
+
+//
+//
+//
+
 interface ReviewManageCardProps {
   reviewData: BuyerReview;
 }
-//캐릭터 넘버 레벨 별점 후기개수 상담유형 상담일자 상담가격 (남긴리뷰) 리뷰내용
+
+//
+//
+//
+
 export const ReviewManageCard = ({ reviewData }: ReviewManageCardProps) => {
   const navigate = useNavigate();
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <UpperWrapper>
@@ -64,11 +78,17 @@ export const ReviewManageCard = ({ reviewData }: ReviewManageCardProps) => {
     </Wrapper>
   );
 };
+
+//
+//
+//
+
 const Wrapper = styled.div`
   width: 89%;
   border-radius: 0.8rem;
   background-color: ${Grey6};
 `;
+
 const UpperWrapper = styled.div`
   height: 7.2rem;
   display: flex;
@@ -86,9 +106,11 @@ const UpperWrapper = styled.div`
     gap: 0.6rem;
   }
 `;
+
 const HeartIcon = styled(Heart)`
   padding-bottom: 0.2rem;
 `;
+
 const LowerWrapper = styled.div`
   height: 12rem;
   padding: 1.8rem 1.6rem 1.6rem 1.6rem;

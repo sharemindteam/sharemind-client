@@ -27,24 +27,37 @@ import { getCounselorsOpenConsultList } from 'api/get';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 
+//
+//
+//
+
 interface SellerConsultOpenProps {
   sortType: number;
   setSortType: React.Dispatch<React.SetStateAction<number>>;
   searchParams: URLSearchParams;
   setSearchParams: SetURLSearchParams;
+  isChecked: boolean;
 }
+
+//
+//
+//
 
 function SellerOpenConsultList({
   sortType,
   setSortType,
   searchParams,
   setSearchParams,
+  isChecked,
 }: SellerConsultOpenProps) {
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
+
   const setScrollLock = useSetRecoilState(scrollLockState);
   const [openConsultList, setOpenConsultList] = useState<
     openConsultApiObject[]
@@ -52,7 +65,6 @@ function SellerOpenConsultList({
 
   const preventRef = useRef(true);
 
-  const navigate = useNavigate();
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (entry[0].isIntersecting && !isLastElem && preventRef.current) {
       preventRef.current = false;
@@ -62,16 +74,22 @@ function SellerOpenConsultList({
       preventRef.current = true;
     }
   };
+
   const { setTarget } = useIntersectionObserver({
     root: null,
     rootMargin: '0px',
     threshold: 0.8,
     onIntersect,
   });
+
+  /**
+   *
+   */
   const fetchOpenConsultData = async (lastId: number) => {
     try {
       const params = {
-        filter: searchParams.get('check') === 'false',
+        //FIXME: 백엔드 확인 후 수정 필요
+        filter: true,
         postId: lastId,
       };
       const res: any = await getCounselorsOpenConsultList({ params });
@@ -98,9 +116,17 @@ function SellerOpenConsultList({
       }
     }
   };
+
+  //
+  //
+  //
   useLayoutEffect(() => {
     fetchOpenConsultData(0);
-  }, []);
+  }, [isChecked]);
+
+  //
+  //
+  //
 
   return (
     <>
@@ -210,6 +236,7 @@ const GuideMessage = styled.div`
   align-items: center;
   border-radius: 0.8rem;
 `;
+
 const SellerOpenConsultCardList = styled.div`
   display: flex;
   margin: 0 2rem;
@@ -217,6 +244,7 @@ const SellerOpenConsultCardList = styled.div`
   align-items: flex-start;
   gap: 1.2rem;
 `;
+
 const SellerOpenConsultCard = styled.div`
   width: 100%;
   cursor: pointer;
@@ -285,24 +313,16 @@ const IconItem = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
+
 const EmptyIcon = styled(Empty)`
   padding: 4.7rem 4.41rem 4.603rem 4.5rem;
 `;
+
 const EmptyWrapper = styled.div`
   margin: 10vh auto 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-const Circle = styled.div`
-  width: 0.2rem;
-  height: 0.2rem;
-  border-radius: 100%;
-  background-color: ${Grey3};
-`;
 
-const HeartResizeIcon = styled(HeartIcon)`
-  width: 2rem;
-  height: 2rem;
-`;
 export default SellerOpenConsultList;

@@ -2,6 +2,7 @@ import { patchAdoptComment } from 'api/patch';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 
@@ -61,12 +62,10 @@ const IsPickPopupBox = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 22.3rem;
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  top: 36vh;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
 `;
 

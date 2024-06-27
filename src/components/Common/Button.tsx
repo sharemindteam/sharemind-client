@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 import { Green, Grey5, White } from 'styles/color';
 import { Button1, Button2 } from 'styles/font';
 
@@ -20,6 +20,7 @@ interface ButtonProps {
   isActive?: boolean;
   margin?: string;
   padding?: string;
+  style?: CSSProperties;
 }
 
 //
@@ -40,6 +41,7 @@ export const Button = ({
   isActive = true,
   margin = '',
   padding = '',
+  style,
 }: ButtonProps) => {
   if (isActive === true) {
     if (buttonTextType === 1 || buttonTextType === undefined) {
@@ -54,6 +56,7 @@ export const Button = ({
           $border={border}
           $margin={margin}
           $padding={padding}
+          style={style}
         >
           <Button1 color={color}>{text}</Button1>
         </StyledButton>
@@ -70,6 +73,7 @@ export const Button = ({
           $border={border}
           $margin={margin}
           $padding={padding}
+          style={style}
         >
           <Button2 color={color}>{text}</Button2>
         </StyledButton>
@@ -86,6 +90,7 @@ export const Button = ({
           $border={border}
           $margin={margin}
           $padding={padding}
+          style={style}
         >
           <Button1 color={color}>{text}</Button1>
         </StyledDiv>
@@ -100,6 +105,7 @@ export const Button = ({
           $border={border}
           $margin={margin}
           $padding={padding}
+          style={style}
         >
           <Button2 color={color}>{text}</Button2>
         </StyledDiv>

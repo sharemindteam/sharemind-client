@@ -150,21 +150,13 @@ function MainQuestionSection() {
         <Space height="1rem" />
       </MainQuestionText>
       <Flex gap="1rem" justify="flex-end">
-        <ButtonItem>
-          {isLike ? (
-            <HeartIcon onClick={handleClickLikeButton} />
-          ) : (
-            <HeartEmptyIcon onClick={handleClickLikeButton} />
-          )}
+        <ButtonItem onClick={handleClickLikeButton}>
+          {isLike ? <HeartIcon /> : <HeartEmptyIcon />}
 
           <Button2 color={Grey2}>{card?.totalLike}</Button2>
         </ButtonItem>
-        <ButtonItem>
-          {isSave ? (
-            <SaveIcon onClick={handleClickScrapButton} />
-          ) : (
-            <SaveEmptyIcon onClick={handleClickScrapButton} />
-          )}
+        <ButtonItem onClick={handleClickScrapButton}>
+          {isSave ? <SaveIcon /> : <SaveEmptyIcon />}
 
           <Button2 color={Grey2}>{card?.totalScrap}</Button2>
         </ButtonItem>

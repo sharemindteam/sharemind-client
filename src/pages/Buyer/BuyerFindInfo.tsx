@@ -142,7 +142,7 @@ export const BuyerFindInfo = () => {
 
 const Wrapper = styled.div`
   .body-wrapper {
-    height: calc(var(--vh, 1vh) * 100 - 11.4rem);
+    height: calc(var(--vh, 1vh) * 100 - 8.5rem);
     margin-top: 0.8rem;
     display: flex;
     flex-direction: column;

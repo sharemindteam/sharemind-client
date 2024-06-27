@@ -15,17 +15,26 @@ import { openConsultApiObject } from './BuyerConsult';
 import { getPostScraps } from 'api/get';
 import SavedOpenConsultResults from 'components/Buyer/BuyerSavedCounselor.tsx/SavedOpenConsultResults';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
-// TODO: 찜한 마인더 없을 시 페이지 추후 백 연동 시 구현
+import { Flex } from 'components/Common/Flex';
+
+//
+//
+//
+
 export const BuyerSavedCounselor = () => {
   const navigate = useNavigate();
+
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [wishlistData, setWishlistData] = useState<WishlistDataType[]>([]);
   const [openConsultData, setOpenConsultData] = useState<
     openConsultApiObject[]
   >([]);
+
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const [tabState, setTabState] = useState<number>(1);
+
   const preventRef = useRef(true);
+
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
@@ -49,6 +58,7 @@ export const BuyerSavedCounselor = () => {
       preventRef.current = true;
     }
   };
+
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
@@ -56,6 +66,10 @@ export const BuyerSavedCounselor = () => {
     threshold: 0.8,
     onIntersect,
   });
+
+  /**
+   *
+   */
   const fetchWishlistData = async (lastId: number, lastUpdateAt: string) => {
     const body = {
       wishlistId: lastId,
@@ -86,6 +100,10 @@ export const BuyerSavedCounselor = () => {
       }
     }
   };
+
+  /**
+   *
+   */
   const fetchOpenConsultData = async (lastId: number, lastUpdateAt: string) => {
     try {
       const params = {
@@ -116,6 +134,10 @@ export const BuyerSavedCounselor = () => {
       }
     }
   };
+
+  //
+  //
+  //
   useLayoutEffect(() => {
     setIsInitialLoading(true);
     if (tabState === 1) {
@@ -124,6 +146,11 @@ export const BuyerSavedCounselor = () => {
       fetchOpenConsultData(0, new Date().toISOString().slice(0, 19));
     }
   }, [tabState]);
+
+  //
+  //
+  //
+
   if (isInitialLoading) {
     return (
       <>
@@ -148,103 +175,100 @@ export const BuyerSavedCounselor = () => {
         </div>
       </>
     );
-  } else {
-    if (tabState === 1) {
-      if (wishlistData.length !== 0) {
-        return (
-          <>
-            <HeaderWrapper>
-              <BackIcon
-                onClick={() => {
-                  navigate('/mypage');
-                }}
-              />
-              <Heading color={Grey1}>찜 목록</Heading>
-            </HeaderWrapper>
-            <Divider2 tabState={tabState} setTabState={setTabState} />
-            <Space height="1.2rem" />
-            <div
-              className="save-counselor-list"
-              style={{ height: 'calc(100vh - 11rem)', overflow: 'scroll' }}
-            >
-              <SavedCounselorResults wishlistData={wishlistData} />
-              {!isLastElem ? (
-                <div ref={setTarget} style={{ height: '3.5rem' }} />
-              ) : (
-                <div style={{ height: '3.5rem' }} />
-              )}
-            </div>
-          </>
-        );
-      } else {
-        return (
-          <>
-            <HeaderWrapper>
-              <BackIcon
-                onClick={() => {
-                  navigate('/mypage');
-                }}
-              />
-              <Heading color={Grey1}>찜 목록</Heading>
-            </HeaderWrapper>
-            <Divider2 tabState={tabState} setTabState={setTabState} />
-            <EmptyWrapper>
-              <EmptyIcon />
-              <Heading>아직 찜한 마인더가 없어요.</Heading>
-              <Space height="1.5rem" />
-              <Body2>
-                관심 있는 마인더를 찜하고 <br /> 더욱 편리하게 상담하세요.
-              </Body2>
-            </EmptyWrapper>
-          </>
-        );
-      }
-    } else if (tabState === 2) {
-      if (openConsultData.length !== 0) {
-        return (
-          <>
-            <HeaderWrapper>
-              <BackIcon
-                onClick={() => {
-                  navigate('/mypage');
-                }}
-              />
-              <Heading color={Grey1}>찜 목록</Heading>
-            </HeaderWrapper>
-            <Divider2 tabState={tabState} setTabState={setTabState} />
-            <Space height="1.2rem" />
-            <div
-              className="open-consult-list"
-              style={{ height: 'calc(100vh - 11rem)', overflow: 'scroll' }}
-            >
-              <SavedOpenConsultResults openConsultList={openConsultData} />
-              {!isLastElem ? (
-                <div ref={setTarget} style={{ height: '3.5rem' }} />
-              ) : (
-                <div style={{ height: '3.5rem' }} />
-              )}
-            </div>
-          </>
-        );
-      } else {
-        return (
-          <>
-            <HeaderWrapper>
-              <BackIcon
-                onClick={() => {
-                  navigate('/mypage');
-                }}
-              />
-              <Heading color={Grey1}>찜 목록</Heading>
-            </HeaderWrapper>
-            <Divider2 tabState={tabState} setTabState={setTabState} />
-            <EmptyWrapper>
-              <EmptyIcon />
-              <Heading>아직 저장한 공개상담이 없어요.</Heading>
-            </EmptyWrapper>
-          </>
-        );
-      }
+  }
+
+  if (tabState === 1) {
+    if (wishlistData.length !== 0) {
+      return (
+        <>
+          <HeaderWrapper>
+            <BackIcon
+              onClick={() => {
+                navigate('/mypage');
+              }}
+            />
+            <Heading color={Grey1}>찜 목록</Heading>
+          </HeaderWrapper>
+          <Divider2 tabState={tabState} setTabState={setTabState} />
+          <Space height="1.2rem" />
+          <div
+            className="save-counselor-list"
+            style={{ height: 'calc(100vh - 11rem)', overflow: 'scroll' }}
+          >
+            <SavedCounselorResults wishlistData={wishlistData} />
+            {!isLastElem ? (
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
+            ) : (
+              <div style={{ height: '3.5rem' }} />
+            )}
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <HeaderWrapper>
+            <BackIcon
+              onClick={() => {
+                navigate('/mypage');
+              }}
+            />
+            <Heading color={Grey1}>찜 목록</Heading>
+          </HeaderWrapper>
+          <Divider2 tabState={tabState} setTabState={setTabState} />
+          <EmptyWrapper>
+            <EmptyIcon />
+            <Heading>아직 찜한 마인더가 없어요.</Heading>
+            <Space height="1.5rem" />
+            <Body2>
+              관심 있는 마인더를 찜하고 <br /> 더욱 편리하게 상담하세요.
+            </Body2>
+          </EmptyWrapper>
+        </>
+      );
+    }
+  } else if (tabState === 2) {
+    if (openConsultData.length !== 0) {
+      return (
+        <>
+          <HeaderWrapper>
+            <BackIcon
+              onClick={() => {
+                navigate('/mypage');
+              }}
+            />
+            <Heading color={Grey1}>찜 목록</Heading>
+          </HeaderWrapper>
+          <Divider2 tabState={tabState} setTabState={setTabState} />
+          <Space height="1.2rem" />
+          <Flex direction="column" style={{ padding: '0 2rem' }}>
+            <SavedOpenConsultResults openConsultList={openConsultData} />
+            {!isLastElem ? (
+              <div ref={setTarget} style={{ height: '3.5rem' }} />
+            ) : (
+              <div style={{ height: '3.5rem' }} />
+            )}
+          </Flex>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <HeaderWrapper>
+            <BackIcon
+              onClick={() => {
+                navigate('/mypage');
+              }}
+            />
+            <Heading color={Grey1}>찜 목록</Heading>
+          </HeaderWrapper>
+          <Divider2 tabState={tabState} setTabState={setTabState} />
+          <EmptyWrapper>
+            <EmptyIcon />
+            <Heading>아직 저장한 공개상담이 없어요.</Heading>
+          </EmptyWrapper>
+        </>
+      );
     }
   }
 };

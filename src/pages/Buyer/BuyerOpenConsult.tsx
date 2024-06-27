@@ -6,6 +6,7 @@ import OpenConsultList from 'components/Buyer/BuyerOpenConsult/OpenConsultList';
 import HotOpenConsultList from 'components/Buyer/BuyerOpenConsult/HotOpenConsultList';
 import { Button } from 'components/Common/Button';
 import { Space } from 'components/Common/Space';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -32,7 +33,7 @@ const BuyerOpenConsult = () => {
       <OpenConsultList />
       <Space height="8.9rem" />
 
-      <CreateConsultButtonWrapper>
+      <ButtonWrapper>
         <Button
           text="공개상담 신청하기"
           width="100%"
@@ -41,7 +42,7 @@ const BuyerOpenConsult = () => {
             navigate('/openConsultRequest');
           }}
         />
-      </CreateConsultButtonWrapper>
+      </ButtonWrapper>
     </>
   );
 };
@@ -50,14 +51,15 @@ const BuyerOpenConsult = () => {
 //
 //
 
-const CreateConsultButtonWrapper = styled.div`
+const ButtonWrapper = styled.div`
   width: 100%;
   padding: 0 2rem;
   box-sizing: border-box;
   position: fixed;
   bottom: 1.5rem;
   @media (min-width: 768px) {
-    width: 375px;
+    width: ${APP_WIDTH};
   }
 `;
+
 export default BuyerOpenConsult;

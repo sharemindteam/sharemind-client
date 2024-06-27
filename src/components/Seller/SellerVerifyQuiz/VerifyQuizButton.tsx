@@ -2,6 +2,7 @@ import { Button } from 'components/Common/Button';
 import React from 'react';
 
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, LightGreen, White } from 'styles/color';
 
 //
@@ -183,11 +184,11 @@ const VerifyQuizButtonWrapper = styled.div`
     gap: 0.7rem;
     width: calc(100% - 4rem);
   }
-  @media (max-width: 767px) {
-    width: calc(100%);
-  }
+
+  width: calc(100%);
+
   @media (min-width: 768px) {
-    width: calc(375px);
+    width: ${APP_WIDTH};
   }
 `;
 

@@ -1,22 +1,30 @@
-import styled from 'styled-components';
 import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { Flex } from 'components/Common/Flex';
+
 //
 //
 //
+
 interface AvailCounselorSearchResultsProps {
   searchData: SearchResultData[];
 }
+
 //
 //
-//임의로 ConsultInReady 그대로 사용
+//
+
 export const AvailCounselorSearchResults = ({
   searchData,
 }: AvailCounselorSearchResultsProps) => {
   return (
-    <Wrapper>
+    <Flex
+      direction="column"
+      gap="0.8rem"
+      style={{ padding: '0 2rem 3.5rem 2rem' }}
+    >
       {searchData.map((value, index) => {
         return (
           <ReadyConsultCard
@@ -42,13 +50,6 @@ export const AvailCounselorSearchResults = ({
           />
         );
       })}
-    </Wrapper>
+    </Flex>
   );
 };
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 3.5rem;
-`;

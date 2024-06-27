@@ -1,12 +1,13 @@
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 export const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
+
   position: fixed;
   top: 0;
 

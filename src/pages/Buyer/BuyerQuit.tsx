@@ -16,14 +16,23 @@ import { checkedNumberState } from 'utils/atom';
 
 export const BuyerQuit = () => {
   const navigate = useNavigate();
+
   const [reasonSelected, setReasonSelected] = useState<boolean>(false);
   const setCheckedNumber = useSetRecoilState<number>(checkedNumberState);
 
+  //
+  //
+  //
   useEffect(() => {
     return () => {
       setCheckedNumber(-1);
     };
   }, []);
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -44,6 +53,7 @@ export const BuyerQuit = () => {
     </Wrapper>
   );
 };
+
 const Wrapper = styled.main`
   height: 100%;
   .body-wrapper {

@@ -9,6 +9,12 @@ import { getConsultsCustomers } from 'api/get';
 import { useStompContext } from 'contexts/StompContext';
 import { convertChatListDate } from 'utils/convertDate';
 import { StompSubscription } from '@stomp/stompjs';
+import { Flex } from 'components/Common/Flex';
+
+//
+//
+//
+
 interface ConsultItem {
   id: number;
   consultStyle: string;
@@ -22,6 +28,10 @@ interface ConsultItem {
   consultId: number;
   isChat: boolean;
 }
+
+//
+//
+//
 
 export const HomeConsultInProgress = () => {
   const navigate = useNavigate();
@@ -98,6 +108,10 @@ export const HomeConsultInProgress = () => {
     };
   }, [stompClient, isConnected, isLogined]);
 
+  //
+  //
+  //
+
   if (!isLogined) {
     return <></>;
   }
@@ -122,21 +136,28 @@ export const HomeConsultInProgress = () => {
           <Body3 color={Grey4}>진행중인 상담이 없어요.</Body3>
         </div>
       )}
-      {totalOngoing !== 0 && consultCard && (
-        <ConsultCard
-          consultStyle={consultCard.consultStyle}
-          id={consultCard.id}
-          latestMessageContent={consultCard.latestMessageContent}
-          latestMessageIsCustomer={consultCard.latestMessageIsCustomer}
-          latestMessageUpdatedAt={consultCard.latestMessageUpdatedAt}
-          opponentNickname={consultCard.opponentNickname}
-          status={consultCard.status}
-          unreadMessageCount={consultCard.unreadMessageCount}
-          reviewCompleted={consultCard.reviewCompleted}
-          consultId={consultCard.consultId}
-          isLetter={!consultCard.isChat}
-        />
-      )}
+      <Flex
+        direction="column"
+        gap="0.8rem"
+        width="100%"
+        style={{ padding: '0 2rem', boxSizing: 'border-box' }}
+      >
+        {totalOngoing !== 0 && consultCard && (
+          <ConsultCard
+            consultStyle={consultCard.consultStyle}
+            id={consultCard.id}
+            latestMessageContent={consultCard.latestMessageContent}
+            latestMessageIsCustomer={consultCard.latestMessageIsCustomer}
+            latestMessageUpdatedAt={consultCard.latestMessageUpdatedAt}
+            opponentNickname={consultCard.opponentNickname}
+            status={consultCard.status}
+            unreadMessageCount={consultCard.unreadMessageCount}
+            reviewCompleted={consultCard.reviewCompleted}
+            consultId={consultCard.consultId}
+            isLetter={!consultCard.isChat}
+          />
+        )}
+      </Flex>
     </Wrapper>
   );
 };
@@ -146,7 +167,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 0 0 2.2rem;
+
   .nav-consult {
     display: flex;
     width: 100%;

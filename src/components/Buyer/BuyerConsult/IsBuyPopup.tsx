@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, LightGreen, White } from 'styles/color';
 import { Body1 } from 'styles/font';
 import { isBuyPopupOpenState } from 'utils/atom';
@@ -47,12 +48,10 @@ const IsSendModalBox = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 22.3rem;
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  top: 36vh;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
 `;
 

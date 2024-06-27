@@ -8,6 +8,11 @@ export const SellerLetterWrite = () => {
   const [isSend, setIsSend] = useState<boolean>(false);
   // 셰어로부터 질문 한눈에 보기 여부
   const [isViewQuestion, setIsViewQuestion] = useState<boolean>(false);
+
+  //
+  //
+  //
+
   return (
     <>
       <LetterWriteHeader

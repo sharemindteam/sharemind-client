@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
+import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-noting.svg';
 
 //
 //

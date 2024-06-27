@@ -14,6 +14,9 @@ export const SellerLogout = () => {
 
   const { stompClient } = useStompContext();
 
+  /**
+   *
+   */
   const patchSingOut = async (
     accessTokenValue: string | null,
     refreshTokenValue: string | null,
@@ -36,6 +39,10 @@ export const SellerLogout = () => {
       console.log(e);
     }
   };
+
+  //
+  //
+  //
 
   return (
     <Wrapper>
@@ -78,9 +85,10 @@ export const SellerLogout = () => {
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   .body-wrapper {
-    height: calc(var(--vh, 1vh) * 100 - 11.5rem);
+    height: calc(var(--vh, 1vh) * 100 - 10.5rem);
     margin-top: 2.8rem;
     display: flex;
     flex-direction: column;

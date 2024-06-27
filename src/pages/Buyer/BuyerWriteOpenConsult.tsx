@@ -18,6 +18,11 @@ import { Button } from 'components/Common/Button';
 import FinalWritePopup from 'components/Buyer/BuyerWriteOpenConsult/FianlWritePopup';
 import FinalSavePopup from 'components/Buyer/BuyerWriteOpenConsult/FinalSavePopup';
 import { getOneOpenConsult } from 'api/get';
+import { APP_WIDTH } from 'styles/AppStyle';
+
+//
+//
+//
 
 function BuyerWriteOpenConsult() {
   const navigate = useNavigate();
@@ -38,6 +43,7 @@ function BuyerWriteOpenConsult() {
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isLetterModalOpenState,
   );
+  const { postId } = useParams();
 
   // 제출하기 팝업
   const [isPopupOpen, setIsPopupOpen] =
@@ -45,16 +51,22 @@ function BuyerWriteOpenConsult() {
 
   const [isSavePopup, setIsSavePopupOpen] =
     useRecoilState<boolean>(isSavePopupOpenState);
+
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+
   // 임시저장, 전송하기 버튼 활성화여부
   const [isActiveSaveButton, setIsActiveSaveButton] = useState(false);
   const [isActivePostButton, setIsActivePostButton] = useState(false);
   const [saveButtonColor, setSaveButtonColor] = useState<string>(White);
+
   //input 값
   const [titleInput, setTitleInput] = useState<string>('');
   const [input, setInput] = useState<string>('');
-  const { postId } = useParams();
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchDraftedData = async () => {
       try {
@@ -69,6 +81,10 @@ function BuyerWriteOpenConsult() {
     };
     fetchDraftedData();
   }, [postId]);
+
+  //
+  //
+  //
   useEffect(() => {
     if (input === '' || titleInput === '') {
       // 비어 있으면 전송못함
@@ -81,6 +97,11 @@ function BuyerWriteOpenConsult() {
       setSaveButtonColor(Green);
     }
   }, [input, titleInput]);
+
+  //
+  //
+  //
+
   return (
     <>
       <Wrapper>
@@ -202,6 +223,7 @@ const Wrapper = styled.div`
     align-items: center;
   }
 `;
+
 const CategoryDropDown = styled.div`
   padding: 0.9rem 1.6rem;
   box-sizing: border-box;
@@ -215,6 +237,7 @@ const CategoryDropDown = styled.div`
   margin-bottom: 0.8rem;
   cursor: pointer;
 `;
+
 const TitleInput = styled.input`
   width: 89.33%;
   border-radius: 1.2rem;
@@ -234,6 +257,7 @@ const TextCount = styled.div`
   margin-top: 0.4rem;
   margin-right: 2rem;
 `;
+
 const TextArea = styled.textarea`
   resize: none;
   width: 89.33%;
@@ -258,17 +282,16 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
   white-space: pre-wrap; 
   `;
+
 const ButtonWrapper = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
-  height: 7.6rem;
+
   background-color: ${White};
   box-sizing: border-box;
-  padding: 0.8rem 0 1.6rem 0;
+  padding: 0.8rem 0 0.8rem 0;
   gap: 1.5rem;
   display: flex;
   justify-content: center;

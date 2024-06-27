@@ -8,6 +8,7 @@ import { isSendPopupOpenState } from 'utils/atom';
 import { useNavigate, useParams } from 'react-router-dom';
 import useConsultNavigation from 'hooks/useConsultNavigation';
 import useIsAlreadyReply from 'hooks/useIsAlreadyReply';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -35,7 +36,7 @@ function BottomSection({
   const { consultid } = useParams() as { consultid: string };
   const { handleNavigateRandomConsult } = useConsultNavigation(consultid);
   // 마인더가 해당 상담에 답장했는지 여부
-  const isAlreadyReply = useIsAlreadyReply(consultid, navigate); 
+  const isAlreadyReply = useIsAlreadyReply(consultid, navigate);
 
   return (
     <BottomSectionWrapper>
@@ -113,11 +114,9 @@ const BottomSectionWrapper = styled.section`
     align-items: center;
     gap: 0.8rem;
   }
-  @media (max-width: 767px) {
-    width: calc(100%);
-  }
+
   @media (min-width: 768px) {
-    width: calc(375px);
+    width: ${APP_WIDTH};
   }
 `;
 

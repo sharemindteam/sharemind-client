@@ -6,6 +6,7 @@ import { Green, Grey1, Grey6 } from 'styles/color';
 import { Body1 } from 'styles/font';
 import { isLetterModalOpenState } from 'utils/atom';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -88,13 +89,14 @@ const slideOut = keyframes`
     transform : translateY(100%);
   }
 `;
+
 const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
+
   position: fixed;
   padding-bottom: 3rem;
   background-color: ${Grey6};
@@ -109,6 +111,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
     display: flex;
     justify-content: center;
   }
+
   .row {
     display: flex;
     box-sizing: border-box;
@@ -118,6 +121,7 @@ const Wrapper = styled.div<{ visible: boolean }>`
     cursor: pointer;
   }
 `;
+
 const BarIcon = styled(Bar)`
   margin-top: 0.8rem;
 `;

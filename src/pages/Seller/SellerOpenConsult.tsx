@@ -5,16 +5,25 @@ import IsSendPopup from 'components/Seller/SellerOpenConsult/IsSendPopup';
 import MainQuestionSection from 'components/Seller/SellerOpenConsult/MainQuestionSection';
 import NoConsultSection from 'components/Seller/SellerOpenConsult/NoConsultGraphic';
 import OpenConsultHeader from 'components/Seller/SellerOpenConsult/OpenConsultHeader';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isSendPopupOpenState } from 'utils/atom';
 
+//
+//
+//
+
 function SellerOpenConsult() {
+  const { consultid } = useParams();
   const isSendPopupOpen = useRecoilValue(isSendPopupOpenState);
   const [isReplying, setIsReplying] = useState(false);
   const [text, setText] = useState<string>('');
-  const { consultid } = useParams();
+
+  //
+  //
+  //
+
   return (
     <>
       <div

@@ -8,8 +8,9 @@ import { isConsultModalOpenState, scrollLockState } from 'utils/atom';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { ConsultInfoItem, ConsultInfoList } from 'utils/type';
 import OngoingCounsultBox from '../Common/OngoingCounsultBox';
-import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
+import { ReactComponent as NoConsultGraphicIcon } from 'assets/icons/graphic-noting.svg';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+import { BackDrop } from 'components/Common/BackDrop';
 
 interface SellerConsultProps {
   sortType: number;
@@ -26,13 +27,19 @@ function SellerLetterList({
   searchParams,
   setSearchParams,
 }: SellerConsultProps) {
+  const navigate = useNavigate();
+
   const [consultInfo, setConsultInfo] = useState<ConsultInfoList>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isConsultModalOpenState,
   );
+
   const setScrollLock = useSetRecoilState(scrollLockState);
-  const navigate = useNavigate();
+
+  /**
+   *
+   */
   const fetchLetterData = useCallback(async () => {
     setIsLoading(true);
     const params = {
@@ -58,9 +65,18 @@ function SellerLetterList({
       setIsLoading(false);
     }
   }, [isChecked, navigate, setIsLoading, sortType]);
+
+  //
+  //
+  //
   useEffect(() => {
     fetchLetterData();
   }, [fetchLetterData]);
+
+  //
+  //
+  //
+
   return (
     <>
       {isLoading ? (
@@ -123,26 +139,14 @@ function SellerLetterList({
     </>
   );
 }
+
 const ConsultBoxList = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 0.5rem;
+  margin-top: 1.2rem;
   gap: 0.8rem;
 `;
-const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  position: fixed;
-  top: 0;
-  z-index: 2001;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
-`;
+
 const NoConsultSection = styled.section`
   display: flex;
   flex-direction: column;
@@ -159,4 +163,5 @@ const NoConsultText = styled.div`
   font-weight: 600;
   line-height: 3rem;
 `;
+
 export default SellerLetterList;
