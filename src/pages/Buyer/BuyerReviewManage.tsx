@@ -99,12 +99,7 @@ export const BuyerReviewManage = () => {
    */
   const renderReviewList = () => {
     if (reviewData.length === 0) {
-      return (
-        <EmptySection
-          title={emptySectionText.title}
-          subtitle={emptySectionText.subtitle}
-        />
-      );
+      return <EmptySection {...emptySectionText} />;
     }
 
     return (
