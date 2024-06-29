@@ -17,6 +17,10 @@ import { ConsultState } from 'utils/type';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Button } from 'components/Common/Button';
 
+//
+//
+//
+
 interface ConsultCardProps {
   consultStyle: string;
   id: number;
@@ -30,6 +34,11 @@ interface ConsultCardProps {
   consultId: number | null;
   isLetter: boolean;
 }
+
+//
+//
+//
+
 export const ConsultCard = ({
   consultStyle,
   id,
@@ -50,6 +59,9 @@ export const ConsultCard = ({
 
   const filterdUnreadMessageCount = unreadMessageCount ?? 0;
 
+  /**
+   *
+   */
   const handleReviewClick = (e?: React.MouseEvent<HTMLElement>) => {
     e?.stopPropagation();
     navigate('/reviewManage');
@@ -63,7 +75,9 @@ export const ConsultCard = ({
     <Wrapper
       onClick={() => {
         if (isLetter) {
-          navigate(`/letter/${id}`);
+          navigate(`/letter/${id}`, {
+            state: { isReviewCompleted: reviewCompleted },
+          });
         } else {
           navigate(`/chat/${id}`);
         }
@@ -132,8 +146,13 @@ export const ConsultCard = ({
     </Wrapper>
   );
 };
+
+//
+//
+//
+
 const Wrapper = styled.div`
-  width: 89%;
+  width: 100%;
   background-color: ${Grey6};
   border-radius: 0.75rem;
   cursor: pointer;
@@ -141,11 +160,13 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
 const ConsultContent = styled.div`
   padding: 1.6rem;
   width: 100%;
   box-sizing: border-box;
 `;
+
 const Unread = styled.div`
   display: flex;
   justify-content: center;
@@ -156,6 +177,7 @@ const Unread = styled.div`
   height: 1.9rem;
   right: 0;
 `;
+
 const ConsultStateBox = styled.div`
   display: flex;
   gap: 1.6rem;
@@ -184,6 +206,7 @@ const ConsultStateBox = styled.div`
     align-items: center;
   }
 `;
+
 export const CardText = styled.div<{ $color: string }>`
   width: 100%;
   display: -webkit-box;
@@ -195,4 +218,5 @@ export const CardText = styled.div<{ $color: string }>`
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 155%;
+  text-align: left;
 `;

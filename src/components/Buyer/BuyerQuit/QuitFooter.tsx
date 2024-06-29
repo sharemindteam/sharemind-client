@@ -8,6 +8,11 @@ import { Green, LightGreen, White } from 'styles/color';
 import { checkedNumberState, quitLongReasonState } from 'utils/atom';
 import { quitReasons } from 'utils/constant';
 import { getCookie, removeCookie } from 'utils/cookie';
+
+//
+//
+//
+
 interface QuitFooterProps {
   reasonSelected: boolean;
   setReasonSelected: Dispatch<SetStateAction<boolean>>;
@@ -17,8 +22,13 @@ export const QuitFooter = ({
   setReasonSelected,
 }: QuitFooterProps) => {
   const navigate = useNavigate();
+
   const quitReasonInput = useRecoilValue<string>(quitLongReasonState);
   const checkedNumber = useRecoilValue<number>(checkedNumberState);
+
+  /**
+   *
+   */
   const deleteAccount = async () => {
     try {
       const body = {
@@ -27,7 +37,9 @@ export const QuitFooter = ({
         accessToken: getCookie('accessToken'),
         refreshToken: getCookie('refreshToken'),
       };
+
       const res: any = await deleteAuthQuit(body);
+
       if (res.status === 200) {
         alert('탈퇴 완료되었습니다');
         removeCookie('accessToken');
@@ -43,6 +55,11 @@ export const QuitFooter = ({
       alert(e);
     }
   };
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <Button

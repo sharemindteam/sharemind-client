@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import {
   Black,
   Green,
@@ -277,12 +278,12 @@ const CompleteButton = styled(Button2)`
 `;
 
 const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
+
   position: fixed;
   height: 51.7rem;
   background-color: ${Grey6};

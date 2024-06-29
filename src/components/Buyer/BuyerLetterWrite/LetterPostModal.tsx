@@ -6,6 +6,11 @@ import styled from 'styled-components';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { convertCategoryEnum } from 'utils/convertCategoryEnum';
+
+//
+//
+//
+
 interface LetterPostModalProps {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   replyText: string;
@@ -17,6 +22,11 @@ interface LetterPostModalProps {
   consultId: string | undefined;
   messageId: number | null;
 }
+
+//
+//
+//
+
 export const LetterPostModal = ({
   setIsActive,
   replyText,
@@ -29,6 +39,10 @@ export const LetterPostModal = ({
   messageId,
 }: LetterPostModalProps) => {
   const navigate = useNavigate();
+
+  /**
+   *
+   */
   const handleSubmitClick = async () => {
     //임시 저장 메세지 없는 경우에 first or not(patch)
     if (!isSaved) {
@@ -145,6 +159,11 @@ export const LetterPostModal = ({
     }
     navigate(`/letter/${consultId}`);
   };
+
+  //
+  //
+  //
+
   return (
     <PostModalBox>
       <ModalBox>

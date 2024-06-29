@@ -289,6 +289,8 @@ const SectionWrapper = styled.section<{ inputHeight: number }>`
   .counselor-info-container {
     display: flex;
     width: 100%;
+    box-sizing: border-box;
+    padding: 0 2rem;
     justify-content: center;
   }
   .my-box-container {

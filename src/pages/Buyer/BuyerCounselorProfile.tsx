@@ -134,6 +134,7 @@ export const BuyerCounselorProfile = () => {
     }
   }
 };
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

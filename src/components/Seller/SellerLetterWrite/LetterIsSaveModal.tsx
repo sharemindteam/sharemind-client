@@ -54,7 +54,7 @@ const SaveModalBox = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 22.3rem;
+  top: 36vh;
 `;
 
 const ModalBox = styled.div`

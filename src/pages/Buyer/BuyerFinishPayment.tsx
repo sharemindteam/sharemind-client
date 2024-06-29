@@ -7,6 +7,7 @@ import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
 
 import { Space } from 'components/Common/Space';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -75,7 +76,7 @@ const Wrapper = styled.div`
     bottom: 1rem;
     width: 100%;
     @media (min-width: 768px) {
-      width: 375px;
+      width: ${APP_WIDTH};
     }
     display: flex;
     gap: 1.5rem;

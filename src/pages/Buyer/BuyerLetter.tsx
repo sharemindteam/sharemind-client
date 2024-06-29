@@ -18,14 +18,21 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { isLoadingState } from 'utils/atom';
 import { GetMessagesType } from 'utils/type';
 
+//
+//
+//
+
 export const BuyerLetter = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3 / 어디까지 가능한지 여부
   const [active, setActive] = useState<number>(0);
+
   // 질문, 답장, 추가질문 , 추가답장 : 0,1,2,3
   // 태그 변경될 때마다 get 요청해야함
   const [tagStatus, setTagStatus] = useState<number>(0);
+
   // 메세지 get 요청 response
   const [messageResponse, setMessageResponse] = useState<GetMessagesType>({
     content: null,
@@ -33,14 +40,17 @@ export const BuyerLetter = () => {
     messageType: null,
     updatedAt: null,
   });
+
   //마감기한
   const [deadline, setDeadline] = useState<string>('');
   //로딩 state
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
   //상대 이름 state
   const [opponentNickname, setOpponentNickname] = useState<string>('');
-  //제일 먼저 현재 상담 상태 정보업데이트
-  //그리고 메세지 fetch 이어서
+
+  /**
+   *
+   */
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -72,6 +82,10 @@ export const BuyerLetter = () => {
       await fetchMessageData(); // API 요청이 완료되면 isLoading을 false로 설정
     }
   };
+
+  /**
+   *
+   */
   const fetchDeadline = async () => {
     try {
       const res: any = await getLetterDeadline(id);
@@ -85,9 +99,10 @@ export const BuyerLetter = () => {
       console.log(e);
     }
   };
-  //그 후 message가져옴 tagState에 따라 params 다르게처리
-  //isCompleted가 true면 최종제출된걸 가져옴
-  //false면 임시저장으로가져옴
+
+  /**
+   *
+   */
   const fetchMessageData = async () => {
     //tagStatus에 따라 메세지 가져와서 있는지 없는지 여부랑
     //있으면 내용까지 같이
@@ -124,6 +139,10 @@ export const BuyerLetter = () => {
       }, 1);
     }
   };
+
+  /**
+   *
+   */
   const fetchNicknameData = async () => {
     const res: any = await getLettersNickname(id);
     if (res.status === 200) {
@@ -134,13 +153,25 @@ export const BuyerLetter = () => {
       alert('존재하지 않는 편지 아이디입니다.');
     }
   };
-  //location null 시 예외처리
+
+  //
+  // location null일 시 예외처리
+  //
   useLayoutEffect(() => {
     fetchData();
   }, [tagStatus]);
+
+  //
+  //
+  //
   useLayoutEffect(() => {
     fetchNicknameData();
   }, []);
+
+  //
+  //
+  //
+
   if (isLoading) {
     return (
       <>
@@ -164,37 +195,37 @@ export const BuyerLetter = () => {
         </div>
       </>
     );
+  }
+
+  if (id !== undefined) {
+    return (
+      <>
+        <HeaderWrapper>
+          <BackIcon
+            onClick={() => {
+              navigate('/consult');
+            }}
+          />
+          {/* params로 넘어온 id에 해당하는 상담이름 */}
+          <Heading color={Grey1}>{opponentNickname}</Heading>
+          <MoreIcon />
+        </HeaderWrapper>
+        <LetterTags
+          tagStatus={tagStatus}
+          setTagStatus={setTagStatus}
+          active={active}
+        />
+        {/* 현재 선택된 tag와 해당 태그에  content가 있는지 여부를 전달 */}
+        <LetterMainSection
+          tagStatus={tagStatus}
+          consultId={id}
+          messageResponse={messageResponse}
+          deadline={deadline}
+        />
+      </>
+    );
   } else {
-    if (id !== undefined) {
-      return (
-        <>
-          <HeaderWrapper>
-            <BackIcon
-              onClick={() => {
-                navigate('/consult');
-              }}
-            />
-            {/* params로 넘어온 id에 해당하는 상담이름 */}
-            <Heading color={Grey1}>{opponentNickname}</Heading>
-            <MoreIcon />
-          </HeaderWrapper>
-          <LetterTags
-            tagStatus={tagStatus}
-            setTagStatus={setTagStatus}
-            active={active}
-          />
-          {/* 현재 선택된 tag와 해당 태그에  content가 있는지 여부를 전달 */}
-          <LetterMainSection
-            tagStatus={tagStatus}
-            consultId={id}
-            messageResponse={messageResponse}
-            deadline={deadline}
-          />
-        </>
-      );
-    } else {
-      <>404 error</>;
-    }
+    <>404 error</>;
   }
 };
 const MoreIcon = styled(More)`

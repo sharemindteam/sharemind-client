@@ -8,6 +8,11 @@ import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { useRecoilState } from 'recoil';
 import { isLoadingState } from 'utils/atom';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
+
+//
+//
+//
+
 interface UserInfo {
   nickname: string;
   level: string;
@@ -15,11 +20,21 @@ interface UserInfo {
   consultStyle: string;
   profilesStatus: string;
 }
+
+//
+//
+//
+
 export const SellerMypage = () => {
   const navigate = useNavigate();
+
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isPass, setIsPass] = useState(undefined);
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchMyInfo = async () => {
       setIsLoading(true);
@@ -33,8 +48,14 @@ export const SellerMypage = () => {
         setIsLoading(false);
       }, 100);
     };
+
     fetchMyInfo();
   }, []);
+
+  //
+  //
+  //
+
   return (
     <>
       <Header

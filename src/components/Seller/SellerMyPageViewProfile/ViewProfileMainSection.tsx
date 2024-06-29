@@ -182,7 +182,7 @@ ViewProfileMainSectionProps) => {
           text={isEvaluationPending ? '판매정보 검토 중' : '수정하기'}
           isActive={!isEvaluationPending}
           height="5.2rem"
-          width="calc(100% - 4rem)"
+          width="100%"
           onClick={() => {
             navigate('/minder/mypage/modifyProfile');
           }}

@@ -3,6 +3,7 @@ import {
   getLetterMessages,
   getLetterRecentType,
 } from 'api/get';
+import { BackDrop } from 'components/Common/BackDrop';
 import { BottomButton } from 'components/Seller/Common/BottomButton';
 import { LetterBonusQuestionStep } from 'components/Seller/SellerLetter/LetterBonusQuestionStep';
 import { LetterBonusReplyStep } from 'components/Seller/SellerLetter/LetterBonusReplyStep';
@@ -61,7 +62,10 @@ export const SellerLetter = () => {
   // 로딩스피너 여부
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
   const [isCancel, setIsCancel] = useState<boolean>();
+
+  //
   // 처음 마운트될 떄 호출하는 API
+  //
   useEffect(() => {
     const fetchLetterInfo = async () => {
       try {
@@ -101,6 +105,7 @@ export const SellerLetter = () => {
 
     fetchLetterInfo();
   }, []);
+
   // 태그 바뀜에 따라 getLetterMessages API 호출
   const messageTypeMap = useMemo(
     () => ({
@@ -111,6 +116,10 @@ export const SellerLetter = () => {
     }),
     [],
   );
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchMessages = async () => {
       setIsLoading(true);
@@ -133,6 +142,11 @@ export const SellerLetter = () => {
     };
     fetchMessages();
   }, [tagStatus]);
+
+  //
+  //
+  //
+
   return (
     <>
       <LetterHeader />
@@ -201,6 +215,7 @@ export const SellerLetter = () => {
               />
             </>
           ) : null}
+
           {tagActiveLevel % 2 !== 0 && (
             <BottomButton
               isActive={!isCancel}
@@ -219,17 +234,3 @@ export const SellerLetter = () => {
     </>
   );
 };
-const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  position: fixed;
-  top: 0;
-  z-index: 2001;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
-`;

@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
 import { scrollLockState } from 'utils/atom';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -65,9 +66,9 @@ export const AppContainer = ({ children }: AppContainerProps) => {
 
 const StyledApp = styled.div<{ $isGray: boolean; $scrollLock: boolean }>`
   height: calc(var(--vh, 1vh) * 100);
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
+
+  width: ${APP_WIDTH};
+
   @media (max-width: 767px) {
     width: 100vw;
   }

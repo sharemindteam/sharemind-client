@@ -19,36 +19,51 @@ import {
   getLetterMessages,
 } from 'api/get';
 import { GetMessagesType } from 'utils/type';
+import { APP_WIDTH } from 'styles/AppStyle';
+
+//
+//
+//
 
 export const BuyerLetterWrite = () => {
   const navigate = useNavigate();
+
   //params로 consult id 넘어오고 tag status는 location으로 넘어옴
   const { id } = useParams();
   const location = useLocation();
   const { state } = location;
+
   const tagStatus: number = state?.tagStatus;
+
   //id에 해당하는 상담 사의 카테고리 n가지 request, 1,2,3...로 구분, 0일 떄는 상담카테고리로 표기
   // 바뀔 때마다 useEffect로 request
   const [categoryType, setCategoryType] = useState<number>(0);
   const [categoryList, setCategoryList] = useState<string[]>([]);
   // Modal 여부(recoil)
+
   const [isModalOpen, setIsModalOpen] = useRecoilState<boolean>(
     isLetterModalOpenState,
   );
+
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
+
   // 임시저장, 전송하기 버튼 활성화여부
   const [isActiveSaveButton, setIsActiveSaveButton] = useState(false);
   const [isActivePostButton, setIsActivePostButton] = useState(false);
   const [saveButtonColor, setSaveButtonColor] = useState<string>(White);
+
   //input 값
   const [input, setInput] = useState<string>('');
+
   // 임시저장, 편지, 불러오기 모달 활성화여부
   const [isActivePostModal, setIsActivePostModal] = useState(false);
   const [isActiveSaveModal, setIsActiveSaveModal] = useState(false);
   const [isActiveLoadModal, setIsActiveLoadModal] = useState(false);
+
   //임시저장 메세지 있는지 없는지 여부
   const [isSaved, setIsSaved] = useState<boolean>(false);
+
   // 임시 저장 메세지 get 요청 response
   const [messageResponse, setMessageResponse] = useState<GetMessagesType>({
     content: null,
@@ -57,7 +72,9 @@ export const BuyerLetterWrite = () => {
     updatedAt: null,
   });
 
-  //임시저장 확인후 모달
+  /**
+   * 임시저장 확인후 모달
+   */
   const fetchDraftsData = async () => {
     let messageType: string;
     if (tagStatus === 0) {
@@ -90,6 +107,10 @@ export const BuyerLetterWrite = () => {
       console.log(e);
     }
   };
+
+  /**
+   *
+   */
   const fetchCategoriesData = async () => {
     const definedId: string = id as string;
     try {
@@ -105,8 +126,11 @@ export const BuyerLetterWrite = () => {
       console.log(e);
     }
   };
-  //임시 저장된 메세지 있으면 정보받아오기, 아니면 null
-  //tagStatus 1, 3일 시엔 빼야함
+
+  /**
+   * 임시 저장된 메세지 있으면 정보받아오기, 아니면 null
+   * tagStatus 1, 3일 시엔 빼야함
+   */
   const fetchSavedData = async () => {
     let messageType = '';
     if (tagStatus === 0) {
@@ -133,7 +157,9 @@ export const BuyerLetterWrite = () => {
     }
   };
 
+  //
   //먼저 임시저장된거 있는지 api 콜하고 그다음에 카테고리 세팅
+  //
   useEffect(() => {
     const fetchData = async () => {
       await fetchCategoriesData();
@@ -151,6 +177,10 @@ export const BuyerLetterWrite = () => {
       fetchData();
     }
   }, []);
+
+  //
+  //
+  //
   useEffect(() => {
     if (input === '') {
       // 비어 있으면 전송못함
@@ -163,6 +193,11 @@ export const BuyerLetterWrite = () => {
       setSaveButtonColor(Green);
     }
   }, [input]);
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -179,23 +214,35 @@ export const BuyerLetterWrite = () => {
       </HeaderWrapper>
       <div className="body">
         {tagStatus === 0 ? (
-          <CategoryDropDown
-            onClick={() => {
-              setIsModalOpen(true);
+          <div
+            style={{
+              padding: '0 2rem',
+              width: '100%',
+              boxSizing: 'border-box',
             }}
           >
-            <Body3 color={Green}>{categoryList[categoryType]}</Body3>
-            <DownIcon />
-          </CategoryDropDown>
+            <CategoryDropDown
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
+              <Body3 color={Green}>{categoryList[categoryType]}</Body3>
+              <DownIcon />
+            </CategoryDropDown>
+          </div>
         ) : null}
-        <TextArea
-          value={input}
-          placeholder="고민 내용을 남겨주세요."
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-            setInput(e.target.value);
-          }}
-          tagStatus={tagStatus}
-        />
+        <div
+          style={{ padding: '0 2rem', width: '100%', boxSizing: 'border-box' }}
+        >
+          <TextArea
+            value={input}
+            placeholder="고민 내용을 남겨주세요."
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+              setInput(e.target.value);
+            }}
+            tagStatus={tagStatus}
+          />
+        </div>
       </div>
       {isModalOpen ? (
         <>
@@ -263,7 +310,7 @@ export const BuyerLetterWrite = () => {
       <ButtonWrapper>
         <Button
           text="임시저장"
-          width="42.66%"
+          width="100%"
           height="5.2rem"
           backgroundColor={LightGreen}
           color={saveButtonColor}
@@ -274,7 +321,7 @@ export const BuyerLetterWrite = () => {
         />
         <Button
           text="제출하기"
-          width="42.66%"
+          width="100%"
           height="5.2rem"
           isActive={isActivePostButton}
           onClick={() => {
@@ -285,6 +332,7 @@ export const BuyerLetterWrite = () => {
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   width: 100%;
   position: relative;
@@ -294,11 +342,12 @@ const Wrapper = styled.div`
     align-items: center;
   }
 `;
+
 const CategoryDropDown = styled.div`
-  padding: 0.9rem 1.6rem;
+  padding: 0.9rem 2rem;
   box-sizing: border-box;
   background-color: ${LightGreen};
-  width: 89.33%;
+  width: 100%;
   border-radius: 1.2rem;
   display: flex;
   justify-content: space-between;
@@ -307,9 +356,10 @@ const CategoryDropDown = styled.div`
   margin-bottom: 0.8rem;
   cursor: pointer;
 `;
+
 const TextArea = styled.textarea<{ tagStatus: number }>`
   resize: none;
-  width: 89.33%;
+  width: 100%;
   min-height: 60vh;
   &::placeholder{
     color: ${Grey3};
@@ -333,17 +383,16 @@ const TextArea = styled.textarea<{ tagStatus: number }>`
   ${(props) => (props.tagStatus === 2 ? 'margin-top:1.2rem' : null)};
   
 `;
+
 const ButtonWrapper = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
-  height: 7.6rem;
+
   background-color: ${White};
   box-sizing: border-box;
-  padding: 0.8rem 0 1.6rem 0;
+  padding: 0.8rem 2rem 1.6rem 2rem;
   gap: 1.5rem;
   display: flex;
   justify-content: center;

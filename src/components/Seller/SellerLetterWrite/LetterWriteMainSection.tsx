@@ -15,6 +15,13 @@ import {
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { Space } from 'components/Common/Space';
 import { CartegoryState } from 'utils/type';
+import { APP_WIDTH } from 'styles/AppStyle';
+import { BackDrop } from 'components/Common/BackDrop';
+
+//
+//
+//
+
 interface LetterConsultInform {
   categoryStatus?: CartegoryState;
   counselorName: string | undefined;
@@ -25,6 +32,10 @@ interface LetterConsultInform {
   date: string | undefined;
 }
 
+//
+//
+//
+
 export const LetterWriteMainSection = ({
   setIsSend,
   isViewQuestion,
@@ -34,6 +45,8 @@ export const LetterWriteMainSection = ({
   isViewQuestion: boolean;
   setIsViewQuestion: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const navigate = useNavigate();
+
   const [consultInform, setConsultInform] = useState<LetterConsultInform>({
     categoryStatus: undefined,
     counselorName: undefined,
@@ -43,6 +56,7 @@ export const LetterWriteMainSection = ({
     counselorprofileStatus: undefined,
     date: undefined,
   });
+
   // 임시저장, 전송하기 버튼 활성화여부
   const [isActiveSaveButton, setIsActiveSaveButton] = useState(false);
   const [isActivePostButton, setIsActivePostButton] = useState(false);
@@ -70,7 +84,10 @@ export const LetterWriteMainSection = ({
     '추가 질문': 'second_question',
   };
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchData = async () => {
       // 편지 단계 API
@@ -119,7 +136,8 @@ export const LetterWriteMainSection = ({
       const letterResponse: any = await getLetterMessages(
         {
           params: {
-            messageType: questionMapping[recentType],
+            messageType:
+              questionMapping[recentType as keyof typeof questionMapping],
             isCompleted: true,
           },
         },
@@ -304,26 +322,25 @@ const TextArea = styled.textarea`
 `;
 
 const BottomButtonGroup = styled.div`
-  height: 5.2rem;
+  position: fixed;
+  bottom: 1rem;
   display: flex;
   justify-content: center;
   gap: 1.5rem;
   margin-bottom: 1.6rem;
-  @media (max-width: 767px) {
-    position: fixed;
-    bottom: 1rem;
-    width: 100%;
-  }
+  box-sizing: border-box;
+  padding: 0 2rem;
+
+  width: 100%;
+
   @media (min-width: 768px) {
-    position: fixed;
-    bottom: 1rem;
-    width: 375px;
+    width: ${APP_WIDTH};
   }
 `;
 
 const SaveButton = styled.button<{ isActive: boolean }>`
   display: flex;
-  width: 16rem;
+  width: 100%;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
@@ -336,11 +353,12 @@ const SaveButton = styled.button<{ isActive: boolean }>`
   font-style: normal;
   font-weight: 600;
   line-height: 125%; /* 2rem */
+  height: 5.2rem;
 `;
 
 const PostButton = styled.button<{ isActive: boolean }>`
   display: flex;
-  width: 16rem;
+  width: 100%;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
@@ -354,18 +372,5 @@ const PostButton = styled.button<{ isActive: boolean }>`
   font-style: normal;
   font-weight: 600;
   line-height: 125%; /* 2rem */
-`;
-const BackDrop = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
-  @media (min-width: 768px) {
-    width: 37.5rem;
-  }
-  position: fixed;
-  top: 0;
-  z-index: 2001;
-  height: calc(var(--vh, 1vh) * 100);
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: opacity 0.3s ease;
+  height: 5.2rem;
 `;

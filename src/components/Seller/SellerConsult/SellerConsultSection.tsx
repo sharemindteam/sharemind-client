@@ -39,6 +39,11 @@ export const SellerConsultSection = () => {
   } = useConsultParams();
 
   const setIsModalOpen = useSetRecoilState<boolean>(isConsultModalOpenState);
+
+  //
+  //
+  //
+
   return (
     <>
       <ConsultSortingMenu>
@@ -118,6 +123,7 @@ export const SellerConsultSection = () => {
             setSortType={setSortType}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
+            isChecked={isChecked}
           />
         )}
         <Space height="4rem" />

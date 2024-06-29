@@ -7,10 +7,20 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { postOpenConsult } from 'api/post';
+import { APP_WIDTH } from 'styles/AppStyle';
+
+//
+//
+//
 
 export const BuyerOpenPaymentDetail = () => {
   const navigate = useNavigate();
+
   const [buttonSelect, setButtonSelect] = useState<number>(0);
+
+  /**
+   *
+   */
   const handlePaymentClick = async () => {
     const body = {
       cost: 500,
@@ -27,6 +37,11 @@ export const BuyerOpenPaymentDetail = () => {
       alert(err);
     }
   };
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -243,7 +258,7 @@ export const BuyerOpenPaymentDetail = () => {
       <ButtonWrapper>
         <Button
           text="결제하기"
-          width="33.5rem"
+          width="100%"
           height="5.2rem"
           onClick={handlePaymentClick}
         />
@@ -251,9 +266,15 @@ export const BuyerOpenPaymentDetail = () => {
     </Wrapper>
   );
 };
+
+//
+//
+//
+
 const Wrapper = styled.div`
   .body-wrapper {
     height: calc(var(--vh, 1vh) * 100 - 7.1rem);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -307,18 +328,15 @@ const Line = styled.div`
   background-color: ${Grey6};
 `;
 const ButtonWrapper = styled.div`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
-  height: 7.9rem;
   background-color: ${White};
   position: fixed;
   bottom: 0;
   display: flex;
   justify-content: center;
-  padding-top: 0.8rem;
+  padding: 0.8rem 2rem;
   box-sizing: border-box;
 `;

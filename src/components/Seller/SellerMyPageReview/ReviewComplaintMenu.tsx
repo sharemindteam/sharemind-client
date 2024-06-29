@@ -1,6 +1,7 @@
 import { Button } from 'components/Common/Button';
 import { useRecoilState } from 'recoil';
 import styled, { keyframes } from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 import { Grey4, Grey6 } from 'styles/color';
 import { isReviewComplaintOpenState } from 'utils/atom';
 interface ReviewComplaintMenuProps {
@@ -43,6 +44,7 @@ export const ReviewComplaintMenu = ({ id }: ReviewComplaintMenuProps) => {
     </Wrapper>
   );
 };
+
 const slideIn = keyframes`
   from{
     transform : translateY(100%);
@@ -51,6 +53,7 @@ const slideIn = keyframes`
     transform : translateY(0%);
   }
 `;
+
 const slideOut = keyframes`
   from{
     transform : translateY(0%);
@@ -59,13 +62,14 @@ const slideOut = keyframes`
     transform : translateY(100%);
   }
 `;
+
 const Wrapper = styled.div<{ visible: boolean }>`
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+  width: 100%;
+
   @media (min-width: 768px) {
-    width: 37.5rem;
+    width: ${APP_WIDTH};
   }
+
   position: fixed;
   height: 10.3rem;
   background-color: ${Grey6};

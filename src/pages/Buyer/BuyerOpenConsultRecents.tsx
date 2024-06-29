@@ -9,6 +9,7 @@ import useInfiniteObserver from 'hooks/useInfiniteObserver';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -122,7 +123,7 @@ const ButtonWrapper = styled.div`
   position: fixed;
   bottom: 1.5rem;
   @media (min-width: 768px) {
-    width: 375px;
+    width: ${APP_WIDTH};
   }
 `;
 

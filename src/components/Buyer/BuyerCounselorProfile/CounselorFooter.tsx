@@ -7,11 +7,23 @@ import { White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
 import { patchWishLists } from 'api/patch';
 import { deleteWishLists } from 'api/delete';
+import { APP_WIDTH } from 'styles/AppStyle';
+import { Flex } from 'components/Common/Flex';
+
+//
+//
+//
+
 interface CounselorFooterProps {
   counselorId: number;
   isWishList: boolean;
   consultTypes: string[];
 }
+
+//
+//
+//
+
 export const CounselorFooter = ({
   counselorId,
   isWishList,
@@ -23,7 +35,10 @@ export const CounselorFooter = ({
   const [isSaved, setIsSaved] = useState<boolean>(isWishList);
   //보내는 동안 중복 클릭 방지
   const [isSending, setIsSending] = useState<boolean>(false);
-  //찜하기 업데이트
+
+  /**
+   * 찜하기 업데이트
+   */
   const handleBookmark = async () => {
     if (isSending) {
       return;
@@ -43,6 +58,10 @@ export const CounselorFooter = ({
       setIsSaved(true);
     }
   };
+
+  /**
+   *
+   */
   const handleUnBookmark = async () => {
     if (isSending) {
       return;
@@ -68,7 +87,7 @@ export const CounselorFooter = ({
   //
 
   return (
-    <Wrapper>
+    <Wrapper justify="center" align="center" gap="2rem">
       {isSaved ? (
         <BookMarkIcon onClick={handleUnBookmark} />
       ) : (
@@ -92,18 +111,12 @@ export const CounselorFooter = ({
 //
 //
 
-const Wrapper = styled.div`
-  height: 5.2rem;
-  @media (max-width: 767px) {
-    width: 100vw;
-  }
+const Wrapper = styled(Flex)`
+  width: 100%;
+  box-sizing: border-box;
   @media (min-width: 768px) {
-    width: 33.5rem;
+    width: ${APP_WIDTH};
   }
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
   background-color: ${White};
   padding: 0.8rem 2rem 1.2rem 2rem;
   position: fixed;

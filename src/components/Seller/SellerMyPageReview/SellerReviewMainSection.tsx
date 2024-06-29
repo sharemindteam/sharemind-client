@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReviewCard } from './ReviewCard';
 import { getMinderReviews } from 'api/get';
-import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-no-calculation.svg';
+import { ReactComponent as NoCalculationGraphicIcon } from 'assets/icons/graphic-noting.svg';
 import { useNavigate } from 'react-router-dom';
 import { Grey4 } from 'styles/color';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
@@ -88,6 +88,10 @@ export const SellerReviewMainSection = () => {
     threshold: 0.8,
     onIntersect,
   });
+
+  //
+  //
+  //
   useLayoutEffect(() => {
     fetchReviewData(0);
   }, []);
@@ -102,38 +106,38 @@ export const SellerReviewMainSection = () => {
         <LoadingSpinner />
       </div>
     );
-  } else {
-    return (
-      <>
-        <ReviewCardList>
-          {cardList?.length === 0 && (
-            <NoCalculationGraphicWrapper>
-              <NoCalculationGraphicIcon />
-              <MainText color={Grey4}>아직 받은 리뷰가 없어요</MainText>
-            </NoCalculationGraphicWrapper>
-          )}
-          {cardList?.map((item) => (
-            <ReviewCard
-              key={item.reviewId}
-              id={item.reviewId}
-              name={item.nickname}
-              iconType={Math.floor(1 + Math.random() * 8)}
-              consultType={item.consultType}
-              date={item.consultedAt}
-              price={item.consultCost}
-              rating={item.rating}
-              review={item.comment}
-            />
-          ))}
-        </ReviewCardList>
-        {!isLastElem ? (
-          <div ref={setTarget} style={{ height: '3.5rem' }} />
-        ) : (
-          <div style={{ height: '3.5rem' }} />
-        )}
-      </>
-    );
   }
+
+  return (
+    <>
+      <ReviewCardList>
+        {cardList?.length === 0 && (
+          <NoCalculationGraphicWrapper>
+            <NoCalculationGraphicIcon />
+            <MainText color={Grey4}>아직 받은 리뷰가 없어요</MainText>
+          </NoCalculationGraphicWrapper>
+        )}
+        {cardList?.map((item) => (
+          <ReviewCard
+            key={item.reviewId}
+            id={item.reviewId}
+            name={item.nickname}
+            iconType={Math.floor(1 + Math.random() * 8)}
+            consultType={item.consultType}
+            date={item.consultedAt}
+            price={item.consultCost}
+            rating={item.rating}
+            review={item.comment}
+          />
+        ))}
+      </ReviewCardList>
+      {!isLastElem ? (
+        <div ref={setTarget} style={{ height: '3.5rem' }} />
+      ) : (
+        <div style={{ height: '3.5rem' }} />
+      )}
+    </>
+  );
 };
 
 const ReviewCardList = styled.div`
