@@ -270,7 +270,7 @@ export const BuyerPaymentDetail = () => {
       </div>
       <ButtonWrapper>
         <Button
-          text="결제하기"
+          text="결제 페이지로 이동"
           width="33.5rem"
           height="5.2rem"
           onClick={handlePaymentClick}
