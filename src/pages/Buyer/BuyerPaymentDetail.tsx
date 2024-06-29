@@ -121,6 +121,7 @@ export const BuyerPaymentDetail = () => {
       //나중에상담사 프로필로 navigate
       navigate(-1);
     }
+
     const fetchData = async () => {
       let consultType = '';
 
@@ -167,10 +168,6 @@ export const BuyerPaymentDetail = () => {
           level={consultData.level}
           rating={consultData.ratingAverage}
           reviewNumber={consultData.totalReview}
-          tagList={AppendCategoryType(
-            consultData.consultCategories,
-            consultData.consultStyle,
-          )}
           iconNumber={5}
         />
         <Box>

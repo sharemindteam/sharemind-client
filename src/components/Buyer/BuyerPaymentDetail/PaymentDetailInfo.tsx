@@ -1,24 +1,31 @@
 import styled from 'styled-components';
-import { Green, Grey2, Grey3, White } from 'styles/color';
-import { Body1, Body3, Caption2, Heading } from 'styles/font';
+import { Grey1, Grey3, White } from 'styles/color';
+import { Body1, Body3, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
-import { ReactComponent as Heart } from 'assets/icons/icon-heart2.svg';
-import { TagA2Cartegory } from '../../Common/TagA2Cartegory';
-import { CartegoryState } from 'utils/type';
+import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart.svg';
+import { Flex } from 'components/Common/Flex';
+
+//
+//
+//
+
 interface PaymentDetailInfoProps {
   nickname: string;
   level: number;
   rating: number;
   reviewNumber: number;
-  tagList: CartegoryState[];
   iconNumber: number;
 }
+
+//
+//
+//
+
 export const PaymentDetailInfo = ({
   nickname,
   level,
   rating,
   reviewNumber,
-  tagList,
   iconNumber,
 }: PaymentDetailInfoProps) => {
   return (
@@ -32,20 +39,16 @@ export const PaymentDetailInfo = ({
         <div className="col1">
           <div className="row1">
             <Heading>{nickname}</Heading>
-            <LevelTag>
-              <Caption2 color={White}>Lv {level}</Caption2>
-            </LevelTag>
+            <Body3>Lv {level}</Body3>
           </div>
           <div className="row2">
-            <HeartIcon />
-            <Body3 color={Grey2} padding="0.04rem 0 0 0">
-              {rating + ' (' + reviewNumber + ')'}
-            </Body3>
-          </div>
-          <div className="row3">
-            {tagList.map((value) => {
-              return <TagA2Cartegory tagType={value} bgColorType={3} />;
-            })}
+            <Body3 color={Grey1}>{'후기 ' + reviewNumber + '개'}</Body3>
+            <Flex gap="0.2rem">
+              <HeartIcon />
+              <Body3 color={Grey1} padding="0.04rem 0 0 0">
+                {rating}
+              </Body3>
+            </Flex>
           </div>
         </div>
         <div className="col2">
@@ -55,6 +58,7 @@ export const PaymentDetailInfo = ({
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   background-color: ${White};
   width: 100%;
@@ -67,40 +71,35 @@ const Wrapper = styled.div`
     width: 33.5rem;
   }
 `;
+
 const CardWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   box-sizing: border-box;
-  padding: 1.6rem 0 2.4rem 0;
+  padding: 2rem 0 2rem 0;
   width: 33.5rem;
+
   .col1 {
     display: flex;
     flex-direction: column;
   }
+
   .row1 {
     display: flex;
     align-items: center;
     gap: 1.2rem;
     margin-bottom: 1.05rem;
   }
+
   .row2 {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.8rem;
+    gap: 1.6rem;
   }
+
   .row3 {
     display: flex;
     gap: 0.8rem;
   }
-`;
-
-const LevelTag = styled.div`
-  background-color: ${Green};
-  padding: 0.4rem 1.2rem;
-  border-radius: 0.8rem;
-`;
-const HeartIcon = styled(Heart)`
-  width: 1.9rem;
-  height: 1.8rem;
 `;
