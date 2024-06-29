@@ -30,16 +30,18 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   const isOpenConsultDetailPage =
     /^(\/open-consult\/\d+|\/minder\/open-consult\/\d+)$/.test(pathname);
 
+  const isPaymentDetailPage = /^\/paymentDetail\/\d+$/.test(pathname);
+
   const isGreyBackground =
     pathname === '/minder/mypage/viewProfile' ||
     pathname === '/minder/mypage' ||
     pathname === '/minder/mypage/modifyProfile' ||
     pathname === '/mypage' ||
     pathname === '/review' ||
-    pathname === '/paymentDetail' ||
     pathname.includes('/chat/') ||
     (pathname.includes('/open-consult') && !isOpenConsultDetailPage) ||
-    (pathname.includes('/consult') && search.includes('type=open-consult'));
+    (pathname.includes('/consult') && search.includes('type=open-consult')) ||
+    isPaymentDetailPage;
 
   //
   //
