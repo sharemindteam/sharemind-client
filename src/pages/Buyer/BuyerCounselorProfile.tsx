@@ -8,6 +8,7 @@ import {
   CounselorProfileNav,
   CounselorReview,
 } from 'components/Buyer/BuyerCounselorProfile';
+import CounselorTypeSection from 'components/Buyer/BuyerCounselorProfile/\bCounselorTypeSection';
 import { Space } from 'components/Common/Space';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -83,55 +84,56 @@ export const BuyerCounselorProfile = () => {
         <LoadingSpinner />
       </>
     );
-  } else {
-    if (id !== undefined) {
-      const counselorId = parseInt(id, 10);
-      return (
-        <Wrapper className="header">
-          <CounselorProfileHeader />
-          <Body>
-            <CounselorProfileCard
-              nickname={profileData.nickname}
-              level={profileData.level}
-              rating={profileData.ratingAverage}
-              reviewNumber={profileData.totalReview}
-              tagList={AppendCategoryType(
-                profileData.consultCategories,
-                profileData.consultStyle,
-              )}
-              consultStyle={
-                consultStyleToCharNum(profileData.consultStyle) || 9
-              }
-            />
-            <CounselorProfileNav
-              isInfo={isInfo}
-              setIsInfo={setIsInfo}
-              reviewNumber={profileData.totalReview}
-            />
-            {isInfo ? (
-              <>
-                <CounselorInfo
-                  consultType={profileData.consultTypes}
-                  consultTimes={profileData.consultTimes}
-                  letterPrice={profileData.consultCosts.편지}
-                  chattingPrice={profileData.consultCosts.채팅}
-                />
-                <CounselorExp experience={profileData.experience} />
-              </>
-            ) : (
-              <CounselorReview counselorId={counselorId} />
-            )}
-          </Body>
-          <CounselorFooter
-            counselorId={counselorId}
-            isWishList={profileData.isWishList}
-            consultTypes={profileData.consultTypes}
+  }
+
+  if (id !== undefined) {
+    const counselorId = parseInt(id, 10);
+    return (
+      <Wrapper className="header">
+        <CounselorProfileHeader />
+        <Body>
+          <CounselorProfileCard
+            nickname={profileData.nickname}
+            level={profileData.level}
+            rating={profileData.ratingAverage}
+            reviewNumber={profileData.totalReview}
+            consultStyle={consultStyleToCharNum(profileData.consultStyle) || 9}
           />
-        </Wrapper>
-      );
-    } else {
-      return <>404 error</>;
-    }
+          <CounselorProfileNav
+            isInfo={isInfo}
+            setIsInfo={setIsInfo}
+            reviewNumber={profileData.totalReview}
+          />
+          {isInfo ? (
+            <>
+              <CounselorInfo
+                consultType={profileData.consultTypes}
+                consultTimes={profileData.consultTimes}
+                letterPrice={profileData.consultCosts.편지}
+                chattingPrice={profileData.consultCosts.채팅}
+              />
+              <CounselorExp experience={profileData.experience} />
+              <CounselorTypeSection
+                tagList={AppendCategoryType(
+                  profileData.consultCategories,
+                  profileData.consultStyle,
+                )}
+              />
+              <Space height="5.2rem" />
+            </>
+          ) : (
+            <CounselorReview counselorId={counselorId} />
+          )}
+        </Body>
+        <CounselorFooter
+          counselorId={counselorId}
+          isWishList={profileData.isWishList}
+          consultTypes={profileData.consultTypes}
+        />
+      </Wrapper>
+    );
+  } else {
+    return <>404 error</>;
   }
 };
 

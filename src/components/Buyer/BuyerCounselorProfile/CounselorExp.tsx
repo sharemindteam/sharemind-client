@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Grey1, Grey3 } from 'styles/color';
-import { Body1, Body2 } from 'styles/font';
+import { Grey1, Grey3, White } from 'styles/color';
+import { Body1, Body2, Subtitle } from 'styles/font';
 
 //
 //
@@ -32,7 +32,9 @@ export const CounselorExp = ({ experience }: CounselorExpProps) => {
 
   return (
     <Wrapper>
-      <Body1 color={Grey3}>경험 소개</Body1>
+      <Subtitle color={Grey1} style={{ textAlign: 'left', width: '100%' }}>
+        마인더를 소개해요
+      </Subtitle>
       <ExpBox>
         <Body2 color={Grey1}>{formattedMessage(experience)}</Body2>
       </ExpBox>
@@ -41,12 +43,12 @@ export const CounselorExp = ({ experience }: CounselorExpProps) => {
 };
 
 const Wrapper = styled.div`
-  padding: 1.2rem 2rem 3rem 2rem;
-  margin-bottom: 5.2rem;
+  padding: 1.2rem 2rem 2rem 2rem;
 `;
+
 const ExpBox = styled.div`
   padding: 1.6rem;
-  background-color: rgba(242, 241, 248, 0.8);
+  background-color: ${White};
   border-radius: 1.2rem;
   margin-top: 1.2rem;
 `;
