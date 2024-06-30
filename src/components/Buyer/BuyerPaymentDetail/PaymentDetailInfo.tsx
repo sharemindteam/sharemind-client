@@ -15,7 +15,7 @@ interface PaymentDetailInfoProps {
   rating: number;
   reviewNumber: number;
   totalConsult: number;
-  iconNumber: number;
+  consultStyle: number | undefined;
 }
 
 //
@@ -28,7 +28,7 @@ export const PaymentDetailInfo = ({
   rating,
   reviewNumber,
   totalConsult,
-  iconNumber,
+  consultStyle,
 }: PaymentDetailInfoProps) => {
   return (
     <Wrapper>
@@ -57,7 +57,7 @@ export const PaymentDetailInfo = ({
           </div>
         </div>
         <div className="col2">
-          <Characters number={iconNumber} width="7.6rem" height="7rem" />
+          <Characters number={consultStyle} width="7.6rem" height="7rem" />
         </div>
       </CardWrapper>
     </Wrapper>

@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { getCounselorConsults } from 'api/get';
 import { postConsults } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
+import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 
 //
 //
@@ -175,7 +176,7 @@ export const BuyerPaymentDetail = () => {
           rating={consultData.ratingAverage}
           reviewNumber={consultData.totalReview}
           totalConsult={consultData.totalConsult}
-          iconNumber={5}
+          consultStyle={consultStyleToCharNum(consultData.consultStyle)}
         />
         <Box>
           <div className="line-wrapper">
