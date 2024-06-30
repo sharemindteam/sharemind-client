@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { Grey1, Grey2, Grey6, White } from 'styles/color';
+import { Grey1, Grey6, White } from 'styles/color';
 import { Body3, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart.svg';
-import { CartegoryState } from 'utils/type';
 import { Flex } from 'components/Common/Flex';
 
 //

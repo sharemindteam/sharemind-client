@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Grey1, Grey3, White } from 'styles/color';
-import { Body1, Body2, Subtitle } from 'styles/font';
+import { Grey1, White } from 'styles/color';
+import { Body2, Subtitle } from 'styles/font';
 
 //
 //

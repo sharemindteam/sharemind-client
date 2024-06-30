@@ -17,7 +17,9 @@ interface CounselorTypeSectionProps {
 //
 //
 
-const CounselorTypeSection = ({ tagList }: CounselorTypeSectionProps) => {
+export const CounselorTypeSection = ({
+  tagList,
+}: CounselorTypeSectionProps) => {
   return (
     <Wrapper>
       <Subtitle color={Grey1} style={{ textAlign: 'left', width: '100%' }}>
@@ -43,5 +45,3 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 1.2rem;
 `;
-
-export default CounselorTypeSection;

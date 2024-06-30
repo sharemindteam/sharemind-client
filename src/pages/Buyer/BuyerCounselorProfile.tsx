@@ -7,8 +7,9 @@ import {
   CounselorProfileHeader,
   CounselorProfileNav,
   CounselorReview,
+  CounselorTypeSection,
 } from 'components/Buyer/BuyerCounselorProfile';
-import CounselorTypeSection from 'components/Buyer/BuyerCounselorProfile/\bCounselorTypeSection';
+
 import { Space } from 'components/Common/Space';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
