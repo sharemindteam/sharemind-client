@@ -42,9 +42,7 @@ const PAYMENT_SERVICE_INFO = [
   '상담 완료 후 7일간 거래 확정을 하지 않으면 자동 거래 확정됩니다.',
 ];
 
-{
-  /* TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리 */
-}
+// TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리
 // const PAYMENT_METHOD = [
 //   [
 //     { buttonSelect: 1, text: '신용/체크카드' },
