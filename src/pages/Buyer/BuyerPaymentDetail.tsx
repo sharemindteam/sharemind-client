@@ -2,13 +2,12 @@ import { PaymentDetailInfo } from 'components/Buyer/BuyerPaymentDetail/PaymentDe
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Green, Grey1, Grey3, Grey6, LightGreen, White } from 'styles/color';
+import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
 import { Body1, Body3, Heading } from 'styles/font';
 import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getCounselorConsults } from 'api/get';
-import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { postConsults } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
 
@@ -26,6 +25,7 @@ interface ConsultInfo {
   nickname: string; // 닉네임
   ratingAverage: number; // 평균 평점
   totalReview: number; // 총 리뷰 수
+  totalConsult: number; // 총 상담 수
 }
 
 //
@@ -41,20 +41,23 @@ const PAYMENT_SERVICE_INFO = [
   '상담 완료 후 7일간 거래 확정을 하지 않으면 자동 거래 확정됩니다.',
 ];
 
-const PAYMENT_METHOD = [
-  [
-    { buttonSelect: 1, text: '신용/체크카드' },
-    { buttonSelect: 2, text: '계좌이체' },
-  ],
-  [
-    { buttonSelect: 3, text: '카카오페이' },
-    { buttonSelect: 4, text: '토스페이' },
-  ],
-  [
-    { buttonSelect: 5, text: '네이버페이' },
-    { buttonSelect: 6, text: '휴대폰 결제' },
-  ],
-];
+{
+  /* TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리 */
+}
+// const PAYMENT_METHOD = [
+//   [
+//     { buttonSelect: 1, text: '신용/체크카드' },
+//     { buttonSelect: 2, text: '계좌이체' },
+//   ],
+//   [
+//     { buttonSelect: 3, text: '카카오페이' },
+//     { buttonSelect: 4, text: '토스페이' },
+//   ],
+//   [
+//     { buttonSelect: 5, text: '네이버페이' },
+//     { buttonSelect: 6, text: '휴대폰 결제' },
+//   ],
+// ];
 
 //
 //
@@ -67,7 +70,8 @@ export const BuyerPaymentDetail = () => {
   const { state } = location;
   const letterFocus: boolean = state?.letterFocus;
 
-  const [buttonSelect, setButtonSelect] = useState<number>(0);
+  // const [buttonSelect, setButtonSelect] = useState<number>(0);
+
   const [consultData, setConsultData] = useState<ConsultInfo>({
     consultCategories: [],
     consultStyle: '',
@@ -78,6 +82,7 @@ export const BuyerPaymentDetail = () => {
     nickname: '',
     ratingAverage: 0,
     totalReview: 0,
+    totalConsult: 0,
   });
 
   /**
@@ -145,6 +150,7 @@ export const BuyerPaymentDetail = () => {
         navigate(-1);
       }
     };
+
     fetchData();
   }, [id, letterFocus, navigate]);
 
@@ -168,6 +174,7 @@ export const BuyerPaymentDetail = () => {
           level={consultData.level}
           rating={consultData.ratingAverage}
           reviewNumber={consultData.totalReview}
+          totalConsult={consultData.totalConsult}
           iconNumber={5}
         />
         <Box>

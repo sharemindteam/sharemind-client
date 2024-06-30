@@ -14,6 +14,7 @@ interface PaymentDetailInfoProps {
   level: number;
   rating: number;
   reviewNumber: number;
+  totalConsult: number;
   iconNumber: number;
 }
 
@@ -26,6 +27,7 @@ export const PaymentDetailInfo = ({
   level,
   rating,
   reviewNumber,
+  totalConsult,
   iconNumber,
 }: PaymentDetailInfoProps) => {
   return (
@@ -42,7 +44,10 @@ export const PaymentDetailInfo = ({
             <Body3>Lv {level}</Body3>
           </div>
           <div className="row2">
+            <Body3 color={Grey1}>{'상담 ' + totalConsult + '회'}</Body3>
+            <Divider />
             <Body3 color={Grey1}>{'후기 ' + reviewNumber + '개'}</Body3>
+            <Divider />
             <Flex gap="0.2rem">
               <HeartIcon />
               <Body3 color={Grey1} padding="0.04rem 0 0 0">
@@ -95,11 +100,17 @@ const CardWrapper = styled.div`
   .row2 {
     display: flex;
     align-items: center;
-    gap: 1.6rem;
+    gap: 0.8rem;
   }
 
   .row3 {
     display: flex;
     gap: 0.8rem;
   }
+`;
+
+const Divider = styled.div`
+  width: 0.1rem;
+  height: 1.5rem;
+  background-color: ${Grey3};
 `;
