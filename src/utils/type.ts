@@ -101,7 +101,7 @@ export interface BuyerReview {
   rating: number;
   comment: string;
 }
-export interface MinderProfile {
+export interface GetCounselorsAllResponse {
   consultCategories: CartegoryState[];
   consultCosts: ConsultCosts;
   consultStyle: string;
@@ -115,6 +115,7 @@ export interface MinderProfile {
   nickname: string;
   ratingAverage: number;
   totalReview: number;
+  totalConsult: number;
 }
 
 export type WishlistDataType = {

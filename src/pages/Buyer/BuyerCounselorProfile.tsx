@@ -17,7 +17,32 @@ import styled from 'styled-components';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { ConsultCosts, ConsultTimes, MinderProfile } from 'utils/type';
+import {
+  ConsultCosts,
+  ConsultTimes,
+  GetCounselorsAllResponse,
+} from 'utils/type';
+
+//
+//
+//
+
+const DEFAULT_PROFILE_DATA: GetCounselorsAllResponse = {
+  consultCategories: [],
+  consultCosts: {} as ConsultCosts,
+  consultStyle: '',
+  consultTimes: {} as ConsultTimes,
+  consultTypes: [],
+  counselorId: -1,
+  introduction: '',
+  isWishList: false,
+  experience: '',
+  level: 0,
+  nickname: '',
+  ratingAverage: 0,
+  totalReview: 0,
+  totalConsult: 0,
+};
 
 //
 //
@@ -27,21 +52,8 @@ export const BuyerCounselorProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [profileData, setProfileData] = useState<MinderProfile>({
-    consultCategories: [],
-    consultCosts: {} as ConsultCosts,
-    consultStyle: '',
-    consultTimes: {} as ConsultTimes,
-    consultTypes: [],
-    counselorId: -1,
-    introduction: '',
-    isWishList: false,
-    experience: '',
-    level: 0,
-    nickname: '',
-    ratingAverage: 0,
-    totalReview: 0,
-  });
+  const [profileData, setProfileData] =
+    useState<GetCounselorsAllResponse>(DEFAULT_PROFILE_DATA);
 
   //로딩 state
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -113,7 +125,10 @@ export const BuyerCounselorProfile = () => {
                 letterPrice={profileData.consultCosts.편지}
                 chattingPrice={profileData.consultCosts.채팅}
               />
-              <CounselorExp experience={profileData.experience} />
+              <CounselorExp
+                experience={profileData.experience}
+                introduction={profileData.introduction}
+              />
               <CounselorTypeSection
                 tagList={AppendCategoryType(
                   profileData.consultCategories,
