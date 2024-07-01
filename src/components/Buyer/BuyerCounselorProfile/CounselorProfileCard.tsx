@@ -15,6 +15,7 @@ interface CounselorProfileCardProps {
   rating: number;
   reviewNumber: number;
   consultStyle: number;
+  totalConsult: number;
 }
 
 //
@@ -27,6 +28,7 @@ export const CounselorProfileCard = ({
   rating,
   reviewNumber,
   consultStyle,
+  totalConsult,
 }: CounselorProfileCardProps) => {
   return (
     <Wrapper>
@@ -37,6 +39,8 @@ export const CounselorProfileCard = ({
             <Body3 color={Grey1}>Lv {level}</Body3>
           </div>
           <div className="row2">
+            <Body3 color={Grey1}>{'상담 ' + totalConsult + '회'}</Body3>
+            <Divider />
             <Body3 color={Grey1}>{'후기 ' + reviewNumber + '개'}</Body3>
             <Divider />
             <Flex gap="0.2rem">

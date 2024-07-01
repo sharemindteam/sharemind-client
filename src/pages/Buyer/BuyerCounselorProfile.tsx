@@ -111,6 +111,7 @@ export const BuyerCounselorProfile = () => {
             rating={profileData.ratingAverage}
             reviewNumber={profileData.totalReview}
             consultStyle={consultStyleToCharNum(profileData.consultStyle) || 9}
+            totalConsult={profileData.totalConsult}
           />
           <CounselorProfileNav
             isInfo={isInfo}
