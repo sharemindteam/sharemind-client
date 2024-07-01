@@ -1,6 +1,7 @@
+import { Space } from 'components/Common/Space';
 import styled from 'styled-components';
 import { Grey1, White } from 'styles/color';
-import { Body2, Subtitle } from 'styles/font';
+import { Body1, Body2, Subtitle } from 'styles/font';
 
 //
 //
@@ -8,13 +9,17 @@ import { Body2, Subtitle } from 'styles/font';
 
 interface CounselorExpProps {
   experience: string;
+  introduction: string;
 }
 
 //
 //
 //
 
-export const CounselorExp = ({ experience }: CounselorExpProps) => {
+export const CounselorExp = ({
+  experience,
+  introduction,
+}: CounselorExpProps) => {
   const formattedMessage = (message: string | null): JSX.Element[] | null => {
     return message
       ? message.split('\n').map((item, key) => (
@@ -36,6 +41,8 @@ export const CounselorExp = ({ experience }: CounselorExpProps) => {
         마인더를 소개해요
       </Subtitle>
       <ExpBox>
+        <Body1 color={Grey1}>{introduction}</Body1>
+        <Space height="2.4rem" />
         <Body2 color={Grey1}>{formattedMessage(experience)}</Body2>
       </ExpBox>
     </Wrapper>
