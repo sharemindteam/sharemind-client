@@ -1,10 +1,9 @@
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Green, Grey1, Grey3, Grey6, LightGreen, White } from 'styles/color';
+import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
 import { Body1, Body3, Heading } from 'styles/font';
 import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { postOpenConsult } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
@@ -13,10 +12,39 @@ import { APP_WIDTH } from 'styles/AppStyle';
 //
 //
 
+const PAYMENT_SERVICE_INFO = [
+  '결제 페이지 이동을 누르면 결제 전용 링크로 연결됩니다.',
+  '상담 시작 전 구매자 혹은 판매자 요청에 의해 상담이 취소될 수 있으며 이 경우 결제금액은 환불신청을 해 주시면 환불 처리해 드립니다.',
+  '판매자의 응답 시간 경과로 상담이 취소될 경우 환불신청을 해주시면 환불 처리해 드립니다.',
+  '상담이 시작되면 취소 및 환불이 제한됩니다. 이미 시작된 상담의 환불처리의 경우 신고하기를 통해 분쟁접수를 해주시기 바랍니다.',
+  '상담을 마치고 24시간 이내 판매자가 상담완료를 누르지 않으면 거래가 자동 완료됩니다.',
+  '상담 완료 후 7일간 거래 확정을 하지 않으면 자동 거래 확정됩니다.',
+];
+
+// TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리
+// const PAYMENT_METHOD = [
+//   [
+//     { buttonSelect: 1, text: '신용/체크카드' },
+//     { buttonSelect: 2, text: '계좌이체' },
+//   ],
+//   [
+//     { buttonSelect: 3, text: '카카오페이' },
+//     { buttonSelect: 4, text: '토스페이' },
+//   ],
+//   [
+//     { buttonSelect: 5, text: '네이버페이' },
+//     { buttonSelect: 6, text: '휴대폰 결제' },
+//   ],
+// ];
+
+//
+//
+//
+
 export const BuyerOpenPaymentDetail = () => {
   const navigate = useNavigate();
 
-  const [buttonSelect, setButtonSelect] = useState<number>(0);
+  // const [buttonSelect, setButtonSelect] = useState<number>(0);
 
   /**
    *
@@ -94,105 +122,36 @@ export const BuyerOpenPaymentDetail = () => {
             </Body1>
           </div>
         </Box>
-        <Box>
+        {/* TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리 */}
+        {/* <Box>
           <div className="line-wrapper">
             <Body1 color={Grey3} padding="0.2rem 0">
               결제 방법
             </Body1>
           </div>
           <div className="button-wrapper">
-            <div className="button-row">
-              {buttonSelect === 1 ? (
-                <Button text="신용/체크카드" height="5.2rem" width="16rem" />
-              ) : (
-                <Button
-                  text="신용/체크카드"
-                  height="5.2rem"
-                  width="16rem"
-                  color={Green}
-                  backgroundColor={LightGreen}
-                  onClick={() => {
-                    setButtonSelect(1);
-                  }}
-                />
-              )}
-              {buttonSelect === 2 ? (
-                <Button text="계좌이체" height="5.2rem" width="16rem" />
-              ) : (
-                <Button
-                  text="계좌이체"
-                  height="5.2rem"
-                  width="16rem"
-                  color={Green}
-                  backgroundColor={LightGreen}
-                  onClick={() => {
-                    setButtonSelect(2);
-                  }}
-                />
-              )}
-            </div>
-            <div className="button-row">
-              {buttonSelect === 3 ? (
-                <Button text="카카오페이" height="5.2rem" width="16rem" />
-              ) : (
-                <Button
-                  text="카카오페이"
-                  height="5.2rem"
-                  width="16rem"
-                  color={Green}
-                  backgroundColor={LightGreen}
-                  onClick={() => {
-                    setButtonSelect(3);
-                  }}
-                />
-              )}
-              {buttonSelect === 4 ? (
-                <Button text="토스페이" height="5.2rem" width="16rem" />
-              ) : (
-                <Button
-                  text="토스페이"
-                  height="5.2rem"
-                  width="16rem"
-                  color={Green}
-                  backgroundColor={LightGreen}
-                  onClick={() => {
-                    setButtonSelect(4);
-                  }}
-                />
-              )}
-            </div>
-            <div className="button-row">
-              {buttonSelect === 5 ? (
-                <Button text="네이버페이" height="5.2rem" width="16rem" />
-              ) : (
-                <Button
-                  text="네이버페이"
-                  height="5.2rem"
-                  width="16rem"
-                  color={Green}
-                  backgroundColor={LightGreen}
-                  onClick={() => {
-                    setButtonSelect(5);
-                  }}
-                />
-              )}
-              {buttonSelect === 6 ? (
-                <Button text="휴대폰 결제" height="5.2rem" width="16rem" />
-              ) : (
-                <Button
-                  text="휴대폰 결제"
-                  height="5.2rem"
-                  width="16rem"
-                  color={Green}
-                  backgroundColor={LightGreen}
-                  onClick={() => {
-                    setButtonSelect(6);
-                  }}
-                />
-              )}
-            </div>
+            {PAYMENT_METHOD.map((methods) => (
+              <div className="button-row">
+                {methods.map((method) =>
+                  buttonSelect === method.buttonSelect ? (
+                    <Button text={method.text} height="5.2rem" width="16rem" />
+                  ) : (
+                    <Button
+                      text={method.text}
+                      height="5.2rem"
+                      width="16rem"
+                      color={Green}
+                      backgroundColor={LightGreen}
+                      onClick={() => {
+                        setButtonSelect(method.buttonSelect);
+                      }}
+                    />
+                  ),
+                )}
+              </div>
+            ))}
           </div>
-        </Box>
+        </Box> */}
         <Box>
           <div className="line-wrapper">
             <Body1 color={Grey3} padding="0.2rem 0">
@@ -200,58 +159,14 @@ export const BuyerOpenPaymentDetail = () => {
             </Body1>
           </div>
           <div className="service-info-wrapper">
-            <div className="service-info-line-wrapper">
-              <Heart />
-              <Body3 color={Grey3}>
-                주문을 완료하시면 필요 시 결제 사이트로 이동합니다.
-              </Body3>
-            </div>
-            <div className="service-info-line-wrapper">
-              <Heart />
-              <div className="text-wrapper">
-                <Body3 color={Grey3}>
-                  상담 시작 전 구매자 혹은 판매자 요청에 의해 상담이 취소될 수
-                  있으며 이 경우 결제금액은 환불신청을 해 주시면 환불 처리해
-                  드립니다.
-                </Body3>
+            {PAYMENT_SERVICE_INFO.map((info) => (
+              <div key={info} className="service-info-line-wrapper">
+                <Heart />
+                <div className="text-wrapper">
+                  <Body3 color={Grey3}>{info}</Body3>
+                </div>
               </div>
-            </div>
-            <div className="service-info-line-wrapper">
-              <Heart />
-              <div className="text-wrapper">
-                <Body3 color={Grey3}>
-                  판매자의 응답 시간 경과로 상담이 취소될 경우 환불신청을
-                  해주시면 환불 처리해 드립니다.
-                </Body3>
-              </div>
-            </div>
-            <div className="service-info-line-wrapper">
-              <Heart />
-              <div className="text-wrapper">
-                <Body3 color={Grey3}>
-                  상담이 시작되면 취소 및 환불이 제한됩니다. 이미 시작된 상담의
-                  환불처리의 경우 신고하기를 통해 분쟁접수를 해주시기 바랍니다.
-                </Body3>
-              </div>
-            </div>
-            <div className="service-info-line-wrapper">
-              <Heart />
-              <div className="text-wrapper">
-                <Body3 color={Grey3}>
-                  상담을 마치고 24시간 이내 판매자가 상담완료를 누르지 않으면
-                  거래가 자동 완료됩니다.
-                </Body3>
-              </div>
-            </div>
-            <div className="service-info-line-wrapper">
-              <Heart />
-              <div className="text-wrapper">
-                <Body3 color={Grey3}>
-                  상담 완료 후 7일간 거래 확정을 하지 않으면 자동 거래
-                  확정됩니다.
-                </Body3>
-              </div>
-            </div>
+            ))}
           </div>
         </Box>
       </div>
@@ -302,7 +217,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     gap: 1.2rem;
     margin-top: 0.8rem;
-    margin-bottom: 7.9rem;
+    margin-bottom: 1.6rem;
   }
   .service-info-line-wrapper {
     display: flex;

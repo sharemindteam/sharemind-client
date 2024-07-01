@@ -38,6 +38,7 @@ export const AppContainer = ({ children }: AppContainerProps) => {
     pathname === '/minder/mypage/modifyProfile' ||
     pathname === '/mypage' ||
     pathname === '/review' ||
+    pathname === '/openPaymentDetail' ||
     pathname.includes('/chat/') ||
     (pathname.includes('/open-consult') && !isOpenConsultDetailPage) ||
     (pathname.includes('/consult') && search.includes('type=open-consult')) ||
