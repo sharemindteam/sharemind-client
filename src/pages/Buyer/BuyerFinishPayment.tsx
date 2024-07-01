@@ -33,21 +33,19 @@ function BuyerFinishPayment() {
           결제 신청 완료!
         </Heading>
         <Flex direction="column" style={{ maxWidth: '28rem' }}>
-          {/* TODO: add link */}
           <Body2 color={Grey1}>
-            셰어마인드는 현재 <StyledLink href="/">베타테스트 중</StyledLink>
+            셰어마인드는 현재 <GreenTypography>베타테스트 중</GreenTypography>
             이에요.
           </Body2>
           <Body2 color={Grey1} style={{ whiteSpace: 'pre-line' }}>
             {'모든 결제를 수동으로 승인하고 있어\n시간이 걸릴 수 있어요.'}
           </Body2>
-          {/* TODO: add link */}
           <Body2
             color={Grey1}
             style={{ whiteSpace: 'pre-wrap', wordBreak: 'keep-all' }}
           >
             결제가 완료되지 않는다면{' '}
-            <StyledLink href="/">홈 화면 하단의 고객센터 버튼</StyledLink>을
+            <GreenTypography>홈 화면 하단의 고객센터 버튼</GreenTypography>을
             눌러 문의해주세요.
           </Body2>
         </Flex>
@@ -96,7 +94,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledLink = styled.a`
+const GreenTypography = styled.span`
   color: ${Green};
 `;
 
