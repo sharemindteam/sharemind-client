@@ -102,7 +102,7 @@ export const BuyerCounselorProfile = () => {
   if (id !== undefined) {
     const counselorId = parseInt(id, 10);
     return (
-      <Wrapper className="header">
+      <Wrapper>
         <CounselorProfileHeader />
         <Body>
           <CounselorProfileCard
