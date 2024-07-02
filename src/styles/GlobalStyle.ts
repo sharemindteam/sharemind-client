@@ -42,4 +42,8 @@ export const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
   }
+
+  ::selection { 
+    background: #c2f3f0; 
+  }
 `;
