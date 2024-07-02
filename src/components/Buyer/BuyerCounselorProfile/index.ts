@@ -5,3 +5,4 @@ export { CounselorInfo } from './CounselorInfo.tsx';
 export { CounselorFooter } from './CounselorFooter.tsx';
 export { CounselorExp } from './CounselorExp.tsx';
 export { CounselorReview } from './CounselorReview.tsx';
+export { CounselorTypeSection } from './CounselorTypeSection.tsx';

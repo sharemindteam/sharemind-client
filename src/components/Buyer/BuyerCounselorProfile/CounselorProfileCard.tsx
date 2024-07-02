@@ -1,48 +1,54 @@
 import styled from 'styled-components';
-import { Green, Grey2, Grey6, White } from 'styles/color';
-import { Body3, Caption2, Heading } from 'styles/font';
+import { Grey1, Grey6, White } from 'styles/color';
+import { Body3, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
-import { ReactComponent as Heart } from 'assets/icons/icon-heart2.svg';
-import { TagA2Cartegory } from '../../Common/TagA2Cartegory';
-import { CartegoryState } from 'utils/type';
+import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart.svg';
+import { Flex } from 'components/Common/Flex';
+
+//
+//
+//
+
 interface CounselorProfileCardProps {
   nickname: string;
   level: number;
   rating: number;
   reviewNumber: number;
-  tagList: CartegoryState[];
   consultStyle: number;
+  totalConsult: number;
 }
+
+//
+//
+//
+
 export const CounselorProfileCard = ({
   nickname,
   level,
   rating,
   reviewNumber,
-  tagList,
   consultStyle,
+  totalConsult,
 }: CounselorProfileCardProps) => {
-  //여기 dummy data 나중에는 page에서 props로 뿌리는게 나을듯함
-
   return (
     <Wrapper>
       <CardWrapper>
         <div className="col1">
           <div className="row1">
             <Heading>{nickname}</Heading>
-            <LevelTag>
-              <Caption2 color={White}>Lv {level}</Caption2>
-            </LevelTag>
+            <Body3 color={Grey1}>Lv {level}</Body3>
           </div>
           <div className="row2">
-            <HeartIcon />
-            <Body3 color={Grey2} padding="0.04rem 0 0 0">
-              {rating + ' (' + reviewNumber + ')'}
-            </Body3>
-          </div>
-          <div className="row3">
-            {tagList.map((value) => {
-              return <TagA2Cartegory tagType={value} bgColorType={3} />;
-            })}
+            <Body3 color={Grey1}>{'상담 ' + totalConsult + '회'}</Body3>
+            <Divider />
+            <Body3 color={Grey1}>{'후기 ' + reviewNumber + '개'}</Body3>
+            <Divider />
+            <Flex gap="0.2rem">
+              <HeartIcon />
+              <Body3 color={Grey1} padding="0.04rem 0 0 0">
+                {rating}
+              </Body3>
+            </Flex>
           </div>
         </div>
         <div className="col2">
@@ -52,15 +58,19 @@ export const CounselorProfileCard = ({
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: linear-gradient(90deg, #12c0b5 0%, #e1f8f6 100%);
 `;
+
 const CardWrapper = styled.div`
   display: flex;
   width: 33.5rem;
   justify-content: space-between;
+  align-items: center;
   padding: 1.6rem 2rem;
   border-bottom: 1px solid ${Grey6};
   .col1 {
@@ -76,20 +86,12 @@ const CardWrapper = styled.div`
   .row2 {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-  }
-  .row3 {
-    display: flex;
     gap: 0.8rem;
   }
 `;
 
-const LevelTag = styled.div`
-  background-color: ${Green};
-  padding: 0.4rem 1.2rem;
-  border-radius: 0.8rem;
-`;
-const HeartIcon = styled(Heart)`
-  width: 1.9rem;
-  height: 1.8rem;
+const Divider = styled.div`
+  width: 0.1rem;
+  height: 1.5rem;
+  background-color: ${White};
 `;
