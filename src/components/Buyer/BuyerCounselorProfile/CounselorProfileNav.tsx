@@ -1,13 +1,23 @@
 import styled from 'styled-components';
-import { Green, Grey4, Grey6 } from 'styles/color';
+import { Green, Grey4, Grey6, White } from 'styles/color';
 import { Subtitle } from 'styles/font';
 import { ReactComponent as UnderLine } from 'assets/icons/underline-counselor-info.svg';
 import { useState } from 'react';
+
+//
+//
+//
+
 interface CounselorProfileNavProps {
   isInfo: boolean;
   setIsInfo: React.Dispatch<React.SetStateAction<boolean>>;
   reviewNumber: number;
 }
+
+//
+//
+//
+
 export const CounselorProfileNav = ({
   isInfo,
   setIsInfo,
@@ -15,6 +25,11 @@ export const CounselorProfileNav = ({
 }: CounselorProfileNavProps) => {
   const [infoColor, setInfoColor] = useState<string>(Green);
   const [reviewColor, setReviewColor] = useState<string>(Grey4);
+
+  //
+  //
+  //
+
   return (
     <Wrapper>
       <InfoWrapper
@@ -40,11 +55,14 @@ export const CounselorProfileNav = ({
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   height: 4.4rem;
   border-bottom: 1px solid ${Grey6};
   display: flex;
+  background-color: ${White};
 `;
+
 const InfoWrapper = styled.div`
   width: 50%;
   display: flex;
@@ -53,6 +71,7 @@ const InfoWrapper = styled.div`
   padding-top: 0.8rem;
   cursor: pointer;
 `;
+
 const ReviewWrapper = styled.div`
   width: 50%;
   display: flex;
