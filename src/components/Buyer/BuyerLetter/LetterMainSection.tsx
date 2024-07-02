@@ -36,9 +36,11 @@ export const LetterMainSection = ({
 }: LetterMainSectionProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isReviewCompleted } = location.state as locationStateType;
+  const { isReviewCompleted } = (location?.state as locationStateType) || {
+    isReviewCompleted: null,
+  };
 
-  const isReviewButtonVisible = tagStatus === 3 && isReviewCompleted === false;
+  const isReviewButtonVisible = tagStatus === 3 && !isReviewCompleted;
 
   const formattedMessage = (message: string | null): JSX.Element[] | null => {
     return message
