@@ -58,7 +58,10 @@ const Router = () => {
   return (
     <Routes>
       {/* admin */}
-      <Route path="/admin" element={<Admin />} />
+      <Route
+        path={`/${process.env.REACT_APP_ADMIN_UUID_URL}`}
+        element={<Admin />}
+      />
       {/* minder(buyer) */}
       <Route path="/share" element={<BuyerHome />} />
       <Route path="/" element={<Navigate to="/share" />} />
