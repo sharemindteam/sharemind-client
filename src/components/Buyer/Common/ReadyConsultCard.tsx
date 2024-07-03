@@ -112,7 +112,7 @@ export const ReadyConsultCard = ({
         <Body1 style={{ textAlign: 'left' }}>{introduction}</Body1>
         <Space height="1.5rem" />
         <TagWrapper>
-          {tagList.map((value: any, index) => {
+          {tagList.map((value: any) => {
             return (
               <TagA2Cartegory key={value} tagType={value} bgColorType={1} />
             );

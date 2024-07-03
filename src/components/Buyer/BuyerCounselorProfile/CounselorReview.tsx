@@ -2,22 +2,37 @@ import { getReviewsAll } from 'api/get';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Grey1, Grey6 } from 'styles/color';
+import { Grey1, Grey6, White } from 'styles/color';
 import { Body1, Body2, Body3, Heading } from 'styles/font';
 import { HeartRate } from 'utils/HeartRate';
 import { Review } from 'utils/type';
 import { ReactComponent as Empty } from 'assets/icons/graphic-noting.svg';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { formattedMessage } from 'utils/formattedMessage';
+
+//
+//
+//
+
 interface CounselorReviewProps {
   counselorId: number;
 }
+
+//
+//
+//
+
 export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
   const navigate = useNavigate();
+
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLastElem, setIsLastElem] = useState<boolean>(false);
   const preventRef = useRef(true); // 중복 방지 옵션
+
+  /**
+   *
+   */
   const fetchReviewData = async (lastReviewId: number) => {
     const params = {
       reviewId: lastReviewId,
@@ -47,6 +62,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
       }
     }
   };
+
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (
       entry[0].isIntersecting &&
@@ -59,6 +75,7 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
       preventRef.current = true;
     }
   };
+
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
@@ -66,48 +83,55 @@ export const CounselorReview = ({ counselorId }: CounselorReviewProps) => {
     threshold: 0.8,
     onIntersect,
   });
-  //첫 렌더 시에 data fetch
+
+  //
+  //
+  //
   useLayoutEffect(() => {
     fetchReviewData(0);
   }, []);
 
+  //
+  //
+  //
+
   if (isLoading) {
-    return <></>;
+    return null;
+  }
+
+  if (reviews.length !== 0) {
+    return (
+      <Wrapper>
+        {reviews.map((value) => {
+          return (
+            <ReviewCard key={value.reviewId}>
+              <div className="row1">
+                <Body1 color={Grey1}>{value.nickname}</Body1>
+                <Body3 color={Grey1}>{value.updateAt}</Body3>
+              </div>
+              <div className="row2">
+                <HeartRate rating={value.rating}></HeartRate>
+              </div>
+              <div className="row3">
+                <Body2>{formattedMessage(value.comment)}</Body2>
+              </div>
+            </ReviewCard>
+          );
+        })}
+        {!isLastElem ? (
+          <div ref={setTarget} style={{ height: '5rem' }} />
+        ) : (
+          <div style={{ height: '5rem' }} />
+        )}
+      </Wrapper>
+    );
   } else {
-    if (reviews.length !== 0) {
-      return (
-        <Wrapper>
-          {reviews.map((value) => {
-            return (
-              <ReviewCard key={value.reviewId}>
-                <div className="row1">
-                  <Body1 color={Grey1}>{value.nickname}</Body1>
-                  <Body3 color={Grey1}>{value.updateAt}</Body3>
-                </div>
-                <div className="row2">
-                  <HeartRate rating={value.rating}></HeartRate>
-                </div>
-                <div className="row3">
-                  <Body2>{formattedMessage(value.comment)}</Body2>
-                </div>
-              </ReviewCard>
-            );
-          })}
-          {!isLastElem ? (
-            <div ref={setTarget} style={{ height: '5rem' }} />
-          ) : (
-            <div style={{ height: '5rem' }} />
-          )}
-        </Wrapper>
-      );
-    } else {
-      return (
-        <EmptyWrapper>
-          <EmptyIcon />
-          <Heading>아직 후기가 없어요.</Heading>
-        </EmptyWrapper>
-      );
-    }
+    return (
+      <EmptyWrapper>
+        <EmptyIcon />
+        <Heading>아직 후기가 없어요.</Heading>
+      </EmptyWrapper>
+    );
   }
 };
 const Wrapper = styled.div`
@@ -126,6 +150,7 @@ const ReviewCard = styled.div`
   flex-direction: column;
   gap: 1.2rem;
   margin-bottom: 1.2rem;
+  background-color: ${White};
   .row1 {
     display: flex;
     justify-content: space-between;
