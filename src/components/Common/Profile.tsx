@@ -131,7 +131,13 @@ export const Profile = ({
           >
             서비스 소개
           </ServiceItem>
-          <ServiceItem>정산 문의</ServiceItem>
+          <ServiceItem
+            onClick={() => {
+              window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+            }}
+          >
+            정산 문의
+          </ServiceItem>
           <ServiceItem
             onClick={() => {
               navigate('/minder/setting');

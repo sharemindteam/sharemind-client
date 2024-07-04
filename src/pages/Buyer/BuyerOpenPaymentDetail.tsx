@@ -57,7 +57,8 @@ export const BuyerOpenPaymentDetail = () => {
     try {
       const res: any = await postOpenConsult(body);
       if (res.status === 201) {
-        navigate('/paymentComplete');
+        window.open(process.env.REACT_APP_ONE_TO_MANY_PAYMENT_URL);
+        navigate('/paymentFinish');
       } else if (res?.response.status === 404) {
         alert('존재하지 않는 회원입니다.');
       }

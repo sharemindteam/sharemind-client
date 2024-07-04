@@ -170,7 +170,12 @@ export const BuyerMypage = () => {
         </div>
         {isLogin ? (
           <>
-            <div className="additional-box">
+            <div
+              className="additional-box"
+              onClick={() => {
+                window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+              }}
+            >
               <Body2 color={Grey1}>결제 문의</Body2>
             </div>
             <div className="additional-box">
