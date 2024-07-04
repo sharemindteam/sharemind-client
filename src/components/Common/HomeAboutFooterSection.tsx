@@ -48,7 +48,14 @@ export const HomeAboutFooterSection = ({
       </AboutSection>
       <Footer>
         <FooterLinkList>
-          <Body3>고객센터</Body3>
+          <Body3
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+            }}
+          >
+            고객센터
+          </Body3>
           <Body3>이용약관</Body3>
           <Body3>개인정보처리방침</Body3>
         </FooterLinkList>

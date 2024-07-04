@@ -84,6 +84,10 @@ export const BuyerPaymentDetail = () => {
     totalConsult: 0,
   });
 
+  const paymentUrl = letterFocus
+    ? process.env.REACT_APP_LETTER_PAYMENT_URL
+    : process.env.REACT_APP_CHATTING_PAYMENT_URL;
+
   /**
    *
    */
@@ -103,7 +107,8 @@ export const BuyerPaymentDetail = () => {
     try {
       const res: any = await postConsults(body);
       if (res.status === 201) {
-        navigate('/paymentComplete');
+        window.open(paymentUrl);
+        navigate('/paymentFinish');
       } else if (res.response.status === 400 || res.response.status === 404) {
         const errMessage = res.response.data.message.substring(
           0,
