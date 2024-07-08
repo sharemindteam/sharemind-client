@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { reset } from 'styled-reset';
+import { Grey6 } from './color';
 
 //
 //
@@ -45,5 +46,12 @@ export const GlobalStyle = createGlobalStyle`
 
   ::selection { 
     background: #c2f3f0; 
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px ${Grey6} inset !important;
   }
 `;

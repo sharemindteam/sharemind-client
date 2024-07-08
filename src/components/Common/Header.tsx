@@ -47,7 +47,10 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
   } else {
     return (
       <Wrapper>
-        <Logo onClick={onClick} />
+        <Flex gap="0.8rem" style={{ marginLeft: '2rem' }}>
+          <Logo onClick={onClick} />
+          <BetaTagImage src={betaTagImageUrl} />
+        </Flex>
       </Wrapper>
     );
   }

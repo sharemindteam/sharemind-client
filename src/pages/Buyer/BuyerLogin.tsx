@@ -18,6 +18,12 @@ import { setCookie } from 'utils/cookie';
 //
 //
 
+const CUSTOMER_BANNED_ERROR_NAME = 'CUSTOMER_BANNED';
+
+//
+//
+//
+
 export const BuyerLogin = () => {
   const emailInput = useInput('');
   const pwInput = useInput('');
@@ -41,6 +47,7 @@ export const BuyerLogin = () => {
     };
     try {
       const res: any = await postLogin(body);
+
       if (res.status === 200) {
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           res.data;
@@ -51,6 +58,12 @@ export const BuyerLogin = () => {
       } else if (res.response.status === 400) {
         setIsActiveModal(true);
         setModalErrorMessage('비밀번호가 일치하지 않습니다.');
+      } else if (
+        res.response.status === 403 &&
+        res.response.data.errorName === CUSTOMER_BANNED_ERROR_NAME
+      ) {
+        setIsActiveModal(true);
+        setModalErrorMessage('로그인이 제한된 사용자입니다.');
       } else if (res.response.status === 404) {
         setIsActiveModal(true);
         setModalErrorMessage('존재하지 않는 이메일입니다.');

@@ -60,7 +60,7 @@ const CompleteApplyPopupBox = styled.div`
   align-items: center;
   position: absolute;
   background-color: white;
-  top: 22.3rem;
+  top: 36vh;
 `;
 
 export default CompleteApplyPopup;
