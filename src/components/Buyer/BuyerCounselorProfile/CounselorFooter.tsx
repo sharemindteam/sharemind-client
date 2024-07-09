@@ -5,8 +5,8 @@ import { Button } from 'components/Common/Button';
 import { useState } from 'react';
 import { White } from 'styles/color';
 import { useNavigate } from 'react-router-dom';
-import { patchWishLists } from 'api/patch';
-import { deleteWishLists } from 'api/delete';
+import { patchWishListsDeprecated } from 'api/patch';
+import { deleteWishListsDeprecated } from 'api/delete';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { Flex } from 'components/Common/Flex';
 
@@ -45,7 +45,7 @@ export const CounselorFooter = ({
     }
     try {
       setIsSending(true);
-      const res: any = await patchWishLists(counselorId);
+      const res: any = await patchWishListsDeprecated(counselorId);
       if (res.response?.status === 400) {
         alert('이미 찜하기 처리된 상담사입니다.');
       } else if (res.response?.status === 404) {
@@ -68,7 +68,7 @@ export const CounselorFooter = ({
     }
     try {
       setIsSending(true);
-      const res: any = await deleteWishLists(counselorId);
+      const res: any = await deleteWishListsDeprecated(counselorId);
       if (res.response?.status === 400) {
         alert('이미 찜하기 취소된 상담사입니다.');
       } else if (res.response?.status === 404) {

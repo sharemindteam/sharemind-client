@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultTimes } from 'utils/type';
 import { convertTimeToString } from 'utils/convertTimeToString';
-import { deleteWishLists } from 'api/delete';
+import { deleteWishListsDeprecated } from 'api/delete';
 
 //
 //
@@ -66,7 +66,7 @@ export const SavedCounselorCard = ({
     }
     try {
       setIsSending(true);
-      const res: any = await deleteWishLists(counselorId);
+      const res: any = await deleteWishListsDeprecated(counselorId);
 
       if (res.status === 200) {
         // Handle success

@@ -9,8 +9,8 @@ import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultTimes } from 'utils/type';
-import { deleteWishLists } from 'api/delete';
-import { patchWishLists } from 'api/patch';
+import { deleteWishListsDeprecated } from 'api/delete';
+import { patchWishListsDeprecated } from 'api/patch';
 import { Space } from 'components/Common/Space';
 import { Button } from 'components/Common/Button';
 
@@ -68,7 +68,7 @@ export const ReadyConsultCard = ({
     }
     try {
       setIsSending(true);
-      const res: any = await patchWishLists(counselorId);
+      const res: any = await patchWishListsDeprecated(counselorId);
       if (res.response?.status === 400) {
         alert('이미 찜하기 처리된 상담사입니다.');
       } else if (res.response?.status === 404) {
@@ -88,7 +88,7 @@ export const ReadyConsultCard = ({
     }
     try {
       setIsSending(true);
-      const res: any = await deleteWishLists(counselorId);
+      const res: any = await deleteWishListsDeprecated(counselorId);
       if (res.response?.status === 400) {
         alert('이미 찜하기 취소된 상담사입니다.');
       } else if (res.response?.status === 404) {
