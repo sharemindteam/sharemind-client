@@ -11,6 +11,7 @@ import { Green, Grey2 } from 'styles/color';
 import { Space } from 'components/Common/Space';
 import { getCurrentHour } from 'utils/getCurrentHour';
 import { Flex } from 'components/Common/Flex';
+import CounselorCard from 'components/Common/CounselorCard';
 ///
 ///
 ///
@@ -51,7 +52,7 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
       >
         {searchData.slice(0, 3).map((value) => {
           return (
-            <ReadyConsultCard
+            <CounselorCard
               key={value.counselorId}
               counselorId={value.counselorId}
               tagList={AppendCategoryType(
