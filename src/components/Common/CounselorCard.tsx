@@ -4,7 +4,7 @@ import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { CartegoryState } from 'utils/type';
 import { Flex } from './Flex';
-import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
+import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart.svg';
 import { Space } from './Space';
 import { TagA2Cartegory } from './TagA2Cartegory';
 import { Button } from './Button';
@@ -13,6 +13,10 @@ import { useNavigate } from 'react-router-dom';
 import { ReactComponent as NoneBookMark } from 'assets/icons/icon-save1.svg';
 import { ReactComponent as BookMark } from 'assets/icons/icon-save2.svg';
 import { useState } from 'react';
+import { patchWishLists } from 'api/patch';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { deleteWishLists } from 'api/delete';
 
 //
 //
@@ -48,6 +52,14 @@ const twoLineEllipsis: CSSProperties = {
 //
 //
 
+const PATCH_WISHLISTS_MUTATION_KEY = 'patchWishLists';
+
+const DELETE_WISHLISTS_MUTATION_KEY = 'deleteWishLists';
+
+//
+//
+//
+
 const CounselorCard = ({
   counselorId,
   tagList,
@@ -63,6 +75,60 @@ const CounselorCard = ({
   const navigate = useNavigate();
 
   const [isSaved, setIsSaved] = useState<boolean>(isWishList);
+
+  //
+  //
+  //
+  const { mutate: addWishListsMutate } = useMutation({
+    mutationKey: [PATCH_WISHLISTS_MUTATION_KEY],
+    mutationFn: (counselorId: number) => patchWishLists(counselorId),
+    onSuccess: () => {
+      setIsSaved(true);
+    },
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 400) {
+        alert('이미 찜하기 처리된 상담사입니다.');
+      } else if (error.response?.status === 404) {
+        alert('존재하지 않는 상담사입니다.');
+      } else {
+        alert('찜하기 요청 도중 오류가 발생했습니다.');
+      }
+    },
+  });
+
+  //
+  //
+  //
+  const { mutate: deleteWishListsMutate } = useMutation({
+    mutationKey: [DELETE_WISHLISTS_MUTATION_KEY],
+    mutationFn: (counselorId: number) => deleteWishLists(counselorId),
+    onSuccess: () => {
+      setIsSaved(false);
+    },
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 400) {
+        alert('이미 찜하기 취소된 상담사입니다.');
+      } else if (error.response?.status === 404) {
+        alert('존재하지 않는 상담사입니다.');
+      } else {
+        alert('찜하기 취소 요청 도중 오류가 발생했습니다.');
+      }
+    },
+  });
+
+  /**
+   *
+   */
+  const handleUnBookmark = () => {
+    deleteWishListsMutate(counselorId);
+  };
+
+  /**
+   *
+   */
+  const handleBookmark = () => {
+    addWishListsMutate(counselorId);
+  };
 
   /**
    *
@@ -125,13 +191,9 @@ const CounselorCard = ({
     return (
       <Flex gap="0.8rem">
         {isSaved ? (
-          <BookMarkIcon
-          //onClick={handleUnBookmark}
-          />
+          <BookMarkIcon onClick={handleUnBookmark} />
         ) : (
-          <NoneBookMarkIcon
-          //   onClick={handleBookmark}
-          />
+          <NoneBookMarkIcon onClick={handleBookmark} />
         )}
         <Button
           text="프로필 바로가기"
