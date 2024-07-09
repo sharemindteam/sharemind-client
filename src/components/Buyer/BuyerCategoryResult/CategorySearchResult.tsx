@@ -1,5 +1,3 @@
-import styled from 'styled-components';
-import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
