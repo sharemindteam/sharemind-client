@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import { Green, Grey1, Grey2, Grey3, Grey6, White } from 'styles/color';
+import styled, { CSSProperties } from 'styled-components';
+import { Green, Grey1, Grey2, Grey6, White } from 'styles/color';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
-import { CartegoryState, ConsultTimes } from 'utils/type';
+import { CartegoryState } from 'utils/type';
 import { Flex } from './Flex';
 import { ReactComponent as HeartIcon } from 'assets/icons/icon-heart2.svg';
 import { Space } from './Space';
@@ -21,19 +21,28 @@ import { useState } from 'react';
 interface CounselorCardProps {
   counselorId: number;
   tagList: CartegoryState[];
-  consultTimes: ConsultTimes;
   introduction: string;
   nickname: string;
   level: number;
   isWishList: boolean;
   rating: number;
   totalReview: number;
-  consultType: string[];
-  letterPrice: number;
-  chattingPrice: number;
-  consultStyle: number | undefined;
   totalConsult: number;
+  consultStyle?: number;
 }
+
+//
+//
+//
+
+const twoLineEllipsis: CSSProperties = {
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  WebkitLineClamp: 2,
+  lineClamp: 2,
+};
 
 //
 //
@@ -42,16 +51,12 @@ interface CounselorCardProps {
 const CounselorCard = ({
   counselorId,
   tagList,
-  consultTimes,
   introduction,
   nickname,
   level,
   isWishList,
   rating,
   totalReview,
-  consultType,
-  letterPrice,
-  chattingPrice,
   consultStyle,
   totalConsult,
 }: CounselorCardProps) => {
@@ -59,16 +64,25 @@ const CounselorCard = ({
 
   const [isSaved, setIsSaved] = useState<boolean>(isWishList);
 
-  //
-  //
-  //
-
-  return (
-    <Wrapper>
-      <Body1 color={Grey1} style={{ textAlign: 'left', paddingLeft: '0.8rem' }}>
+  /**
+   *
+   */
+  const renderIntroSection = () => {
+    return (
+      <Body1
+        color={Grey1}
+        style={{ textAlign: 'left', paddingLeft: '0.8rem', ...twoLineEllipsis }}
+      >
         {introduction}
       </Body1>
-      <Space height="1.2rem" />
+    );
+  };
+
+  /**
+   *
+   */
+  const renderInfoSection = () => {
+    return (
       <InfoWrapper>
         <Flex direction="column" gap="1rem" align="flex-start">
           <Flex gap="1rem">
@@ -100,7 +114,16 @@ const CounselorCard = ({
             })}
           </Flex>
         </Flex>
-        <Space height="1rem" />
+      </InfoWrapper>
+    );
+  };
+
+  /**
+   *
+   */
+  const renderButtonSection = () => {
+    return (
+      <Flex gap="0.8rem">
         {isSaved ? (
           <BookMarkIcon
           //onClick={handleUnBookmark}
@@ -122,7 +145,21 @@ const CounselorCard = ({
             navigate(`/profile/${counselorId}`);
           }}
         />
-      </InfoWrapper>
+      </Flex>
+    );
+  };
+
+  //
+  //
+  //
+
+  return (
+    <Wrapper>
+      {renderIntroSection()}
+      <Space height="1.2rem" />
+      {renderInfoSection()}
+      <Space height="1rem" />
+      {renderButtonSection()}
     </Wrapper>
   );
 };
@@ -162,9 +199,11 @@ const Divider = styled.div`
 `;
 
 const BookMarkIcon = styled(BookMark)`
+  padding-left: 0.8rem;
   cursor: pointer;
 `;
 const NoneBookMarkIcon = styled(NoneBookMark)`
+  padding-left: 0.8rem;
   cursor: pointer;
 `;
 

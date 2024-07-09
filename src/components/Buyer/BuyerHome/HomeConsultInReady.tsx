@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Caption2, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
-import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 
 import { useNavigate } from 'react-router-dom';
 import { SearchResultData } from 'utils/type';
@@ -60,16 +59,12 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
                 value.consultStyle,
               )}
               consultStyle={consultStyleToCharNum(value.consultStyle)}
-              consultTimes={value.consultTimes}
               introduction={value.introduction}
               nickname={value.nickname}
               level={value.level}
               isWishList={value.isWishList}
               rating={value.ratingAverage}
               totalReview={value.totalReview}
-              consultType={value.consultTypes}
-              letterPrice={value.consultCosts.편지}
-              chattingPrice={value.consultCosts.채팅}
               totalConsult={value.totalConsult}
             />
           );
