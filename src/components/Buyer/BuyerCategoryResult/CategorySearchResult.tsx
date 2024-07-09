@@ -32,6 +32,7 @@ export const CategorySearchResults = ({
             rating={value.ratingAverage}
             totalReview={value.totalReview}
             totalConsult={value.totalConsult}
+            isRealtime={value.isRealtime}
           />
         );
       })}
