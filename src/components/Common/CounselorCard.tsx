@@ -34,6 +34,7 @@ interface CounselorCardProps {
   totalConsult?: number;
   isRealtime?: boolean;
   consultStyle?: number;
+  isSavedCounselorPage?: boolean;
 }
 
 //
@@ -73,6 +74,7 @@ const CounselorCard = ({
   consultStyle,
   totalConsult,
   isRealtime,
+  isSavedCounselorPage = false,
 }: CounselorCardProps) => {
   const navigate = useNavigate();
 
@@ -233,6 +235,10 @@ const CounselorCard = ({
   //
   //
   //
+
+  if (isSavedCounselorPage && !isSaved) {
+    return null;
+  }
 
   return (
     <Wrapper>

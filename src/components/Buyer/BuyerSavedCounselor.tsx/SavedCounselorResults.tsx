@@ -37,6 +37,7 @@ export const SavedCounselorResults = ({
             level={value.level}
             rating={value.ratingAverage}
             totalReview={value.totalReview}
+            isSavedCounselorPage={true}
           />
         );
       })}
