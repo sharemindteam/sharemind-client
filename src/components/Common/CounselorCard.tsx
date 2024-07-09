@@ -1,5 +1,5 @@
 import styled, { CSSProperties } from 'styled-components';
-import { Green, Grey1, Grey2, Grey6, White } from 'styles/color';
+import { Green, Grey1, Grey2, Grey6, Red, White } from 'styles/color';
 import { Body1, Body3, Caption2 } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { CartegoryState } from 'utils/type';
@@ -32,6 +32,7 @@ interface CounselorCardProps {
   rating: number;
   totalReview: number;
   totalConsult: number;
+  isRealtime?: boolean;
   consultStyle?: number;
 }
 
@@ -71,10 +72,14 @@ const CounselorCard = ({
   totalReview,
   consultStyle,
   totalConsult,
+  isRealtime,
 }: CounselorCardProps) => {
   const navigate = useNavigate();
 
   const [isSaved, setIsSaved] = useState<boolean>(isWishList);
+
+  const today = new Date();
+  const hours = today.getHours();
 
   //
   //
@@ -149,38 +154,47 @@ const CounselorCard = ({
    */
   const renderInfoSection = () => {
     return (
-      <InfoWrapper>
-        <Flex direction="column" gap="1rem" align="flex-start">
-          <Flex gap="1rem">
-            <ImgWrapper>
-              <Characters number={consultStyle} />
-            </ImgWrapper>
-            <Flex direction="column" align="flex-start" gap="0.2rem">
-              <Flex gap="1.2rem">
-                <Body1 color={Grey1}>{nickname}</Body1>
-                <Caption2 color={Grey1}>{'LV. ' + level}</Caption2>
-              </Flex>
-              <Flex gap="0.8rem">
-                <Body3 color={Grey2}>상담 {totalConsult}회</Body3>
-                <Divider />
-                <Body3 color={Grey2}>후기 {totalReview}개</Body3>
-                <Divider />
-                <Flex gap="0.2rem">
-                  <HeartIcon />
-                  <Body3 color={Grey2}>{rating}</Body3>
+      <Flex direction="column" align="flex-start">
+        {isRealtime ? (
+          <TimeWrapper>
+            <Caption2
+              color={White}
+            >{`${hours}시 기준 실시간 상담 가능`}</Caption2>
+          </TimeWrapper>
+        ) : null}
+        <InfoWrapper isRealtime={isRealtime}>
+          <Flex direction="column" gap="1rem" align="flex-start">
+            <Flex gap="1rem">
+              <ImgWrapper>
+                <Characters number={consultStyle} />
+              </ImgWrapper>
+              <Flex direction="column" align="flex-start" gap="0.2rem">
+                <Flex gap="1.2rem">
+                  <Body1 color={Grey1}>{nickname}</Body1>
+                  <Caption2 color={Grey1}>{'LV. ' + level}</Caption2>
+                </Flex>
+                <Flex gap="0.8rem">
+                  <Body3 color={Grey2}>상담 {totalConsult}회</Body3>
+                  <Divider />
+                  <Body3 color={Grey2}>후기 {totalReview}개</Body3>
+                  <Divider />
+                  <Flex gap="0.2rem">
+                    <HeartIcon />
+                    <Body3 color={Grey2}>{rating}</Body3>
+                  </Flex>
                 </Flex>
               </Flex>
             </Flex>
+            <Flex gap="0.8rem">
+              {tagList.map((value: any) => {
+                return (
+                  <TagA2Cartegory key={value} tagType={value} bgColorType={3} />
+                );
+              })}
+            </Flex>
           </Flex>
-          <Flex gap="0.8rem">
-            {tagList.map((value: any) => {
-              return (
-                <TagA2Cartegory key={value} tagType={value} bgColorType={3} />
-              );
-            })}
-          </Flex>
-        </Flex>
-      </InfoWrapper>
+        </InfoWrapper>
+      </Flex>
     );
   };
 
@@ -238,12 +252,21 @@ const Wrapper = styled.div`
   background-color: ${Grey6};
 `;
 
-const InfoWrapper = styled.div`
+const InfoWrapper = styled.div<{ isRealtime?: boolean }>`
   width: 100%;
   background-color: ${White};
   box-sizing: border-box;
   padding: 1.2rem;
-  border-radius: 1rem;
+  border-radius: ${({ isRealtime }) =>
+    isRealtime ? '0 1rem 1rem 1rem' : '1rem'};
+`;
+
+const TimeWrapper = styled.div`
+  box-sizing: border-box;
+  padding: 0.4rem 1.2rem;
+  width: fit-content;
+  border-radius: 1rem 1rem 0 0;
+  background-color: ${Red};
 `;
 
 const ImgWrapper = styled.div`

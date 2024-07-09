@@ -66,6 +66,7 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
               rating={value.ratingAverage}
               totalReview={value.totalReview}
               totalConsult={value.totalConsult}
+              isRealtime={value.isRealtime}
             />
           );
         })}
