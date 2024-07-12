@@ -36,7 +36,8 @@ const useCounselorChat = (chatId: string) => {
       stompClient.current.send('app/api/v1/chat/counselors/exit/' + chatId, {});
     }
   };
-
+//
+//
   const sendChatFinishRequest = () => {
     if (stompClient.current && stompClient.current.connected) {
       stompClient.current.send(
