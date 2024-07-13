@@ -86,6 +86,7 @@ export type SearchResultData = {
   ratingAverage: number;
   totalReview: number;
   totalConsult: number;
+  isRealtime: boolean;
 };
 
 export interface BuyerReview {

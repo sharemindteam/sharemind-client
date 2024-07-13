@@ -1,8 +1,8 @@
-import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Flex } from 'components/Common/Flex';
+import CounselorCard from 'components/Common/CounselorCard';
 
 //
 //
@@ -25,10 +25,9 @@ export const AvailCounselorSearchResults = ({
       gap="0.8rem"
       style={{ padding: '0 2rem 3.5rem 2rem' }}
     >
-      {searchData.map((value, index) => {
+      {searchData.map((value) => {
         return (
-          <ReadyConsultCard
-            // 나중에 id로 변경
+          <CounselorCard
             key={value.counselorId}
             counselorId={value.counselorId}
             tagList={AppendCategoryType(
@@ -36,7 +35,6 @@ export const AvailCounselorSearchResults = ({
               value.consultStyle,
             )}
             consultStyle={consultStyleToCharNum(value.consultStyle)}
-            consultTimes={value.consultTimes}
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
@@ -44,9 +42,7 @@ export const AvailCounselorSearchResults = ({
             totalConsult={value.totalConsult}
             rating={value.ratingAverage}
             totalReview={value.totalReview}
-            consultType={value.consultTypes}
-            letterPrice={value.consultCosts.편지}
-            chattingPrice={value.consultCosts.채팅}
+            isRealtime={value.isRealtime}
           />
         );
       })}

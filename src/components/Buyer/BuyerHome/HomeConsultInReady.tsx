@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Caption2, Subtitle } from 'styles/font';
 import { ReactComponent as More } from 'assets/icons/icon-more.svg';
-import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 
 import { useNavigate } from 'react-router-dom';
 import { SearchResultData } from 'utils/type';
@@ -11,6 +10,7 @@ import { Green, Grey2 } from 'styles/color';
 import { Space } from 'components/Common/Space';
 import { getCurrentHour } from 'utils/getCurrentHour';
 import { Flex } from 'components/Common/Flex';
+import CounselorCard from 'components/Common/CounselorCard';
 ///
 ///
 ///
@@ -51,7 +51,7 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
       >
         {searchData.slice(0, 3).map((value) => {
           return (
-            <ReadyConsultCard
+            <CounselorCard
               key={value.counselorId}
               counselorId={value.counselorId}
               tagList={AppendCategoryType(
@@ -59,17 +59,14 @@ export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
                 value.consultStyle,
               )}
               consultStyle={consultStyleToCharNum(value.consultStyle)}
-              consultTimes={value.consultTimes}
               introduction={value.introduction}
               nickname={value.nickname}
               level={value.level}
               isWishList={value.isWishList}
               rating={value.ratingAverage}
               totalReview={value.totalReview}
-              consultType={value.consultTypes}
-              letterPrice={value.consultCosts.편지}
-              chattingPrice={value.consultCosts.채팅}
               totalConsult={value.totalConsult}
+              isRealtime={value.isRealtime}
             />
           );
         })}

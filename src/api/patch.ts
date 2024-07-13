@@ -1,3 +1,4 @@
+import { axiosPatch } from './axios';
 import { patchInstance, patchPublicInstance } from './axios.deprecated';
 //Admin Controller
 //admin 미결제 상담 승인
@@ -81,8 +82,11 @@ export const patchSearchWordsPostsResults = async (
   );
 //Wishlist Controlloer
 //찜하기 추가
-export const patchWishLists = async (counselorId: number) =>
+export const patchWishListsDeprecated = async (counselorId: number) =>
   await patchInstance(`/wishLists?counselorId=${counselorId}`);
+
+export const patchWishLists = async (counselorId: number) =>
+  await axiosPatch(`/wishLists?counselorId=${counselorId}`);
 
 //일대다상담
 

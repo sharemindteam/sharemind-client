@@ -2,47 +2,55 @@ import styled from 'styled-components';
 import { WishlistDataType } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { SavedCounselorCard } from './SavedCounselorCard';
+import CounselorCard from 'components/Common/CounselorCard';
+
+//
+//
+//
+
 interface SavedCounselorResultsProps {
   wishlistData: WishlistDataType[];
 }
 
-//임의로 ConsultInReady 그대로 사용
+//
+//
+//
+
 export const SavedCounselorResults = ({
   wishlistData,
 }: SavedCounselorResultsProps) => {
   return (
     <Wrapper>
-      {wishlistData.map((value, index) => {
+      {wishlistData.map((value) => {
         return (
-          <SavedCounselorCard
-            // 나중에 id로 변경
-            key={index}
+          <CounselorCard
+            key={value.wishlistId}
             counselorId={value.counselorId}
             tagList={AppendCategoryType(
               value.consultCategories,
               value.consultStyle,
             )}
+            isWishList={true}
             consultStyle={consultStyleToCharNum(value.consultStyle)}
-            consultTimes={value.consultTimes}
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
-            wishlistId={value.wishlistId}
             rating={value.ratingAverage}
             totalReview={value.totalReview}
-            consultType={value.consultTypes}
-            letterPrice={value.consultCosts.편지}
-            chattingPrice={value.consultCosts.채팅}
+            isSavedCounselorPage={true}
           />
         );
       })}
     </Wrapper>
   );
 };
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.8rem;
+  box-sizing: border-box;
+  padding: 0 2rem;
   align-items: center;
   width: 100%;
 `;

@@ -1,9 +1,8 @@
-import styled from 'styled-components';
-import { ReadyConsultCard } from '../Common/ReadyConsultCard';
 import { SearchResultData } from 'utils/type';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Flex } from 'components/Common/Flex';
+import CounselorCard from 'components/Common/CounselorCard';
 interface CategorySearchResultsProps {
   searchData: SearchResultData[];
 }
@@ -16,7 +15,7 @@ export const CategorySearchResults = ({
     <Flex direction="column" gap="0.8rem" style={{ padding: '0 2rem' }}>
       {searchData.map((value) => {
         return (
-          <ReadyConsultCard
+          <CounselorCard
             key={value.counselorId}
             counselorId={value.counselorId}
             tagList={AppendCategoryType(
@@ -24,17 +23,14 @@ export const CategorySearchResults = ({
               value.consultStyle,
             )}
             consultStyle={consultStyleToCharNum(value.consultStyle)}
-            consultTimes={value.consultTimes}
             introduction={value.introduction}
             nickname={value.nickname}
             level={value.level}
             isWishList={value.isWishList}
             rating={value.ratingAverage}
             totalReview={value.totalReview}
-            consultType={value.consultTypes}
-            letterPrice={value.consultCosts.편지}
-            chattingPrice={value.consultCosts.채팅}
             totalConsult={value.totalConsult}
+            isRealtime={value.isRealtime}
           />
         );
       })}
