@@ -236,10 +236,6 @@ const CounselorCard = ({
   //
   //
 
-  if (isSavedCounselorPage && !isSaved) {
-    return null;
-  }
-
   return (
     <Wrapper>
       {renderIntroSection()}
