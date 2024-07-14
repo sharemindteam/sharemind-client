@@ -31,7 +31,7 @@ interface CounselorCardProps {
   isWishList: boolean;
   rating: number;
   totalReview: number;
-  totalConsult?: number;
+  totalConsult: number;
   isRealtime?: boolean;
   consultStyle?: number;
   isSavedCounselorPage?: boolean;
@@ -176,13 +176,8 @@ const CounselorCard = ({
                   <Caption2 color={Grey1}>{'LV. ' + level}</Caption2>
                 </Flex>
                 <Flex gap="0.8rem">
-                  {/* TODO: TotalConsult is changed to optional, because get wishlist do not return total consult. It should be added later */}
-                  {totalConsult ? (
-                    <>
-                      <Body3 color={Grey2}>상담 {totalConsult}회</Body3>
-                      <Divider />
-                    </>
-                  ) : null}
+                  <Body3 color={Grey2}>상담 {totalConsult}회</Body3>
+                  <Divider />
                   <Body3 color={Grey2}>후기 {totalReview}개</Body3>
                   <Divider />
                   <Flex gap="0.2rem">

@@ -133,6 +133,7 @@ export type WishlistDataType = {
   nickname: string;
   ratingAverage: number;
   totalReview: number;
+  totalConsult: number;
 };
 export interface PaymentInfo {
   paymentId: number;
