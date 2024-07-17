@@ -150,13 +150,13 @@ export const SellerMypageModifyProfile = () => {
           setIsLoading(false);
         } else if (profileLevel?.data?.profileStatus === 'EVALUATION_PENDING') {
           alert('판매 정보 검토 중이니 조금만 기다려주세요!');
-          navigate('/seller/mypage/viewProfile');
+          navigate('/minder/mypage/viewProfile');
         } else {
           const profileRes: any = await getProfiles();
           const data = profileRes.data;
           if (profileRes.response?.status === 404) {
             alert('판매 정보가 등록되어 있지 않습니다.');
-            navigate('/seller/mypage');
+            navigate('/minder/mypage');
           }
           nickname.setValue(data?.nickname);
           category.setViewValue(data?.consultCategories.join(', '));
@@ -189,7 +189,7 @@ export const SellerMypageModifyProfile = () => {
           setIsLoading(false);
         }
       } catch (err) {
-        navigate('/seller/mypage');
+        navigate('/minder/mypage');
         alert(err);
       }
       // accountNum.setValue(profileDummyData.accountNum);
