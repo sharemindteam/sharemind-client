@@ -282,11 +282,11 @@ function ModifyProfileMainSection({
               <PriceInput
                 value={letterPrice.value}
                 onChange={letterPrice.onChangePrice}
-                placeholder="1건 당 5,000~50,000"
+                placeholder="1건 당 3,000~30,000"
                 maxLength={6}
                 isError={
-                  parseFloat(letterPrice?.value?.replace(/,/g, '')) < 5000 ||
-                  parseFloat(letterPrice?.value?.replace(/,/g, '')) > 50000
+                  parseFloat(letterPrice?.value?.replace(/,/g, '')) < 3000 ||
+                  parseFloat(letterPrice?.value?.replace(/,/g, '')) > 30000
                     ? true
                     : false
                 }
@@ -457,8 +457,8 @@ function ModifyProfileMainSection({
                 ? true
                 : false) ||
               ((selectType?.includes('편지') &&
-                parseFloat(letterPrice?.value?.replace(/,/g, '')) < 5000) ||
-              parseFloat(letterPrice?.value?.replace(/,/g, '')) > 50000
+                parseFloat(letterPrice?.value?.replace(/,/g, '')) < 3000) ||
+              parseFloat(letterPrice?.value?.replace(/,/g, '')) > 30000
                 ? true
                 : false)
             )
