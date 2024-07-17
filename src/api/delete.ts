@@ -1,3 +1,4 @@
+import { axiosDelete } from './axios';
 import { deleteInstance } from './axios.deprecated';
 
 //Auth Controller
@@ -11,8 +12,11 @@ export const deleteSearchWords = async (body: any) =>
 //WishList Controller
 
 //검색 결과 반환
-export const deleteWishLists = async (counselorId: number) =>
+export const deleteWishListsDeprecated = async (counselorId: number) =>
   await deleteInstance(`/wishLists?counselorId=${counselorId}`);
+
+export const deleteWishLists = async (counselorId: number) =>
+  await axiosDelete(`/wishLists?counselorId=${counselorId}`);
 
 // 일대다상담
 // CommentLike Controller

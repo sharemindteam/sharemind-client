@@ -153,7 +153,7 @@ const Wrapper = styled.nav`
   top: 6rem;
   background-color: white;
   z-index: 999;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
 `;
 const TabButton = styled.div<{ $tabState: number }>`
   display: flex;

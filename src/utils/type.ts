@@ -86,6 +86,7 @@ export type SearchResultData = {
   ratingAverage: number;
   totalReview: number;
   totalConsult: number;
+  isRealtime: boolean;
 };
 
 export interface BuyerReview {
@@ -133,6 +134,7 @@ export type WishlistDataType = {
   ratingAverage: number;
   totalReview: number;
 };
+
 export interface PaymentInfo {
   paymentId: number;
   nickname: string;
