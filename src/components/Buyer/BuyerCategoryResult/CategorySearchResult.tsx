@@ -3,6 +3,7 @@ import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Flex } from 'components/Common/Flex';
 import CounselorCard from 'components/Common/CounselorCard';
+import EmptySection from 'components/Common/EmptySection';
 interface CategorySearchResultsProps {
   searchData: SearchResultData[];
 }
@@ -11,6 +12,10 @@ interface CategorySearchResultsProps {
 export const CategorySearchResults = ({
   searchData,
 }: CategorySearchResultsProps) => {
+  if (searchData.length === 0) {
+    return <EmptySection title="검색 결과가 없어요." />;
+  }
+
   return (
     <Flex direction="column" gap="0.8rem" style={{ padding: '0 2rem' }}>
       {searchData.map((value) => {

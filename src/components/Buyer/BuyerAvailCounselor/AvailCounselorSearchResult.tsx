@@ -3,6 +3,7 @@ import { AppendCategoryType } from 'utils/AppendCategoryType';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { Flex } from 'components/Common/Flex';
 import CounselorCard from 'components/Common/CounselorCard';
+import EmptySection from 'components/Common/EmptySection';
 
 //
 //
@@ -19,6 +20,10 @@ interface AvailCounselorSearchResultsProps {
 export const AvailCounselorSearchResults = ({
   searchData,
 }: AvailCounselorSearchResultsProps) => {
+  if (searchData.length === 0) {
+    return <EmptySection title="현재 시간 기준 가능한 마인더가 없어요" />;
+  }
+
   return (
     <Flex
       direction="column"

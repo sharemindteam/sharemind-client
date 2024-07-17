@@ -110,6 +110,7 @@ export const BuyerCategoryResult = () => {
       preventRef.current = true;
     }
   };
+
   //현재 대상 및 option을 props로 전달
   const { setTarget } = useIntersectionObserver({
     root: null,
