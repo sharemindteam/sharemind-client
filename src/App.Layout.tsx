@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { Green } from 'styles/color';
 import { Flex } from 'components/Common/Flex';
 import { useNavigate } from 'react-router-dom';
+import { useViewResize } from 'hooks/useViewResize';
 //
 //
 //
@@ -27,7 +28,7 @@ const GROUND_HEIGHT = '24rem';
 
 const LAYOUT_STYLES = {
   width: '100vw',
-  height: '100vh',
+  height: '  height: calc(var(--vh, 1vh) * 100);',
   display: 'flex',
   backgroundImage: `url(${backgroundImage})`,
   backgroundSize: 'cover',
@@ -91,6 +92,8 @@ const BottomGreenBox = styled.div`
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   const navigate = useNavigate();
+
+  useViewResize();
 
   //
   //

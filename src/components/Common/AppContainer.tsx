@@ -1,4 +1,3 @@
-import { useViewResize } from 'hooks/useViewResize';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useLocation } from 'react-router-dom';
@@ -20,7 +19,6 @@ interface AppContainerProps {
 //
 
 export const AppContainer = ({ children }: AppContainerProps) => {
-  useViewResize();
   const scrollLock = useRecoilValue<boolean>(scrollLockState);
 
   var { pathname, search } = useLocation();
@@ -78,6 +76,7 @@ const StyledApp = styled.div<{ $isGray: boolean; $scrollLock: boolean }>`
   @media (max-width: 767px) {
     width: 100vw;
   }
+
   background-color: ${(props) => (props.$isGray ? Grey6 : White)};
   overflow-y: ${(props) => (props.$scrollLock ? 'hidden' : 'scroll')};
   box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
