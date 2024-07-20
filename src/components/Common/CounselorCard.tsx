@@ -158,15 +158,17 @@ const CounselorCard = ({
     return (
       <Flex direction="column" align="flex-start">
         {isRealtime ? (
-          <TimeWrapper>
-            <Caption2
-              color={White}
-            >{`${hours}시 기준 실시간 상담 가능`}</Caption2>
-          </TimeWrapper>
+          <Flex justify="flex-start" width="100%">
+            <TimeWrapper>
+              <Caption2
+                color={White}
+              >{`${hours}시 기준 실시간 상담 가능`}</Caption2>
+            </TimeWrapper>
+          </Flex>
         ) : null}
         <InfoWrapper isRealtime={isRealtime}>
           <Flex direction="column" gap="1rem" align="flex-start">
-            <Flex gap="1rem">
+            <Flex gap="1rem" width="100%" justify="flex-start">
               <ImgWrapper>
                 <Characters number={consultStyle} />
               </ImgWrapper>
@@ -192,7 +194,7 @@ const CounselorCard = ({
                 </Flex>
               </Flex>
             </Flex>
-            <Flex gap="0.8rem">
+            <Flex gap="0.8rem" width="100%" justify="flex-start">
               {tagList.map((value: any) => {
                 return (
                   <TagA2Cartegory key={value} tagType={value} bgColorType={3} />
@@ -298,6 +300,7 @@ const BookMarkIcon = styled(BookMark)`
   padding-left: 0.8rem;
   cursor: pointer;
 `;
+
 const NoneBookMarkIcon = styled(NoneBookMark)`
   padding-left: 0.8rem;
   cursor: pointer;
