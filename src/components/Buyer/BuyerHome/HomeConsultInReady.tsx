@@ -11,17 +11,25 @@ import { Space } from 'components/Common/Space';
 import { getCurrentHour } from 'utils/getCurrentHour';
 import { Flex } from 'components/Common/Flex';
 import CounselorCard from 'components/Common/CounselorCard';
-///
-///
-///
+
+//
+//
+//
+
 interface HomeConsultInReadyProps {
   searchData: SearchResultData[];
 }
-///
-///
-///
+
+//
+//
+//
+
 export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
   const navigate = useNavigate();
+
+  //
+  //
+  //
 
   return (
     <Wrapper>
@@ -95,6 +103,7 @@ const Wrapper = styled.section`
     cursor: pointer;
   }
 `;
+
 const NavConsult = styled.div`
   width: 100%;
   span#current-time {
@@ -106,6 +115,7 @@ const NavConsult = styled.div`
     align-items: center;
   }
 `;
+
 const MoreIcon = styled(More)`
   margin-left: auto;
 `;
