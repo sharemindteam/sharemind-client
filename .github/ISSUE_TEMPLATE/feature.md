@@ -6,7 +6,7 @@ labels: "\U0001F4AB feat"
 assignees: ''
 ---
 
-## Describtion
+## Description
 
 <br>
 Issue 내용을 작성해주세요.
