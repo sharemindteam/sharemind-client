@@ -2,11 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import { getIsServerShutdown } from 'api/get';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+//
+//
+//
 const ADMIN_SERVER_QUERY_KEY = 'getIsServerShutdown';
-
-export type GetIsServerShutdownResponse = boolean;
-
+type GetIsServerShutdownResponse = boolean;
+//
+//
+//
 function useManipulateServerDown() {
   const navigate = useNavigate();
 
@@ -16,7 +19,7 @@ function useManipulateServerDown() {
   });
 
   useEffect(() => {
-    if (!isShutDown) {
+    if (isShutDown) {
       navigate('/service-unavailable');
     }
   }, [isShutDown, navigate]);
