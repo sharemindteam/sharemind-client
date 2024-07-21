@@ -12,6 +12,8 @@ export const getAdminsPedningProfilse = async () =>
   await getInstance('/admins/pending-profiles');
 export const getAdminsRefundWaiting = async () =>
   await getInstance('/admins/refund-waiting');
+export const getIsServerShutdown = async () =>
+  await axiosGet('/admins/managements');
 
 // 판매자 사이드 letter list
 export const getConselorLetters = async (params: any) =>
