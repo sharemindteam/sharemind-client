@@ -3,6 +3,9 @@ import { Header } from 'components/Common/Header';
 import { ReactComponent as ServerFixIcon } from '../../assets/icons/server-fix.svg';
 import { Heading } from 'styles/font';
 import { Green } from 'styles/color';
+//
+//
+//
 function ServerDown() {
   return (
     <>
