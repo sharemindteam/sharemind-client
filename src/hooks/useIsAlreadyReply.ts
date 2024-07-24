@@ -1,7 +1,9 @@
 import { getCounselorsIsWriteComments } from 'api/get';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-
+//
+//
+//
 function useIsAlreadyReply(consultid: string, navigate: NavigateFunction) {
   const [isAlreadyReply, setIsAlreadyReply] = useState<boolean>(false);
   useEffect(() => {

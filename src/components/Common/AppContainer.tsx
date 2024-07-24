@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Grey6, White } from 'styles/color';
 import { scrollLockState } from 'utils/atom';
 import { APP_WIDTH } from 'styles/AppStyle';
+import useManipulateServerDown from 'hooks/useManipulateSeverDown';
 
 //
 //
@@ -45,6 +46,11 @@ export const AppContainer = ({ children }: AppContainerProps) => {
     isPaymentDetailPage ||
     isProfilePage;
 
+  //
+  //
+  //
+  // Redirect to inspection page when service is shut down
+  useManipulateServerDown();
   //
   //
   //

@@ -53,6 +53,7 @@ import BuyerFinishPayment from 'pages/Buyer/BuyerFinishPayment';
 import BuyerOpenConsultLikes from 'pages/Buyer/BuyerOpenConsultLikes';
 import BuyerOpenConsultRecents from 'pages/Buyer/BuyerOpenConsultRecents';
 import SellerProfitBankAccount from 'pages/Seller/SellerProfitBankAccount';
+import ServerDown from 'pages/Common/ServerDown';
 
 const Router = () => {
   return (
@@ -168,6 +169,9 @@ const Router = () => {
 
       {/* 서비스 소개 */}
       <Route path="/service" element={<Service />} />
+
+      {/* 서버 상태를 나타내는 페이지 */}
+      <Route path="/service-unavailable" element={<ServerDown />} />
     </Routes>
   );
 };
