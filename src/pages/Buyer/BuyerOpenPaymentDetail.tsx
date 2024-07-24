@@ -102,7 +102,7 @@ export const BuyerOpenPaymentDetail = () => {
               상품 금액
             </Body1>
             <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-              500원
+              1,000원
             </Body1>
           </div>
           <div className="price-line-wrapper">
@@ -119,7 +119,7 @@ export const BuyerOpenPaymentDetail = () => {
               결제 금액
             </Body1>
             <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
-              500원
+              1,000원
             </Body1>
           </div>
         </Box>
