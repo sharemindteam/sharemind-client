@@ -11,6 +11,8 @@ import { getCounselorConsults } from 'api/get';
 import { postConsults } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
+import { requestPayment } from 'utils/requestPayment';
+import { ConsultType } from 'utils/type';
 
 //
 //
@@ -83,16 +85,11 @@ export const BuyerPaymentDetail = () => {
     totalReview: 0,
     totalConsult: 0,
   });
-
-  const paymentUrl = letterFocus
-    ? process.env.REACT_APP_LETTER_PAYMENT_URL
-    : process.env.REACT_APP_CHATTING_PAYMENT_URL;
-
   /**
    *
    */
   const handlePaymentClick = async () => {
-    let consultType = '';
+    let consultType: ConsultType;
     if (letterFocus) {
       consultType = 'Letter';
     } else {
@@ -107,7 +104,7 @@ export const BuyerPaymentDetail = () => {
     try {
       const res: any = await postConsults(body);
       if (res.status === 201) {
-        window.open(paymentUrl);
+        requestPayment(consultData.cost, consultType);
         navigate('/paymentFinish');
       } else if (res.response.status === 400 || res.response.status === 404) {
         const errMessage = res.response.data.message.substring(

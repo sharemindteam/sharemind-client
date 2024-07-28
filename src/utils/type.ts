@@ -170,3 +170,13 @@ export type ChatCounselorInfo = {
   ratingAverage: number;
   totalReview: number;
 };
+
+// 셰어마인드 상담 타입
+
+export type ConsultType = 'Letter' | 'Chat' | 'Open-Consult';
+
+export const ConsultEngMappedKor = {
+  Letter: '편지',
+  Chat: '채팅',
+  'Open-Consult': '공개상담',
+} as const;
