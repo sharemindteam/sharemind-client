@@ -85,11 +85,6 @@ export const BuyerPaymentDetail = () => {
     totalReview: 0,
     totalConsult: 0,
   });
-
-  const paymentUrl = letterFocus
-    ? process.env.REACT_APP_LETTER_PAYMENT_URL
-    : process.env.REACT_APP_CHATTING_PAYMENT_URL;
-
   /**
    *
    */
