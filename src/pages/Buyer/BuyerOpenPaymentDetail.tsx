@@ -51,7 +51,7 @@ export const BuyerOpenPaymentDetail = () => {
    */
   const handlePaymentClick = async () => {
     const body = {
-      cost: 500,
+      cost: 1000,
       isPublic: false,
     };
     try {
