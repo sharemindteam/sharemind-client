@@ -28,7 +28,7 @@ export const BuyerOpenConsultRequest = () => {
           isPublic: true,
         };
         await postOpenConsult(body);
-        navigate('/paymentFinish');
+        navigate('/consult?type=open-consult');
       } else {
         navigate('/openPaymentDetail');
       }
