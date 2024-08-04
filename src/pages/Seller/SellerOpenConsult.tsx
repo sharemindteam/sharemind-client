@@ -8,6 +8,7 @@ import OpenConsultHeader from 'components/Seller/SellerOpenConsult/OpenConsultHe
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { APP_HEADER_HEIGHT } from 'styles/AppStyle';
 import { isSendPopupOpenState } from 'utils/atom';
 
 //
@@ -27,7 +28,7 @@ function SellerOpenConsult() {
   return (
     <>
       <div
-        style={{ height: '100vh' }}
+        style={{ height: '100vh', marginTop: APP_HEADER_HEIGHT }}
         onClick={() => {
           setIsReplying(false);
         }}
