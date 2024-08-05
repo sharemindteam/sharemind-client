@@ -41,7 +41,7 @@ function MainQuestionSection() {
       <MainQuestionText>
         <div className="row1">
           <Body1>{card?.title}</Body1>
-          {card?.isPublic && (
+          {!card?.isPublic && (
             <PrivateSign>
               <LockIcon />
               <Caption1 color={Grey3}>비공개</Caption1>
