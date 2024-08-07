@@ -16,6 +16,7 @@ import { useInput } from 'hooks/useInput';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
+
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import {
   isBankModalOpenState,
