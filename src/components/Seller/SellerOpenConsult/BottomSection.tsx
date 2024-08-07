@@ -10,6 +10,7 @@ import useConsultNavigation from 'hooks/useConsultNavigation';
 import useIsAlreadyReply from 'hooks/useIsAlreadyReply';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { OPEN_CONSULT_FOOTER_ID } from 'pages/Seller/SellerOpenConsult';
+import { useEffect, useState } from 'react';
 
 //
 //
@@ -20,11 +21,11 @@ interface BottomSectionProps {
   setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
-  bottom: number;
 }
 
-interface BottomSectionWrapperProps
-  extends Pick<BottomSectionProps, 'bottom'> {}
+interface BottomSectionWrapperProps {
+  bottom: number;
+}
 
 //
 //
@@ -35,14 +36,56 @@ function BottomSection({
   setIsReplying,
   text,
   setText,
-  bottom,
 }: BottomSectionProps) {
   const navigate = useNavigate();
+
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
+
   const { consultid } = useParams() as { consultid: string };
+
   const { handleNavigateRandomConsult } = useConsultNavigation(consultid);
+
   // 마인더가 해당 상담에 답장했는지 여부
   const isAlreadyReply = useIsAlreadyReply(consultid, navigate);
+
+  /** In order to solve the issue of the IOS keyboard forcibly pushing up the document to create additional space, the bottom value of the bottom section component is managed as a state when the keyboard is opened.
+   ref: https://stackoverflow.com/questions/43833049/how-to-make-fixed-content-go-above-ios-keyboard */
+  const [bottom, setBottom] = useState(0);
+
+  useEffect(() => {
+    const updateBottom = () => {
+      if (visualViewport) {
+        const newBottom =
+          visualViewport.height < window.innerHeight
+            ? window.innerHeight - visualViewport.height
+            : 0;
+
+        setBottom(newBottom);
+      }
+    };
+
+    const handleResize = () => {
+      if (
+        /iPhone|iPad|iPod/.test(window.navigator.userAgent) &&
+        visualViewport
+      ) {
+        updateBottom();
+      }
+    };
+
+    if (visualViewport) {
+      visualViewport.addEventListener('resize', handleResize);
+    }
+    return () => {
+      if (visualViewport) {
+        visualViewport.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
+
+  //
+  //
+  //
 
   return (
     <BottomSectionWrapper id={OPEN_CONSULT_FOOTER_ID} bottom={bottom}>
@@ -144,6 +187,7 @@ const MessageTextArea = styled(reactTextareaAutosize)`
     outline: none;
   }
 `;
+
 const SendIconSVG = styled(SendIcon)`
   cursor: pointer;
   align-self: flex-end;
