@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useConsultNavigation from 'hooks/useConsultNavigation';
 import useIsAlreadyReply from 'hooks/useIsAlreadyReply';
 import { APP_WIDTH } from 'styles/AppStyle';
+import { OPEN_CONSULT_FOOTER_ID } from 'pages/Seller/SellerOpenConsult';
 
 //
 //
@@ -19,7 +20,11 @@ interface BottomSectionProps {
   setIsReplying: React.Dispatch<React.SetStateAction<boolean>>;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
+  bottom: number;
 }
+
+interface BottomSectionWrapperProps
+  extends Pick<BottomSectionProps, 'bottom'> {}
 
 //
 //
@@ -30,6 +35,7 @@ function BottomSection({
   setIsReplying,
   text,
   setText,
+  bottom,
 }: BottomSectionProps) {
   const navigate = useNavigate();
   const setIsSendPopupOpen = useSetRecoilState(isSendPopupOpenState);
@@ -39,7 +45,7 @@ function BottomSection({
   const isAlreadyReply = useIsAlreadyReply(consultid, navigate);
 
   return (
-    <BottomSectionWrapper>
+    <BottomSectionWrapper id={OPEN_CONSULT_FOOTER_ID} bottom={bottom}>
       {isReplying ? (
         <div className="message-input">
           <MessageTextArea
@@ -88,19 +94,19 @@ function BottomSection({
   );
 }
 
-const BottomSectionWrapper = styled.section`
+const BottomSectionWrapper = styled.section<BottomSectionWrapperProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25);
-  background-color: white;
   text-align: center;
   gap: 0.6rem;
   padding-top: 0.8rem;
   padding-bottom: 1.6rem;
   background-color: ${White};
+
   position: fixed;
-  bottom: 0;
+  bottom: ${({ bottom }) => bottom}px;
   width: 100%;
   .buttons {
     display: flex;
