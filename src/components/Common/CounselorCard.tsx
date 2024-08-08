@@ -171,7 +171,7 @@ const CounselorCard = ({
                 <Characters number={consultStyle} />
               </ImgWrapper>
               <Flex direction="column" align="flex-start" gap="0.2rem">
-                <Flex gap="1.2rem">
+                <Flex gap="1.2rem" width="100%" justify="flex-start">
                   <Body1 color={Grey1}>{nickname}</Body1>
                   <Caption2 color={Grey1}>{'LV. ' + level}</Caption2>
                 </Flex>

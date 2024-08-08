@@ -15,11 +15,11 @@ export const ReviewComplaintMenu = ({ id }: ReviewComplaintMenuProps) => {
   /**
    *
    */
-  const handleComplaint = () => {
-    // 여기서 서버로 id 신고 ㄱㄱㄱ
-    // 후에 신고 되었씁니다~ 화면 위해서 신고접수여부 True로
-    setIsReviewComplaintOpen(false);
-  };
+  // const handleComplaint = () => {
+  //   // 여기서 서버로 id 신고 ㄱㄱㄱ
+  //   // 후에 신고 되었씁니다~ 화면 위해서 신고접수여부 True로
+  //   setIsReviewComplaintOpen(false);
+  // };
 
   //
   //

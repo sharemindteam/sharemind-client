@@ -1,6 +1,8 @@
 //특수문자 포함 여부
 export const isIncludeSpecialLetter = (str: string) => {
-  var specialCharacterRegex = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+  var specialCharacterRegex =
+    /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g; //eslint-disable-line
+
   if (specialCharacterRegex.test(str)) {
     return true;
   } else {
@@ -9,7 +11,8 @@ export const isIncludeSpecialLetter = (str: string) => {
 };
 
 export const isIncludeSpecialLetterOneLiner = (str: string) => {
-  var specialCharacterRegex = /[\{\}\[\]\/;|\)*~`^\-_+<>@\#$%&\\\=\(\'\"]/g;
+  var specialCharacterRegex = /[\{\}\[\]\/;|\)*~`^\-_+<>@\#$%&\\\=\(\'\"]/g; //eslint-disable-line
+
   if (specialCharacterRegex.test(str)) {
     return true;
   } else {

@@ -1,11 +1,17 @@
 import { getCounselorsIsWriteComments } from 'api/get';
 import { useEffect, useState } from 'react';
 import { NavigateFunction } from 'react-router-dom';
+
 //
 //
 //
+
 function useIsAlreadyReply(consultid: string, navigate: NavigateFunction) {
   const [isAlreadyReply, setIsAlreadyReply] = useState<boolean>(false);
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchIsAlreadyWrite = async () => {
       const res: any = await getCounselorsIsWriteComments(consultid);
@@ -18,6 +24,7 @@ function useIsAlreadyReply(consultid: string, navigate: NavigateFunction) {
     };
     fetchIsAlreadyWrite();
   }, [consultid, navigate]);
+
   return isAlreadyReply;
 }
 

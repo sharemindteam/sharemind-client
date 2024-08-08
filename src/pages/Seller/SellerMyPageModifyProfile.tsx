@@ -192,9 +192,6 @@ export const SellerMypageModifyProfile = () => {
         navigate('/minder/mypage');
         alert(err);
       }
-      // accountNum.setValue(profileDummyData.accountNum);
-      // bankType.setValue(profileDummyData.bankType);
-      // bankOwner.setValue(profileDummyData.bankOwner);
     };
     fetchProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
