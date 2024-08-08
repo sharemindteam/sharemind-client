@@ -8,7 +8,14 @@ import OpenConsultHeader from 'components/Seller/SellerOpenConsult/OpenConsultHe
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { APP_HEADER_HEIGHT } from 'styles/AppStyle';
 import { isSendPopupOpenState } from 'utils/atom';
+
+//
+//
+//
+
+export const OPEN_CONSULT_FOOTER_ID = 'bottom-section-wrapper';
 
 //
 //
@@ -16,7 +23,9 @@ import { isSendPopupOpenState } from 'utils/atom';
 
 function SellerOpenConsult() {
   const { consultid } = useParams();
+
   const isSendPopupOpen = useRecoilValue(isSendPopupOpenState);
+
   const [isReplying, setIsReplying] = useState(false);
   const [text, setText] = useState<string>('');
 
@@ -27,7 +36,7 @@ function SellerOpenConsult() {
   return (
     <>
       <div
-        style={{ height: '100vh' }}
+        style={{ paddingTop: APP_HEADER_HEIGHT }}
         onClick={() => {
           setIsReplying(false);
         }}
@@ -36,13 +45,10 @@ function SellerOpenConsult() {
         {consultid === 'all-adopted' ? (
           <NoConsultSection />
         ) : (
-          <div
-            className="scroll-container"
-            style={{ height: 'calc(100vh - 10rem)', overflow: 'scroll' }}
-          >
+          <>
             <MainQuestionSection />
             <CommentListSection />
-          </div>
+          </>
         )}
       </div>
       {consultid !== 'all-adopted' && (

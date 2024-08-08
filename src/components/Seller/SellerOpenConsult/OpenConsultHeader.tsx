@@ -4,6 +4,7 @@ import { White } from 'styles/color';
 import { ReactComponent as LeftArrowIcon } from 'assets/icons/left-arrow.svg';
 import { Heading } from 'styles/font';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { APP_WIDTH } from 'styles/AppStyle';
 
 //
 //
@@ -41,9 +42,16 @@ const OpenConsultHeaderWrapper = styled.div`
   padding: 1.2rem 2rem;
   background-color: ${White};
   justify-content: center;
-  position: sticky;
+  position: fixed;
   border-bottom: 1px solid rgba(242, 241, 248, 0.95);
   top: 0;
+
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: ${APP_WIDTH};
+  }
+
   z-index: 1000;
 `;
 
