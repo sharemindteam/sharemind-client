@@ -29,10 +29,7 @@ export const Header = ({ isBuyer, onClick }: HeaderProps) => {
   if (isBuyer === true) {
     return (
       <Wrapper>
-        <Flex
-          gap="0.8rem"
-          style={{ marginLeft: '2rem', backgroundColor: 'pink' }}
-        >
+        <Flex gap="0.8rem" style={{ marginLeft: '2rem' }}>
           <Logo onClick={onClick} />
           <BetaTagImage src={betaTagImageUrl} />
         </Flex>
