@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import Input from 'components/Common/Input';
 import styled from 'styled-components';
@@ -29,6 +30,10 @@ import { Space } from 'components/Common/Space';
 import { UpdatePopup } from './UpdatePopup';
 import { SelectedTimeList } from './SetChatTimeSection';
 
+//
+//
+//
+
 interface ModifyProfileMainSectionProps {
   selectCategory: number[];
   selectStyle: string;
@@ -46,6 +51,11 @@ interface ModifyProfileMainSectionProps {
   experience: any;
   isNoProfile: boolean;
 }
+
+//
+//
+//
+
 const dayEngtoKor: Record<string, string> = {
   MON: '월',
   TUE: '화',
@@ -55,6 +65,10 @@ const dayEngtoKor: Record<string, string> = {
   SAT: '토',
   SUN: '일',
 };
+
+//
+//
+//
 
 function convertObjectToString(schedule: any) {
   const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
@@ -90,6 +104,10 @@ function convertTimeRange2(input: string) {
   }
 }
 
+//
+//
+//
+
 function ModifyProfileMainSection({
   selectCategory,
   selectStyle,
@@ -108,6 +126,7 @@ function ModifyProfileMainSection({
   selectAvailableTime,
 }: ModifyProfileMainSectionProps) {
   const navigate = useNavigate();
+
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
     isCategoryModalOpenState,
   );
@@ -119,6 +138,10 @@ function ModifyProfileMainSection({
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useRecoilState<boolean>(
     isUpdateModalOpenState,
   );
+
+  //
+  //
+  //
   useEffect(() => {
     try {
       category?.setViewValue(categoryInputMaker(selectCategory ?? ['']));
@@ -128,6 +151,9 @@ function ModifyProfileMainSection({
     }
   }, [selectCategory]);
 
+  //
+  //
+  //
   useEffect(() => {
     try {
       style?.setViewValue(selectStyle);
@@ -137,9 +163,17 @@ function ModifyProfileMainSection({
     }
   }, [selectStyle]);
 
+  //
+  //
+  //
   useEffect(() => {
     type?.setViewValue(selectType?.join(', '));
   }, [selectType]);
+
+  //
+  //
+  //
+
   return (
     <ModifyProfileMainSectionWrapper>
       {isUpdateModalOpen && (

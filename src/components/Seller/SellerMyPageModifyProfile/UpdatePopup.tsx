@@ -5,6 +5,11 @@ import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { isSuccessUpdateState, isUpdateModalOpenState } from 'utils/atom';
+
+//
+//
+//
+
 interface UpdatePopupProps {
   nickname: any;
   category: any;
@@ -17,6 +22,11 @@ interface UpdatePopupProps {
   experience: any;
   selectAvailableTime: any;
 }
+
+//
+//
+//
+
 export const UpdatePopup = ({
   nickname,
   category,
@@ -62,6 +72,11 @@ export const UpdatePopup = ({
       console.log(err);
     }
   };
+
+  //
+  //
+  //
+
   return (
     <UpdateModalBox>
       <ModalBox>
@@ -83,6 +98,7 @@ export const UpdatePopup = ({
     </UpdateModalBox>
   );
 };
+
 const UpdateModalBox = styled.div`
   width: 100%;
   height: 15rem;
