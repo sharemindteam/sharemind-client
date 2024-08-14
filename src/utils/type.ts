@@ -181,4 +181,4 @@ export const ConsultEngMappedKor = {
   'Open-Consult': '공개상담',
 } as const;
 
-export type InputValidStateTypoe = 'valid' | 'invalid' | 'none';
+export type InputValidStateType = 'valid' | 'invalid' | 'none';

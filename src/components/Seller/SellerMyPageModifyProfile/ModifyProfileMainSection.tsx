@@ -29,6 +29,7 @@ import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { UpdatePopup } from './UpdatePopup';
 import { SelectedTimeList } from './SetChatTimeSection';
+import { InputValidStateType } from 'utils/type';
 
 //
 //
@@ -65,6 +66,8 @@ const dayEngtoKor: Record<string, string> = {
   SAT: '토',
   SUN: '일',
 };
+
+const MAX_PHONE_NUMBER_LENGTH = 14;
 
 //
 //
@@ -126,6 +129,43 @@ function ModifyProfileMainSection({
   selectAvailableTime,
 }: ModifyProfileMainSectionProps) {
   const navigate = useNavigate();
+
+  /** Phone Number controller */
+  const [phoneNumber, setPhoneNumber] = React.useState<string>('');
+
+  const [phoneNumberValid, setPhoneNumberValid] =
+    React.useState<InputValidStateType>('none');
+
+  /**
+   *
+   */
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const phoneNumberRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+
+    let inputValue = e.target.value;
+
+    inputValue = inputValue.replace(/\D/g, '');
+
+    if (inputValue.length <= 3) {
+      setPhoneNumber(inputValue);
+    } else if (inputValue.length <= 7) {
+      setPhoneNumber(inputValue.slice(0, 3) + '-' + inputValue.slice(3));
+    } else if (inputValue.length <= 11) {
+      setPhoneNumber(
+        inputValue.slice(0, 3) +
+          '-' +
+          inputValue.slice(3, 7) +
+          '-' +
+          inputValue.slice(7, 11),
+      );
+    }
+
+    if (phoneNumberRegex.test(inputValue)) {
+      setPhoneNumberValid('valid');
+    } else if (inputValue.length === MAX_PHONE_NUMBER_LENGTH) {
+      setPhoneNumberValid('invalid');
+    }
+  };
 
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
     isCategoryModalOpenState,
@@ -228,6 +268,22 @@ function ModifyProfileMainSection({
             )}
           </ConditionMessage>
         </div>
+        <div className="phone-number">
+          <ProfileInformTag>전화번호</ProfileInformTag>
+          <Input
+            width="100%"
+            height="4.8rem"
+            type="text"
+            isError={phoneNumberValid === 'invalid'}
+            placeholder="전화번호를 입력해주세요"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+            padding="1.2rem 1.6rem"
+            isBoxSizing={true}
+            maxLength={MAX_PHONE_NUMBER_LENGTH}
+          />
+        </div>
+
         <div className="category">
           <ProfileInformTag>상담 카테고리</ProfileInformTag>
           <div
