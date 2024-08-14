@@ -180,3 +180,5 @@ export const ConsultEngMappedKor = {
   Chat: '채팅',
   'Open-Consult': '공개상담',
 } as const;
+
+export type InputValidStateType = 'valid' | 'invalid' | 'none';
