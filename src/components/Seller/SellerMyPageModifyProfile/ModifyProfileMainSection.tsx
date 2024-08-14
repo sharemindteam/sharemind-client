@@ -228,6 +228,7 @@ function ModifyProfileMainSection({
           oneLiner={oneLiner}
           experience={experience}
           selectAvailableTime={selectAvailableTime}
+          phoneNumber={phoneNumber}
         />
       )}
       <ModifyProfileBox>

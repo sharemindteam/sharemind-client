@@ -21,6 +21,7 @@ interface UpdatePopupProps {
   oneLiner: any;
   experience: any;
   selectAvailableTime: any;
+  phoneNumber: string;
 }
 
 //
@@ -38,6 +39,7 @@ export const UpdatePopup = ({
   oneLiner,
   experience,
   selectAvailableTime,
+  phoneNumber,
 }: UpdatePopupProps) => {
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
   const setIsSuccess = useSetRecoilState(isSuccessUpdateState);
@@ -58,6 +60,7 @@ export const UpdatePopup = ({
         : null,
       introduction: oneLiner.value,
       experience: experience.value,
+      phoneNumber: phoneNumber,
     };
     try {
       const res: any = await patchProfiles(body);
