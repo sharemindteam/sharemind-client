@@ -50,7 +50,8 @@ export const patchLetterMessageFirstQustion = async (body: any) =>
   await patchInstance('/letterMessages/first-question', body);
 
 export const patchProfiles = async (body: any) =>
-  await patchInstance('counselors/profiles', body);
+  await axiosPatch('counselors/profiles', body);
+
 //Payment Controller
 export const patchPaymentsCustomers = async (paymentId: number) =>
   await patchInstance(`/payments/customers/${paymentId}`);

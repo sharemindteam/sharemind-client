@@ -29,7 +29,6 @@ import { BottomButton } from '../Common/BottomButton';
 import { Space } from 'components/Common/Space';
 import { UpdatePopup } from './UpdatePopup';
 import { SelectedTimeList } from './SetChatTimeSection';
-import { InputValidStateType } from 'utils/type';
 
 //
 //
@@ -51,6 +50,9 @@ interface ModifyProfileMainSectionProps {
   oneLiner: any;
   experience: any;
   isNoProfile: boolean;
+  phoneNumber: string;
+  phoneNumberValid: string;
+  handlePhoneNumberChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 //
@@ -67,7 +69,7 @@ const dayEngtoKor: Record<string, string> = {
   SUN: '일',
 };
 
-const MAX_PHONE_NUMBER_LENGTH = 14;
+export const MAX_PHONE_NUMBER_LENGTH = 14;
 
 //
 //
@@ -127,45 +129,11 @@ function ModifyProfileMainSection({
   experience,
   isNoProfile,
   selectAvailableTime,
+  phoneNumber,
+  phoneNumberValid,
+  handlePhoneNumberChange,
 }: ModifyProfileMainSectionProps) {
   const navigate = useNavigate();
-
-  /** Phone Number controller */
-  const [phoneNumber, setPhoneNumber] = React.useState<string>('');
-
-  const [phoneNumberValid, setPhoneNumberValid] =
-    React.useState<InputValidStateType>('none');
-
-  /**
-   *
-   */
-  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const phoneNumberRegex = /^\d{3}-\d{3,4}-\d{4}$/;
-
-    let inputValue = e.target.value;
-
-    inputValue = inputValue.replace(/\D/g, '');
-
-    if (inputValue.length <= 3) {
-      setPhoneNumber(inputValue);
-    } else if (inputValue.length <= 7) {
-      setPhoneNumber(inputValue.slice(0, 3) + '-' + inputValue.slice(3));
-    } else if (inputValue.length <= 11) {
-      setPhoneNumber(
-        inputValue.slice(0, 3) +
-          '-' +
-          inputValue.slice(3, 7) +
-          '-' +
-          inputValue.slice(7, 11),
-      );
-    }
-
-    if (phoneNumberRegex.test(inputValue)) {
-      setPhoneNumberValid('valid');
-    } else if (inputValue.length === MAX_PHONE_NUMBER_LENGTH) {
-      setPhoneNumberValid('invalid');
-    }
-  };
 
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useRecoilState(
     isCategoryModalOpenState,
