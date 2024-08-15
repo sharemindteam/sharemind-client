@@ -1,4 +1,13 @@
 //type
+
+/** sharemind error response data type */
+
+export interface SharemindErrorResponse {
+  errorName: string;
+  message: string;
+  timeStamp: string;
+}
+
 //tagA2 상담 상태 type
 export type ConsultState =
   | '답변 대기'
