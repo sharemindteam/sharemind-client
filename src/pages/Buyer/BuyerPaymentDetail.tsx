@@ -87,9 +87,15 @@ export const BuyerPaymentDetail = () => {
     totalReview: 0,
     totalConsult: 0,
   });
+
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   /**
    *
    */
+
+  const handleChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value);
+  };
   const handlePaymentClick = async () => {
     let consultType: ConsultType;
     if (letterFocus) {
@@ -101,13 +107,13 @@ export const BuyerPaymentDetail = () => {
       //나중에 recoil로 관리// persist
       counselorId: id,
       consultTypeName: consultType,
+      phoneNumber: phoneNumber,
     };
 
     try {
       const res: any = await postConsults(body);
       if (res.status === 201) {
-        requestPayment(consultData.cost, consultType);
-        navigate('/paymentFinish');
+        window.location.href = res.data;
       } else if (res.response.status === 400 || res.response.status === 404) {
         const errMessage = res.response.data.message.substring(
           0,
@@ -263,11 +269,13 @@ export const BuyerPaymentDetail = () => {
             <Input
               width="100%"
               borderRadius="0.4rem"
-              placeholder="-없이 입력"
+              placeholder="-포함하여 입력"
               fontSize="1.3rem"
               padding="1.2rem"
               isBoxSizing={true}
               placeHolderWeight="500"
+              value={phoneNumber}
+              onChange={handleChangePhoneNumber}
             />
           </Flex>
         </Box>
