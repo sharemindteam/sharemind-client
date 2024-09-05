@@ -14,6 +14,7 @@ import { requestPayment } from 'utils/requestPayment';
 import { ConsultType } from 'utils/type';
 import Input from 'components/Common/Input';
 import { Flex } from 'components/Common/Flex';
+import { Space } from 'components/Common/Space';
 
 //
 //
@@ -285,6 +286,7 @@ export const BuyerPaymentDetail = () => {
                 <ListItem>{info}</ListItem>
               ))}
             </Flex>
+            <Space height="10rem" />
           </Flex>
         </Box>
       </Flex>
@@ -299,10 +301,6 @@ export const BuyerPaymentDetail = () => {
     </>
   );
 };
-
-const GuideText = styled.p`
-  width: 31.1rem;
-`;
 
 const Box = styled.div`
   width: 100%;
