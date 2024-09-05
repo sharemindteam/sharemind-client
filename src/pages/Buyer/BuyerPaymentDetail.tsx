@@ -176,6 +176,7 @@ export const BuyerPaymentDetail = () => {
         direction="column"
         justify="flex-start"
       >
+        {/* 상품 정보 Section */}
         <PaymentDetailInfo
           nickname={consultData.nickname}
           level={consultData.level}
@@ -184,6 +185,7 @@ export const BuyerPaymentDetail = () => {
           totalConsult={consultData.totalConsult}
           consultStyle={consultStyleToCharNum(consultData.consultStyle)}
         />
+        {/* 상품 유형 Section */}
         <Box>
           <Flex
             width="100%"
@@ -206,6 +208,7 @@ export const BuyerPaymentDetail = () => {
             </SectionTitle>
           </Flex>
         </Box>
+        {/* 상담 금액 Section */}
         <Box>
           <Flex
             width="100%"
@@ -246,8 +249,8 @@ export const BuyerPaymentDetail = () => {
             </Flex>
           </Flex>
         </Box>
+        {/* 전화번호 입력 Section */}
         <Box>
-          {/* TODO: 클래스로 선언한 flex contianer들을 Flex 컴포넌트로 */}
           <Flex
             width="100%"
             direction="column"
@@ -268,6 +271,7 @@ export const BuyerPaymentDetail = () => {
             />
           </Flex>
         </Box>
+        {/* 이용 안내 Section */}
         <Box>
           <Flex
             width="100%"
