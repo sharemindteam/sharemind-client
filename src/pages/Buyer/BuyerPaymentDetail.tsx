@@ -3,8 +3,7 @@ import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
-import { Body1, Body3, Body4, Body5, Heading } from 'styles/font';
-import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
+import { Body1, Body5, Body6, Heading } from 'styles/font';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getCounselorConsults } from 'api/get';
@@ -185,53 +184,65 @@ export const BuyerPaymentDetail = () => {
           consultStyle={consultStyleToCharNum(consultData.consultStyle)}
         />
         <Box>
-          <SectionTitle>
-            <Body5 color={Grey3} padding="0.2rem 0">
-              상담 유형
-            </Body5>
-          </SectionTitle>
-          <SectionTitle>
-            {letterFocus ? (
-              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                편지
-              </Body1>
-            ) : (
-              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                채팅
-              </Body1>
-            )}
-          </SectionTitle>
+          <Flex
+            width="100%"
+            direction="column"
+            gap={'0.8rem'}
+            align="flex-start"
+            padding="1.6rem 2.4rem"
+          >
+            <SectionTitle>
+              <Body5 color={Grey3} padding="0.2rem 0">
+                상담 유형
+              </Body5>
+            </SectionTitle>
+            <SectionTitle>
+              {letterFocus ? (
+                <Body1 color={Grey1}>편지</Body1>
+              ) : (
+                <Body1 color={Grey1}>채팅</Body1>
+              )}
+            </SectionTitle>
+          </Flex>
         </Box>
         <Box>
-          <SectionTitle>
-            <Body5 color={Grey3} padding="0.2rem 0">
-              상담료
-            </Body5>
-          </SectionTitle>
-          <Flex justify="space-between">
-            <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-              상품 금액
-            </Body1>
-            <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-              {consultData.cost.toLocaleString()}원
-            </Body1>
-          </Flex>
-          <Flex justify="space-between">
-            <Body1 color={Grey1} padding="0 0 1.3rem 0">
-              할인 금액
-            </Body1>
-            <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-              0원
-            </Body1>
-          </Flex>
-          <Line />
-          <Flex justify="space-between">
-            <Body1 color={Green} padding="0.8rem 0 1.2rem 0">
-              결제 금액
-            </Body1>
-            <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
-              {consultData.cost.toLocaleString()}원
-            </Body1>
+          <Flex
+            width="100%"
+            direction="column"
+            gap={'0.8rem'}
+            align="flex-start"
+            padding="1.6rem 2.4rem"
+          >
+            <SectionTitle>
+              <Body5 color={Grey3} padding="0.2rem 0">
+                상담 금액
+              </Body5>
+            </SectionTitle>
+            <Flex width="100%" justify="space-between">
+              <Body6 color={Grey1} padding="1.2rem 0 0.8rem 0">
+                상품 금액
+              </Body6>
+              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
+                {consultData.cost.toLocaleString()}원
+              </Body1>
+            </Flex>
+            <Flex width="100%" justify="space-between">
+              <Body6 color={Grey1} padding="0 0 1.3rem 0">
+                할인 금액
+              </Body6>
+              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
+                0원
+              </Body1>
+            </Flex>
+            <Line />
+            <Flex width="100%" justify="space-between">
+              <Body6 color={Green} padding="0.8rem 0 1.2rem 0">
+                결제 금액
+              </Body6>
+              <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
+                {consultData.cost.toLocaleString()}원
+              </Body1>
+            </Flex>
           </Flex>
         </Box>
         <Box>
@@ -257,20 +268,23 @@ export const BuyerPaymentDetail = () => {
           </Flex>
         </Box>
         <Box>
-          <SectionTitle>
-            <Body5 color={Grey3} padding="0.2rem 0">
-              이용 안내
-            </Body5>
-          </SectionTitle>
-          <Flex gap={'0.4rem'}>
-            {PAYMENT_SERVICE_INFO.map((info) => (
-              <Flex key={info} gap={'0.4rem'}>
-                <Heart />
-                <GuideText>
-                  <Body3 color={Grey3}>{info}</Body3>
-                </GuideText>
-              </Flex>
-            ))}
+          <Flex
+            width="100%"
+            direction="column"
+            gap={'1.2rem'}
+            align="flex-start"
+            padding="1.6rem 2.4rem"
+          >
+            <SectionTitle>
+              <Body5 color={Grey3} padding="0.2rem 0">
+                이용 안내
+              </Body5>
+            </SectionTitle>
+            <Flex gap={'1.6rem'} direction="column" align="flex-start">
+              {PAYMENT_SERVICE_INFO.map((info) => (
+                <ListItem>{info}</ListItem>
+              ))}
+            </Flex>
           </Flex>
         </Box>
       </Flex>
@@ -317,6 +331,7 @@ const ListItem = styled.li`
   font-style: normal;
   padding-left: 0.9rem;
   line-height: 155%;
+  text-align: left;
 `;
 
 const ButtonWrapper = styled.div`
