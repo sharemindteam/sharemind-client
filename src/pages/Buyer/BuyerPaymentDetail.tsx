@@ -232,7 +232,13 @@ export const BuyerPaymentDetail = () => {
         </Box>
         <Box>
           {/* TODO: 클래스로 선언한 flex contianer들을 Flex 컴포넌트로 */}
-          <Flex direction="column" gap={'1.2rem'} align="flex-start">
+          <Flex
+            width="100%"
+            direction="column"
+            gap={'1.2rem'}
+            align="flex-start"
+            padding="1.6rem 2.4rem"
+          >
             <Body5 color={Grey3}>전화번호 입력</Body5>
             <ListItem>결제를 위해 전화번호를 입력해주세요.</ListItem>
             <Input
