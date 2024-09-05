@@ -162,7 +162,7 @@ export const BuyerPaymentDetail = () => {
   //
 
   return (
-    <Wrapper>
+    <>
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
@@ -171,7 +171,11 @@ export const BuyerPaymentDetail = () => {
         />
         <Heading color={Grey1}>상담 신청하기</Heading>
       </HeaderWrapper>
-      <div className="body-wrapper">
+      <Flex
+        height="calc(var(--vh, 1vh) * 100 - 7.1rem)"
+        direction="column"
+        justify="flex-start"
+      >
         <PaymentDetailInfo
           nickname={consultData.nickname}
           level={consultData.level}
@@ -181,12 +185,12 @@ export const BuyerPaymentDetail = () => {
           consultStyle={consultStyleToCharNum(consultData.consultStyle)}
         />
         <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
+          <SectionTitle>
+            <Body5 color={Grey3} padding="0.2rem 0">
               상담 유형
-            </Body1>
-          </div>
-          <div className="line-wrapper">
+            </Body5>
+          </SectionTitle>
+          <SectionTitle>
             {letterFocus ? (
               <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
                 편지
@@ -196,39 +200,39 @@ export const BuyerPaymentDetail = () => {
                 채팅
               </Body1>
             )}
-          </div>
+          </SectionTitle>
         </Box>
         <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
+          <SectionTitle>
+            <Body5 color={Grey3} padding="0.2rem 0">
               상담료
-            </Body1>
-          </div>
-          <div className="price-line-wrapper">
+            </Body5>
+          </SectionTitle>
+          <Flex justify="space-between">
             <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
               상품 금액
             </Body1>
             <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
               {consultData.cost.toLocaleString()}원
             </Body1>
-          </div>
-          <div className="price-line-wrapper">
+          </Flex>
+          <Flex justify="space-between">
             <Body1 color={Grey1} padding="0 0 1.3rem 0">
               할인 금액
             </Body1>
             <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
               0원
             </Body1>
-          </div>
+          </Flex>
           <Line />
-          <div className="price-line-wrapper">
+          <Flex justify="space-between">
             <Body1 color={Green} padding="0.8rem 0 1.2rem 0">
               결제 금액
             </Body1>
             <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
               {consultData.cost.toLocaleString()}원
             </Body1>
-          </div>
+          </Flex>
         </Box>
         <Box>
           {/* TODO: 클래스로 선언한 flex contianer들을 Flex 컴포넌트로 */}
@@ -252,54 +256,24 @@ export const BuyerPaymentDetail = () => {
             />
           </Flex>
         </Box>
-        {/* TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리 */}
-        {/* <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
-              결제 방법
-            </Body1>
-          </div>
-          <div className="button-wrapper">
-            {PAYMENT_METHOD.map((methods) => (
-              <div className="button-row">
-                {methods.map((method) =>
-                  buttonSelect === method.buttonSelect ? (
-                    <Button text={method.text} height="5.2rem" width="16rem" />
-                  ) : (
-                    <Button
-                      text={method.text}
-                      height="5.2rem"
-                      width="16rem"
-                      color={Green}
-                      backgroundColor={LightGreen}
-                      onClick={() => {
-                        setButtonSelect(method.buttonSelect);
-                      }}
-                    />
-                  ),
-                )}
-              </div>
-            ))}
-          </div>
-        </Box> */}
         <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
+          <SectionTitle>
+            <Body5 color={Grey3} padding="0.2rem 0">
               이용 안내
-            </Body1>
-          </div>
-          <div className="service-info-wrapper">
+            </Body5>
+          </SectionTitle>
+          <Flex gap={'0.4rem'}>
             {PAYMENT_SERVICE_INFO.map((info) => (
-              <div key={info} className="service-info-line-wrapper">
+              <Flex key={info} gap={'0.4rem'}>
                 <Heart />
-                <div className="text-wrapper">
+                <GuideText>
                   <Body3 color={Grey3}>{info}</Body3>
-                </div>
-              </div>
+                </GuideText>
+              </Flex>
             ))}
-          </div>
+          </Flex>
         </Box>
-      </div>
+      </Flex>
       <ButtonWrapper>
         <Button
           text="결제 페이지로 이동"
@@ -308,50 +282,12 @@ export const BuyerPaymentDetail = () => {
           onClick={handlePaymentClick}
         />
       </ButtonWrapper>
-    </Wrapper>
+    </>
   );
 };
 
-const Wrapper = styled.div`
-  .body-wrapper {
-    height: calc(var(--vh, 1vh) * 100 - 7.1rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .line-wrapper {
-    width: 33.5rem;
-  }
-  .price-line-wrapper {
-    width: 33.5rem;
-    display: flex;
-    justify-content: space-between;
-  }
-  .button-wrapper {
-    margin: 0.8rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-  .button-row {
-    display: flex;
-    gap: 1.2rem;
-  }
-  .service-info-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    margin-top: 0.8rem;
-    margin-bottom: 7.9rem;
-  }
-  .service-info-line-wrapper {
-    display: flex;
-    gap: 0.4rem;
-    width: 33.5rem;
-  }
-  .text-wrapper {
-    width: 31.1rem;
-  }
+const GuideText = styled.p`
+  width: 31.1rem;
 `;
 
 const Box = styled.div`
@@ -368,6 +304,10 @@ const Line = styled.div`
   width: 33.5rem;
   height: 0.1rem;
   background-color: ${Grey6};
+`;
+
+const SectionTitle = styled.label`
+  align-self: flex-start;
 `;
 
 const ListItem = styled.li`

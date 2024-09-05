@@ -45,8 +45,8 @@ export const Flex = ({
   className,
   style,
   onClick,
-  padding = 'auto',
-  margin = 'auto',
+  padding = '0',
+  margin = '0',
 }: FlexProps) => {
   return (
     <FlexBase
