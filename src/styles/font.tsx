@@ -84,6 +84,20 @@ export const Body4 = styled.div<FontProps>`
   text-decoration-line: ${(props) => props.underline && 'underline'};
   ${(props) => props.customStyles}
 `;
+
+export const Body5 = styled.div<FontProps>`
+  font-family: Pretendard;
+  color: ${(props) => props.color || '#000000'};
+  font-size: 1.4rem;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 155%;
+  padding: ${(props) => props.padding || ''};
+  margin: ${(props) => props.margin || ''};
+  text-decoration-line: ${(props) => props.underline && 'underline'};
+  ${(props) => props.customStyles}
+`;
+
 export const Button1 = styled.div<FontProps>`
   font-family: Pretendard;
   color: ${(props) => props.color || '#000000'};

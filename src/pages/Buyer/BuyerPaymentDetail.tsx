@@ -3,7 +3,7 @@ import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
-import { Body1, Body3, Heading } from 'styles/font';
+import { Body1, Body3, Body4, Heading } from 'styles/font';
 import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ import { APP_WIDTH } from 'styles/AppStyle';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { requestPayment } from 'utils/requestPayment';
 import { ConsultType } from 'utils/type';
+import Input from 'components/Common/Input';
 
 //
 //
@@ -226,6 +227,13 @@ export const BuyerPaymentDetail = () => {
             <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
               {consultData.cost.toLocaleString()}원
             </Body1>
+          </div>
+        </Box>
+        <Box>
+          <div className="line-wrapper">
+            <Body4>전화번호 입력</Body4>
+            <Body4>결제를 위해 전화번호를 입력해주세요.</Body4>
+            <Input width="100%" borderRadius="0.4rem" />
           </div>
         </Box>
         {/* TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리 */}
