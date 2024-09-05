@@ -3,7 +3,7 @@ import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
 import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
-import { Body1, Body3, Body4, Heading } from 'styles/font';
+import { Body1, Body3, Body4, Body5, Heading } from 'styles/font';
 import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,7 @@ import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 import { requestPayment } from 'utils/requestPayment';
 import { ConsultType } from 'utils/type';
 import Input from 'components/Common/Input';
+import { Flex } from 'components/Common/Flex';
 
 //
 //
@@ -230,11 +231,20 @@ export const BuyerPaymentDetail = () => {
           </div>
         </Box>
         <Box>
-          <div className="line-wrapper">
-            <Body4>전화번호 입력</Body4>
-            <Body4>결제를 위해 전화번호를 입력해주세요.</Body4>
-            <Input width="100%" borderRadius="0.4rem" />
-          </div>
+          {/* TODO: 클래스로 선언한 flex contianer들을 Flex 컴포넌트로 */}
+          <Flex direction="column" gap={'1.2rem'} align="flex-start">
+            <Body5 color={Grey3}>전화번호 입력</Body5>
+            <ListItem>결제를 위해 전화번호를 입력해주세요.</ListItem>
+            <Input
+              width="100%"
+              borderRadius="0.4rem"
+              placeholder="-없이 입력"
+              fontSize="1.3rem"
+              padding="1.2rem"
+              isBoxSizing={true}
+              placeHolderWeight="500"
+            />
+          </Flex>
         </Box>
         {/* TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리 */}
         {/* <Box>
@@ -352,6 +362,15 @@ const Line = styled.div`
   width: 33.5rem;
   height: 0.1rem;
   background-color: ${Grey6};
+`;
+
+const ListItem = styled.li`
+  list-style: inside;
+  font-size: 1.4rem;
+  font-weight: 400;
+  font-style: normal;
+  padding-left: 0.9rem;
+  line-height: 155%;
 `;
 
 const ButtonWrapper = styled.div`
