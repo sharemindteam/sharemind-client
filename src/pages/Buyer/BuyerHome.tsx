@@ -9,6 +9,7 @@ import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
 import { SearchResultData } from 'utils/type';
 import { useEffect, useState } from 'react';
 import { patchCounselorsAll } from 'api/patch';
+import { getRandomCounselors } from 'api/get';
 
 //
 //
@@ -17,6 +18,8 @@ import { patchCounselorsAll } from 'api/patch';
 export const BuyerHome = () => {
   const navigate = useNavigate();
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
+
+  const [isViewManyLoved, setIsViewManyLoved] = useState<boolean>(false);
 
   //
   //
@@ -29,7 +32,20 @@ export const BuyerHome = () => {
         };
         const res: any = await patchCounselorsAll('POPULARITY', body);
         if (res.status === 200) {
-          setSearchData(res.data);
+          if (res.data.length < 0) {
+            setSearchData(res.data);
+          } else {
+            /**
+             * 많은 셰어에게 사랑을 받았어요
+             */
+            setIsViewManyLoved(true);
+            const params = {
+              sortType: 'RANDOM',
+              index: 0,
+            };
+            const res: any = await getRandomCounselors({ params });
+            setSearchData(res.data);
+          }
         } else if (res.response.status === 404) {
           alert('유효하지 않은 정렬 방식입니다.');
           navigate('/share');
@@ -56,7 +72,10 @@ export const BuyerHome = () => {
       <TabA1 isBuyer={true} initState={1} />
       <CartegorySearch />
       <HomeConsultInProgress />
-      <HomeConsultInReady searchData={searchData} />
+      <HomeConsultInReady
+        searchData={searchData}
+        isViewManyLoved={isViewManyLoved}
+      />
       <HomeAboutFooterSection isBuyer={true} />
     </Wrapper>
   );

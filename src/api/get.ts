@@ -111,6 +111,8 @@ export const getCounselorConsults = async (
 //마인더 프로필 페이지 마인더 프로필 조회
 export const getCounselorsAll = async (counselorId: string | undefined) =>
   await getPublicInstance(`/counselors/all/${counselorId}`);
+export const getRandomCounselors = async (params: any) =>
+  await getPublicInstance(`/counselors/all/random`, params);
 
 /**
  * SearchWord Controller
