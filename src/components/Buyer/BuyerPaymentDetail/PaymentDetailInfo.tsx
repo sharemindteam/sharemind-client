@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Grey1, Grey3, White } from 'styles/color';
-import { Body1, Body3, Heading } from 'styles/font';
+import { Body3, Body5, Heading } from 'styles/font';
 import { Characters } from 'utils/Characters';
 import { ReactComponent as HeartIcon } from 'assets/open-consult/open-consult-heart.svg';
 import { Flex } from 'components/Common/Flex';
@@ -33,9 +33,9 @@ export const PaymentDetailInfo = ({
   return (
     <Wrapper>
       <div className="card-headline">
-        <Body1 color={Grey3} padding="0.2rem 0">
+        <Body5 color={Grey3} padding="0.2rem 0">
           상품 정보
-        </Body1>
+        </Body5>
       </div>
       <CardWrapper>
         <div className="col1">
@@ -68,13 +68,11 @@ const Wrapper = styled.div`
   background-color: ${White};
   width: 100%;
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
-  align-items: center;
-  padding: 0.8rem 0;
+  align-items: flex-start;
+  padding: 1.6rem 2.4rem;
   margin: 0.4rem 0 0.8rem 0;
-  .card-headline {
-    width: 33.5rem;
-  }
 `;
 
 const CardWrapper = styled.div`
@@ -82,8 +80,7 @@ const CardWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  padding: 2rem 0 2rem 0;
-  width: 33.5rem;
+  width: 100%;
 
   .col1 {
     display: flex;

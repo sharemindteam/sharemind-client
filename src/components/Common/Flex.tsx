@@ -25,6 +25,8 @@ interface FlexBaseProps {
   align?: 'stretch' | 'flex-start' | 'flex-end' | 'center' | 'baseline';
   gap?: number | string;
   wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+  padding?: string;
+  margin?: string;
 }
 
 //
@@ -43,9 +45,13 @@ export const Flex = ({
   className,
   style,
   onClick,
+  padding = '0',
+  margin = '0',
 }: FlexProps) => {
   return (
     <FlexBase
+      padding={padding}
+      margin={margin}
       height={height}
       direction={direction}
       justify={justify}
@@ -64,6 +70,7 @@ export const Flex = ({
 
 const FlexBase = styled.div<FlexBaseProps>`
   display: flex;
+  box-sizing: border-box;
   height: ${({ height }) => height};
   width: ${({ width }) => width};
   flex-direction: ${({ direction }) => direction};
@@ -71,4 +78,6 @@ const FlexBase = styled.div<FlexBaseProps>`
   align-items: ${({ align }) => align};
   gap: ${({ gap }) => `${gap}`};
   flex-wrap: ${({ wrap }) => wrap};
+  padding: ${({ padding }) => padding};
+  margin: ${({ margin }) => margin};
 `;
