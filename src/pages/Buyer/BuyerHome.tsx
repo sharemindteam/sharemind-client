@@ -32,10 +32,10 @@ export const BuyerHome = () => {
         };
         const res: any = await patchCounselorsAll('POPULARITY', body);
         if (res.status === 200) {
-          if (res.data.length < 0) {
+          if (res.data.length > 0) {
             setSearchData(res.data);
           } else {
-            /**
+            /** 
              * 많은 셰어에게 사랑을 받았어요
              */
             setIsViewManyLoved(true);
