@@ -54,6 +54,7 @@ import BuyerOpenConsultLikes from 'pages/Buyer/BuyerOpenConsultLikes';
 import BuyerOpenConsultRecents from 'pages/Buyer/BuyerOpenConsultRecents';
 import SellerProfitBankAccount from 'pages/Seller/SellerProfitBankAccount';
 import ServerDown from 'pages/Common/ServerDown';
+import SellerUpdateFail from 'pages/Seller/SellerUpdateFail';
 
 const Router = () => {
   return (
@@ -147,7 +148,7 @@ const Router = () => {
       />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/minder/mypage" element={<SellerMypage />} />
-
+      <Route path="/minder/mypage/mypage" element={<SellerMypage />} />
       <Route path="/minder/mypage/review" element={<SellerMyPageReview />} />
       <Route
         path="/minder/mypage/viewProfile"
@@ -158,6 +159,7 @@ const Router = () => {
         path="/minder/mypage/modifyProfile"
         element={<SellerMypageModifyProfile />}
       />
+      <Route path="/minder/mypage/update-fail" element={<SellerUpdateFail />} />
       {/* 판매자 : 수익 관리 */}
       <Route
         path="/minder/calculatemanagement"

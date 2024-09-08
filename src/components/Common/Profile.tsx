@@ -68,7 +68,12 @@ export const Profile = ({
 
       {profileStatus === 'EVALUATION_FAIL' && (
         <EvaluationFailStatusSection>
-          <div className="navigate-button">
+          <div
+            className="navigate-button"
+            onClick={() => {
+              navigate('/minder/mypage/update-fail');
+            }}
+          >
             <Caption1 color={Green}>판매정보 업데이트에 실패했어요.</Caption1>
             <Flex>
               <Caption1 color={Green}>자세히 보기</Caption1>
