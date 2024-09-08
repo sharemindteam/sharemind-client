@@ -2,7 +2,7 @@ import { PaymentDetailInfo } from 'components/Buyer/BuyerPaymentDetail/PaymentDe
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
+import { Black, Green, Grey1, Grey3, Grey6, White } from 'styles/color';
 import { Body1, Body5, Body6, Heading } from 'styles/font';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import { getCounselorConsults } from 'api/get';
 import { postConsults } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { requestPayment } from 'utils/requestPayment';
+
 import { ConsultType } from 'utils/type';
 import Input from 'components/Common/Input';
 import { Flex } from 'components/Common/Flex';
@@ -224,34 +224,20 @@ export const BuyerPaymentDetail = () => {
             padding="1.6rem 2.4rem"
           >
             <SectionTitle>
-              <Body5 color={Grey3} padding="0.2rem 0">
-                상담 금액
-              </Body5>
+              <Body5 color={Grey3}>상담 금액</Body5>
             </SectionTitle>
             <Flex width="100%" justify="space-between">
-              <Body6 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                상품 금액
-              </Body6>
-              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                {consultData.cost.toLocaleString()}원
-              </Body1>
+              <Body6 color={Grey1}>상품 금액</Body6>
+              <Body1 color={Grey1}>{consultData.cost.toLocaleString()}원</Body1>
             </Flex>
             <Flex width="100%" justify="space-between">
-              <Body6 color={Grey1} padding="0 0 1.3rem 0">
-                할인 금액
-              </Body6>
-              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                0원
-              </Body1>
+              <Body6 color={Grey1}>할인 금액</Body6>
+              <Body1 color={Grey1}>0원</Body1>
             </Flex>
             <Line />
             <Flex width="100%" justify="space-between">
-              <Body6 color={Green} padding="0.8rem 0 1.2rem 0">
-                결제 금액
-              </Body6>
-              <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
-                {consultData.cost.toLocaleString()}원
-              </Body1>
+              <Body6 color={Green}>결제 금액</Body6>
+              <Body1 color={Green}>{consultData.cost.toLocaleString()}원</Body1>
             </Flex>
           </Flex>
         </Box>
@@ -265,7 +251,7 @@ export const BuyerPaymentDetail = () => {
             padding="1.6rem 2.4rem"
           >
             <Body5 color={Grey3}>전화번호 입력</Body5>
-            <ListItem>결제를 위해 전화번호를 입력해주세요.</ListItem>
+            <ListItem content="결제를 위해 전화번호를 입력해주세요." />
             <Input
               width="100%"
               borderRadius="0.4rem"
@@ -284,7 +270,7 @@ export const BuyerPaymentDetail = () => {
           <Flex
             width="100%"
             direction="column"
-            gap={'1.2rem'}
+            gap={'0.8rem'}
             align="flex-start"
             padding="1.6rem 2.4rem"
           >
@@ -295,7 +281,7 @@ export const BuyerPaymentDetail = () => {
             </SectionTitle>
             <Flex gap={'1.6rem'} direction="column" align="flex-start">
               {PAYMENT_SERVICE_INFO.map((info) => (
-                <ListItem>{info}</ListItem>
+                <ListItem content={info} />
               ))}
             </Flex>
             <Space height="10rem" />
@@ -314,9 +300,17 @@ export const BuyerPaymentDetail = () => {
   );
 };
 
+const ListItem = ({ content }: { content: string }) => {
+  return (
+    <ListItemContent>
+      <ListBullet />
+      <span>{content}</span>
+    </ListItemContent>
+  );
+};
+
 const Box = styled.div`
   width: 100%;
-  padding: 0.8rem 0;
   background-color: ${White};
   margin-bottom: 0.8rem;
   display: flex;
@@ -334,14 +328,18 @@ const SectionTitle = styled.label`
   align-self: flex-start;
 `;
 
-const ListItem = styled.li`
+const ListItemContent = styled.div`
   list-style: inside;
   font-size: 1.4rem;
   font-weight: 400;
   font-style: normal;
-  padding-left: 0.9rem;
+  padding-left: 0.8rem;
   line-height: 155%;
   text-align: left;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
 `;
 
 const ButtonWrapper = styled.div`
@@ -356,5 +354,16 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0.8rem 2rem;
+  box-sizing: border-box;
+`;
+
+const ListBullet = styled.div`
+  flex-shrink: 0;
+
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: 1rem;
+  border-radius: 100%;
+  background-color: ${Black};
   box-sizing: border-box;
 `;
