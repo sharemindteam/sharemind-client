@@ -2,7 +2,7 @@ import { PaymentDetailInfo } from 'components/Buyer/BuyerPaymentDetail/PaymentDe
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
+import { Black, Green, Grey1, Grey3, Grey6, White } from 'styles/color';
 import { Body1, Body5, Body6, Heading } from 'styles/font';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -10,11 +10,12 @@ import { getCounselorConsults } from 'api/get';
 import { postConsults } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { requestPayment } from 'utils/requestPayment';
-import { ConsultType } from 'utils/type';
+
+import { ConsultType, SharemindErrorResponse } from 'utils/type';
 import Input from 'components/Common/Input';
 import { Flex } from 'components/Common/Flex';
 import { Space } from 'components/Common/Space';
+import { AxiosError } from 'axios';
 
 //
 //
@@ -73,8 +74,6 @@ export const BuyerPaymentDetail = () => {
   const { state } = location;
   const letterFocus: boolean = state?.letterFocus;
 
-  // const [buttonSelect, setButtonSelect] = useState<number>(0);
-
   const [consultData, setConsultData] = useState<ConsultInfo>({
     consultCategories: [],
     consultStyle: '',
@@ -89,13 +88,30 @@ export const BuyerPaymentDetail = () => {
   });
 
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+
   /**
    *
    */
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
 
-  const handleChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value);
+    inputValue = inputValue.replace(/\D/g, '');
+
+    if (inputValue.length <= 3) {
+      setPhoneNumber(inputValue);
+    } else if (inputValue.length <= 7) {
+      setPhoneNumber(inputValue.slice(0, 3) + '-' + inputValue.slice(3));
+    } else if (inputValue.length <= 11) {
+      setPhoneNumber(
+        inputValue.slice(0, 3) +
+          '-' +
+          inputValue.slice(3, 7) +
+          '-' +
+          inputValue.slice(7, 11),
+      );
+    }
   };
+
   const handlePaymentClick = async () => {
     let consultType: ConsultType;
     if (letterFocus) {
@@ -114,15 +130,26 @@ export const BuyerPaymentDetail = () => {
       const res: any = await postConsults(body);
       if (res.status === 201) {
         window.location.href = res.data;
-      } else if (res.response.status === 400 || res.response.status === 404) {
-        const errMessage = res.response.data.message.substring(
-          0,
-          res.response.data.message.indexOf('.') + 1,
-        );
-        alert(errMessage);
       }
     } catch (e) {
-      alert(e);
+      const error = e as AxiosError;
+
+      const _error = error.response?.data as SharemindErrorResponse;
+
+      if (error.response?.status === 400) {
+        alert(_error.message);
+      } else if (error.response?.status === 404) {
+        const errorMessage = _error.message;
+        const index = errorMessage.indexOf(':');
+        if (index !== -1) {
+          const alertPart = errorMessage.slice(0, index);
+          alert(alertPart);
+        } else {
+          alert(errorMessage);
+        }
+      } else {
+        alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+      }
     }
   };
 
@@ -132,7 +159,7 @@ export const BuyerPaymentDetail = () => {
   useEffect(() => {
     if (letterFocus === undefined || letterFocus === null) {
       alert('잘못된 접근입니다');
-      //나중에상담사 프로필로 navigate
+
       navigate(-1);
     }
 
@@ -224,34 +251,20 @@ export const BuyerPaymentDetail = () => {
             padding="1.6rem 2.4rem"
           >
             <SectionTitle>
-              <Body5 color={Grey3} padding="0.2rem 0">
-                상담 금액
-              </Body5>
+              <Body5 color={Grey3}>상담 금액</Body5>
             </SectionTitle>
             <Flex width="100%" justify="space-between">
-              <Body6 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                상품 금액
-              </Body6>
-              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                {consultData.cost.toLocaleString()}원
-              </Body1>
+              <Body6 color={Grey1}>상품 금액</Body6>
+              <Body1 color={Grey1}>{consultData.cost.toLocaleString()}원</Body1>
             </Flex>
             <Flex width="100%" justify="space-between">
-              <Body6 color={Grey1} padding="0 0 1.3rem 0">
-                할인 금액
-              </Body6>
-              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                0원
-              </Body1>
+              <Body6 color={Grey1}>할인 금액</Body6>
+              <Body1 color={Grey1}>0원</Body1>
             </Flex>
             <Line />
             <Flex width="100%" justify="space-between">
-              <Body6 color={Green} padding="0.8rem 0 1.2rem 0">
-                결제 금액
-              </Body6>
-              <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
-                {consultData.cost.toLocaleString()}원
-              </Body1>
+              <Body6 color={Green}>결제 금액</Body6>
+              <Body1 color={Green}>{consultData.cost.toLocaleString()}원</Body1>
             </Flex>
           </Flex>
         </Box>
@@ -265,17 +278,17 @@ export const BuyerPaymentDetail = () => {
             padding="1.6rem 2.4rem"
           >
             <Body5 color={Grey3}>전화번호 입력</Body5>
-            <ListItem>결제를 위해 전화번호를 입력해주세요.</ListItem>
+            <ListItem content="결제를 위해 전화번호를 입력해주세요." />
             <Input
               width="100%"
               borderRadius="0.4rem"
-              placeholder="-포함하여 입력"
+              placeholder="-없이 입력"
               fontSize="1.3rem"
               padding="1.2rem"
               isBoxSizing={true}
               placeHolderWeight="500"
               value={phoneNumber}
-              onChange={handleChangePhoneNumber}
+              onChange={handlePhoneNumberChange}
             />
           </Flex>
         </Box>
@@ -284,7 +297,7 @@ export const BuyerPaymentDetail = () => {
           <Flex
             width="100%"
             direction="column"
-            gap={'1.2rem'}
+            gap={'0.8rem'}
             align="flex-start"
             padding="1.6rem 2.4rem"
           >
@@ -295,7 +308,7 @@ export const BuyerPaymentDetail = () => {
             </SectionTitle>
             <Flex gap={'1.6rem'} direction="column" align="flex-start">
               {PAYMENT_SERVICE_INFO.map((info) => (
-                <ListItem>{info}</ListItem>
+                <ListItem content={info} />
               ))}
             </Flex>
             <Space height="10rem" />
@@ -314,9 +327,17 @@ export const BuyerPaymentDetail = () => {
   );
 };
 
+const ListItem = ({ content }: { content: string }) => {
+  return (
+    <ListItemContent>
+      <ListBullet />
+      <span>{content}</span>
+    </ListItemContent>
+  );
+};
+
 const Box = styled.div`
   width: 100%;
-  padding: 0.8rem 0;
   background-color: ${White};
   margin-bottom: 0.8rem;
   display: flex;
@@ -334,14 +355,18 @@ const SectionTitle = styled.label`
   align-self: flex-start;
 `;
 
-const ListItem = styled.li`
+const ListItemContent = styled.div`
   list-style: inside;
   font-size: 1.4rem;
   font-weight: 400;
   font-style: normal;
-  padding-left: 0.9rem;
+  padding-left: 0.8rem;
   line-height: 155%;
   text-align: left;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
 `;
 
 const ButtonWrapper = styled.div`
@@ -356,5 +381,16 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0.8rem 2rem;
+  box-sizing: border-box;
+`;
+
+const ListBullet = styled.div`
+  flex-shrink: 0;
+
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: 1rem;
+  border-radius: 100%;
+  background-color: ${Black};
   box-sizing: border-box;
 `;
