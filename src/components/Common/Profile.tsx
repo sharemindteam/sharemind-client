@@ -30,7 +30,6 @@ export const Profile = ({
   profileStatus,
 }: ProfileProps) => {
   const navigate = useNavigate();
-  console.log(profileStatus);
   return (
     <>
       <ProfileBox>
