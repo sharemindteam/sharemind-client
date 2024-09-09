@@ -1,3 +1,4 @@
+import { axiosPost } from 'api/axios';
 import { postInstance, postPublicInstance } from './axios.deprecated';
 //Auth controller
 //로그인
@@ -27,7 +28,7 @@ export const postEmailsCode = async (body: any) =>
 //Consult Controller
 //상담 신청
 export const postConsults = async (body: any) =>
-  await postInstance('/consults', body);
+  await axiosPost('/consults', body);
 
 //LetterMessage Controller
 //Message 최초 생성

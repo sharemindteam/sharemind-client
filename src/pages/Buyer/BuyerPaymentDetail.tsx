@@ -11,10 +11,11 @@ import { postConsults } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
 
-import { ConsultType } from 'utils/type';
+import { ConsultType, SharemindErrorResponse } from 'utils/type';
 import Input from 'components/Common/Input';
 import { Flex } from 'components/Common/Flex';
 import { Space } from 'components/Common/Space';
+import { AxiosError } from 'axios';
 
 //
 //
@@ -73,8 +74,6 @@ export const BuyerPaymentDetail = () => {
   const { state } = location;
   const letterFocus: boolean = state?.letterFocus;
 
-  // const [buttonSelect, setButtonSelect] = useState<number>(0);
-
   const [consultData, setConsultData] = useState<ConsultInfo>({
     consultCategories: [],
     consultStyle: '',
@@ -93,9 +92,26 @@ export const BuyerPaymentDetail = () => {
    *
    */
 
-  const handleChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value);
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+
+    inputValue = inputValue.replace(/\D/g, '');
+
+    if (inputValue.length <= 3) {
+      setPhoneNumber(inputValue);
+    } else if (inputValue.length <= 7) {
+      setPhoneNumber(inputValue.slice(0, 3) + '-' + inputValue.slice(3));
+    } else if (inputValue.length <= 11) {
+      setPhoneNumber(
+        inputValue.slice(0, 3) +
+          '-' +
+          inputValue.slice(3, 7) +
+          '-' +
+          inputValue.slice(7, 11),
+      );
+    }
   };
+
   const handlePaymentClick = async () => {
     let consultType: ConsultType;
     if (letterFocus) {
@@ -114,15 +130,28 @@ export const BuyerPaymentDetail = () => {
       const res: any = await postConsults(body);
       if (res.status === 201) {
         window.location.href = res.data;
-      } else if (res.response.status === 400 || res.response.status === 404) {
-        const errMessage = res.response.data.message.substring(
-          0,
-          res.response.data.message.indexOf('.') + 1,
-        );
-        alert(errMessage);
       }
     } catch (e) {
-      alert(e);
+      const error = e as AxiosError;
+
+      const _error = error.response?.data as SharemindErrorResponse;
+
+      if (error.response?.status === 400) {
+        console.log('400');
+        alert(_error.message);
+      } else if (error.response?.status === 404) {
+        console.log('404');
+        const errorMessage = _error.message;
+        const index = errorMessage.indexOf(':');
+        if (index !== -1) {
+          const alertPart = errorMessage.slice(0, index);
+          alert(alertPart);
+        } else {
+          alert(errorMessage);
+        }
+      } else {
+        alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+      }
     }
   };
 
@@ -132,7 +161,7 @@ export const BuyerPaymentDetail = () => {
   useEffect(() => {
     if (letterFocus === undefined || letterFocus === null) {
       alert('잘못된 접근입니다');
-      //나중에상담사 프로필로 navigate
+
       navigate(-1);
     }
 
@@ -255,13 +284,13 @@ export const BuyerPaymentDetail = () => {
             <Input
               width="100%"
               borderRadius="0.4rem"
-              placeholder="-포함하여 입력"
+              placeholder="-없이 입력"
               fontSize="1.3rem"
               padding="1.2rem"
               isBoxSizing={true}
               placeHolderWeight="500"
               value={phoneNumber}
-              onChange={handleChangePhoneNumber}
+              onChange={handlePhoneNumberChange}
             />
           </Flex>
         </Box>
