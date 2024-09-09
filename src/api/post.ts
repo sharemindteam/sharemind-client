@@ -61,7 +61,7 @@ export const postLikeComment = async (commentId: any) =>
 
 // Post Controller
 export const postOpenConsult = async (body: any) =>
-  await postInstance('/posts', body);
+  await axiosPost('/posts', body);
 
 // PostLike Controller
 

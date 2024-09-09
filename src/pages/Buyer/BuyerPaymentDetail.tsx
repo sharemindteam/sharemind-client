@@ -88,10 +88,10 @@ export const BuyerPaymentDetail = () => {
   });
 
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+
   /**
    *
    */
-
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputValue = e.target.value;
 
@@ -137,10 +137,8 @@ export const BuyerPaymentDetail = () => {
       const _error = error.response?.data as SharemindErrorResponse;
 
       if (error.response?.status === 400) {
-        console.log('400');
         alert(_error.message);
       } else if (error.response?.status === 404) {
-        console.log('404');
         const errorMessage = _error.message;
         const index = errorMessage.indexOf(':');
         if (index !== -1) {
