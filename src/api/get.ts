@@ -112,7 +112,7 @@ export const getCounselorConsults = async (
 export const getCounselorsAll = async (counselorId: string | undefined) =>
   await getPublicInstance(`/counselors/all/${counselorId}`);
 export const getRandomCounselors = async (params: any) =>
-  await getPublicInstance(`/counselors/all/random`, params);
+  await axiosPublicGet(`/counselors/all/random`, params);
 
 /**
  * SearchWord Controller
