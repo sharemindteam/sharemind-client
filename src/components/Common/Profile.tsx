@@ -10,6 +10,11 @@ import { ReactComponent as RightArrowIcon } from 'assets/icons/right-arrow-green
 import { useNavigate } from 'react-router-dom';
 import { Characters } from 'utils/Characters';
 import { Flex } from './Flex';
+
+//
+//
+//
+
 interface ProfileProps {
   isBuyer: boolean;
   isVerified?: undefined | boolean;
@@ -19,7 +24,7 @@ interface ProfileProps {
   isPass?: boolean | undefined;
   profileStatus: string | undefined;
 }
-//일단 프로필 이미지는 한개만 불러왔음!
+
 export const Profile = ({
   isBuyer,
   isVerified = false,

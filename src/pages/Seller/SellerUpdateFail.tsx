@@ -6,6 +6,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heading } from 'styles/font';
 
+//
+//
+//
+
 export default function SellerUpdateFail() {
   const navigate = useNavigate();
   const onBackClick = () => {
