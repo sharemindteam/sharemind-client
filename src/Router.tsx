@@ -148,7 +148,6 @@ const Router = () => {
       />
       {/* 판매자 : 프로필 정보 */}
       <Route path="/minder/mypage" element={<SellerMypage />} />
-      <Route path="/minder/mypage/mypage" element={<SellerMypage />} />
       <Route path="/minder/mypage/review" element={<SellerMyPageReview />} />
       <Route
         path="/minder/mypage/viewProfile"
