@@ -4,7 +4,9 @@ import { Space } from 'components/Common/Space';
 import { CategoryModal } from 'components/Seller/SellerMyPageModifyProfile/CategoryModal';
 import IsOutPopup from 'components/Seller/SellerMyPageModifyProfile/IsOutPopup';
 import { ModifyProfileHeader } from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileHeader';
-import ModifyProfileMainSection from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
+import ModifyProfileMainSection, {
+  MAX_PHONE_NUMBER_LENGTH,
+} from 'components/Seller/SellerMyPageModifyProfile/ModifyProfileMainSection';
 import SetChatTimeSection, {
   SelectedTimeList,
 } from 'components/Seller/SellerMyPageModifyProfile/SetChatTimeSection';
@@ -27,6 +29,7 @@ import {
   isTypeOpenModalState,
   isUpdateModalOpenState,
 } from 'utils/atom';
+import { InputValidStateType } from 'utils/type';
 
 //
 //
@@ -106,6 +109,44 @@ export const SellerMypageModifyProfile = () => {
 
   const oneLiner = useInput('');
   const experience = useInput('');
+
+  /** Phone Number controller */
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+
+  const [phoneNumberValid, setPhoneNumberValid] =
+    useState<InputValidStateType>('none');
+
+  /**
+   *
+   */
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const phoneNumberRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+
+    let inputValue = e.target.value;
+
+    inputValue = inputValue.replace(/\D/g, '');
+
+    if (inputValue.length <= 3) {
+      setPhoneNumber(inputValue);
+    } else if (inputValue.length <= 7) {
+      setPhoneNumber(inputValue.slice(0, 3) + '-' + inputValue.slice(3));
+    } else if (inputValue.length <= 11) {
+      setPhoneNumber(
+        inputValue.slice(0, 3) +
+          '-' +
+          inputValue.slice(3, 7) +
+          '-' +
+          inputValue.slice(7, 11),
+      );
+    }
+
+    if (phoneNumberRegex.test(inputValue)) {
+      setPhoneNumberValid('valid');
+    } else if (inputValue.length === MAX_PHONE_NUMBER_LENGTH) {
+      setPhoneNumberValid('invalid');
+    }
+  };
+
   const [isNoProfile, setIsNoProfile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -158,6 +199,7 @@ export const SellerMypageModifyProfile = () => {
             alert('판매 정보가 등록되어 있지 않습니다.');
             navigate('/minder/mypage');
           }
+          setPhoneNumber(data?.phoneNumber);
           nickname.setValue(data?.nickname);
           category.setViewValue(data?.consultCategories.join(', '));
           setSelectCategory(
@@ -238,6 +280,9 @@ export const SellerMypageModifyProfile = () => {
           selectType={selectType}
           setIsSetChatTime={setIsSetChatTime}
           selectAvailableTime={selectedTimeList}
+          phoneNumber={phoneNumber}
+          phoneNumberValid={phoneNumberValid}
+          handlePhoneNumberChange={handlePhoneNumberChange}
         />
       )}
       {/* 모달 여부 True면.. */}

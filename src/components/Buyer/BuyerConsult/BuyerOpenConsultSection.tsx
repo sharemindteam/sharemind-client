@@ -128,6 +128,7 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
         ) : (
           <BuyerOpenConsultCardList>
             {openConsultList?.map((item) => {
+              // 상담 글 작성하지 않았을 떄
               if (item.title === null) {
                 return (
                   <BuyerPendingOpenConsultCard key={item.postId}>
@@ -139,16 +140,17 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
                       </Body1>
                       <Caption1 color={Grey3}>{item.updatedAt}</Caption1>
                     </Flex>
-
                     <Body3 color={Grey2}>
                       {item.isCompleted === null
-                        ? '공개상담을 결제한 후 아직 글을 작성하지 않으셨어요. 구매 후 24시간이 지나면 자동으로 환불이 진행됩니다.'
+                        ? item.isPublic
+                          ? '공개상담을 신청한 후 아직 글을 작성하지 않으셨어요. 24시간이 지나면 자동으로 신청이 취소됩니다.'
+                          : '비공개상담을 결제한 후 아직 글을 작성하지 않으셨어요. 구매 후 24시간이 지나면 자동으로 환불이 진행됩니다.'
                         : '이어서 작성하기'}
                     </Body3>
                     <Button
                       text={
                         item.isCompleted === null
-                          ? '작성하기'
+                          ? '상담 글 작성하기 '
                           : '이어서 작성하기'
                       }
                       width="100%"
@@ -161,6 +163,7 @@ function BuyerOpenConsultSection({ isChecked }: BuyerOpenConsultSectionProps) {
                   </BuyerPendingOpenConsultCard>
                 );
               } else {
+                // 상담 글 작성했을 때
                 return (
                   <BuyerOpenConsultCard
                     key={item.postId}

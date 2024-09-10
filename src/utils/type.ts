@@ -1,4 +1,13 @@
 //type
+
+/** sharemind error response data type */
+
+export interface SharemindErrorResponse {
+  errorName: string;
+  message: string;
+  timeStamp: string;
+}
+
 //tagA2 상담 상태 type
 export type ConsultState =
   | '답변 대기'
@@ -180,3 +189,5 @@ export const ConsultEngMappedKor = {
   Chat: '채팅',
   'Open-Consult': '공개상담',
 } as const;
+
+export type InputValidStateType = 'valid' | 'invalid' | 'none';

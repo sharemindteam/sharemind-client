@@ -2,17 +2,20 @@ import { PaymentDetailInfo } from 'components/Buyer/BuyerPaymentDetail/PaymentDe
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
-import { Body1, Body3, Heading } from 'styles/font';
-import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
+import { Black, Green, Grey1, Grey3, Grey6, White } from 'styles/color';
+import { Body1, Body5, Body6, Heading } from 'styles/font';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getCounselorConsults } from 'api/get';
 import { postConsults } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { consultStyleToCharNum } from 'utils/convertStringToCharNum';
-import { requestPayment } from 'utils/requestPayment';
-import { ConsultType } from 'utils/type';
+
+import { ConsultType, SharemindErrorResponse } from 'utils/type';
+import Input from 'components/Common/Input';
+import { Flex } from 'components/Common/Flex';
+import { Space } from 'components/Common/Space';
+import { AxiosError } from 'axios';
 
 //
 //
@@ -71,8 +74,6 @@ export const BuyerPaymentDetail = () => {
   const { state } = location;
   const letterFocus: boolean = state?.letterFocus;
 
-  // const [buttonSelect, setButtonSelect] = useState<number>(0);
-
   const [consultData, setConsultData] = useState<ConsultInfo>({
     consultCategories: [],
     consultStyle: '',
@@ -85,9 +86,32 @@ export const BuyerPaymentDetail = () => {
     totalReview: 0,
     totalConsult: 0,
   });
+
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+
   /**
    *
    */
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+
+    inputValue = inputValue.replace(/\D/g, '');
+
+    if (inputValue.length <= 3) {
+      setPhoneNumber(inputValue);
+    } else if (inputValue.length <= 7) {
+      setPhoneNumber(inputValue.slice(0, 3) + '-' + inputValue.slice(3));
+    } else if (inputValue.length <= 11) {
+      setPhoneNumber(
+        inputValue.slice(0, 3) +
+          '-' +
+          inputValue.slice(3, 7) +
+          '-' +
+          inputValue.slice(7, 11),
+      );
+    }
+  };
+
   const handlePaymentClick = async () => {
     let consultType: ConsultType;
     if (letterFocus) {
@@ -99,22 +123,33 @@ export const BuyerPaymentDetail = () => {
       //나중에 recoil로 관리// persist
       counselorId: id,
       consultTypeName: consultType,
+      phoneNumber: phoneNumber,
     };
 
     try {
       const res: any = await postConsults(body);
       if (res.status === 201) {
-        requestPayment(consultData.cost, consultType);
-        navigate('/paymentFinish');
-      } else if (res.response.status === 400 || res.response.status === 404) {
-        const errMessage = res.response.data.message.substring(
-          0,
-          res.response.data.message.indexOf('.') + 1,
-        );
-        alert(errMessage);
+        window.location.href = res.data;
       }
     } catch (e) {
-      alert(e);
+      const error = e as AxiosError;
+
+      const _error = error.response?.data as SharemindErrorResponse;
+
+      if (error.response?.status === 400) {
+        alert(_error.message);
+      } else if (error.response?.status === 404) {
+        const errorMessage = _error.message;
+        const index = errorMessage.indexOf(':');
+        if (index !== -1) {
+          const alertPart = errorMessage.slice(0, index);
+          alert(alertPart);
+        } else {
+          alert(errorMessage);
+        }
+      } else {
+        alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+      }
     }
   };
 
@@ -124,7 +159,7 @@ export const BuyerPaymentDetail = () => {
   useEffect(() => {
     if (letterFocus === undefined || letterFocus === null) {
       alert('잘못된 접근입니다');
-      //나중에상담사 프로필로 navigate
+
       navigate(-1);
     }
 
@@ -160,7 +195,7 @@ export const BuyerPaymentDetail = () => {
   //
 
   return (
-    <Wrapper>
+    <>
       <HeaderWrapper>
         <BackIcon
           onClick={() => {
@@ -169,7 +204,12 @@ export const BuyerPaymentDetail = () => {
         />
         <Heading color={Grey1}>상담 신청하기</Heading>
       </HeaderWrapper>
-      <div className="body-wrapper">
+      <Flex
+        height="calc(var(--vh, 1vh) * 100 - 7.1rem)"
+        direction="column"
+        justify="flex-start"
+      >
+        {/* 상품 정보 Section */}
         <PaymentDetailInfo
           nickname={consultData.nickname}
           level={consultData.level}
@@ -178,104 +218,103 @@ export const BuyerPaymentDetail = () => {
           totalConsult={consultData.totalConsult}
           consultStyle={consultStyleToCharNum(consultData.consultStyle)}
         />
+        {/* 상품 유형 Section */}
         <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
-              상담 유형
-            </Body1>
-          </div>
-          <div className="line-wrapper">
-            {letterFocus ? (
-              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                편지
-              </Body1>
-            ) : (
-              <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-                채팅
-              </Body1>
-            )}
-          </div>
+          <Flex
+            width="100%"
+            direction="column"
+            gap={'0.8rem'}
+            align="flex-start"
+            padding="1.6rem 2.4rem"
+          >
+            <SectionTitle>
+              <Body5 color={Grey3} padding="0.2rem 0">
+                상담 유형
+              </Body5>
+            </SectionTitle>
+            <SectionTitle>
+              {letterFocus ? (
+                <Body1 color={Grey1}>편지</Body1>
+              ) : (
+                <Body1 color={Grey1}>채팅</Body1>
+              )}
+            </SectionTitle>
+          </Flex>
         </Box>
+        {/* 상담 금액 Section */}
         <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
-              상담료
-            </Body1>
-          </div>
-          <div className="price-line-wrapper">
-            <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-              상품 금액
-            </Body1>
-            <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-              {consultData.cost.toLocaleString()}원
-            </Body1>
-          </div>
-          <div className="price-line-wrapper">
-            <Body1 color={Grey1} padding="0 0 1.3rem 0">
-              할인 금액
-            </Body1>
-            <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
-              0원
-            </Body1>
-          </div>
-          <Line />
-          <div className="price-line-wrapper">
-            <Body1 color={Green} padding="0.8rem 0 1.2rem 0">
-              결제 금액
-            </Body1>
-            <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
-              {consultData.cost.toLocaleString()}원
-            </Body1>
-          </div>
+          <Flex
+            width="100%"
+            direction="column"
+            gap={'0.8rem'}
+            align="flex-start"
+            padding="1.6rem 2.4rem"
+          >
+            <SectionTitle>
+              <Body5 color={Grey3}>상담 금액</Body5>
+            </SectionTitle>
+            <Flex width="100%" justify="space-between">
+              <Body6 color={Grey1}>상품 금액</Body6>
+              <Body1 color={Grey1}>{consultData.cost.toLocaleString()}원</Body1>
+            </Flex>
+            <Flex width="100%" justify="space-between">
+              <Body6 color={Grey1}>할인 금액</Body6>
+              <Body1 color={Grey1}>0원</Body1>
+            </Flex>
+            <Line />
+            <Flex width="100%" justify="space-between">
+              <Body6 color={Green}>결제 금액</Body6>
+              <Body1 color={Green}>{consultData.cost.toLocaleString()}원</Body1>
+            </Flex>
+          </Flex>
         </Box>
-        {/* TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리 */}
-        {/* <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
-              결제 방법
-            </Body1>
-          </div>
-          <div className="button-wrapper">
-            {PAYMENT_METHOD.map((methods) => (
-              <div className="button-row">
-                {methods.map((method) =>
-                  buttonSelect === method.buttonSelect ? (
-                    <Button text={method.text} height="5.2rem" width="16rem" />
-                  ) : (
-                    <Button
-                      text={method.text}
-                      height="5.2rem"
-                      width="16rem"
-                      color={Green}
-                      backgroundColor={LightGreen}
-                      onClick={() => {
-                        setButtonSelect(method.buttonSelect);
-                      }}
-                    />
-                  ),
-                )}
-              </div>
-            ))}
-          </div>
-        </Box> */}
+        {/* 전화번호 입력 Section */}
         <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
-              이용 안내
-            </Body1>
-          </div>
-          <div className="service-info-wrapper">
-            {PAYMENT_SERVICE_INFO.map((info) => (
-              <div key={info} className="service-info-line-wrapper">
-                <Heart />
-                <div className="text-wrapper">
-                  <Body3 color={Grey3}>{info}</Body3>
-                </div>
-              </div>
-            ))}
-          </div>
+          <Flex
+            width="100%"
+            direction="column"
+            gap={'1.2rem'}
+            align="flex-start"
+            padding="1.6rem 2.4rem"
+          >
+            <Body5 color={Grey3}>전화번호 입력</Body5>
+            <ListItem content="결제를 위해 전화번호를 입력해주세요." />
+            <Input
+              width="100%"
+              borderRadius="0.4rem"
+              placeholder="-없이 입력"
+              fontSize="1.3rem"
+              padding="1.2rem"
+              isBoxSizing={true}
+              placeHolderWeight="500"
+              value={phoneNumber}
+              onChange={handlePhoneNumberChange}
+            />
+          </Flex>
         </Box>
-      </div>
+        {/* 이용 안내 Section */}
+        <Box>
+          <Flex
+            width="100%"
+            direction="column"
+            gap={'0.8rem'}
+            align="flex-start"
+            padding="1.6rem 2.4rem"
+          >
+            <SectionTitle>
+              <Body5 color={Grey3} padding="0.2rem 0">
+                이용 안내
+              </Body5>
+            </SectionTitle>
+            <Flex gap={'1.6rem'} direction="column" align="flex-start">
+              {PAYMENT_SERVICE_INFO.map((info) => (
+                <ListItem content={info} />
+              ))}
+            </Flex>
+            <Space height="10rem" />
+          </Flex>
+        </Box>
+      </Flex>
       <ButtonWrapper>
         <Button
           text="결제 페이지로 이동"
@@ -284,55 +323,21 @@ export const BuyerPaymentDetail = () => {
           onClick={handlePaymentClick}
         />
       </ButtonWrapper>
-    </Wrapper>
+    </>
   );
 };
 
-const Wrapper = styled.div`
-  .body-wrapper {
-    height: calc(var(--vh, 1vh) * 100 - 7.1rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .line-wrapper {
-    width: 33.5rem;
-  }
-  .price-line-wrapper {
-    width: 33.5rem;
-    display: flex;
-    justify-content: space-between;
-  }
-  .button-wrapper {
-    margin: 0.8rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-  .button-row {
-    display: flex;
-    gap: 1.2rem;
-  }
-  .service-info-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    margin-top: 0.8rem;
-    margin-bottom: 7.9rem;
-  }
-  .service-info-line-wrapper {
-    display: flex;
-    gap: 0.4rem;
-    width: 33.5rem;
-  }
-  .text-wrapper {
-    width: 31.1rem;
-  }
-`;
+const ListItem = ({ content }: { content: string }) => {
+  return (
+    <ListItemContent>
+      <ListBullet />
+      <span>{content}</span>
+    </ListItemContent>
+  );
+};
 
 const Box = styled.div`
   width: 100%;
-  padding: 0.8rem 0;
   background-color: ${White};
   margin-bottom: 0.8rem;
   display: flex;
@@ -344,6 +349,24 @@ const Line = styled.div`
   width: 33.5rem;
   height: 0.1rem;
   background-color: ${Grey6};
+`;
+
+const SectionTitle = styled.label`
+  align-self: flex-start;
+`;
+
+const ListItemContent = styled.div`
+  list-style: inside;
+  font-size: 1.4rem;
+  font-weight: 400;
+  font-style: normal;
+  padding-left: 0.8rem;
+  line-height: 155%;
+  text-align: left;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
 `;
 
 const ButtonWrapper = styled.div`
@@ -358,5 +381,16 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0.8rem 2rem;
+  box-sizing: border-box;
+`;
+
+const ListBullet = styled.div`
+  flex-shrink: 0;
+
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: 1rem;
+  border-radius: 100%;
+  background-color: ${Black};
   box-sizing: border-box;
 `;

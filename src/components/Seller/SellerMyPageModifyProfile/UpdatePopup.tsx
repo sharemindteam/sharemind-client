@@ -1,10 +1,17 @@
 import { patchProfiles } from 'api/patch';
+import { AxiosError } from 'axios';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { Green, Grey4, LightGreen, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import { isSuccessUpdateState, isUpdateModalOpenState } from 'utils/atom';
+import { SharemindErrorResponse } from 'utils/type';
+
+//
+//
+//
+
 interface UpdatePopupProps {
   nickname: any;
   category: any;
@@ -16,7 +23,19 @@ interface UpdatePopupProps {
   oneLiner: any;
   experience: any;
   selectAvailableTime: any;
+  phoneNumber: string;
 }
+
+//
+//
+//
+
+const DUPLICATE_PHONE_NUMBER_ERROR_NAME = 'DUPLICATE_PHONE_NUMBER';
+
+//
+//
+//
+
 export const UpdatePopup = ({
   nickname,
   category,
@@ -28,6 +47,7 @@ export const UpdatePopup = ({
   oneLiner,
   experience,
   selectAvailableTime,
+  phoneNumber,
 }: UpdatePopupProps) => {
   const setIsUpdateModalOpen = useSetRecoilState(isUpdateModalOpenState);
   const setIsSuccess = useSetRecoilState(isSuccessUpdateState);
@@ -48,20 +68,30 @@ export const UpdatePopup = ({
         : null,
       introduction: oneLiner.value,
       experience: experience.value,
+      phoneNumber: phoneNumber,
     };
     try {
-      const res: any = await patchProfiles(body);
+      await patchProfiles(body);
       setIsUpdateModalOpen(false);
-      if (res.status !== 200) {
-        alert('판매 정보를 올바르게 입력해주세요!');
+
+      setIsSuccess(true);
+    } catch (error) {
+      const _error = error as AxiosError;
+
+      const errorResponseData = _error.response?.data as SharemindErrorResponse;
+
+      if (errorResponseData.errorName === DUPLICATE_PHONE_NUMBER_ERROR_NAME) {
+        alert(errorResponseData.message);
       } else {
-        setIsSuccess(true);
+        alert('판매 정보를 올바르게 입력해주세요!');
       }
-    } catch (err) {
-      alert('오류');
-      console.log(err);
     }
   };
+
+  //
+  //
+  //
+
   return (
     <UpdateModalBox>
       <ModalBox>
@@ -83,6 +113,7 @@ export const UpdatePopup = ({
     </UpdateModalBox>
   );
 };
+
 const UpdateModalBox = styled.div`
   width: 100%;
   height: 15rem;

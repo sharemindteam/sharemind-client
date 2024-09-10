@@ -1,12 +1,17 @@
 import { Button } from 'components/Common/Button';
 import styled from 'styled-components';
-import { Green, Grey1, Grey3, Grey6, White } from 'styles/color';
-import { Body1, Body3, Heading } from 'styles/font';
-import { ReactComponent as Heart } from 'assets/icons/icon-payment-detail-heart.svg';
+import { Black, Green, Grey1, Grey3, Grey6, White } from 'styles/color';
+import { Body1, Body5, Body6, Heading } from 'styles/font';
+
 import { useNavigate } from 'react-router-dom';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
 import { postOpenConsult } from 'api/post';
 import { APP_WIDTH } from 'styles/AppStyle';
+import { Flex } from 'components/Common/Flex';
+import Input from 'components/Common/Input';
+import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { SharemindErrorResponse } from 'utils/type';
 
 //
 //
@@ -21,22 +26,6 @@ const PAYMENT_SERVICE_INFO = [
   '상담 완료 후 7일간 거래 확정을 하지 않으면 자동 거래 확정됩니다.',
 ];
 
-// TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리
-// const PAYMENT_METHOD = [
-//   [
-//     { buttonSelect: 1, text: '신용/체크카드' },
-//     { buttonSelect: 2, text: '계좌이체' },
-//   ],
-//   [
-//     { buttonSelect: 3, text: '카카오페이' },
-//     { buttonSelect: 4, text: '토스페이' },
-//   ],
-//   [
-//     { buttonSelect: 5, text: '네이버페이' },
-//     { buttonSelect: 6, text: '휴대폰 결제' },
-//   ],
-// ];
-
 //
 //
 //
@@ -44,7 +33,30 @@ const PAYMENT_SERVICE_INFO = [
 export const BuyerOpenPaymentDetail = () => {
   const navigate = useNavigate();
 
-  // const [buttonSelect, setButtonSelect] = useState<number>(0);
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+
+  /**
+   *
+   */
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+
+    inputValue = inputValue.replace(/\D/g, '');
+
+    if (inputValue.length <= 3) {
+      setPhoneNumber(inputValue);
+    } else if (inputValue.length <= 7) {
+      setPhoneNumber(inputValue.slice(0, 3) + '-' + inputValue.slice(3));
+    } else if (inputValue.length <= 11) {
+      setPhoneNumber(
+        inputValue.slice(0, 3) +
+          '-' +
+          inputValue.slice(3, 7) +
+          '-' +
+          inputValue.slice(7, 11),
+      );
+    }
+  };
 
   /**
    *
@@ -53,17 +65,32 @@ export const BuyerOpenPaymentDetail = () => {
     const body = {
       cost: 1000,
       isPublic: false,
+      phoneNumber: phoneNumber,
     };
     try {
       const res: any = await postOpenConsult(body);
       if (res.status === 201) {
-        window.open(process.env.REACT_APP_ONE_TO_MANY_PAYMENT_URL);
-        navigate('/paymentFinish');
-      } else if (res?.response.status === 404) {
-        alert('존재하지 않는 회원입니다.');
+        window.location.href = res.data;
       }
-    } catch (err) {
-      alert(err);
+    } catch (e) {
+      const error = e as AxiosError;
+
+      const _error = error.response?.data as SharemindErrorResponse;
+
+      if (error.response?.status === 400) {
+        alert(_error.message);
+      } else if (error.response?.status === 404) {
+        const errorMessage = _error.message;
+        const index = errorMessage.indexOf(':');
+        if (index !== -1) {
+          const alertPart = errorMessage.slice(0, index);
+          alert(alertPart);
+        } else {
+          alert(errorMessage);
+        }
+      } else {
+        alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+      }
     }
   };
 
@@ -84,89 +111,76 @@ export const BuyerOpenPaymentDetail = () => {
       <div className="body-wrapper">
         <Box>
           <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0 1.2rem">
+            <Body5 color={Grey3} padding="0.2rem 0 1.2rem">
               상담 유형
-            </Body1>
+            </Body5>
 
-            <Body1>공개상담 - 비공개</Body1>
+            <Body1 color={Grey1}>공개상담 - 비공개</Body1>
           </div>
         </Box>
         <Box>
           <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
-              상담료
-            </Body1>
+            <Body5 color={Grey3} padding="0.2rem 0">
+              상담 금액
+            </Body5>
           </div>
           <div className="price-line-wrapper">
-            <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
+            <Body6 color={Grey1} padding="1.2rem 0 0.8rem 0">
               상품 금액
-            </Body1>
+            </Body6>
             <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
               1,000원
             </Body1>
           </div>
           <div className="price-line-wrapper">
-            <Body1 color={Grey1} padding="0 0 1.3rem 0">
+            <Body6 color={Grey1} padding="0 0 1.3rem 0">
               할인 금액
-            </Body1>
+            </Body6>
             <Body1 color={Grey1} padding="1.2rem 0 0.8rem 0">
               0원
             </Body1>
           </div>
           <Line />
           <div className="price-line-wrapper">
-            <Body1 color={Green} padding="0.8rem 0 1.2rem 0">
+            <Body6 color={Green} padding="0.8rem 0 1.2rem 0">
               결제 금액
-            </Body1>
+            </Body6>
             <Body1 color={Green} padding="1.2rem 0 0.8rem 0">
               1,000원
             </Body1>
           </div>
         </Box>
-        {/* TODO: 유입테스트를 위해 결제 방법 섹션 주석 처리 */}
-        {/* <Box>
-          <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
-              결제 방법
-            </Body1>
-          </div>
-          <div className="button-wrapper">
-            {PAYMENT_METHOD.map((methods) => (
-              <div className="button-row">
-                {methods.map((method) =>
-                  buttonSelect === method.buttonSelect ? (
-                    <Button text={method.text} height="5.2rem" width="16rem" />
-                  ) : (
-                    <Button
-                      text={method.text}
-                      height="5.2rem"
-                      width="16rem"
-                      color={Green}
-                      backgroundColor={LightGreen}
-                      onClick={() => {
-                        setButtonSelect(method.buttonSelect);
-                      }}
-                    />
-                  ),
-                )}
-              </div>
-            ))}
-          </div>
-        </Box> */}
+        <Box>
+          <Flex
+            width="33.5rem"
+            direction="column"
+            gap={'1.2rem'}
+            align="flex-start"
+          >
+            <Body5 color={Grey3}>전화번호 입력</Body5>
+            <ListItem content="결제를 위해 전화번호를 입력해주세요." />
+            <Input
+              width="100%"
+              borderRadius="0.4rem"
+              placeholder="-없이 입력"
+              fontSize="1.3rem"
+              padding="1.2rem"
+              isBoxSizing={true}
+              placeHolderWeight="500"
+              value={phoneNumber}
+              onChange={handlePhoneNumberChange}
+            />
+          </Flex>
+        </Box>
         <Box>
           <div className="line-wrapper">
-            <Body1 color={Grey3} padding="0.2rem 0">
+            <Body5 color={Grey3} padding="0.2rem 0">
               이용 안내
-            </Body1>
+            </Body5>
           </div>
           <div className="service-info-wrapper">
             {PAYMENT_SERVICE_INFO.map((info) => (
-              <div key={info} className="service-info-line-wrapper">
-                <Heart />
-                <div className="text-wrapper">
-                  <Body3 color={Grey3}>{info}</Body3>
-                </div>
-              </div>
+              <ListItem key={info} content={info} />
             ))}
           </div>
         </Box>
@@ -180,6 +194,15 @@ export const BuyerOpenPaymentDetail = () => {
         />
       </ButtonWrapper>
     </Wrapper>
+  );
+};
+
+const ListItem = ({ content }: { content: string }) => {
+  return (
+    <ListItemContent>
+      <ListBullet />
+      <span>{content}</span>
+    </ListItemContent>
   );
 };
 
@@ -220,29 +243,23 @@ const Wrapper = styled.div`
     margin-top: 0.8rem;
     margin-bottom: 1.6rem;
   }
-  .service-info-line-wrapper {
-    display: flex;
-    gap: 0.4rem;
-    width: 33.5rem;
-  }
-  .text-wrapper {
-    width: 31.1rem;
-  }
 `;
 const Box = styled.div`
   width: 100%;
-  padding: 0.8rem 0;
+  padding: 1.6rem 2.4rem;
   background-color: ${White};
   margin-bottom: 0.8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const Line = styled.div`
   width: 33.5rem;
   height: 0.1rem;
   background-color: ${Grey6};
 `;
+
 const ButtonWrapper = styled.div`
   width: 100%;
   @media (min-width: 768px) {
@@ -254,5 +271,31 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 0.8rem 2rem;
+  box-sizing: border-box;
+`;
+
+const ListItemContent = styled.div`
+  list-style: inside;
+  font-size: 1.4rem;
+  font-weight: 400;
+  font-style: normal;
+  padding-left: 0.8rem;
+  line-height: 155%;
+  text-align: left;
+
+  width: 33.5rem;
+
+  display: flex;
+  gap: 0.8rem;
+`;
+
+const ListBullet = styled.div`
+  flex-shrink: 0;
+
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: 1rem;
+  border-radius: 100%;
+  background-color: ${Black};
   box-sizing: border-box;
 `;
