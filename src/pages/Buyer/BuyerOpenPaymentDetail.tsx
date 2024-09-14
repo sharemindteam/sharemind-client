@@ -12,6 +12,7 @@ import Input from 'components/Common/Input';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { SharemindErrorResponse } from 'utils/type';
+import { Space } from 'components/Common/Space';
 
 //
 //
@@ -151,12 +152,7 @@ export const BuyerOpenPaymentDetail = () => {
           </div>
         </Box>
         <Box>
-          <Flex
-            width="33.5rem"
-            direction="column"
-            gap={'1.2rem'}
-            align="flex-start"
-          >
+          <Flex width="100%" direction="column" gap="1.2rem" align="flex-start">
             <Body5 color={Grey3}>전화번호 입력</Body5>
             <ListItem content="결제를 위해 전화번호를 입력해주세요." />
             <Input
@@ -183,8 +179,10 @@ export const BuyerOpenPaymentDetail = () => {
               <ListItem key={info} content={info} />
             ))}
           </div>
+          <Space height="10rem" />
         </Box>
       </div>
+
       <ButtonWrapper>
         <Button
           text="결제하기"
@@ -244,6 +242,7 @@ const Wrapper = styled.div`
     margin-bottom: 1.6rem;
   }
 `;
+
 const Box = styled.div`
   width: 100%;
   padding: 1.6rem 2.4rem;
@@ -252,6 +251,8 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  box-sizing: border-box;
 `;
 
 const Line = styled.div`
