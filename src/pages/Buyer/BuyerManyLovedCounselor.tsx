@@ -14,14 +14,12 @@ import {
   searchKeywordState,
 } from 'utils/atom';
 import { ConverSortType } from 'utils/convertSortType';
-import { patchCounselorsAll } from 'api/patch';
 import { SearchResultData } from 'utils/type';
-
 import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/CategorySearchResult';
-import { convertCategoryEnum } from 'utils/convertCategoryEnum';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { APP_WIDTH } from 'styles/AppStyle';
 import SearchTextHeader from 'components/Buyer/BuyerManyLovedCounselor/SearchTextHeader';
+import { getRandomCounselors } from 'api/get';
 
 //
 //
@@ -64,12 +62,12 @@ export const BuyerManyLovedCounselor = () => {
    */
   const fetchSearchResults = async (pageIndex: number) => {
     try {
-      const body = {
-        consultCategory: convertCategoryEnum(searchKeyword),
-        index: pageIndex,
-      };
       const sortTypeString: string = ConverSortType(sortType);
-      const res: any = await patchCounselorsAll(sortTypeString, body);
+      const params = {
+        index: pageIndex,
+        sortType: sortTypeString,
+      };
+      const res: any = await getRandomCounselors(params);
       if (res.status === 200) {
         if (res.data.length !== 0) {
           if (pageIndex === 0) {
