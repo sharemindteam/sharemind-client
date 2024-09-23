@@ -28,6 +28,7 @@ export default function SellerUpdateFail() {
     };
     fetchRejectedReason();
   }, []);
+
   return (
     <>
       <AppHeader title="내 정보" onBackClick={onBackClick} />
@@ -37,7 +38,7 @@ export default function SellerUpdateFail() {
           width="100%"
           isBoxSizing={true}
           padding="1.6rem"
-          value={rejectedReason}
+          value={rejectedReason || '부적절한 자기소개입니다.'}
           fontWeight="400"
           fontSize="1.6rem"
           readOnly={true}
