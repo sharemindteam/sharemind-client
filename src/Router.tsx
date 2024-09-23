@@ -55,6 +55,7 @@ import BuyerOpenConsultRecents from 'pages/Buyer/BuyerOpenConsultRecents';
 import SellerProfitBankAccount from 'pages/Seller/SellerProfitBankAccount';
 import ServerDown from 'pages/Common/ServerDown';
 import SellerUpdateFail from 'pages/Seller/SellerUpdateFail';
+import { BuyerManyLovedCounselor } from 'pages/Buyer/BuyerManyLovedCounselor';
 
 const Router = () => {
   return (
@@ -96,6 +97,7 @@ const Router = () => {
       <Route path="/paymentComplete" element={<BuyerPaymentComplete />} />
       <Route path="/paymentFinish" element={<BuyerFinishPayment />} />
       <Route path="/counselors" element={<BuyerAvailCounselor />} />
+      <Route path="/manyLoved" element={<BuyerManyLovedCounselor />} />
       <Route path="/mypage" element={<BuyerMypage />} />
       <Route path="/reviewManage" element={<BuyerReviewManage />} />
       <Route path="/review" element={<BuyerWriteReview />} />

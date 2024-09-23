@@ -34,15 +34,16 @@ export const HomeConsultInReady = ({
   //
   //
   //
-
+  const handleNavigateButtonClick = () => {
+    if (isViewManyLoved) {
+      navigate('/manyLoved');
+    } else {
+      navigate('/counselors');
+    }
+  };
   return (
     <Wrapper>
-      <div
-        className="nav-consult"
-        onClick={() => {
-          navigate('/counselors');
-        }}
-      >
+      <div className="nav-consult" onClick={handleNavigateButtonClick}>
         <NavConsult>
           <div className="row1">
             <Subtitle>
