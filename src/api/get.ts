@@ -114,6 +114,9 @@ export const getCounselorsAll = async (counselorId: string | undefined) =>
 export const getRandomCounselors = async (params: any) =>
   await axiosPublicGet(`/counselors/all/random`, params);
 
+export const getRejectedReason = async () =>
+  await axiosGet('/counselors/profile-rejection');
+
 /**
  * SearchWord Controller
  */

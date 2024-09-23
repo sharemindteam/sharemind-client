@@ -1,8 +1,9 @@
+import { getRejectedReason } from 'api/get';
 import AppHeader from 'components/Common/AppHeader';
 import { Flex } from 'components/Common/Flex';
 import Input from 'components/Common/Input';
 import { BottomButton } from 'components/Seller/Common/BottomButton';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heading } from 'styles/font';
 
@@ -18,6 +19,15 @@ export default function SellerUpdateFail() {
   const handleClickButton = () => {
     navigate('/minder/mypage/viewProfile');
   };
+  const [rejectedReason, setRejectedReason] = useState('');
+
+  useEffect(() => {
+    const fetchRejectedReason = async () => {
+      const res: any = await getRejectedReason();
+      setRejectedReason(res.data);
+    };
+    fetchRejectedReason();
+  }, []);
   return (
     <>
       <AppHeader title="내 정보" onBackClick={onBackClick} />
@@ -27,7 +37,7 @@ export default function SellerUpdateFail() {
           width="100%"
           isBoxSizing={true}
           padding="1.6rem"
-          value={'부적절한 자기소개'}
+          value={rejectedReason}
           fontWeight="400"
           fontSize="1.6rem"
           readOnly={true}

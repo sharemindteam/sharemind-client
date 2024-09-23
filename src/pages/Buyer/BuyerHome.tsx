@@ -35,7 +35,7 @@ export const BuyerHome = () => {
           if (res.data.length > 0) {
             setSearchData(res.data);
           } else {
-            /** 
+            /**
              * 많은 셰어에게 사랑을 받았어요
              */
             setIsViewManyLoved(true);
@@ -43,7 +43,7 @@ export const BuyerHome = () => {
               sortType: 'RANDOM',
               index: 0,
             };
-            const res: any = await getRandomCounselors({ params });
+            const res: any = await getRandomCounselors(params);
             setSearchData(res.data);
           }
         } else if (res.response.status === 404) {
@@ -71,7 +71,7 @@ export const BuyerHome = () => {
       />
       <TabA1 isBuyer={true} initState={1} />
       <CartegorySearch />
-      <HomeConsultInProgress />
+      {!isViewManyLoved && <HomeConsultInProgress />}
       <HomeConsultInReady
         searchData={searchData}
         isViewManyLoved={isViewManyLoved}

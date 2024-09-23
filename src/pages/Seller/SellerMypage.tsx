@@ -39,6 +39,7 @@ export const SellerMypage = () => {
     const fetchMyInfo = async () => {
       setIsLoading(true);
       const res: any = await getMyInfo();
+      console.log(res);
       if (!res?.data?.isEducated) {
         const isPassRes: any = await getIsPassQuiz();
         setIsPass(isPassRes?.data);
