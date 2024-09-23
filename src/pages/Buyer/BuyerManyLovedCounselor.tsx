@@ -1,4 +1,3 @@
-import { CategoryResultHeader } from 'components/Buyer/BuyerCategoryResult/CategoryResultHeader';
 import { SortModal } from 'components/Buyer/Common/SortModal';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,12 +6,8 @@ import { Button2 } from 'styles/font';
 import { Grey3 } from 'styles/color';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { sortList } from 'utils/constant';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  isSortModalOpenState,
-  scrollLockState,
-  searchKeywordState,
-} from 'utils/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 import { ConverSortType } from 'utils/convertSortType';
 import { SearchResultData } from 'utils/type';
 import { CategorySearchResults } from 'components/Buyer/BuyerCategoryResult/CategorySearchResult';
@@ -46,7 +41,6 @@ export const BuyerManyLovedCounselor = () => {
   const setScrollLock = useSetRecoilState(scrollLockState);
 
   // state with store keyword and serach result
-  const searchKeyword = useRecoilValue(searchKeywordState);
   const [searchData, setSearchData] = useState<SearchResultData[]>([]);
 
   //page num for infinite scrol
@@ -130,14 +124,6 @@ export const BuyerManyLovedCounselor = () => {
   //
   //
   //
-
-  if (isLoading) {
-    return (
-      <>
-        <CategoryResultHeader categoryType={searchKeyword} />
-      </>
-    );
-  }
 
   return (
     <Wrapper>
