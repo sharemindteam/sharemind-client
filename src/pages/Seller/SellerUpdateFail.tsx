@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { getRejectedReason } from 'api/get';
 import AppHeader from 'components/Common/AppHeader';
 import { Flex } from 'components/Common/Flex';
@@ -19,16 +20,23 @@ export default function SellerUpdateFail() {
   const handleClickButton = () => {
     navigate('/minder/mypage/viewProfile');
   };
-  const [rejectedReason, setRejectedReason] = useState('');
 
-  useEffect(() => {
-    const fetchRejectedReason = async () => {
-      const res: any = await getRejectedReason();
-      setRejectedReason(res.data);
-    };
-    fetchRejectedReason();
-  }, []);
-
+  const { data: response, isLoading } = useQuery({
+    queryKey: ['getRejectedReason'],
+    queryFn: getRejectedReason,
+  });
+  const getRejectedReasonString = () => {
+    if (isLoading) {
+      return '';
+    } else {
+      if (response?.data === '') {
+        return '부적절한 자기소개입니다.';
+      } else {
+        return response?.data;
+      }
+    }
+  };
+  const rejectedReason = getRejectedReasonString();
   return (
     <>
       <AppHeader title="내 정보" onBackClick={onBackClick} />
