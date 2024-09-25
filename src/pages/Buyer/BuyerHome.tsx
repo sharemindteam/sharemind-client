@@ -71,7 +71,7 @@ export const BuyerHome = () => {
       />
       <TabA1 isBuyer={true} initState={1} />
       <CartegorySearch />
-      {!isViewManyLoved && <HomeConsultInProgress />}
+      <HomeConsultInProgress />
       <HomeConsultInReady
         searchData={searchData}
         isViewManyLoved={isViewManyLoved}
