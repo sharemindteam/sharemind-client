@@ -4,7 +4,6 @@ import AppHeader from 'components/Common/AppHeader';
 import { Flex } from 'components/Common/Flex';
 import Input from 'components/Common/Input';
 import { BottomButton } from 'components/Seller/Common/BottomButton';
-import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heading } from 'styles/font';
 
