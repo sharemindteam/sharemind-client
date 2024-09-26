@@ -111,6 +111,11 @@ export const getCounselorConsults = async (
 //마인더 프로필 페이지 마인더 프로필 조회
 export const getCounselorsAll = async (counselorId: string | undefined) =>
   await getPublicInstance(`/counselors/all/${counselorId}`);
+export const getRandomCounselors = async (params: any) =>
+  await axiosPublicGet(`/counselors/all/random`, params);
+
+export const getRejectedReason = async () =>
+  await axiosGet('/counselors/profile-rejection');
 
 /**
  * SearchWord Controller

@@ -223,14 +223,12 @@ export const BuyerPaymentDetail = () => {
           <Flex
             width="100%"
             direction="column"
-            gap={'0.8rem'}
+            gap="0.8rem"
             align="flex-start"
             padding="1.6rem 2.4rem"
           >
             <SectionTitle>
-              <Body5 color={Grey3} padding="0.2rem 0">
-                상담 유형
-              </Body5>
+              <Body5 color={Grey3}>상담 유형</Body5>
             </SectionTitle>
             <SectionTitle>
               {letterFocus ? (
@@ -273,11 +271,13 @@ export const BuyerPaymentDetail = () => {
           <Flex
             width="100%"
             direction="column"
-            gap={'1.2rem'}
+            gap="1.2rem"
             align="flex-start"
             padding="1.6rem 2.4rem"
           >
-            <Body5 color={Grey3}>전화번호 입력</Body5>
+            <SectionTitle>
+              <Body5 color={Grey3}>전화번호 입력</Body5>
+            </SectionTitle>
             <ListItem content="결제를 위해 전화번호를 입력해주세요." />
             <Input
               width="100%"
@@ -297,14 +297,12 @@ export const BuyerPaymentDetail = () => {
           <Flex
             width="100%"
             direction="column"
-            gap={'0.8rem'}
+            gap="0.8rem"
             align="flex-start"
             padding="1.6rem 2.4rem"
           >
             <SectionTitle>
-              <Body5 color={Grey3} padding="0.2rem 0">
-                이용 안내
-              </Body5>
+              <Body5 color={Grey3}>이용 안내</Body5>
             </SectionTitle>
             <Flex gap={'1.6rem'} direction="column" align="flex-start">
               {PAYMENT_SERVICE_INFO.map((info) => (
@@ -352,7 +350,9 @@ const Line = styled.div`
 `;
 
 const SectionTitle = styled.label`
-  align-self: flex-start;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
 `;
 
 const ListItemContent = styled.div`
@@ -363,6 +363,8 @@ const ListItemContent = styled.div`
   padding-left: 0.8rem;
   line-height: 155%;
   text-align: left;
+
+  width: 100%;
 
   display: flex;
   align-items: flex-start;

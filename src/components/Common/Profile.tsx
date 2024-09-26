@@ -1,13 +1,20 @@
 import styled from 'styled-components';
 import { Button } from './Button';
 import { Black, Green, Grey6, LightGreen, White } from 'styles/color';
-import { Button2, Caption2, Subtitle } from 'styles/font';
+import { Button2, Caption1, Caption2, Subtitle } from 'styles/font';
 import { ReactComponent as InfoIcon } from 'assets/icons/info.svg';
 import { ReactComponent as ReciptIcon } from 'assets/icons/recipt.svg';
 import { ReactComponent as ReviewIcon } from 'assets/icons/review.svg';
 import { ReactComponent as SaveIcon } from 'assets/icons/save.svg';
+import { ReactComponent as RightArrowIcon } from 'assets/icons/right-arrow-green.svg';
 import { useNavigate } from 'react-router-dom';
 import { Characters } from 'utils/Characters';
+import { Flex } from './Flex';
+
+//
+//
+//
+
 interface ProfileProps {
   isBuyer: boolean;
   isVerified?: undefined | boolean;
@@ -15,8 +22,9 @@ interface ProfileProps {
   name: string | undefined;
   levelStatus: string | undefined;
   isPass?: boolean | undefined;
+  profileStatus: string | undefined;
 }
-//일단 프로필 이미지는 한개만 불러왔음!
+
 export const Profile = ({
   isBuyer,
   isVerified = false,
@@ -24,6 +32,7 @@ export const Profile = ({
   name,
   levelStatus,
   isPass,
+  profileStatus,
 }: ProfileProps) => {
   const navigate = useNavigate();
   return (
@@ -60,6 +69,23 @@ export const Profile = ({
           color={Black}
         />
       </ProfileBox>
+
+      {profileStatus === 'EVALUATION_FAIL' && (
+        <EvaluationFailStatusSection>
+          <div
+            className="navigate-button"
+            onClick={() => {
+              navigate('/minder/mypage/update-fail');
+            }}
+          >
+            <Caption1 color={Green}>판매정보 업데이트에 실패했어요.</Caption1>
+            <Flex>
+              <Caption1 color={Green}>자세히 보기</Caption1>
+              <RightArrowIcon />
+            </Flex>
+          </div>
+        </EvaluationFailStatusSection>
+      )}
 
       {isBuyer ? (
         <SelectInfoList>
@@ -226,4 +252,20 @@ const ServiceItem = styled.div`
   padding: 1.2rem 2rem;
   border-bottom: 1px solid ${Grey6};
   align-items: center;
+`;
+
+const EvaluationFailStatusSection = styled.section`
+  background-color: white;
+  padding: 0.8rem 2rem;
+  .navigate-button {
+    border-radius: 0.8rem;
+    margin: 0 auto;
+    background-color: ${Grey6};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    cursor: pointer;
+    height: 4.2rem;
+  }
 `;

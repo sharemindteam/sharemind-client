@@ -18,36 +18,51 @@ import CounselorCard from 'components/Common/CounselorCard';
 
 interface HomeConsultInReadyProps {
   searchData: SearchResultData[];
+  isViewManyLoved: boolean;
 }
 
 //
 //
 //
 
-export const HomeConsultInReady = ({ searchData }: HomeConsultInReadyProps) => {
+export const HomeConsultInReady = ({
+  searchData,
+  isViewManyLoved,
+}: HomeConsultInReadyProps) => {
   const navigate = useNavigate();
 
   //
   //
   //
-
+  const handleNavigateButtonClick = () => {
+    if (isViewManyLoved) {
+      navigate('/manyLoved');
+    } else {
+      navigate('/counselors');
+    }
+  };
   return (
     <Wrapper>
-      <div
-        className="nav-consult"
-        onClick={() => {
-          navigate('/counselors');
-        }}
-      >
+      <div className="nav-consult" onClick={handleNavigateButtonClick}>
         <NavConsult>
           <div className="row1">
-            <Subtitle>들을 준비가 된 마인더들</Subtitle>
+            <Subtitle>
+              {isViewManyLoved
+                ? '많은 셰어에게 사랑을 받았어요.'
+                : '들을 준비가 된 마인더들'}
+            </Subtitle>
             <MoreIcon />
           </div>
           <Space height="0.2rem" />
           <Caption2 color={Grey2}>
-            현재 시간 <span id="current-time">{getCurrentHour()}</span>시 기준,
-            실시간 상담을 신청할 수 있어요
+            {isViewManyLoved ? (
+              '상담 경험이 많은 마인더'
+            ) : (
+              <>
+                현재 시간 <span id="current-time">{getCurrentHour()}</span>시
+                기준, 실시간 상담을 신청할 수 있어요
+              </>
+            )}
           </Caption2>
         </NavConsult>
       </div>

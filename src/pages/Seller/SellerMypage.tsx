@@ -18,7 +18,7 @@ interface UserInfo {
   level: string;
   isEducated: boolean;
   consultStyle: string;
-  profilesStatus: string;
+  profileStatus: string;
 }
 
 //
@@ -84,6 +84,7 @@ export const SellerMypage = () => {
           profileIdentifier={consultStyleToCharNum(userInfo?.consultStyle)}
           isBuyer={false}
           isPass={isPass}
+          profileStatus={userInfo?.profileStatus}
         />
       )}
     </>
