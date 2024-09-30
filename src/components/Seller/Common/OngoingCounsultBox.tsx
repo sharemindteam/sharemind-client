@@ -17,6 +17,11 @@ import { Button } from 'components/Common/Button';
 import { TagA2Cartegory } from 'components/Common/TagA2Cartegory';
 import { useNavigate } from 'react-router-dom';
 import { CartegoryState, ConsultState } from 'utils/type';
+
+//
+//
+//
+
 interface OngoingCounsultBoxProps {
   categoryStatus?: string;
   consultStatus?: string;
@@ -29,6 +34,11 @@ interface OngoingCounsultBoxProps {
   reviewCompleted?: boolean;
   isChat?: boolean;
 }
+
+//
+//
+//
+
 function OngoingCounsultBox({
   categoryStatus,
   consultStatus,
@@ -42,6 +52,11 @@ function OngoingCounsultBox({
   reviewCompleted,
 }: OngoingCounsultBoxProps) {
   const navigate = useNavigate();
+
+  //
+  //
+  //
+
   return (
     <OngoingCounsultBoxWrapper
       onClick={onClick}
@@ -110,6 +125,7 @@ function OngoingCounsultBox({
     </OngoingCounsultBoxWrapper>
   );
 }
+
 const OngoingCounsultBoxWrapper = styled.div<{
   $categoryStatus: string | undefined;
 }>`
