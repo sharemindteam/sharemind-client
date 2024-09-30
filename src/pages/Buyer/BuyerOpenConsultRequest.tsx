@@ -11,6 +11,12 @@ import { Body2, Heading } from 'styles/font';
 //
 //
 
+const DEFAULT_PHONE_NUMBER = '010-1234-1234';
+
+//
+//
+//
+
 export const BuyerOpenConsultRequest = () => {
   const navigate = useNavigate();
   const [isOpenConsult, setIsOpenConsult] = useState<boolean>(false);
@@ -26,6 +32,7 @@ export const BuyerOpenConsultRequest = () => {
         const body = {
           cost: 0,
           isPublic: true,
+          phoneNumber: DEFAULT_PHONE_NUMBER,
         };
         await postOpenConsult(body);
         navigate('/consult?type=open-consult');
