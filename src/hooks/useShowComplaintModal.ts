@@ -6,7 +6,7 @@ export const useShowComplainttModal = () => {
     isComplaintModalOpenState,
   );
 
-  const handleComplaintButtonClick = () => {
+  const handleMoreButtonClick = () => {
     setIsComplaintModalOpen(true);
   };
 
@@ -14,5 +14,5 @@ export const useShowComplainttModal = () => {
     setIsComplaintModalOpen(false);
   };
 
-  return { isComplaintModalOpen, handleBackDropClick, handleComplaintButtonClick};
+  return { isComplaintModalOpen, handleBackDropClick, handleMoreButtonClick };
 };
