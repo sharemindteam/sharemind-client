@@ -38,13 +38,15 @@ export const LetterQuestionStep = ({
 };
 
 const LetterQuestionWrapper = styled.section`
-  margin-bottom: 100px;
+  padding-bottom: 10rem;
 `;
+
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const Time = styled(Body3)`
   padding: 1.2rem;
   color: ${Grey3};
@@ -75,6 +77,7 @@ const NotArriveSection = styled.div`
 const NotArriveGraphic = styled(NotArrive)`
   margin-top: 14.8rem;
 `;
+
 const NotArriveMessage = styled.div`
   color: #000;
   text-align: center;
