@@ -5,6 +5,7 @@ import {
 } from 'api/get';
 import { BackDrop } from 'components/Common/BackDrop';
 import { BottomButton } from 'components/Seller/Common/BottomButton';
+import { ComplaintModal } from 'components/Seller/Common/ComplaintModal';
 import { LetterBonusQuestionStep } from 'components/Seller/SellerLetter/LetterBonusQuestionStep';
 import { LetterBonusReplyStep } from 'components/Seller/SellerLetter/LetterBonusReplyStep';
 import { LetterComplaintMenu } from 'components/Seller/SellerLetter/LetterComplaintMenu';
@@ -12,6 +13,7 @@ import { LetterHeader } from 'components/Seller/SellerLetter/LetterHeader';
 import { LetterQuestionStep } from 'components/Seller/SellerLetter/LetterQuestionStep';
 import { LetterReplyStep } from 'components/Seller/SellerLetter/LetterReplyStep';
 import { LetterTagListSection } from 'components/Seller/SellerLetter/LetterTagListSection';
+import { useShowComplainttModal } from 'hooks/useShowComplaintModal';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -21,6 +23,10 @@ import {
   isLoadingState,
   scrollLockState,
 } from 'utils/atom';
+
+//
+//
+//
 
 export const SellerLetter = () => {
   const navigate = useNavigate();
@@ -36,6 +42,17 @@ export const SellerLetter = () => {
     isConsultModalOpenState,
   );
 
+  // 신고 logic
+  const { isComplaintModalOpen, handleBackDropClick, handleMoreButtonClick } =
+    useShowComplainttModal();
+
+  //
+  //
+  //
+  const handleComplaintButtonClick = () => {
+    window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+  };
+
   // 모달 활성화 시 스크롤락
   const setScrollLock = useSetRecoilState(scrollLockState);
   // 각 편지 레벨에 전달할 텍스트, 데드라인, 편지 생성 시각
@@ -50,6 +67,7 @@ export const SellerLetter = () => {
 
   // consultid
   const { consultid } = useParams();
+
   const levelMap = useMemo(() => {
     return {
       질문: 1,
@@ -58,6 +76,7 @@ export const SellerLetter = () => {
       '추가 답장': 4,
     };
   }, []);
+
   // 로딩스피너 여부
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
   const [isCancel, setIsCancel] = useState<boolean>();
@@ -103,6 +122,7 @@ export const SellerLetter = () => {
     };
 
     fetchLetterInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 태그 바뀜에 따라 getLetterMessages API 호출
@@ -140,6 +160,7 @@ export const SellerLetter = () => {
       }
     };
     fetchMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tagStatus]);
 
   //
@@ -148,7 +169,7 @@ export const SellerLetter = () => {
 
   return (
     <>
-      <LetterHeader />
+      <LetterHeader onMoreButtonClick={handleMoreButtonClick} />
       <LetterTagListSection
         tagStatus={tagStatus}
         setTagStatus={setTagStatus}
@@ -228,6 +249,14 @@ export const SellerLetter = () => {
               }}
             />
           )}
+        </>
+      )}
+      {isComplaintModalOpen && (
+        <>
+          <BackDrop onClick={handleBackDropClick} />
+          <ComplaintModal
+            handleComplaintButtonClick={handleComplaintButtonClick}
+          />
         </>
       )}
     </>

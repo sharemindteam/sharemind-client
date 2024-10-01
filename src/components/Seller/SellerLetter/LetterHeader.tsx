@@ -7,10 +7,27 @@ import { Heading } from 'styles/font';
 import { useEffect, useState } from 'react';
 import { getLettersNickname } from 'api/get';
 
-export const LetterHeader = () => {
+//
+//
+//
+
+interface LetterHeaderProps {
+  onMoreButtonClick: () => void;
+}
+
+//
+//
+//
+
+export const LetterHeader = ({ onMoreButtonClick }: LetterHeaderProps) => {
   const navigate = useNavigate();
   const { consultid } = useParams();
+
   const [name, setName] = useState('');
+
+  //
+  //
+  //
   useEffect(() => {
     const fetchNameData = async () => {
       const res: any = await getLettersNickname(consultid);
@@ -25,7 +42,13 @@ export const LetterHeader = () => {
       }
     };
     fetchNameData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  //
+  //
+  //
+
   return (
     <LetterHeaderWrapper>
       <LeftArrow
@@ -34,10 +57,11 @@ export const LetterHeader = () => {
         }}
       />
       <Heading>{name}</Heading>
-      <Option onClick={() => {}} />
+      <Option onClick={onMoreButtonClick} />
     </LetterHeaderWrapper>
   );
 };
+
 const LetterHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -54,6 +78,8 @@ const LetterHeaderWrapper = styled.div`
 const LeftArrow = styled(LeftArrowIcon)`
   cursor: pointer;
 `;
+
 const Option = styled(OptionIcon)`
   cursor: pointer;
+  padding: 0.4rem 0;
 `;
