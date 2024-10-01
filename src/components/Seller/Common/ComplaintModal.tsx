@@ -1,16 +1,20 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
 import { White } from 'styles/color';
 import { Button } from 'components/Common/Button';
 import { APP_WIDTH } from 'styles/AppStyle';
 
-//
-//
-//
+///
+///
+///
 
 interface ComplaintModalProps {
   handleComplaintButtonClick: () => void;
 }
+
+///
+///
+///
 
 export const ComplaintModal = ({
   handleComplaintButtonClick,
@@ -32,6 +36,15 @@ export const ComplaintModal = ({
   );
 };
 
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
 const ReportModalWrapper = styled.div`
   position: fixed;
   background-color: ${White};
@@ -39,6 +52,8 @@ const ReportModalWrapper = styled.div`
   box-shadow: 0 -0.2rem 1rem 0 rgba(0, 0, 0, 0.1);
   bottom: 0;
   width: 100%;
+  z-index: 10000;
+  animation: ${slideUp} 0.3s ease-out;
 
   @media (min-width: 768px) {
     width: ${APP_WIDTH};
@@ -49,7 +64,7 @@ const ReportModalWrapper = styled.div`
     display: flex;
     justify-content: center;
   }
-  z-index: 10000;
+
   .content-wrapper {
     padding: 0.4rem 2rem 0.8rem 2rem;
     box-sizing: border-box;
