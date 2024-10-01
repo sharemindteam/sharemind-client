@@ -20,6 +20,7 @@ interface ViewProfileMainSectionProps {
   oneLiner: string | undefined;
   experience: string | undefined;
   isEvaluationPending: boolean;
+  phoneNumber: string | null | undefined;
   // accountNum: string;
   // bankType: string;
   // bankOwner: string;
@@ -46,6 +47,7 @@ export const ViewProfileMainSection = ({
   oneLiner,
   experience,
   isEvaluationPending,
+  phoneNumber,
 }: // accountNum,
 // bankType,
 // bankOwner,
@@ -69,6 +71,12 @@ ViewProfileMainSectionProps) => {
         <div className="nickname">
           <ProfileInformTag>닉네임</ProfileInformTag>
           <ProfileInform>{name}</ProfileInform>
+        </div>
+        <div className="phone-number">
+          <ProfileInformTag>전화번호</ProfileInformTag>
+          <ProfileInform>
+            {phoneNumber ?? '전화번호를 등록해주세요.'}
+          </ProfileInform>
         </div>
         <div className="category">
           <ProfileInformTag>상담 카테고리</ProfileInformTag>
