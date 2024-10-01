@@ -14,7 +14,6 @@ export const SellerConsult = () => {
         }}
       />
       <TabA1 isBuyer={false} initState={2} />
-
       <SellerConsultSection />
     </>
   );

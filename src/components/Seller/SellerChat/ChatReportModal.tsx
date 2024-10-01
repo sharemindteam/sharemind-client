@@ -19,7 +19,9 @@ export const ChatReportModal = () => {
           text="신고하기"
           width="100%"
           height="5.2rem"
-          onClick={() => {}}
+          onClick={() => {
+            window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+          }}
         />
       </div>
     </ChatReportModalWrapper>
@@ -43,7 +45,7 @@ const ChatReportModalWrapper = styled.div`
     display: flex;
     justify-content: center;
   }
-  z-index: 100;
+  z-index: 10000;
   .content-wrapper {
     padding: 0.4rem 2rem 0.8rem 2rem;
     box-sizing: border-box;

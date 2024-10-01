@@ -15,7 +15,6 @@ import { LetterTagListSection } from 'components/Seller/SellerLetter/LetterTagLi
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
 import { LoadingSpinner } from 'utils/LoadingSpinner';
 import {
   isConsultModalOpenState,

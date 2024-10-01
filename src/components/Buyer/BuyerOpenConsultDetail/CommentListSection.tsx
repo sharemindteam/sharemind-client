@@ -10,6 +10,8 @@ import CommentCard from './CommentCard';
 import { Green, LightGreen, White } from 'styles/color';
 import { Flex } from 'components/Common/Flex';
 import { Caption1 } from 'styles/font';
+import { ChatReportModal } from 'components/Seller/SellerChat/ChatReportModal';
+import { useShowComplaintModal } from 'hooks/useShowComplaintModal';
 
 //
 //
@@ -28,6 +30,9 @@ function CommentListSection() {
   const [isEndConsult, setIsEndConsult] = useState<boolean | undefined>();
   // 선택한 댓글 아이디 (좋아요, 채택)
   const [pickedCommentId, setPickedCommentId] = useState<string>('');
+
+  const { isComplaintModalOpen, handleBackDropClick, handleMoreButtonClick } =
+    useShowComplaintModal();
 
   /**
    *
@@ -55,6 +60,7 @@ function CommentListSection() {
         isEndConsult={isEndConsult}
         setIsPickPopup={setIsPickPopup}
         setPickedCommentId={setPickedCommentId}
+        handleMoreButtonClick={handleMoreButtonClick}
       />
     ));
   };
@@ -106,6 +112,12 @@ function CommentListSection() {
             setIsPickPopup={setIsPickPopup}
             pickedCommentId={pickedCommentId}
           />
+        </>
+      )}
+      {isComplaintModalOpen && (
+        <>
+          <BackDrop onClick={handleBackDropClick} />
+          <ChatReportModal />
         </>
       )}
 
