@@ -1,12 +1,12 @@
 import { useRecoilState } from 'recoil';
 import { isComplaintModalOpenState } from 'utils/atom';
 
-export const useShowComplaintModal = () => {
+export const useShowComplainttModal = () => {
   const [isComplaintModalOpen, setIsComplaintModalOpen] = useRecoilState(
     isComplaintModalOpenState,
   );
 
-  const handleMoreButtonClick = () => {
+  const handleComplaintButtonClick = () => {
     setIsComplaintModalOpen(true);
   };
 
@@ -14,5 +14,5 @@ export const useShowComplaintModal = () => {
     setIsComplaintModalOpen(false);
   };
 
-  return { isComplaintModalOpen, handleBackDropClick, handleMoreButtonClick };
+  return { isComplaintModalOpen, handleBackDropClick, handleComplaintButtonClick};
 };
