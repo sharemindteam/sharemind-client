@@ -200,7 +200,7 @@ const SelectButton = styled.button`
 
 const MoreButton = styled(SettingIcon)`
   cursor: pointer;
-  padding: 0 0.4rem;
+  padding: 0.4rem;
 `;
 
 const LikeButton = styled.div`
