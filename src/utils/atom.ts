@@ -82,6 +82,11 @@ export const isTakingQuizModalOpenState = atom({
   default: false,
 });
 
+export const isComplaintModalOpenState = atom({
+  key: 'isComplaintModalOpenState',
+  default: false,
+});
+
 export const replyState = atom({
   key: 'replyState',
   default: '',

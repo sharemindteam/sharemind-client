@@ -1,16 +1,26 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { ReactComponent as Bar } from 'assets/icons/icon-modal-bar.svg';
 import { White } from 'styles/color';
 import { Button } from 'components/Common/Button';
 import { APP_WIDTH } from 'styles/AppStyle';
 
-//
-//
-//
+///
+///
+///
 
-export const ChatReportModal = () => {
+interface ComplaintModalProps {
+  handleComplaintButtonClick: () => void;
+}
+
+///
+///
+///
+
+export const ComplaintModal = ({
+  handleComplaintButtonClick,
+}: ComplaintModalProps) => {
   return (
-    <ChatReportModalWrapper>
+    <ReportModalWrapper>
       <div className="bar-wrapper">
         <BarIcon />
       </div>
@@ -19,22 +29,31 @@ export const ChatReportModal = () => {
           text="신고하기"
           width="100%"
           height="5.2rem"
-          onClick={() => {
-            window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
-          }}
+          onClick={handleComplaintButtonClick}
         />
       </div>
-    </ChatReportModalWrapper>
+    </ReportModalWrapper>
   );
 };
 
-const ChatReportModalWrapper = styled.div`
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
+const ReportModalWrapper = styled.div`
   position: fixed;
   background-color: ${White};
   border-radius: 2rem 2rem 0 0;
   box-shadow: 0 -0.2rem 1rem 0 rgba(0, 0, 0, 0.1);
   bottom: 0;
   width: 100%;
+  z-index: 10000;
+  animation: ${slideUp} 0.3s ease-out;
 
   @media (min-width: 768px) {
     width: ${APP_WIDTH};
@@ -45,7 +64,7 @@ const ChatReportModalWrapper = styled.div`
     display: flex;
     justify-content: center;
   }
-  z-index: 10000;
+
   .content-wrapper {
     padding: 0.4rem 2rem 0.8rem 2rem;
     box-sizing: border-box;
