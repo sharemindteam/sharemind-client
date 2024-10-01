@@ -31,11 +31,12 @@ function CommentListSection() {
   // 선택한 댓글 아이디 (좋아요, 채택)
   const [pickedCommentId, setPickedCommentId] = useState<string>('');
 
-  const {
-    isComplaintModalOpen,
-    handleBackDropClick,
-    handleComplaintButtonClick,
-  } = useShowComplainttModal();
+  const { isComplaintModalOpen, handleBackDropClick, handleMoreButtonClick } =
+    useShowComplainttModal();
+
+  const handleComplaintButtonClick = () => {
+    window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+  };
 
   /**
    *
@@ -63,7 +64,7 @@ function CommentListSection() {
         isEndConsult={isEndConsult}
         setIsPickPopup={setIsPickPopup}
         setPickedCommentId={setPickedCommentId}
-        handleMoreButtonClick={handleComplaintButtonClick}
+        handleMoreButtonClick={handleMoreButtonClick}
       />
     ));
   };
