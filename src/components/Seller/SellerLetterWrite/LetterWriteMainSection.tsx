@@ -17,6 +17,7 @@ import { Space } from 'components/Common/Space';
 import { CartegoryState } from 'utils/type';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { BackDrop } from 'components/Common/BackDrop';
+import { consultCategoryToCharNum } from 'utils/convertStringToCharNum';
 
 //
 //
@@ -146,11 +147,14 @@ export const LetterWriteMainSection = ({
 
       // 셰어가 보낸 편지 불러오는 api
       const customerInfoResponse: any = await getCustomerInfo(consultid);
+
       setConsultInform({
         categoryStatus: customerInfoResponse?.data?.category,
         counselorName: customerInfoResponse?.data?.nickname,
         beforeMinutes: letterResponse?.data?.updatedAt2,
-        counselorprofileStatus: 1, // 포매팅 필요
+        counselorprofileStatus: consultCategoryToCharNum(
+          customerInfoResponse?.data?.category,
+        ),
         newMessageCounts: 0,
         content: letterResponse?.data?.content,
         date: letterResponse?.data?.updatedAt,
@@ -158,6 +162,7 @@ export const LetterWriteMainSection = ({
       setIsLoading(false);
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSave]);
 
   return (

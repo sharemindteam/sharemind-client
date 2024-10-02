@@ -8,6 +8,9 @@ import { ReactComponent as More } from 'assets/icons/icon-more-review-card.svg';
 import { LetterMainSection } from 'components/Buyer/BuyerLetter/LetterMainSection';
 import { LetterTags } from 'components/Buyer/BuyerLetter/LetterTags';
 import { BackIcon, HeaderWrapper } from 'components/Buyer/Common/Header';
+import { BackDrop } from 'components/Common/BackDrop';
+import { ComplaintModal } from 'components/Seller/Common/ComplaintModal';
+import { useShowComplainttModal } from 'hooks/useShowComplaintModal';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -45,6 +48,8 @@ export const BuyerLetter = () => {
   const [deadline, setDeadline] = useState<string>('');
   //로딩 state
   const [isLoading, setIsLoading] = useRecoilState<boolean>(isLoadingState);
+  const { isComplaintModalOpen, handleBackDropClick, handleMoreButtonClick } =
+    useShowComplainttModal();
   //상대 이름 state
   const [opponentNickname, setOpponentNickname] = useState<string>('');
 
@@ -172,6 +177,10 @@ export const BuyerLetter = () => {
   //
   //
 
+  const handleComplaintButtonClick = () => {
+    window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+  };
+
   if (isLoading) {
     return (
       <>
@@ -208,8 +217,16 @@ export const BuyerLetter = () => {
           />
           {/* params로 넘어온 id에 해당하는 상담이름 */}
           <Heading color={Grey1}>{opponentNickname}</Heading>
-          <MoreIcon />
+          <MoreIcon onClick={handleMoreButtonClick} />
         </HeaderWrapper>
+        {isComplaintModalOpen && (
+          <>
+            <BackDrop onClick={handleBackDropClick} />
+            <ComplaintModal
+              handleComplaintButtonClick={handleComplaintButtonClick}
+            />
+          </>
+        )}
         <LetterTags
           tagStatus={tagStatus}
           setTagStatus={setTagStatus}

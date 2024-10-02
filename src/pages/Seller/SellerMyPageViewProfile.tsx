@@ -16,6 +16,7 @@ export interface ProfileData {
   consultCosts: any;
   introduction: string;
   experience: string;
+  phoneNumber: string | null;
 }
 export const SellerMypageViewProfile = () => {
   const [profile, setProfile] = useState<ProfileData>();
@@ -72,6 +73,7 @@ export const SellerMypageViewProfile = () => {
             oneLiner={profile?.introduction}
             experience={profile?.experience}
             isEvaluationPending={isEvaluationPending}
+            phoneNumber={profile?.phoneNumber}
             // accountNum="1234567890000"
             // bankType="우리은행"
             // bankOwner="정인영"

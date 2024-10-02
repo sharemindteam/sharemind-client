@@ -10,6 +10,8 @@ import CommentCard from './CommentCard';
 import { Green, LightGreen, White } from 'styles/color';
 import { Flex } from 'components/Common/Flex';
 import { Caption1 } from 'styles/font';
+import { useShowComplainttModal } from 'hooks/useShowComplaintModal';
+import { ComplaintModal } from 'components/Seller/Common/ComplaintModal';
 
 //
 //
@@ -28,6 +30,13 @@ function CommentListSection() {
   const [isEndConsult, setIsEndConsult] = useState<boolean | undefined>();
   // 선택한 댓글 아이디 (좋아요, 채택)
   const [pickedCommentId, setPickedCommentId] = useState<string>('');
+
+  const { isComplaintModalOpen, handleBackDropClick, handleMoreButtonClick } =
+    useShowComplainttModal();
+
+  const handleComplaintButtonClick = () => {
+    window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+  };
 
   /**
    *
@@ -55,6 +64,7 @@ function CommentListSection() {
         isEndConsult={isEndConsult}
         setIsPickPopup={setIsPickPopup}
         setPickedCommentId={setPickedCommentId}
+        handleMoreButtonClick={handleMoreButtonClick}
       />
     ));
   };
@@ -105,6 +115,14 @@ function CommentListSection() {
             isPickPopup={isPickPopup}
             setIsPickPopup={setIsPickPopup}
             pickedCommentId={pickedCommentId}
+          />
+        </>
+      )}
+      {isComplaintModalOpen && (
+        <>
+          <BackDrop onClick={handleBackDropClick} />
+          <ComplaintModal
+            handleComplaintButtonClick={handleComplaintButtonClick}
           />
         </>
       )}

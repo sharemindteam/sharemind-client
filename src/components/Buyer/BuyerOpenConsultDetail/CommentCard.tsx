@@ -35,6 +35,7 @@ interface CommentCardProps {
   setIsPickPopup: React.Dispatch<React.SetStateAction<boolean>>;
   setPickedCommentId: React.Dispatch<React.SetStateAction<string>>;
   isEndConsult: boolean | undefined;
+  handleMoreButtonClick: () => void;
 }
 
 //
@@ -47,6 +48,7 @@ function CommentCard({
   setPickedCommentId,
   setIsPickPopup,
   isEndConsult,
+  handleMoreButtonClick,
 }: CommentCardProps) {
   const navigate = useNavigate();
 
@@ -125,7 +127,7 @@ function CommentCard({
           <Circle />
           <Caption2>{item.updatedAt}</Caption2>
         </Flex>
-        <SettingIcon style={{ padding: '0 0.4rem' }} />
+        <MoreButton onClick={handleMoreButtonClick} />
       </Flex>
       <Body3 color={Grey1}>{formattedMessage(item.content)}</Body3>
       <Flex justify="flex-end" width="100%">
@@ -194,6 +196,11 @@ const SelectButton = styled.button`
   border-radius: 0.8rem;
   border: 1px solid ${Green};
   background-color: ${LightGreen};
+`;
+
+const MoreButton = styled(SettingIcon)`
+  cursor: pointer;
+  padding: 0.4rem;
 `;
 
 const LikeButton = styled.div`
