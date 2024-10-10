@@ -64,7 +64,7 @@ function IsSendPopup({ text, setText, setIsReplying }: IsSendPopupProps) {
     <IsSendModalBox>
       <ModalBox>
         <Body1>답장을 보낼까요?</Body1>
-        <Body3 color={Grey4}>보낸 후엔 수정할 수 없어요.</Body3>
+        <Body3 color={Grey4}>보낸 후엔 수정하거나 삭제할 수 없어요.</Body3>
         <ButtonWrapper>
           <NoButton
             onClick={() => {
