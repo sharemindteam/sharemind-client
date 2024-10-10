@@ -51,6 +51,7 @@ export const AppContainer = ({ children }: AppContainerProps) => {
   //
   // Redirect to inspection page when service is shut down
   useManipulateServerDown();
+
   //
   //
   //
