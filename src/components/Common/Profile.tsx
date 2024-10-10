@@ -159,7 +159,7 @@ export const Profile = ({
           </ServiceItem>
           <ServiceItem
             onClick={() => {
-              window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+              window.open(process.env.REACT_APP_SERVICE_CENTER_URL);
             }}
           >
             정산 문의

@@ -50,7 +50,7 @@ export const SellerLetter = () => {
   //
   //
   const handleComplaintButtonClick = () => {
-    window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+    window.open(process.env.REACT_APP_REPORT_URL);
   };
 
   // 모달 활성화 시 스크롤락

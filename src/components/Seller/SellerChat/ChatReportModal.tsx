@@ -20,7 +20,7 @@ export const ChatReportModal = () => {
           width="100%"
           height="5.2rem"
           onClick={() => {
-            window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+            window.open(process.env.REACT_APP_REPORT_URL);
           }}
         />
       </div>
