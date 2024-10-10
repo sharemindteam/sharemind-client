@@ -18,6 +18,7 @@ import { CartegoryState } from 'utils/type';
 import { APP_WIDTH } from 'styles/AppStyle';
 import { BackDrop } from 'components/Common/BackDrop';
 import { consultCategoryToCharNum } from 'utils/convertStringToCharNum';
+import { formattedMessage } from 'utils/formattedMessage';
 
 //
 //
@@ -207,7 +208,10 @@ export const LetterWriteMainSection = ({
       ) : isViewQuestion ? (
         <>
           <QuestionDate>{consultInform?.date}</QuestionDate>
-          <UnfoldedTextField>{consultInform?.content}</UnfoldedTextField>
+          <UnfoldedTextField>
+            {formattedMessage(consultInform?.content)}
+          </UnfoldedTextField>
+          <Space height="4rem" />
         </>
       ) : (
         <>
@@ -237,7 +241,7 @@ export const LetterWriteMainSection = ({
               }
             }}
           />
-          <Space height="5rem" />
+          <Space height="10rem" />
           <BottomButtonGroup>
             <SaveButton
               onClick={() => {

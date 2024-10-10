@@ -51,11 +51,13 @@ export const LetterBonusReplyStep = ({
 const LetterBonusReplyStepWrapper = styled.section`
   margin-bottom: 100px;
 `;
+
 const ArriveSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const Time = styled(Body3)`
   padding: 1.2rem;
   color: ${Grey3};
@@ -75,12 +77,14 @@ const TextField = styled.div`
   font-weight: 400;
   line-height: 150%; /* 2.4rem */
 `;
+
 const NotWriteSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4rem;
 `;
+
 const AlertMessage = styled.div`
   font-family: Pretendard;
   margin-top: 1.2rem;
@@ -90,9 +94,11 @@ const AlertMessage = styled.div`
   font-weight: 400;
   line-height: 150%;
 `;
+
 const NotWriteGraphic = styled(NotWrite)`
   margin-top: 16.4rem;
 `;
+
 const NotWriteMessage = styled.div`
   color: #000;
   text-align: center;

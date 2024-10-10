@@ -52,7 +52,7 @@ export const LetterBonusQuestionStep = ({
 };
 
 const LetterBonusQuestionWrapper = styled.section`
-  margin-bottom: 100px;
+  padding-bottom: 10rem;
 `;
 const ArriveSection = styled.div`
   display: flex;
