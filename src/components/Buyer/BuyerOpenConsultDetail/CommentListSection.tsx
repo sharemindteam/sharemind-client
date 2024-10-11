@@ -35,7 +35,7 @@ function CommentListSection() {
     useShowComplainttModal();
 
   const handleComplaintButtonClick = () => {
-    window.open(process.env.REACT_APP_TEMP_CUSTOMER_SERVICE_URL);
+    window.open(process.env.REACT_APP_REPORT_URL);
   };
 
   /**
