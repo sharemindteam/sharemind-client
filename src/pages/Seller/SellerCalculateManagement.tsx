@@ -65,6 +65,7 @@ export const SellerCaculateManagement = () => {
   const [toatlMoney, setTotalMoney] = useState<number>(0);
   const [isCompleteApplyManage, setIsCompleteApplyManage] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [lastId, setLastId] = useState(0);
 
   //scorll 막기
   const setScrollLock = useSetRecoilState(scrollLockState);
@@ -74,9 +75,7 @@ export const SellerCaculateManagement = () => {
   const onIntersect: IntersectionObserverCallback = async (entry) => {
     if (entry[0].isIntersecting && !isLastElem && preventRef.current) {
       preventRef.current = false;
-      await fetchManagements(
-        managementList[managementList.length - 1].paymentId,
-      );
+      await fetchManagements(lastId);
       preventRef.current = true;
     }
   };
@@ -103,28 +102,30 @@ export const SellerCaculateManagement = () => {
         if (res.data.length !== 0) {
           if (lastId === 0) {
             setManagementList(res.data);
-            let totalEarnMoney = 0;
-            res?.data?.forEach((item: ManageItem) => {
-              totalEarnMoney += Number(item?.profit);
-            });
-            setTotalMoney(totalEarnMoney);
+            setTotalMoney(res.data[0].total);
+            setLastId(
+              managementList[managementList.length - 1]?.paymentId ?? 0,
+            );
+            setIsLastElem(false);
           } else {
-            const updatedManages = [...managementList, ...res.data];
-            setManagementList(updatedManages);
-            let totalEarnMoney = 0;
-            res?.data?.forEach((item: ManageItem) => {
-              totalEarnMoney += Number(item?.profit);
-            });
-            setTotalMoney(totalEarnMoney);
+            // 무한스크롤
+            setManagementList([...managementList, ...res.data]);
+            setLastId(
+              managementList[managementList.length - 1]?.paymentId ?? 0,
+            );
+            setTotalMoney(res.data[0].total);
           }
         } else {
-          setManagementList(res.data);
-          setIsLastElem(true);
-          let totalEarnMoney = 0;
-          res?.data?.forEach((item: ManageItem) => {
-            totalEarnMoney += Number(item?.profit);
-          });
-          setTotalMoney(totalEarnMoney);
+          if (lastId === 0) {
+            setManagementList([...res.data]);
+            setLastId(0);
+            setIsLastElem(true);
+            setTotalMoney(0);
+          } else {
+            setManagementList([...managementList, ...res.data]);
+            setLastId(0);
+            setIsLastElem(true);
+          }
         }
       } else {
         alert('판매 정보가 아직 등록되지 않았어요!');
@@ -144,7 +145,7 @@ export const SellerCaculateManagement = () => {
   //
   useEffect(() => {
     fetchManagements(0);
-  }, [manageStatus, sortType, isCompleteApplyManage, navigate]);
+  }, [sortType, manageStatus]);
 
   //
   //
