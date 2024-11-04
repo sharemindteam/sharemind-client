@@ -39,6 +39,7 @@ function CompleteApplyPopup({
         width="calc(100% - 3.2rem)"
         onClick={() => {
           setIsCompleteApplyManage(false);
+          window.location.reload();
         }}
       />
     </CompleteApplyPopupBox>
