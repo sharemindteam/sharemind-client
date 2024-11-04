@@ -15,8 +15,6 @@ import { LoadingSpinner } from 'utils/LoadingSpinner';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
 import { BackDrop } from 'components/Common/BackDrop';
 
-//
-// 정산 상태 및 정렬 유형 맵핑 객체
 const STATUS_MAP = {
   '정산 중': 'SETTLEMENT_ONGOING',
   '정산 예정': 'SETTLEMENT_WAITING',
@@ -25,8 +23,6 @@ const STATUS_MAP = {
 
 const SORT_OPTIONS = ['WEEK', 'MONTH', 'ALL'];
 
-//
-// 정산 항목 인터페이스
 interface ManageItem {
   paymentId: number;
   nickname: string;
@@ -34,19 +30,16 @@ interface ManageItem {
   profit: number;
   cost: number;
   fee: number;
-  approvedAt: null;
-  account: null;
-  total: number;
+  consultedAt: string;
+  settledAt: string;
+  account: string;
 }
 
 type ManageList = ManageItem[];
 
-//
-// 메인 컴포넌트
 export default function SellerCalculateManagement() {
   const navigate = useNavigate();
 
-  // 컴포넌트 상태
   const [manageStatus, setManageStatus] = useState<string>('완료');
   const [sortType, setSortType] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useRecoilState(isConsultModalOpenState);
@@ -76,10 +69,9 @@ export default function SellerCalculateManagement() {
     onIntersect,
   });
 
-  // 정산 목록을 서버에서 불러오는 함수
   const fetchManagements = async (lastId: number) => {
     const params = {
-      status: STATUS_MAP[manageStatus],
+      status: STATUS_MAP[manageStatus as keyof typeof STATUS_MAP],
       sort: SORT_OPTIONS[sortType],
       paymentId: lastId,
     };
@@ -90,12 +82,11 @@ export default function SellerCalculateManagement() {
       if (res?.status === 200) {
         const responses = res.data.paymentGetCounselorResponses;
         const isInitialLoad = lastId === 0;
-
+        setTotalMoney(res.data.total);
         if (responses.length) {
           setManagementList(
             isInitialLoad ? responses : [...managementList, ...responses],
           );
-          setTotalMoney(res.data.total);
           setLastId(responses[responses.length - 1].paymentId);
           setIsLastElem(false);
         } else {
@@ -153,6 +144,7 @@ export default function SellerCalculateManagement() {
               {managementList.map((item) => (
                 <SellerCalulateCard
                   key={item.paymentId}
+                  manageStatus={manageStatus}
                   id={item.paymentId}
                   customerName={item.nickname}
                   calculateActivate={manageStatus === '정산 예정'}
@@ -160,7 +152,8 @@ export default function SellerCalculateManagement() {
                   netProfit={item.profit}
                   commission={item.fee}
                   paymentAccount={item.account ?? '계좌 명시안됨'}
-                  paymentDate={item.approvedAt ?? '지급 일자 명시안됨'}
+                  consultDate={item.consultedAt ?? '상담 일자 명시안됨'}
+                  paymentDate={item.settledAt ?? '지급 일자 명시안됨'}
                   salePrice={item.cost}
                   isShowPopup={isCompleteApplyManage}
                   setIsShowPopup={setIsCompleteApplyManage}

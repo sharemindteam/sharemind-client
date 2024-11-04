@@ -13,11 +13,13 @@ interface SellerCalulateCardProps {
   salePrice: number;
   commission: number;
   paymentDate: string;
+  consultDate: string;
   paymentAccount: string;
   id: number;
   calculateActivate: boolean;
   isShowPopup: boolean;
   setIsShowPopup: any;
+  manageStatus: string;
 }
 
 export const SellerCalulateCard = ({
@@ -28,10 +30,12 @@ export const SellerCalulateCard = ({
   commission,
   paymentAccount,
   paymentDate,
+  consultDate,
   calculateActivate,
   id,
   isShowPopup,
   setIsShowPopup,
+  manageStatus,
 }: SellerCalulateCardProps) => {
   const applyManagement = async (id: number) => {
     const res: any = await patchApplyPayments(id);
@@ -81,7 +85,11 @@ export const SellerCalulateCard = ({
           <Body3>{commission.toLocaleString()} 원</Body3>
         </ConsultEarnInfoItem>
         <ConsultEarnInfoItem>
-          <Body3 color={Grey3}>지급일자</Body3>
+          <Body3 color={Grey3}>상담일자</Body3>
+          <Body3>{consultDate}</Body3>
+        </ConsultEarnInfoItem>
+        <ConsultEarnInfoItem>
+          <Body3 color={Grey3}>지급예정</Body3>
           <Body3>{paymentDate}</Body3>
         </ConsultEarnInfoItem>
         <ConsultEarnInfoItem>
