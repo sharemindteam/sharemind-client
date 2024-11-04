@@ -99,30 +99,36 @@ export const SellerCaculateManagement = () => {
     const res: any = await getPaymentsMinder({ params });
     try {
       if (res?.status === 200) {
-        if (res.data.length !== 0) {
+        if (res.data.paymentGetCounselorResponses.length !== 0) {
           if (lastId === 0) {
-            setManagementList(res.data);
-            setTotalMoney(res.data[0].total);
+            setManagementList(res.data.paymentGetCounselorResponses);
+            setTotalMoney(res.data.total);
             setLastId(
               managementList[managementList.length - 1]?.paymentId ?? 0,
             );
             setIsLastElem(false);
           } else {
             // 무한스크롤
-            setManagementList([...managementList, ...res.data]);
+            setManagementList([
+              ...managementList,
+              ...res.data.paymentGetCounselorResponses,
+            ]);
             setLastId(
               managementList[managementList.length - 1]?.paymentId ?? 0,
             );
-            setTotalMoney(res.data[0].total);
+            setTotalMoney(res.data.total);
           }
         } else {
           if (lastId === 0) {
-            setManagementList([...res.data]);
+            setManagementList([...res.data.paymentGetCounselorResponses]);
             setLastId(0);
             setIsLastElem(true);
             setTotalMoney(0);
           } else {
-            setManagementList([...managementList, ...res.data]);
+            setManagementList([
+              ...managementList,
+              ...res.data.paymentGetCounselorResponses,
+            ]);
             setLastId(0);
             setIsLastElem(true);
           }
