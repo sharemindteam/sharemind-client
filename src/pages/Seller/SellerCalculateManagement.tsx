@@ -77,9 +77,9 @@ export default function SellerCalculateManagement() {
     };
 
     try {
-      const res = await getPaymentsMinder({ params });
+      const res: any = await getPaymentsMinder({ params });
 
-      if (res?.status === 200) {
+      if (res.status === 200) {
         const responses = res.data.paymentGetCounselorResponses;
         const isInitialLoad = lastId === 0;
         setTotalMoney(res.data.total);
