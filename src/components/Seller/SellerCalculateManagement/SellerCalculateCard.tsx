@@ -5,6 +5,7 @@ import { Grey3, Grey6, Green, White } from 'styles/color';
 import { Body1, Body3 } from 'styles/font';
 import CompleteApplyPopup from './CompleteApplyPopup';
 import { BackDrop } from 'components/Common/BackDrop';
+import { ManageList } from 'pages/Seller/SellerCalculateManagement';
 
 interface SellerCalulateCardProps {
   customerName: string;
@@ -20,6 +21,7 @@ interface SellerCalulateCardProps {
   isShowPopup: boolean;
   setIsShowPopup: any;
   manageStatus: string;
+  setManagementList: React.Dispatch<React.SetStateAction<ManageList>>;
 }
 
 export const SellerCalulateCard = ({
@@ -36,6 +38,7 @@ export const SellerCalulateCard = ({
   isShowPopup,
   setIsShowPopup,
   manageStatus,
+  setManagementList,
 }: SellerCalulateCardProps) => {
   const applyManagement = async (id: number) => {
     const res: any = await patchApplyPayments(id);
@@ -63,6 +66,8 @@ export const SellerCalulateCard = ({
           consultType={consultType}
           date={paymentDate}
           setIsCompleteApplyManage={setIsShowPopup}
+          setManagementList={setManagementList}
+          id={id}
         />
       )}
       <SellerCalulateCardWrapper>
@@ -89,7 +94,9 @@ export const SellerCalulateCard = ({
           <Body3>{consultDate}</Body3>
         </ConsultEarnInfoItem>
         <ConsultEarnInfoItem>
-          <Body3 color={Grey3}>지급예정</Body3>
+          <Body3 color={Grey3}>
+            {manageStatus === '완료' ? '지급일자' : '지급예정'}
+          </Body3>
           <Body3>{paymentDate}</Body3>
         </ConsultEarnInfoItem>
         <ConsultEarnInfoItem>

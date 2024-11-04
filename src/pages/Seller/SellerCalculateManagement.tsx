@@ -35,7 +35,7 @@ interface ManageItem {
   account: string;
 }
 
-type ManageList = ManageItem[];
+export type ManageList = ManageItem[];
 
 export default function SellerCalculateManagement() {
   const navigate = useNavigate();
@@ -157,6 +157,7 @@ export default function SellerCalculateManagement() {
                   salePrice={item.cost}
                   isShowPopup={isCompleteApplyManage}
                   setIsShowPopup={setIsCompleteApplyManage}
+                  setManagementList={setManagementList}
                 />
               ))}
               {!isLastElem && <IntersectionTarget ref={setTarget} />}
