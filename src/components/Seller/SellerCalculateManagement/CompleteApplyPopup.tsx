@@ -1,5 +1,6 @@
 import { Button } from 'components/Common/Button';
 import { Space } from 'components/Common/Space';
+import { ManageList } from 'pages/Seller/SellerCalculateManagement';
 import React from 'react';
 import styled from 'styled-components';
 import { Grey4 } from 'styles/color';
@@ -14,6 +15,9 @@ interface CompleteApplyPopupProps {
   date: string;
   consultType: string;
   setIsCompleteApplyManage: React.Dispatch<React.SetStateAction<boolean>>;
+  setManagementList: React.Dispatch<React.SetStateAction<ManageList>>;
+
+  id: number;
 }
 
 //
@@ -21,10 +25,12 @@ interface CompleteApplyPopupProps {
 //
 
 function CompleteApplyPopup({
-  name = '김고민',
-  date = '2001.12.15',
-  consultType = '무슨',
+  name,
+  date,
+  consultType,
   setIsCompleteApplyManage,
+  setManagementList,
+  id,
 }: CompleteApplyPopupProps) {
   return (
     <CompleteApplyPopupBox>
@@ -39,6 +45,9 @@ function CompleteApplyPopup({
         width="calc(100% - 3.2rem)"
         onClick={() => {
           setIsCompleteApplyManage(false);
+          setManagementList((prev: ManageList) =>
+            prev.filter((item) => item.paymentId !== id),
+          );
         }}
       />
     </CompleteApplyPopupBox>
