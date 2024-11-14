@@ -78,7 +78,9 @@ const OpenConsultCard = ({
     <Wrapper onClick={onClick}>
       <Flex direction="column" align="flex-start" gap="0.8rem">
         <Flex justify="space-between" width="100%">
-          <Body4 color={Grey1}>{title}</Body4>
+          <Body4 color={Grey1} style={{ textAlign: 'left' }}>
+            {title}
+          </Body4>
         </Flex>
         {content ? (
           <Body3 color={Grey1} customStyles={ContentTwoLinesCSS}>
