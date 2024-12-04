@@ -40,6 +40,9 @@ export const patchCounselorsAllDeprecated = async (
   body: any,
 ) => await patchPublicInstance(`/counselors/all?sortType=${sortType}`, body);
 
+export const patchCounselorsAll = async (sortType: string, body: any) =>
+  await axiosPatch(`/counselors/all?sortType=${sortType}`, body);
+
 //LetterMessage Controller
 //Message 최초 생성
 export const patchLetterMessage = async (body: any) =>
