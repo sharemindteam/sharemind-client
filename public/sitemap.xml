@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- 정적 경로 -->
+  <url>
+    <loc>https://sharemindapp.com/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/share</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/open-consult</loc>
+    <changefreq>always</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/open-consult/likes</loc>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/open-consult/recents</loc>
+    <changefreq>always</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/categorySearch</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/service</loc>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/service-unavailable</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- 동적 경로 예시 -->
+  <!-- TODO: 게시물, 상담사에 대한 sitemap generating logic 추가 -->
+  <url>
+    <loc>https://sharemindapp.com/open-consult/101</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/open-consult/102</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/profile/1</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/profile/2</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sharemindapp.com/minder/open-consult/789</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>
