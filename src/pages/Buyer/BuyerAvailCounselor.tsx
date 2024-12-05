@@ -10,7 +10,7 @@ import { sortList } from 'utils/constant';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isSortModalOpenState, scrollLockState } from 'utils/atom';
 import { SearchResultData } from 'utils/type';
-import { patchCounselorsAll } from 'api/patch';
+import { patchCounselorsAllDeprecated } from 'api/patch';
 import { ConverSortType } from 'utils/convertSortType';
 import { AvailCounselorSearchResults } from 'components/Buyer/BuyerAvailCounselor/AvailCounselorSearchResult';
 import useIntersectionObserver from 'hooks/useIntersectionObserver';
@@ -61,7 +61,7 @@ export const BuyerAvailCounselor = () => {
         index: pageIndex,
       };
       const sortTypeString: string = ConverSortType(sortType);
-      const res: any = await patchCounselorsAll(sortTypeString, body);
+      const res: any = await patchCounselorsAllDeprecated(sortTypeString, body);
       if (res.status === 200) {
         if (res.data.length !== 0) {
           if (pageIndex === 0) {

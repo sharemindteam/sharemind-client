@@ -30,6 +30,7 @@
     "react-use": "^17.5.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
+    "sitemap": "^8.0.0",
     "sockjs-client": "^1.6.1",
     "styled-components": "^6.1.8",
     "styled-normalize": "^8.1.0",
@@ -39,7 +40,7 @@
   "scripts": {
     "start": "env-cmd -f .env.development react-scripts start",
     "start:prod": "env-cmd -f .env react-scripts start",
-    "build": "react-scripts build",
+    "build": "node generateSitemap.mjs && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

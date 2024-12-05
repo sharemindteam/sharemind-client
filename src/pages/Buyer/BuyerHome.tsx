@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import HomeAboutFooterSection from 'components/Common/HomeAboutFooterSection';
 import { SearchResultData } from 'utils/type';
 import { useEffect, useState } from 'react';
-import { patchCounselorsAll } from 'api/patch';
+import { patchCounselorsAllDeprecated } from 'api/patch';
 import { getRandomCounselors } from 'api/get';
 
 //
@@ -30,7 +30,7 @@ export const BuyerHome = () => {
         const body = {
           index: 0,
         };
-        const res: any = await patchCounselorsAll('POPULARITY', body);
+        const res: any = await patchCounselorsAllDeprecated('POPULARITY', body);
         if (res.status === 200) {
           if (res.data.length > 0) {
             setSearchData(res.data);
