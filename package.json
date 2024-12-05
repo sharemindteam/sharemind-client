@@ -40,7 +40,7 @@
   "scripts": {
     "start": "env-cmd -f .env.development react-scripts start",
     "start:prod": "env-cmd -f .env react-scripts start",
-    "build": "react-scripts build",
+    "build": "node generateSitemap.mjs && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

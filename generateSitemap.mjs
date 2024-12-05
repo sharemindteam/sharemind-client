@@ -60,8 +60,6 @@ const generateSitemap = async () => {
       },
     );
 
-    console.log(likesResponse);
-
     const likesDynamicRoutes = likesResponse.data.map((post) => ({
       url: `/open-consult/${post.postId}`,
       changefreq: 'daily',
