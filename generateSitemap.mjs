@@ -48,6 +48,31 @@ const generateSitemap = async () => {
     console.log(error);
   }
 
+  try {
+    const likesResponse = await axios.get(
+      process.env.REACT_APP_API_URL +
+        'posts/customers/public/likes?postId=0&finishedAt=' +
+        new Date().toISOString().slice(0, 19),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    console.log(likesResponse);
+
+    const likesDynamicRoutes = likesResponse.data.map((post) => ({
+      url: `/open-consult/${post.postId}`,
+      changefreq: 'daily',
+      priority: 0.7,
+    }));
+
+    dynamicRoutes.push(...likesDynamicRoutes);
+  } catch (error) {
+    console.log(error);
+  }
+
   // Sitemap 생성
   const sitemap = new SitemapStream({ hostname });
   const writeStream = fs.createWriteStream('./public/sitemap.xml');
