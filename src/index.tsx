@@ -10,6 +10,8 @@ import { StompProvider } from 'contexts/StompContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AppLayout from 'App.Layout';
 
+import { clarity } from 'react-microsoft-clarity';
+
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 axios.defaults.withCredentials = true;
@@ -19,6 +21,10 @@ const root = ReactDOM.createRoot(
 );
 
 const queryClient = new QueryClient();
+
+if (process.env.NODE_ENV === 'production') {
+  clarity.init(process.env.REACT_APP_CLARITY_ID as string);
+}
 
 root.render(
   <BrowserRouter>

@@ -35,8 +35,14 @@ export const patchAuthSignOut = async (body: any) =>
 
 //Counselor Controller
 //카테고리/들준마 상담사 리스트 반환
+export const patchCounselorsAllDeprecated = async (
+  sortType: string,
+  body: any,
+) => await patchPublicInstance(`/counselors/all?sortType=${sortType}`, body);
+
 export const patchCounselorsAll = async (sortType: string, body: any) =>
-  await patchPublicInstance(`/counselors/all?sortType=${sortType}`, body);
+  await axiosPatch(`/counselors/all?sortType=${sortType}`, body);
+
 //LetterMessage Controller
 //Message 최초 생성
 export const patchLetterMessage = async (body: any) =>

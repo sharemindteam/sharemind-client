@@ -8,7 +8,6 @@ import { BuyerMypage } from 'pages/Buyer/BuyerMypage';
 import { BuyerSearch } from 'pages/Buyer/BuyerSearch';
 import { BuyerSearchResult } from 'pages/Buyer/BuyerSearchResult';
 import { BuyerSignup } from 'pages/Buyer/BuyerSignup';
-import { SellerCaculateManagement } from 'pages/Seller/SellerCalculateManagement';
 import { SellerConsult } from 'pages/Seller/SellerConsult';
 import { SellerHome } from 'pages/Seller/SellerHome';
 import { SellerLetter } from 'pages/Seller/SellerLetter';
@@ -56,15 +55,16 @@ import SellerProfitBankAccount from 'pages/Seller/SellerProfitBankAccount';
 import ServerDown from 'pages/Common/ServerDown';
 import SellerUpdateFail from 'pages/Seller/SellerUpdateFail';
 import { BuyerManyLovedCounselor } from 'pages/Buyer/BuyerManyLovedCounselor';
+import SellerCalculateManagement from 'pages/Seller/SellerCalculateManagement';
 
 const Router = () => {
   return (
     <Routes>
-      {/* admin */}
-      <Route
+      {/* Moved to Admin Page ✅ */}
+      {/* <Route
         path={`/${process.env.REACT_APP_ADMIN_UUID_URL}`}
         element={<Admin />}
-      />
+      /> */}
       {/* minder(buyer) */}
       <Route path="/share" element={<BuyerHome />} />
       <Route path="/" element={<Navigate to="/share" />} />
@@ -164,7 +164,7 @@ const Router = () => {
       {/* 판매자 : 수익 관리 */}
       <Route
         path="/minder/calculatemanagement"
-        element={<SellerCaculateManagement />}
+        element={<SellerCalculateManagement />}
       />
       {/* 판매자 : 마인더 인증 */}
       <Route path="/minder/education/*" element={<SellerVerifyMaterial />} />
