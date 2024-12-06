@@ -32,11 +32,13 @@ root.render(
       <GlobalStyle />
       <StompProvider>
         <QueryClientProvider client={queryClient}>
+          {/* <PWAInstallWrapper> */}
           <AppLayout>
             <AppContainer>
               <App />
             </AppContainer>
           </AppLayout>
+          {/* </PWAInstallWrapper> */}
         </QueryClientProvider>
       </StompProvider>
     </RecoilRoot>
