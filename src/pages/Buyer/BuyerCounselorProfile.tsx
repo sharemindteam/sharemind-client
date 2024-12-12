@@ -12,6 +12,7 @@ import {
 
 import { Space } from 'components/Common/Space';
 import { useLayoutEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppendCategoryType } from 'utils/AppendCategoryType';
@@ -102,52 +103,60 @@ export const BuyerCounselorProfile = () => {
   if (id !== undefined) {
     const counselorId = parseInt(id, 10);
     return (
-      <Wrapper>
-        <CounselorProfileHeader />
-        <Body>
-          <CounselorProfileCard
-            nickname={profileData.nickname}
-            level={profileData.level}
-            rating={profileData.ratingAverage}
-            reviewNumber={profileData.totalReview}
-            consultStyle={consultStyleToCharNum(profileData.consultStyle) || 9}
-            totalConsult={profileData.totalConsult}
+      <>
+        <Helmet>
+          <title>{`${profileData.nickname} | 셰어마인드 상담사 프로필`}</title>
+          <meta name="description" content={profileData.experience} />
+        </Helmet>
+        <Wrapper>
+          <CounselorProfileHeader />
+          <Body>
+            <CounselorProfileCard
+              nickname={profileData.nickname}
+              level={profileData.level}
+              rating={profileData.ratingAverage}
+              reviewNumber={profileData.totalReview}
+              consultStyle={
+                consultStyleToCharNum(profileData.consultStyle) || 9
+              }
+              totalConsult={profileData.totalConsult}
+            />
+            <CounselorProfileNav
+              isInfo={isInfo}
+              setIsInfo={setIsInfo}
+              reviewNumber={profileData.totalReview}
+            />
+            {isInfo ? (
+              <>
+                <CounselorInfo
+                  consultType={profileData.consultTypes}
+                  consultTimes={profileData.consultTimes}
+                  letterPrice={profileData.consultCosts.편지}
+                  chattingPrice={profileData.consultCosts.채팅}
+                />
+                <CounselorExp
+                  experience={profileData.experience}
+                  introduction={profileData.introduction}
+                />
+                <CounselorTypeSection
+                  tagList={AppendCategoryType(
+                    profileData.consultCategories,
+                    profileData.consultStyle,
+                  )}
+                />
+                <Space height="5.2rem" />
+              </>
+            ) : (
+              <CounselorReview counselorId={counselorId} />
+            )}
+          </Body>
+          <CounselorFooter
+            counselorId={counselorId}
+            isWishList={profileData.isWishList}
+            consultTypes={profileData.consultTypes}
           />
-          <CounselorProfileNav
-            isInfo={isInfo}
-            setIsInfo={setIsInfo}
-            reviewNumber={profileData.totalReview}
-          />
-          {isInfo ? (
-            <>
-              <CounselorInfo
-                consultType={profileData.consultTypes}
-                consultTimes={profileData.consultTimes}
-                letterPrice={profileData.consultCosts.편지}
-                chattingPrice={profileData.consultCosts.채팅}
-              />
-              <CounselorExp
-                experience={profileData.experience}
-                introduction={profileData.introduction}
-              />
-              <CounselorTypeSection
-                tagList={AppendCategoryType(
-                  profileData.consultCategories,
-                  profileData.consultStyle,
-                )}
-              />
-              <Space height="5.2rem" />
-            </>
-          ) : (
-            <CounselorReview counselorId={counselorId} />
-          )}
-        </Body>
-        <CounselorFooter
-          counselorId={counselorId}
-          isWishList={profileData.isWishList}
-          consultTypes={profileData.consultTypes}
-        />
-      </Wrapper>
+        </Wrapper>
+      </>
     );
   } else {
     return <>404 error</>;
