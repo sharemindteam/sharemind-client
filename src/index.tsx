@@ -12,6 +12,8 @@ import AppLayout from 'App.Layout';
 
 import { clarity } from 'react-microsoft-clarity';
 
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+
 axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(
@@ -30,13 +32,17 @@ root.render(
       <GlobalStyle />
       <StompProvider>
         <QueryClientProvider client={queryClient}>
+          {/* <PWAInstallWrapper> */}
           <AppLayout>
             <AppContainer>
               <App />
             </AppContainer>
           </AppLayout>
+          {/* </PWAInstallWrapper> */}
         </QueryClientProvider>
       </StompProvider>
     </RecoilRoot>
   </BrowserRouter>,
 );
+
+serviceWorkerRegistration.register();
