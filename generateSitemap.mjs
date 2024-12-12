@@ -16,7 +16,6 @@ const generateSitemap = async () => {
     { url: '/open-consult', changefreq: 'always', priority: 1.0 },
     { url: '/open-consult/likes', changefreq: 'always', priority: 0.8 },
     { url: '/open-consult/recents', changefreq: 'always', priority: 0.8 },
-    { url: '/categorySearch', changefreq: 'daily', priority: 0.7 },
     { url: '/service', changefreq: 'never', priority: 0.8 },
     { url: '/service-unavailable', changefreq: 'monthly', priority: 0.5 },
   ];
