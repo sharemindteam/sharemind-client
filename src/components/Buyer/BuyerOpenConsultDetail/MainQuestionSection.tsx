@@ -18,6 +18,8 @@ import { deletePostLikes, deletePostScraps } from 'api/delete';
 import { formattedMessage } from 'utils/formattedMessage';
 import { Flex } from 'components/Common/Flex';
 
+import { Helmet } from 'react-helmet';
+
 //
 //
 //
@@ -128,40 +130,46 @@ function MainQuestionSection() {
   //
 
   return (
-    <MainQuestionWrapper>
-      <MainQuestionText>
-        <div className="row1">
-          <Body1>{card?.title}</Body1>
-          {!card?.isPublic && (
-            <PrivateSign>
-              <LockIcon />
-              <Caption1 color={Grey3}>비공개</Caption1>
-            </PrivateSign>
-          )}
-        </div>
-        <Space height="1.2rem" />
-        <div className="row2">{formattedMessage(card?.content)}</div>
-        <Space height="0.8rem" />
-        <div className="row3">
-          <Caption2 color={Grey2}>{card?.updatedAt}</Caption2>
-          <Circle />
-          <Caption2 color={Grey2}>{card?.consultCategory}</Caption2>
-        </div>
-        <Space height="1rem" />
-      </MainQuestionText>
-      <Flex gap="1rem" justify="flex-end">
-        <ButtonItem onClick={handleClickLikeButton}>
-          {isLike ? <HeartIcon /> : <HeartEmptyIcon />}
+    <>
+      <Helmet>
+        <title>{`${card?.title} | 셰어마인드 공개 상담`}</title>
+        <meta name="description" content={card?.content} />
+      </Helmet>
+      <MainQuestionWrapper>
+        <MainQuestionText>
+          <div className="row1">
+            <Body1>{card?.title}</Body1>
+            {!card?.isPublic && (
+              <PrivateSign>
+                <LockIcon />
+                <Caption1 color={Grey3}>비공개</Caption1>
+              </PrivateSign>
+            )}
+          </div>
+          <Space height="1.2rem" />
+          <div className="row2">{formattedMessage(card?.content)}</div>
+          <Space height="0.8rem" />
+          <div className="row3">
+            <Caption2 color={Grey2}>{card?.updatedAt}</Caption2>
+            <Circle />
+            <Caption2 color={Grey2}>{card?.consultCategory}</Caption2>
+          </div>
+          <Space height="1rem" />
+        </MainQuestionText>
+        <Flex gap="1rem" justify="flex-end">
+          <ButtonItem onClick={handleClickLikeButton}>
+            {isLike ? <HeartIcon /> : <HeartEmptyIcon />}
 
-          <Button2 color={Grey2}>{card?.totalLike}</Button2>
-        </ButtonItem>
-        <ButtonItem onClick={handleClickScrapButton}>
-          {isSave ? <SaveIcon /> : <SaveEmptyIcon />}
+            <Button2 color={Grey2}>{card?.totalLike}</Button2>
+          </ButtonItem>
+          <ButtonItem onClick={handleClickScrapButton}>
+            {isSave ? <SaveIcon /> : <SaveEmptyIcon />}
 
-          <Button2 color={Grey2}>{card?.totalScrap}</Button2>
-        </ButtonItem>
-      </Flex>
-    </MainQuestionWrapper>
+            <Button2 color={Grey2}>{card?.totalScrap}</Button2>
+          </ButtonItem>
+        </Flex>
+      </MainQuestionWrapper>
+    </>
   );
 }
 
