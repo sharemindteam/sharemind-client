@@ -131,10 +131,13 @@ function MainQuestionSection() {
 
   return (
     <>
-      <Helmet>
-        <title>{`${card?.title} | 셰어마인드 공개 상담`}</title>
-        <meta name="description" content={card?.content} />
-      </Helmet>
+      {card && (
+        <Helmet>
+          <title>{`${card?.title} | 셰어마인드 공개 상담`}</title>
+          <meta name="description" content={card?.content} />
+        </Helmet>
+      )}
+
       <MainQuestionWrapper>
         <MainQuestionText>
           <div className="row1">
