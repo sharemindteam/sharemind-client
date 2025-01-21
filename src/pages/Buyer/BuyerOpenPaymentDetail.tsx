@@ -116,7 +116,7 @@ export const BuyerOpenPaymentDetail = () => {
               상담 유형
             </Body5>
 
-            <Body1 color={Grey1}>공개상담 - 비공개</Body1>
+            <Body1 color={Grey1}>일대다 - 비공개</Body1>
           </div>
         </Box>
         <Box>
